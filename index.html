@@ -1,0 +1,1137 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="UTF-8">
+        <title>Money Game</title>
+        <style>
+            /* Basic styling for the page layout */
+            body {
+                background-color: #f0f0f0;
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+                gap: 40px;
+            }
+
+            /* Main content wrapper adjusted */
+            .game-wrapper {
+                display: flex;
+                width: 100%;
+            }
+
+            /* Left side with burger button */
+            .game-left {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            /* Right side with controls */
+            .game-right {
+                width: 250px;
+                padding-left: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 40px;  /* Increased gap between sections */
+            }
+
+            /* Money display section */
+            #moneypers {
+                margin-bottom: 20px;
+                width: auto;  /* Allow natural width */
+            }
+
+            #moneypers input {
+                display: block;
+                margin-bottom: 8px;
+                padding: 8px 12px;
+                width: 200px;  /* Fixed width for text boxes */
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                background-color: white;
+                font-size: 14px;
+            }
+
+            /* Sections styling */
+            .section-title {
+                font-size: 18px;
+                font-weight: bold;
+                margin-bottom: 10px;
+                color: #333;
+            }
+
+            /* Container and upgrade sections */
+            #container, #upgrade {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                padding: 15px;
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+
+            /* Center the main burger button */
+            #button {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 500px;
+            }
+
+            /* Default button styling */
+            button {
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                cursor: pointer;
+                border-radius: 12px;
+                width: 100%;
+                transition: background-color 0.3s ease;
+            }
+
+            /* Style for disabled buttons */
+            button:disabled {
+                background-color: #dddddd;
+                color: #666666;
+            }
+
+            /* Main burger button styling */
+            .image-button {
+                width: 500px;
+                height: 500px;
+                background-color: transparent;
+                background-image: url('https://png.pngtree.com/png-clipart/20230216/ourmid/pngtree-juicy-burgers-with-a-transparent-background-png-image_6603069.png');
+                background-size: 100% 100%;
+                border: none;
+                cursor: pointer;
+                background-position: center;
+                background-repeat: no-repeat;
+                box-shadow: 0 9px #999;
+            }
+
+            /* Animation for burger button click */
+            .image-button:active {
+                background-color: transparent;
+                box-shadow: 0 5px #666;
+                transform: translateY(4px);
+            }
+
+            .tooltip-container {
+                position: relative;
+                width: 100%;
+            }
+
+            .tooltip-container button {
+                width: 100%;
+            }
+
+            .tooltip {
+                visibility: hidden;
+                position: absolute;
+                right: 105%;  /* Changed from left: 105% to right: 105% */
+                top: 50%;
+                transform: translateY(-50%);
+                background-color: #333;
+                color: white;
+                padding: 8px 12px;
+                border-radius: 6px;
+                font-size: 14px;
+                white-space: nowrap;
+                z-index: 1;
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+
+            /* Adjust arrow to point right instead of left */
+            .tooltip::before {
+                content: "";
+                position: absolute;
+                right: -10px;  /* Changed from left: -10px to right: -10px */
+                top: 50%;
+                transform: translateY(-50%);
+                border-width: 5px;
+                border-style: solid;
+                border-color: transparent transparent transparent #333;  /* Adjusted border colors to point right */
+            }
+
+            .tooltip-container:hover .tooltip {
+                visibility: visible;
+                opacity: 1;
+            }
+            .franchise-section {
+                width: 100%;
+                max-width: 1000px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+
+            .franchise-header {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            .franchise-button {
+                background-color: #4CAF50;
+                color: white;
+                padding: 15px 30px;
+                font-size: 18px;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                margin: 20px 0;
+                transition: background-color 0.3s;
+            }
+
+            .franchise-button:hover {
+                background-color: #45a049;
+            }
+
+            .franchise-button:disabled {
+                background-color: #dddddd;
+                cursor: default;
+            }
+
+            .restaurant-container {
+                display: flex;
+                gap: 40px;
+                justify-content: center;
+                flex-wrap: wrap;
+                padding: 20px 0;
+            }
+
+            .restaurant {
+                position: relative;
+                width: 300px;
+            }
+
+            .restaurant-image {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+
+            .restaurant-label {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                background-color: rgba(0, 0, 0, 0.7);
+                color: white;
+                padding: 5px 10px;
+                border-radius: 4px;
+                font-size: 14px;
+            }
+
+            .new-franchise {
+                display: none;
+                animation: fadeIn 0.5s ease-in;
+            }
+            .bottom-tabs {
+                position: fixed;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 600px;
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+                z-index: 1000;
+            }
+
+            .tab-buttons {
+                display: flex;
+                border-bottom: 1px solid #ccc;
+            }
+
+            .tab-button {
+                flex: 1;
+                padding: 10px;
+                border: none;
+                background: none;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: bold;
+                color: #666;
+            }
+
+            .tab-button.active {
+                color: #4CAF50;
+                border-bottom: 3px solid #4CAF50;
+            }
+
+            .tab-content {
+                padding: 20px;
+                max-height: 300px;
+                overflow-y: auto;
+            }
+
+            .tab-panel {
+                display: none;
+            }
+
+            .tab-panel.active {
+                display: block;
+            }
+
+            .button-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+
+            .achievement {
+                display: flex;
+                align-items: center;
+                padding: 10px;
+                background: #f5f5f5;
+                border-radius: 4px;
+                margin-bottom: 10px;
+            }
+
+            .achievement-icon {
+                width: 30px;
+                height: 30px;
+                background: #ddd;
+                border-radius: 50%;
+                margin-right: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .achievement-locked {
+                opacity: 0.5;
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            } z-index: 999;
+            }
+            
+            </style>
+    <script>
+        // ================ GAME STATE VARIABLES ================
+        // Basic game currency and costs
+        let count = 10000000000;                  // Player's current money
+        let cost1 = 10,                 // Worker cost
+            cost2 = 45,                 // Manager cost
+            cost3 = 15,                 // Click upgrade cost
+            cost4 = 500,                // Boss cost
+            cost5 = 1500;               // CEO cost
+
+        // Game mechanics variables
+        let mps = 0,                    // Money per second
+            worker = 1.5,               // Base manager production
+            clicks = 1,                 // Money per click
+            manager = 3.5;
+        // Upgrade counters
+        let M = 0,                      // Number of workers
+            M2 = 0,                     // Number of managers
+            M3 = 0,                     // Number of click upgrades
+            M4 = 0,                     // Number of bosses
+            M5 = 0,                     // Number of CEOs
+            upg1 = 0,                   // Coffee upgrade status
+            upg3 = 0;                   // Ice cream machine upgrade status
+        // Special upgrade costs
+        let upgp1 = 40;                 // Coffee upgrade cost
+        let upgp2 = 100000;           // Golden burger cost
+        let upgp3 = 15000;              // Ice cream machine upgrade cost
+        
+        // Special features
+        let golden_burger = 1;          // Golden burger multiplier
+        let moneymultiplier = 1;        // Global money multiplier
+        let ablepres = 0;               // Prestige system (not implemented)
+        let franchises = 1;             // How many franchises you have
+        let fcost = 500000;            // The cost of a franchise
+        let totalClicks = 0;           // your total number of clicks, used for achivements
+        let newUnlocks = false;
+        // ================ AUDIO SYSTEM ================
+        let audioContext;               // Web Audio API context
+        let soundBuffers = {};          // Storage for loaded sound files
+        let audioLoaded = false;        // Flag for audio system status
+
+        /**
+         * Initializes the audio system and loads all sound files
+         * Uses async/await for proper sound loading
+         */
+        async function initAudio() {
+            try {
+                // Create audio context
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+                // Define sound files to load
+                const sounds = {
+                    music: 'busy-restaurant-dining-room-ambience-128466.mp3',
+                    click: 'mixkit-hard-typewriter-click-1119.mp3',
+                    purchase: 'purchase-succesful-ingame-230550.mp3',
+                    coffee: 'cash-register-purchase-87313.mp3',
+                    error: 'error-sound-fx.wav',
+                    golden: 'you-win-sequence-2-183949.mp3'
+                };
+
+                // Load all sounds in parallel
+                const loadPromises = Object.entries(sounds).map(([key, path]) => 
+                    fetch(path)
+                        .then(response => response.arrayBuffer())
+                        .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+                        .then(audioBuffer => {
+                            soundBuffers[key] = audioBuffer;
+                        })
+                        .catch(e => console.warn(`Failed to load sound ${key}:`, e))
+                );
+
+                await Promise.all(loadPromises);
+                audioLoaded = true;
+
+                // Start background music loop
+                playSound('music', 0.3);
+                setInterval(() => playSound('music', 0.3), 22700);
+            } catch (e) {
+                console.warn('Web Audio API initialization failed:', e);
+                audioLoaded = false;
+            }
+        }
+
+        /**
+         * Plays a sound effect with specified volume
+         * @param {string} soundType - The type of sound to play (from soundBuffers)
+         * @param {number} volume - Volume level from 0 to 1
+         */
+        function playSound(soundType = 'click', volume = 0.5) {
+            if (!audioContext || !audioLoaded || !soundBuffers[soundType]) {
+                return;
+            }
+
+            try {
+                const source = audioContext.createBufferSource();
+                source.buffer = soundBuffers[soundType];
+
+                const gainNode = audioContext.createGain();
+                gainNode.gain.value = volume;
+
+                source.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                source.start(0);
+            } catch (e) {
+                console.warn('Error playing sound:', e);
+            }
+        }
+
+        // ================ GAME MECHANICS ================
+
+        /**
+         * Handles worker purchase
+         * Workers provide steady income over time
+         */
+        function extraAction() {
+            if (count >= cost1) {
+                mps += worker;                     // Increase money per second
+                M += 1;                                // Increment worker count
+                count -= cost1;                         // Deduct cost
+                cost1 = Math.round(10 * (1.15 ** M) * 10) / 10;  // Increase cost for next worker
+                playSound('purchase', 0.4);
+                updateAll();
+            } else {
+                playSound('error', 0.4);
+                updateAll();
+            }
+        }
+
+        /**
+         * Handles manager purchase
+         * Managers provide more income than workers
+         */
+        function Action2() {
+            if (count >= cost2) {
+                mps += manager;
+                M2 += 1;
+                count -= cost2;
+                cost2 = Math.round(45 * (1.15 ** M2) * 10) / 10;
+                playSound('purchase', 0.4);
+                updateAll();
+            } else {
+                playSound('error', 0.4);
+                updateAll();
+            }
+        }
+
+        /**
+         * Upgrades the click value
+         * Increases money earned per click
+         */
+        function clickadd() {
+            if (count >= cost3) {
+                clicks += 2;
+                M3 += 1;
+                count -= cost3;
+                cost3 = Math.round(15 * (1.15 ** M3) * 10) / 10;
+                playSound('purchase', 0.4);
+                updateAll();
+            } else {
+                playSound('error', 0.4);
+                updateAll();
+            }
+        }
+
+        /**
+         * Handles boss purchase
+         * Bosses provide significant income boost
+         */
+        function baction() {
+            if (count >= cost4) {
+                mps += 35;
+                M4 += 1;
+                count -= cost4;
+                cost4 = Math.round(500 * (1.15 ** M4) * 10) / 10;
+                playSound('purchase', 0.4);
+                updateAll();
+            } else {
+                playSound('error', 0.4);
+                updateAll();
+            }
+        }
+
+        /**
+         * Handles CEO purchase
+         * CEOs provide major income boost
+         */
+        function caction() {
+            if (count >= cost5) {
+                mps += 110;
+                M5 += 1;
+                count -= cost5;
+                cost5 = Math.round(1500 * (1.15 ** M5) * 10) / 10;
+                playSound('purchase', 0.4);
+                updateAll();
+            } else {
+                playSound('error', 0.4);
+                updateAll();
+            }
+        }
+
+        /**
+         * Coffee upgrade - increases worker efficiency
+         */
+        // Update the upgrade1 function to handle the position shift
+        function upgrade1() {
+            if (count >= upgp1) {
+                count -= upgp1;
+                worker = 3; // Double worker efficiency
+                if (M >= 1) {
+                    mps += 1.5 * M;
+                }
+                const upgrade1Button = document.getElementById("upgrade1");
+                document.getElementById('Workertooltip').textContent = "Earns $" + worker + " per second";
+                upgrade1Button.remove(); // Remove the button after update
+
+                // Update the restaurant image
+                const franchiseImg = document.getElementById('Franchise1');
+                if (franchiseImg) {
+                    franchiseImg.src = 'Resturant+coffee.png';
+                }
+                 const upgrade3Button = document.getElementById("upgrade3");
+                    if (upgrade3Button) {
+                        upgrade3Button.style.display = 'flex';
+                         }
+                // Move upgrade2 to the top position if it exists
+                const upgrade2Button = document.getElementById("upgrade2");
+                if (upgrade2Button) {
+                    upgrade2Button.style.order = "1";
+                }
+                    
+                upg1 = 1;
+                playSound('coffee', 0.4);
+                updateAll();
+            } else {
+                playSound('error', 0.4);
+                updateAll();
+            }
+        }
+        function upgrade3() {
+            if (count >= upgp3) {
+                count -= upgp3;
+                manager = 7; // Double worker efficiency
+                if (M2 >= 1) {
+                    mps += 3.5 * M2;
+                }
+                const upgrade3Button = document.getElementById("upgrade3");
+                document.getElementById('Managertooltip').textContent = "Earns $" + manager + " per second";
+                upgrade3Button.remove(); // Remove the button after update
+
+                // Update the restaurant image
+                const franchiseImg = document.getElementById('Franchise1');
+                if (franchiseImg) {
+                    franchiseImg.src = 'restaurantcoffee+ice.png';
+                }
+
+                // Move upgrade2 to the top position if it exists
+                const upgrade2Button = document.getElementById("upgrade2");
+                if (upgrade2Button) {
+                    upgrade2Button.style.order = "1";
+                }
+
+                upg1 = 1;
+                playSound('coffee', 0.4);
+                updateAll();
+            } else {
+                playSound('error', 0.4);
+                updateAll();
+            }
+        }
+        // Update the upgrade2 function similarly
+        function upgrade2() {
+            const chesburger = document.querySelector('.image-button');
+            if (count >= upgp2) {
+                count -= upgp2;
+                golden_burger = 2;  // Double click value
+                chesburger.style.backgroundImage = "url('GoldenBurger.png')";
+   
+                // Remove the upgrade2 button instead of hiding it
+                document.getElementById("upgrade2").remove();
+
+                playSound('golden', 0.6);
+                updateAll();
+            } else {
+                playSound('error', 0.4);
+                updateAll();
+            }
+        }
+        function switchTab(tabName) {
+            // Remove active class from all buttons and panels
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+
+            // Add active class to selected tab and panel
+            document.querySelector(`.tab-button[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(`${tabName}-panel`).classList.add('active');
+        }
+        /**
+         * Checks if user is on mobile device
+         * Redirects to mobile page if available
+         */
+        function detectMobile() {
+            if (/Android|iPhone|iPad|iPod|Opera Mini/i.test(navigator.userAgent) || 
+                (window.innerWidth <= 650)) {
+                try {
+                    fetch('mobile_restricted.html')
+                        .then(response => {
+                            if (response.ok) {
+                                window.location.href = "mobile_restricted.html";
+                            } else {
+                                alert("This website is not available on mobile devices.");
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error checking mobile page:', error);
+                            alert("This website is not available on mobile devices.");
+                        });
+                } catch (e) {
+                    console.error('Redirection failed:', e);
+                    alert("This website is not available on mobile devices.");
+                }
+                return false;
+            }
+            return true;
+        }
+
+        // ================ UI UPDATES ================
+
+        /**
+         * Updates button text with new costs
+         */
+        function updateButtons(buttons) {
+            buttons.forEach(button => {
+                let element = document.getElementById(button.id);
+                if (element) {
+                    let countText = '';
+                    // Add count information based on button type
+                    switch (button.id) {
+                        case 'extraButton':
+                            countText = ` (${M})`;
+                            break;
+                        case 'Button2':
+                            countText = ` (${M2})`;
+                            break;
+                        case 'Clickbutton':
+                            countText = ` (${M3})`;
+                            break;
+                        case 'bossbutton':
+                            countText = ` (${M4})`;
+                            break;
+                        case 'ceobutton':
+                            countText = ` (${M5})`;
+                            break;
+                        default:
+                            countText = '';
+                    }
+                    element.textContent = `${button.label}: $${button.cost}${countText}`;
+                }
+            });
+        }
+
+        /**
+         * Updates all UI elements
+         */
+        
+        function updateAll() {
+            updateMoney();
+            updatemps();
+            updateButtons([
+                { id: 'extraButton', label: 'Worker', cost: cost1 },
+                { id: 'Button2', label: 'Manager', cost: cost2 },
+                { id: 'Clickbutton', label: 'More click money', cost: cost3 },
+                { id: 'bossbutton', label: 'Boss', cost: cost4 },
+                { id: 'ceobutton', label: 'CEO', cost: cost5 },
+                { id: 'upgrade1', label: 'Coffee', cost: upgp1 }
+            ]);
+            Update();
+             checkAchievements();
+        }
+        /**
+         * Updates money display
+         */
+        function updateMoney() {
+            count = Math.round(count * 10) / 10;  // Round to 1 decimal place
+            document.getElementById('money').value = "Money: $" + count;
+        }
+
+        /**
+         * Updates money per second and per click displays
+         */
+        function updatemps() {
+            document.getElementById('moneypersecond').value = "Money per second: $" + (mps * moneymultiplier);
+            document.getElementById('moneyperclick').value = "Money per click: $" + (clicks * golden_burger) * moneymultiplier;
+            document.getElementById('moneymultiplier').value = "Money multiplier: " + moneymultiplier;
+        }
+
+        /**
+         * Handles clicking the burger
+         */
+        function checkAchievements() {
+        const gameState = {
+            count,
+            totalClicks,
+            M,
+            M2,
+            M3,
+            M4,
+            M5,
+            upg1,
+            upg3,
+            golden_burger,
+            franchises
+        };
+        function addMoney() {
+            count += (clicks * golden_burger) * moneymultiplier;
+            updateAll();
+            totalClicks++;
+            checkAchievements();
+        }
+
+        /**
+         * Updates button colors based on affordability
+         */
+        function Update() {
+            const canAffordColor = '#4CAF50';    // Green when affordable
+            const cannotAffordColor = '#dddddd'; // Gray when can't afford
+
+            const buttons = [
+                { id: 'extraButton', cost: cost1 },
+                { id: 'Button2', cost: cost2 },
+                { id: 'Clickbutton', cost: cost3 },
+                { id: 'bossbutton', cost: cost4 },
+                { id: 'ceobutton', cost: cost5 },
+                { id: 'upgrade1', cost: upgp1 },
+                { id: 'upgrade2', cost: upgp2 },
+                { id: 'Franchisebutton', cost: fcost},
+             //   { id: 'upgrade3', cost: upgp3 }
+            ];
+
+            buttons.forEach(button => {
+                const buttonElement = document.getElementById(button.id);
+                if (buttonElement) {
+                    buttonElement.style.backgroundColor = count >= button.cost ? canAffordColor : cannotAffordColor;
+                }
+            });
+        }
+
+        /**
+         * Adds money per second
+         */
+        function moneyps() {
+            count += mps*moneymultiplier;
+            updateAll();
+        }
+
+        /**
+         * Initializes the game
+         */
+        function initializeGame() {
+            initAudio();
+            updateAchievementsDisplay();
+            if (detectMobile()) {
+                Update();
+            }
+        }
+
+
+        function openFranchise() {
+            if (count >= fcost) {
+                count -= fcost;
+                moneymultiplier += 1;
+                fcost = ((fcost * 2) * 10) / 10;
+                updateAll();
+                playSound('purchase', 0.4);
+                franchises += 1;
+                const franchiseButton = document.querySelector('.franchise-button');
+                franchiseButton.textContent = 'Open a new Franchise ($' + fcost + ')';
+                // Update the button to show it's purchased
+                if (franchises == 2) {
+                    document.getElementById('newFranchise').style.display = 'block';
+                }
+                if (franchises == 3) {
+                    document.getElementById('Franchise3').style.display = 'block';
+                }
+                if (franchises == 4) {
+                    document.getElementById('Franchise4').style.display = 'block';
+                }
+                if (franchises == 5) {
+                    document.getElementById('Franchise5').style.display = 'block';
+                }
+                if (franchises == 6) {
+                    document.getElementById('Franchise6').style.display = 'block';
+                    franchiseButton.textContent = 'Max Franchises!';
+                    franchiseButton.disabled = true;
+                    fcost = 99999999999999999999999999999999999999999999999999999999999999999999999999999999999;
+                }
+                if (franchises >= 7) { 
+
+                }
+            } else {
+                playSound('error', 0.4);
+            }
+        }
+
+        const achievements = {
+            firstBurger: {
+                id: 'firstBurger',
+                icon: '🍔',
+                title: 'First Burger',
+                description: 'Click the burger for the first time',
+                condition: (state) => state.totalClicks >= 1,
+                unlocked: false
+            },
+            teamBuilder: {
+                id: 'teamBuilder',
+                icon: '👥',
+                title: 'Team Builder',
+                description: 'Hire your first 10 workers',
+                condition: (state) => state.M >= 10,
+                unlocked: false
+            },
+            coffeeBreak: {
+                id: 'coffeeBreak',
+                icon: '☕',
+                title: 'Coffee Break',
+                description: 'Purchase the coffee upgrade',
+                condition: (state) => state.upg1 >= 1,
+                unlocked: false
+            },
+            burgerEmpire: {
+                id: 'burgerEmpire',
+                icon: '🏢',
+                title: 'Burger Empire',
+                description: 'Own 3 or more franchises',
+                condition: (state) => state.franchises >= 3,
+                unlocked: false
+            },
+            goldenTouch: {
+                id: 'goldenTouch',
+                icon: '✨',
+                title: 'Golden Touch',
+                description: 'Purchase the Golden Burger',
+                condition: (state) => state.golden_burger >= 2,
+                unlocked: false
+            },
+            millionaire: {
+                id: 'millionaire',
+                icon: '💰',
+                title: 'Millionaire',
+                description: 'Have $1,000,000 at once',
+                condition: (state) => state.count >= 1000000,
+                unlocked: false
+            },
+            speedClicker: {
+                id: 'speedClicker',
+                icon: '⚡',
+                title: 'Dedication',
+                description: 'Click 100,000 times',
+                condition: (state) => state.totalClicks >= 100000,
+                unlocked: false
+            },
+            corporateLeader: {
+                id: 'corporateLeader',
+                icon: '👔',
+                title: 'Corporate Leader',
+                description: 'Hire your first CEO',
+                condition: (state) => state.M5 >= 1,
+                unlocked: false
+            },
+            iceCreamKing: {
+                id: 'iceCreamKing',
+                icon: '🍦',
+                title: 'Ice Cream King',
+                description: 'Purchase the Ice Cream Machine upgrade',
+                condition: (state) => state.upg3 >= 1,
+                unlocked: false
+            },
+            megaCorp: {
+                id: 'megaCorp',
+                icon: '🌟',
+                title: 'Mega Corporation',
+                description: 'Own all 6 franchises',
+                condition: (state) => state.franchises >= 6,
+                unlocked: false
+            }
+        };
+            Object.values(achievements).forEach(achievement => {
+                if (!achievement.unlocked && achievement.condition(gameState)) {
+                    achievement.unlocked = true;
+                    newUnlocks = true;
+                    showAchievementNotification(achievement);
+                }
+            });
+
+            if (newUnlocks) {
+                updateAchievementsDisplay();
+            }
+            }
+
+            // Add achievement notification
+            function showAchievementNotification(achievement) {
+            const notification = document.createElement('div');
+            notification.className = 'achievement-notification';
+            notification.innerHTML = `
+                <div class="achievement-icon">${achievement.icon}</div>
+                <div class="achievement-info">
+                    <h4>${achievement.title}</h4>
+                    <p>Achievement Unlocked!</p>
+                </div>
+            `;
+
+            // Add CSS for the notification
+            const style = document.createElement('style');
+            style.textContent = `
+                .achievement-notification {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: #4CAF50;
+                    color: white;
+                    padding: 15px;
+                    border-radius: 8px;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    animation: slideIn 0.5s ease-out, fadeOut 0.5s ease-in 2.5s forwards;
+                    z-index: 1000;
+                }
+
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+
+                @keyframes fadeOut {
+                    from { opacity: 1; }
+                    to { opacity: 0; }
+                }
+            `;
+
+            document.head.appendChild(style);
+            document.body.appendChild(notification);
+
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+            }
+
+            // Update achievements display
+            function updateAchievementsDisplay() {
+            const achievementsPanel = document.getElementById('achievements-panel');
+            achievementsPanel.innerHTML = '';
+
+            Object.values(achievements).forEach(achievement => {
+                const achievementElement = document.createElement('div');
+                achievementElement.className = `achievement ${achievement.unlocked ? '' : 'achievement-locked'}`;
+                achievementElement.innerHTML = `
+                    <div class="achievement-icon">${achievement.icon}</div>
+                    <div class="achievement-info">
+                        <h4>${achievement.title}</h4>
+                        <p>${achievement.description}</p>
+                    </div>
+                `;
+                achievementsPanel.appendChild(achievementElement);
+            });
+            }
+
+
+        // Event listeners and intervals
+        window.addEventListener('load', initializeGame);
+        setInterval(moneyps, 1000);  // Add money every second
+    </script>
+</head>
+        <body>
+            <div class="game-wrapper">
+                <div class="game-left">
+                    <!-- Money display section -->
+                    <div id="moneypers">
+                        <input type="text" id="moneypersecond" value="Money per second: $0" readonly>
+                        <input type="text" id="moneyperclick" value="Money per click: $1" readonly>
+                        <input type="text" id="moneymultiplier" value="Money Multiplier: 1" readonly>
+                        <input type="text" id="money" value="Money: $0" readonly>
+                    </div>
+                    <div id="button">
+                        <button class="image-button" onclick="addMoney(); playSound('click');"></button>
+                    </div>
+                </div>
+                <div class="franchise-section">
+                    <div class="franchise-header">
+                        <h2>Restaurant Empire</h2>
+                        <button class="franchise-button" onclick="openFranchise()" id = "Franchisebutton">Open a new Franchise ($500000)</button>
+                    </div>
+                    <div class="restaurant-container">
+                        <div class="restaurant">
+                            <div class="restaurant-label">Main Restaurant</div>
+                            <img src="restaurant.png" alt="Main Restaurant" class="restaurant-image" id ="Franchise1">
+                        </div>
+                        <div class="restaurant new-franchise" id="newFranchise">
+                            <div class="restaurant-label">New Franchise</div>
+                            <img src="restaurant.png" alt="New Franchise" class="restaurant-image">
+                        </div>
+                        <div class="restaurant new-franchise" id="Franchise3">
+                            <div class="restaurant-label">New Franchise</div>
+                            <img src="restaurant.png" alt="New Franchise" class="restaurant-image">
+                        </div>
+                        <div class="restaurant new-franchise" id="Franchise4">
+                            <div class="restaurant-label">New Franchise</div>
+                            <img src="restaurant.png" alt="New Franchise" class="restaurant-image">
+                        </div>
+                        <div class="restaurant new-franchise" id="Franchise5">
+                            <div class="restaurant-label">New Franchise</div>
+                            <img src="restaurant.png" alt="New Franchise" class="restaurant-image">
+                        </div>
+                        <div class="restaurant new-franchise" id="Franchise6">
+                            <div class="restaurant-label">New Franchise</div>
+                            <img src="restaurant.png" alt="New Franchise" class="restaurant-image">
+                        </div>
+                    </div>
+                </div>
+                <div class="game-right">
+                    <!-- Upgrades section -->
+                    <div id="upgrade">
+                        <div class="section-title">Upgrades</div>
+                        <div class="tooltip-container">
+                            <button id="upgrade1" onclick="upgrade1()">Coffee: $40</button>
+                            <span class="tooltip">Doubles the money made from all workers</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade3" onclick="upgrade3()" style="display:none;">The Ice cream machine: $15000</button>
+                            <span class="tooltip">Doubles the money made from all managers, and adds in a secret currency </span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade2" onclick="upgrade2()">The Golden burger: $100000</button>
+                            <span class="tooltip">Doubles the money earned from clicking</span>
+                        </div>
+
+                    </div>
+
+                    <div id="container">
+                        <div class="section-title">Employees</div>
+                        <div class="tooltip-container">
+                            <button id="extraButton" onclick="extraAction();">Worker: $10 (0)</button>
+                            <span class="tooltip" id="Workertooltip">Earns $1.5 per second</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="Button2" onclick="Action2()">Manager: $45 (0)</button>
+                            <span class="tooltip" id="Managertooltip">Earns $3.5 per second</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="Clickbutton" onclick="clickadd()">More click money: $15 (0)</button>
+                            <span class="tooltip">Increases click value by $2</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="bossbutton" onclick="baction()">Boss: $50 (0)</button>
+                            <span class="tooltip">Earns $35 per second</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="ceobutton" onclick="caction()">CEO: $1500 (0)</button>
+                            <span class="tooltip">Earns $110 per second</span>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+            <div class="bottom-tabs">
+                <div class="tab-buttons">
+                    <button class="tab-button active" onclick="switchTab('buttons')">Special Buttons</button>
+                    <button class="tab-button" onclick="switchTab('achievements')">Achievements</button>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-panel active" id="buttons-panel">
+                        <div class="button-grid">
+                            <button onclick="playSound('click')">Button 1</button>
+                            <button onclick="playSound('click')">Button 2</button>
+                            <button onclick="playSound('click')">Button 3</button>
+                            <button onclick="playSound('click')">Button 4</button>
+                            <button onclick="playSound('click')">Button 5</button>
+                            <button onclick="playSound('click')">Button 6</button>
+                        </div>
+                    </div>
+                    <div class="tab-panel" id="achievements-panel">
+                        <div class="achievement">
+                            <div class="achievement-icon">🍔</div>
+                            <div class="achievement-info">
+                                <h4>First Burger</h4>
+                                <p>Click the burger for the first time</p>
+                            </div>
+                        </div>
+                        <div class="achievement achievement-locked">
+                            <div class="achievement-icon">👥</div>
+                            <div class="achievement-info">
+                                <h4>Team Builder</h4>
+                                <p>Hire your first 10 workers</p>
+                            </div>
+                        </div>
+                        <div class="achievement achievement-locked">
+                            <div class="achievement-icon">☕</div>
+                            <div class="achievement-info">
+                                <h4>Coffee Break</h4>
+                                <p>Purchase the coffee upgrade</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                    </body>
+                    </html>
