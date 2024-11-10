@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+  <!DOCTYPE html>
     <html lang="en">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -241,93 +241,150 @@
                 display: none;
                 animation: fadeIn 0.5s ease-in;
             }
-            .bottom-tabs {
-                position: fixed;
-                bottom: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 600px;
-                background-color: white;
-                border-radius: 8px;
-                box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-                z-index: 1000;
-            }
 
-            .tab-buttons {
-                display: flex;
-                border-bottom: 1px solid #ccc;
-            }
-
-            .tab-button {
-                flex: 1;
-                padding: 10px;
-                border: none;
-                background: none;
-                cursor: pointer;
-                font-size: 16px;
-                font-weight: bold;
-                color: #666;
-            }
-
-            .tab-button.active {
-                color: #4CAF50;
-                border-bottom: 3px solid #4CAF50;
-            }
-
-            .tab-content {
-                padding: 20px;
-                max-height: 300px;
-                overflow-y: auto;
-            }
-
-            .tab-panel {
-                display: none;
-            }
-
-            .tab-panel.active {
-                display: block;
-            }
-
-            .button-grid {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 10px;
-            }
-
-            .achievement {
-                display: flex;
-                align-items: center;
-                padding: 10px;
-                background: #f5f5f5;
-                border-radius: 4px;
-                margin-bottom: 10px;
-            }
-
-            .achievement-icon {
-                width: 30px;
-                height: 30px;
-                background: #ddd;
-                border-radius: 50%;
-                margin-right: 10px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-            .achievement-locked {
-                opacity: 0.5;
-            }
             @keyframes fadeIn {
                 from { opacity: 0; transform: translateY(20px); }
                 to { opacity: 1; transform: translateY(0); }
             } z-index: 999;
             }
-            
+            .tabs {
+                display: flex;
+                gap: 2px;
+                margin-bottom: 20px;
+                background-color: #f5f5f5;
+                padding: 5px;
+                border-radius: 8px;
+            }
+
+            .tab-button {
+                flex: 1;
+                padding: 12px 24px;
+                background-color: #e0e0e0;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: 500;
+                color: #666;
+                transition: all 0.3s ease;
+            }
+
+            .tab-button.active {
+                background-color: #4CAF50;
+                color: white;
+            }
+
+            .tab-content {
+                display: none;
+                animation: fadeIn 0.3s ease-in;
+            }
+
+            .tab-content.active {
+                display: block;
+            }
+
+            /* Features Tab */
+            .buttons-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 15px;
+                padding: 20px;
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+
+            .feature-button {
+                padding: 15px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 14px;
+                transition: background-color 0.3s;
+                width: 100%;
+            }
+
+            .feature-button:hover {
+                background-color: #45a049;
+            }
+
+            .feature-button:disabled {
+                background-color: #cccccc;
+                cursor: not-allowed;
+            }
+
+            /* Achievements Tab */
+            .achievements-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+                padding: 20px;
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+
+            .achievement {
+                background-color: #f5f5f5;
+                border-radius: 8px;
+                padding: 15px;
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                transition: transform 0.2s;
+            }
+
+            .achievement:hover {
+                transform: translateY(-2px);
+            }
+
+            .achievement-icon {
+                width: 40px;
+                height: 40px;
+                background-color: #4CAF50;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 20px;
+            }
+
+            .achievement-info {
+                flex-grow: 1;
+            }
+
+            .achievement-title {
+                font-weight: bold;
+                margin-bottom: 5px;
+                color: #333;
+            }
+
+            .achievement-description {
+                font-size: 14px;
+                color: #666;
+            }
+
+            .achievement.locked {
+                opacity: 0.7;
+                background-color: #eaeaea;
+            }
+
+            .achievement.locked .achievement-icon {
+                background-color: #999;
+            }
+
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
             </style>
     <script>
         // ================ GAME STATE VARIABLES ================
         // Basic game currency and costs
-        let count = 0000000000;                  // Player's current money
+        let count = 10000000000;                  // Player's current money
         let cost1 = 10,                 // Worker cost
             cost2 = 45,                 // Manager cost
             cost3 = 15,                 // Click upgrade cost
@@ -368,6 +425,7 @@
          * Initializes the audio system and loads all sound files
          * Uses async/await for proper sound loading
          */
+        
         async function initAudio() {
             try {
                 // Create audio context
@@ -380,7 +438,8 @@
                     purchase: 'purchase-succesful-ingame-230550.mp3',
                     coffee: 'cash-register-purchase-87313.mp3',
                     error: 'error-sound-fx.wav',
-                    golden: 'you-win-sequence-2-183949.mp3'
+                    golden: 'you-win-sequence-2-183949.mp3',
+                    achieve: 'game-level-complete-143022.mp3'
                 };
 
                 // Load all sounds in parallel
@@ -611,19 +670,6 @@
                 updateAll();
             }
         }
-        function switchTab(tabName) {
-            // Remove active class from all buttons and panels
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-panel').forEach(panel => {
-                panel.classList.remove('active');
-            });
-
-            // Add active class to selected tab and panel
-            document.querySelector(`.tab-button[onclick="switchTab('${tabName}')"]`).classList.add('active');
-            document.getElementById(`${tabName}-panel`).classList.add('active');
-        }
         /**
          * Checks if user is on mobile device
          * Redirects to mobile page if available
@@ -704,6 +750,7 @@
                 { id: 'upgrade1', label: 'Coffee', cost: upgp1 }
             ]);
             Update();
+            checkAchievements();
         }
         /**
          * Updates money display
@@ -734,6 +781,7 @@
          * Updates button colors based on affordability
          */
         function Update() {
+            checkAchievements();
             const canAffordColor = '#4CAF50';    // Green when affordable
             const cannotAffordColor = '#dddddd'; // Gray when can't afford
 
@@ -746,7 +794,7 @@
                 { id: 'upgrade1', cost: upgp1 },
                 { id: 'upgrade2', cost: upgp2 },
                 { id: 'Franchisebutton', cost: fcost},
-                { id: 'upgrade3', cost: upgp3 }
+             //   { id: 'upgrade3', cost: upgp3 }
             ];
 
             buttons.forEach(button => {
@@ -770,6 +818,7 @@
          */
         function initializeGame() {
             initAudio();
+            //loadAchievements();
             if (detectMobile()) {
                 Update();
             }
@@ -812,7 +861,94 @@
                 playSound('error', 0.4);
             }
         }
+        function switchTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(tab => tab.classList.remove('active'));
 
+            // Deactivate all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => button.classList.remove('active'));
+
+            // Show selected tab content and activate button
+            document.getElementById(tabName).classList.add('active');
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+        }
+        const achievements = {
+            firstSteps: { unlocked: false, condition: () => franchises >= 2 },
+            empireBuilder: { unlocked: false, condition: () => franchises >= 5 },
+            millionaire: { unlocked: false, condition: () => count >= 1000000 },
+            masterManager: { unlocked: false, condition: () => M + M2 + M4 + M5 >= 50 },
+            goldenTouch: { unlocked: false, condition: () => golden_burger >= 2 },
+            coffeeMaster: { unlocked: false, condition: () => upg1 === 1 }
+        };
+
+        /**
+         * Checks if any achievements have been unlocked
+         * Should be called whenever relevant game state changes
+         */
+        function checkAchievements() {
+            let newUnlocks = false;
+
+            for (const [id, achievement] of Object.entries(achievements)) {
+                if (!achievement.unlocked && achievement.condition()) {
+                    achievement.unlocked = true;
+                    newUnlocks = true;
+
+                    // Find and update the achievement element
+                    const achievementElement = document.querySelector(`[data-achievement="${id}"]`);
+                    if (achievementElement) {
+                        achievementElement.classList.remove('locked');
+                        // Play a sound effect for unlocking
+                        playSound('achieve', 0.3);
+                    }
+                }
+            }
+        }
+
+        /**
+         * Saves achievement state to localStorage
+      
+        function saveAchievements() {
+            try {
+                const achievementState = {};
+                for (const [id, achievement] of Object.entries(achievements)) {
+                    achievementState[id] = achievement.unlocked;
+                }
+                localStorage.setItem('restaurantAchievements', JSON.stringify(achievementState));
+            } catch (e) {
+                console.warn('Failed to save achievements:', e);
+            }
+        }
+         * Loads achievement state from localStorage
+ 
+        function loadAchievements() {
+            try {
+                const savedState = localStorage.getItem('restaurantAchievements');
+                if (savedState) {
+                    const achievementState = JSON.parse(savedState);
+                    for (const [id, unlocked] of Object.entries(achievementState)) {
+                        if (achievements[id]) {
+                            achievements[id].unlocked = unlocked;
+                            if (unlocked) {
+                                const achievementElement = document.querySelector(`[data-achievement="${id}"]`);
+                                if (achievementElement) {
+                                    achievementElement.classList.remove('locked');
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (e) {
+                console.warn('Failed to load achievements:', e);
+            }
+        }
+        */
+        // Initialize tabs when page loads
+        window.addEventListener('load', function() {
+            // Show franchise tab by default
+            switchTab('franchiseTab');
+        });
         // Show franchise section from the start
 
         // Event listeners and intervals
@@ -837,34 +973,107 @@
                 <div class="franchise-section">
                     <div class="franchise-header">
                         <h2>Restaurant Empire</h2>
-                        <button class="franchise-button" onclick="openFranchise()" id = "Franchisebutton">Open a new Franchise ($500000)</button>
-                    </div>
-                    <div class="restaurant-container">
-                        <div class="restaurant">
-                            <div class="restaurant-label">Main Restaurant</div>
-                            <img src="restaurant.png" alt="Main Restaurant" class="restaurant-image" id ="Franchise1">
-                        </div>
-                        <div class="restaurant new-franchise" id="newFranchise">
-                            <div class="restaurant-label">New Franchise</div>
-                            <img src="restaurant.png" alt="New Franchise" class="restaurant-image">
-                        </div>
-                        <div class="restaurant new-franchise" id="Franchise3">
-                            <div class="restaurant-label">New Franchise</div>
-                            <img src="restaurant.png" alt="New Franchise" class="restaurant-image">
-                        </div>
-                        <div class="restaurant new-franchise" id="Franchise4">
-                            <div class="restaurant-label">New Franchise</div>
-                            <img src="restaurant.png" alt="New Franchise" class="restaurant-image">
-                        </div>
-                        <div class="restaurant new-franchise" id="Franchise5">
-                            <div class="restaurant-label">New Franchise</div>
-                            <img src="restaurant.png" alt="New Franchise" class="restaurant-image">
-                        </div>
-                        <div class="restaurant new-franchise" id="Franchise6">
-                            <div class="restaurant-label">New Franchise</div>
-                            <img src="restaurant.png" alt="New Franchise" class="restaurant-image">
+                        <div class="tabs">
+                            <button class="tab-button active" data-tab="franchiseTab" onclick="switchTab('franchiseTab')">Franchises</button>
+                            <button class="tab-button" data-tab="buttonsTab" onclick="switchTab('buttonsTab')">Features</button>
+                            <button class="tab-button" data-tab="achievementsTab" onclick="switchTab('achievementsTab')">Achievements</button>
                         </div>
                     </div>
+
+                    <!-- Franchises Tab (Original Content) -->
+                    <div id="franchiseTab" class="tab-content active">
+                        <button class="franchise-button" onclick="openFranchise()" id="Franchisebutton">Open a new Franchise ($500000)</button>
+                        <div class="restaurant-container">
+                            <!-- Your existing restaurant divs here -->
+                            <div class="restaurant">
+                                <div class="restaurant-label">Main Restaurant</div>
+                                <img src="restaurant.png" alt="Main Restaurant" class="restaurant-image" id="Franchise1">
+                            </div>
+                            <div class="restaurant new-franchise" id="newFranchise">
+                                <div class="restaurant-label">New Franchise</div>
+                                <img src="restaurant.png" alt="New Franchise" class="restaurant-image">
+                            </div>
+                            <div class="restaurant new-franchise" id="Franchise3">
+                                <div class="restaurant-label">New Franchise</div>
+                                <img src="restaurant.png" alt="New Franchise" class="restaurant-image">
+                            </div>
+                            <div class="restaurant new-franchise" id="Franchise4">
+                                <div class="restaurant-label">New Franchise</div>
+                                <img src="restaurant.png" alt="New Franchise" class="restaurant-image">
+                            </div>
+                            <div class="restaurant new-franchise" id="Franchise5">
+                                <div class="restaurant-label">New Franchise</div>
+                                <img src="restaurant.png" alt="New Franchise" class="restaurant-image">
+                            </div>
+                            <div class="restaurant new-franchise" id="Franchise6">
+                                <div class="restaurant-label">New Franchise</div>
+                                <img src="restaurant.png" alt="New Franchise" class="restaurant-image">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Features Tab -->
+                    <div id="buttonsTab" class="tab-content">
+                        <div class="buttons-grid">
+                            <button class="feature-button" disabled>Customize Restaurant Theme</button>
+                            <button class="feature-button" disabled>Hire Special Staff</button>
+                            <button class="feature-button" disabled>Research New Recipes</button>
+                            <button class="feature-button" disabled>Marketing Campaign</button>
+                            <button class="feature-button" disabled>Restaurant Events</button>
+                            <button class="feature-button" disabled>Customer Loyalty Program</button>
+                            <button class="feature-button" disabled>Staff Training</button>
+                            <button class="feature-button" disabled>Equipment Upgrades</button>
+                        </div>
+                    </div>
+
+                    <!-- Achievements Tab -->
+                    <div id="achievementsTab" class="tab-content">
+                        <div class="achievements-grid">
+                            <div class="achievement locked" data-achievement="firstSteps">
+                                <div class="achievement-icon">🏆</div>
+                                <div class="achievement-info">
+                                    <div class="achievement-title">First Steps</div>
+                                    <div class="achievement-description">Open your first franchise</div>
+                                </div>
+                            </div>
+                            <div class="achievement locked" data-achievement="empireBuilder">
+                                <div class="achievement-icon">🌟</div>
+                                <div class="achievement-info">
+                                    <div class="achievement-title">Empire Builder</div>
+                                    <div class="achievement-description">Own 5 franchises</div>
+                                </div>
+                            </div>
+                            <div class="achievement locked" data-achievement="millionaire">
+                                <div class="achievement-icon">💰</div>
+                                <div class="achievement-info">
+                                    <div class="achievement-title">Millionaire</div>
+                                    <div class="achievement-description">Earn $1,000,000 total</div>
+                                </div>
+                            </div>
+                            <div class="achievement locked" data-achievement="masterManager">
+                                <div class="achievement-icon">👥</div>
+                                <div class="achievement-info">
+                                    <div class="achievement-title">Master Manager</div>
+                                    <div class="achievement-description">Hire 50 employees</div>
+                                </div>
+                            </div>
+                            <div class="achievement locked" data-achievement="goldenTouch">
+                                <div class="achievement-icon">⭐</div>
+                                <div class="achievement-info">
+                                    <div class="achievement-title">Golden Touch</div>
+                                    <div class="achievement-description">Purchase the Golden Burger</div>
+                                </div>
+                            </div>
+                            <div class="achievement locked" data-achievement="coffeeMaster">
+                                <div class="achievement-icon">☕</div>
+                                <div class="achievement-info">
+                                    <div class="achievement-title">Coffee Master</div>
+                                    <div class="achievement-description">Purchase the Coffee upgrade</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="game-right">
                     <!-- Upgrades section -->
@@ -910,46 +1119,5 @@
                     </div>
                     </div>
                     </div>
-            <div class="bottom-tabs">
-                <div class="tab-buttons">
-                    <button class="tab-button active" onclick="switchTab('buttons')">Special Buttons</button>
-                    <button class="tab-button" onclick="switchTab('achievements')">Achievements</button>
-                </div>
-                <div class="tab-content">
-                    <div class="tab-panel active" id="buttons-panel">
-                        <div class="button-grid">
-                            <button onclick="playSound('click')">Button 1</button>
-                            <button onclick="playSound('click')">Button 2</button>
-                            <button onclick="playSound('click')">Button 3</button>
-                            <button onclick="playSound('click')">Button 4</button>
-                            <button onclick="playSound('click')">Button 5</button>
-                            <button onclick="playSound('click')">Button 6</button>
-                        </div>
-                    </div>
-                    <div class="tab-panel" id="achievements-panel">
-                        <div class="achievement">
-                            <div class="achievement-icon">🍔</div>
-                            <div class="achievement-info">
-                                <h4>First Burger</h4>
-                                <p>Click the burger for the first time</p>
-                            </div>
-                        </div>
-                        <div class="achievement achievement-locked">
-                            <div class="achievement-icon">👥</div>
-                            <div class="achievement-info">
-                                <h4>Team Builder</h4>
-                                <p>Hire your first 10 workers</p>
-                            </div>
-                        </div>
-                        <div class="achievement achievement-locked">
-                            <div class="achievement-icon">☕</div>
-                            <div class="achievement-info">
-                                <h4>Coffee Break</h4>
-                                <p>Purchase the coffee upgrade</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
                     </body>
                     </html>
