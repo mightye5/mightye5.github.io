@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+ <!DOCTYPE html>
     <html lang="en">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -358,8 +358,7 @@
         let ablepres = 0;               // Prestige system (not implemented)
         let franchises = 1;             // How many franchises you have
         let fcost = 500000;            // The cost of a franchise
-        let totalClicks = 0;           // your total number of clicks, used for achivements
-        let newUnlocks = false;
+        
         // ================ AUDIO SYSTEM ================
         let audioContext;               // Web Audio API context
         let soundBuffers = {};          // Storage for loaded sound files
@@ -705,7 +704,6 @@
                 { id: 'upgrade1', label: 'Coffee', cost: upgp1 }
             ]);
             Update();
-             checkAchievements();
         }
         /**
          * Updates money display
@@ -727,25 +725,9 @@
         /**
          * Handles clicking the burger
          */
-        function checkAchievements() {
-        const gameState = {
-            count,
-            totalClicks,
-            M,
-            M2,
-            M3,
-            M4,
-            M5,
-            upg1,
-            upg3,
-            golden_burger,
-            franchises
-        };
         function addMoney() {
             count += (clicks * golden_burger) * moneymultiplier;
             updateAll();
-            totalClicks++;
-            checkAchievements();
         }
 
         /**
@@ -788,7 +770,6 @@
          */
         function initializeGame() {
             initAudio();
-            updateAchievementsDisplay();
             if (detectMobile()) {
                 Update();
             }
@@ -832,170 +813,7 @@
             }
         }
 
-        const achievements = {
-            firstBurger: {
-                id: 'firstBurger',
-                icon: '🍔',
-                title: 'First Burger',
-                description: 'Click the burger for the first time',
-                condition: (state) => state.totalClicks >= 1,
-                unlocked: false
-            },
-            teamBuilder: {
-                id: 'teamBuilder',
-                icon: '👥',
-                title: 'Team Builder',
-                description: 'Hire your first 10 workers',
-                condition: (state) => state.M >= 10,
-                unlocked: false
-            },
-            coffeeBreak: {
-                id: 'coffeeBreak',
-                icon: '☕',
-                title: 'Coffee Break',
-                description: 'Purchase the coffee upgrade',
-                condition: (state) => state.upg1 >= 1,
-                unlocked: false
-            },
-            burgerEmpire: {
-                id: 'burgerEmpire',
-                icon: '🏢',
-                title: 'Burger Empire',
-                description: 'Own 3 or more franchises',
-                condition: (state) => state.franchises >= 3,
-                unlocked: false
-            },
-            goldenTouch: {
-                id: 'goldenTouch',
-                icon: '✨',
-                title: 'Golden Touch',
-                description: 'Purchase the Golden Burger',
-                condition: (state) => state.golden_burger >= 2,
-                unlocked: false
-            },
-            millionaire: {
-                id: 'millionaire',
-                icon: '💰',
-                title: 'Millionaire',
-                description: 'Have $1,000,000 at once',
-                condition: (state) => state.count >= 1000000,
-                unlocked: false
-            },
-            speedClicker: {
-                id: 'speedClicker',
-                icon: '⚡',
-                title: 'Dedication',
-                description: 'Click 100,000 times',
-                condition: (state) => state.totalClicks >= 100000,
-                unlocked: false
-            },
-            corporateLeader: {
-                id: 'corporateLeader',
-                icon: '👔',
-                title: 'Corporate Leader',
-                description: 'Hire your first CEO',
-                condition: (state) => state.M5 >= 1,
-                unlocked: false
-            },
-            iceCreamKing: {
-                id: 'iceCreamKing',
-                icon: '🍦',
-                title: 'Ice Cream King',
-                description: 'Purchase the Ice Cream Machine upgrade',
-                condition: (state) => state.upg3 >= 1,
-                unlocked: false
-            },
-            megaCorp: {
-                id: 'megaCorp',
-                icon: '🌟',
-                title: 'Mega Corporation',
-                description: 'Own all 6 franchises',
-                condition: (state) => state.franchises >= 6,
-                unlocked: false
-            }
-        };
-            Object.values(achievements).forEach(achievement => {
-                if (!achievement.unlocked && achievement.condition(gameState)) {
-                    achievement.unlocked = true;
-                    newUnlocks = true;
-                    showAchievementNotification(achievement);
-                }
-            });
-
-            if (newUnlocks) {
-                updateAchievementsDisplay();
-            }
-            }
-
-            // Add achievement notification
-            function showAchievementNotification(achievement) {
-            const notification = document.createElement('div');
-            notification.className = 'achievement-notification';
-            notification.innerHTML = `
-                <div class="achievement-icon">${achievement.icon}</div>
-                <div class="achievement-info">
-                    <h4>${achievement.title}</h4>
-                    <p>Achievement Unlocked!</p>
-                </div>
-            `;
-
-            // Add CSS for the notification
-            const style = document.createElement('style');
-            style.textContent = `
-                .achievement-notification {
-                    position: fixed;
-                    top: 20px;
-                    right: 20px;
-                    background: #4CAF50;
-                    color: white;
-                    padding: 15px;
-                    border-radius: 8px;
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    animation: slideIn 0.5s ease-out, fadeOut 0.5s ease-in 2.5s forwards;
-                    z-index: 1000;
-                }
-
-                @keyframes slideIn {
-                    from { transform: translateX(100%); opacity: 0; }
-                    to { transform: translateX(0); opacity: 1; }
-                }
-
-                @keyframes fadeOut {
-                    from { opacity: 1; }
-                    to { opacity: 0; }
-                }
-            `;
-
-            document.head.appendChild(style);
-            document.body.appendChild(notification);
-
-            // Remove notification after 3 seconds
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
-            }
-
-            // Update achievements display
-            function updateAchievementsDisplay() {
-            const achievementsPanel = document.getElementById('achievements-panel');
-            achievementsPanel.innerHTML = '';
-
-            Object.values(achievements).forEach(achievement => {
-                const achievementElement = document.createElement('div');
-                achievementElement.className = `achievement ${achievement.unlocked ? '' : 'achievement-locked'}`;
-                achievementElement.innerHTML = `
-                    <div class="achievement-icon">${achievement.icon}</div>
-                    <div class="achievement-info">
-                        <h4>${achievement.title}</h4>
-                        <p>${achievement.description}</p>
-                    </div>
-                `;
-                achievementsPanel.appendChild(achievementElement);
-            });
-            }
-
+        // Show franchise section from the start
 
         // Event listeners and intervals
         window.addEventListener('load', initializeGame);
