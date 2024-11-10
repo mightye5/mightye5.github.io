@@ -390,12 +390,13 @@
             cost3 = 15,                 // Click upgrade cost
             cost4 = 500,                // Boss cost
             cost5 = 1500;               // CEO cost
-
+            
         // Game mechanics variables
         let mps = 0,                    // Money per second
             worker = 1.5,               // Base manager production
             clicks = 1,                 // Money per click
             manager = 3.5;
+        
         // Upgrade counters
         let M = 0,                      // Number of workers
             M2 = 0,                     // Number of managers
@@ -415,7 +416,13 @@
         let ablepres = 0;               // Prestige system (not implemented)
         let franchises = 1;             // How many franchises you have
         let fcost = 500000;            // The cost of a franchise
-        
+
+        //Everything Ice cream related
+         let ice = 49,                             // Player's current ice creams
+            ips = 0,                              // how many ice creams you get per second
+            icost1 = 50,                          // The first Ice cream upgrade cost      
+            icost2 = 100,                         // The second Ice cream upgrade cost      
+            iceupg1 = 0;
         // ================ AUDIO SYSTEM ================
         let audioContext;               // Web Audio API context
         let soundBuffers = {};          // Storage for loaded sound files
@@ -625,6 +632,8 @@
             if (count >= upgp3) {
                 count -= upgp3;
                 manager = 7; // Double worker efficiency
+                upg3 = 1;
+                ips = 1;
                 if (M2 >= 1) {
                     mps += 3.5 * M2;
                 }
@@ -643,8 +652,6 @@
                 if (upgrade2Button) {
                     upgrade2Button.style.order = "1";
                 }
-
-                upg1 = 1;
                 playSound('coffee', 0.4);
                 updateAll();
             } else {
@@ -665,6 +672,20 @@
 
                 playSound('golden', 0.6);
                 updateAll();
+            } else {
+                playSound('error', 0.4);
+                updateAll();
+            }
+        }
+        function moreicepers() {
+            if (ice >= icost1) {
+                ips += 2.5;
+                iceupg1 += 1;
+                ice -= icost1;
+                icost1 = ((icost1 * 1.75) * 10) / 10;
+                playSound('purchase', 0.4);
+                updateAll();
+                
             } else {
                 playSound('error', 0.4);
                 updateAll();
@@ -758,6 +779,7 @@
         function updateMoney() {
             count = Math.round(count * 10) / 10;  // Round to 1 decimal place
             document.getElementById('money').value = "Money: $" + count;
+            document.getElementById('ice').value = "Ice Creams: " + ice;
         }
 
         /**
@@ -767,6 +789,7 @@
             document.getElementById('moneypersecond').value = "Money per second: $" + (mps * moneymultiplier);
             document.getElementById('moneyperclick').value = "Money per click: $" + (clicks * golden_burger) * moneymultiplier;
             document.getElementById('moneymultiplier').value = "Money multiplier: " + moneymultiplier;
+            document.getElementById('icepers').value = "Ice Creams per second: " + ips;
         }
 
         /**
@@ -784,7 +807,7 @@
             checkAchievements();
             const canAffordColor = '#4CAF50';    // Green when affordable
             const cannotAffordColor = '#dddddd'; // Gray when can't afford
-
+            document.getElementById('moreicepers').textContent = "Upgrade the Ice Cream machine! " + icost1 + ' ice';
             const buttons = [
                 { id: 'extraButton', cost: cost1 },
                 { id: 'Button2', cost: cost2 },
@@ -794,13 +817,22 @@
                 { id: 'upgrade1', cost: upgp1 },
                 { id: 'upgrade2', cost: upgp2 },
                 { id: 'Franchisebutton', cost: fcost},
-             //   { id: 'upgrade3', cost: upgp3 }
-            ];
+                { id: 'upgrade3', cost: upgp3 }
 
+            ];
+            const Ibuttons = [
+                { id: 'moreicepers', cost: icost1 } 
+            ]
             buttons.forEach(button => {
                 const buttonElement = document.getElementById(button.id);
                 if (buttonElement) {
                     buttonElement.style.backgroundColor = count >= button.cost ? canAffordColor : cannotAffordColor;
+                }
+            });
+            Ibuttons.forEach(button => {
+                const buttonElement = document.getElementById(button.id);
+                if (buttonElement) {
+                    buttonElement.style.backgroundColor = ice >= button.cost ? canAffordColor : cannotAffordColor;
                 }
             });
         }
@@ -811,6 +843,9 @@
         function moneyps() {
             count += mps*moneymultiplier;
             updateAll();
+            if (upg3 == 1) {
+                ice += ips; //if you have upgrade 3, add 1 to the ice, per second
+            }
         }
 
         /**
@@ -975,7 +1010,7 @@
                         <h2>Restaurant Empire</h2>
                         <div class="tabs">
                             <button class="tab-button active" data-tab="franchiseTab" onclick="switchTab('franchiseTab')">Franchises</button>
-                            <button class="tab-button" data-tab="buttonsTab" onclick="switchTab('buttonsTab')">Features</button>
+                            <button class="tab-button" data-tab="buttonsTab" onclick="switchTab('buttonsTab')">Ice cream upgrades!</button>
                             <button class="tab-button" data-tab="achievementsTab" onclick="switchTab('achievementsTab')">Achievements</button>
                         </div>
                     </div>
@@ -1015,7 +1050,10 @@
                     <!-- Features Tab -->
                     <div id="buttonsTab" class="tab-content">
                         <div class="buttons-grid">
-                            <button class="feature-button" disabled>Customize Restaurant Theme</button>
+                            <div class="tooltip-container">
+                                <button class="feature-button" id ="moreicepers" onclick = "moreicepers()">Upgrade the Ice Cream machine! 50 ice</button>
+                                <span class="tooltip">Gives you 2.5 more Ice Creams a second!</span>
+                            </div>
                             <button class="feature-button" disabled>Hire Special Staff</button>
                             <button class="feature-button" disabled>Research New Recipes</button>
                             <button class="feature-button" disabled>Marketing Campaign</button>
@@ -1023,6 +1061,8 @@
                             <button class="feature-button" disabled>Customer Loyalty Program</button>
                             <button class="feature-button" disabled>Staff Training</button>
                             <button class="feature-button" disabled>Equipment Upgrades</button>
+                            <input type="text" id="ice" value="Ice Creams: 0" readonly>
+                            <input type="text" id="icepers" value="Ice Creams per second: 0" readonly>
                         </div>
                     </div>
 
