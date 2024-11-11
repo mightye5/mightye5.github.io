@@ -384,7 +384,7 @@
     <script>
         // ================ GAME STATE VARIABLES ================
         // Basic game currency and costs
-        let count = 0000000000;                  // Player's current money
+        let count = 10000000000;                  // Player's current money
         let cost1 = 10,                 // Worker cost
             cost2 = 45,                 // Manager cost
             cost3 = 15,                 // Click upgrade cost
@@ -417,7 +417,7 @@
         let franchises = 1;             // How many franchises you have
         let fcost = 500000;            // The cost of a franchise
         let totalclicks = 0;
-
+        let totaltime = 0;
         //Everything Ice cream related
          let ice = 49,                             // Player's current ice creams
             ips = 0,                              // how many ice creams you get per second
@@ -510,7 +510,7 @@
                 mps += worker;                     // Increase money per second
                 M += 1;                                // Increment worker count
                 count -= cost1;                         // Deduct cost
-                cost1 = Math.round(10 * (1.15 ** M) * 10) / 10;  // Increase cost for next worker
+                cost1 = Math.round(10 * (1.1 ** M) * 10) / 10;  // Increase cost for next worker
                 playSound('purchase', 0.4);
                 updateAll();
             } else {
@@ -528,7 +528,7 @@
                 mps += manager;
                 M2 += 1;
                 count -= cost2;
-                cost2 = Math.round(45 * (1.15 ** M2) * 10) / 10;
+                cost2 = Math.round(45 * (1.1 ** M2) * 10) / 10;
                 playSound('purchase', 0.4);
                 updateAll();
             } else {
@@ -561,10 +561,10 @@
          */
         function baction() {
             if (count >= cost4) {
-                mps += 35;
+                mps += 55;
                 M4 += 1;
                 count -= cost4;
-                cost4 = Math.round(500 * (1.15 ** M4) * 10) / 10;
+                cost4 = Math.round(500 * (1.1 ** M4) * 10) / 10;
                 playSound('purchase', 0.4);
                 updateAll();
             } else {
@@ -579,10 +579,10 @@
          */
         function caction() {
             if (count >= cost5) {
-                mps += 110;
+                mps += 200;
                 M5 += 1;
                 count -= cost5;
-                cost5 = Math.round(1500 * (1.15 ** M5) * 10) / 10;
+                cost5 = Math.round((1500*(1.1 ** M5) * 10) / 10);
                 playSound('purchase', 0.4);
                 updateAll();
             } else {
@@ -846,6 +846,7 @@
         function moneyps() {
             count += mps*moneymultiplier;
             updateAll();
+            totaltime ++;
             if (upg3 == 1) {
                 ice += ips; //if you have upgrade 3, add 1 to the ice, per second
             }
@@ -867,7 +868,7 @@
             if (count >= fcost) {
                 count -= fcost;
                 moneymultiplier += 1;
-                fcost = ((fcost * 2) * 10) / 10;
+                fcost = ((fcost * 2.5) * 10) / 10;
                 updateAll();
                 playSound('purchase', 0.4);
                 franchises += 1;
@@ -917,9 +918,26 @@
             empireBuilder: { unlocked: false, condition: () => franchises >= 5 },
             millionaire: { unlocked: false, condition: () => count >= 1000000 },
             masterManager: { unlocked: false, condition: () => M + M2 + M4 + M5 >= 50 },
+            a100employees: { unlocked: false, condition: () => M + M2 + M4 + M5 >= 100 },
+            a200employees: { unlocked: false, condition: () => M + M2 + M4 + M5 >= 200 },
+            a500employees: { unlocked: false, condition: () => M + M2 + M4 + M5 >= 500 },
+            a1000employees: { unlocked: false, condition: () => M + M2 + M4 + M5 >= 1000 },
             goldenTouch: { unlocked: false, condition: () => golden_burger >= 2 },
             coffeeMaster: { unlocked: false, condition: () => upg1 === 1 },
-            a100clicks: { unlocked: false, condition: () => totalclicks === 100 }
+            a100clicks: { unlocked: false, condition: () => totalclicks === 100 },
+            a1000clicks: { unlocked: false, condition: () => totalclicks === 1000 },
+            a10000clicks: { unlocked: false, condition: () => totalclicks === 10000 },
+            a50000clicks: { unlocked: false, condition: () => totalclicks === 50000 },
+            a100000clicks: { unlocked: false, condition: () => totalclicks === 100000 },
+            a1000000clicks: { unlocked: false, condition: () => totalclicks === 1000000 },
+            a1minute: { unlocked: false, condition: () => totaltime >= 60 },
+            a10minute: { unlocked: false, condition: () => totaltime >= 600 },
+            a30minute: { unlocked: false, condition: () => totaltime >= 1800 },
+            a1hour: { unlocked: false, condition: () => totaltime >= 3600 },
+            a5hour: { unlocked: false, condition: () => totaltime >= 18000 },
+            a12hour: { unlocked: false, condition: () => totaltime >= 43200 },
+            a1day: { unlocked: false, condition: () => totaltime >= 86400 },
+            a1week: { unlocked: false, condition: () => totaltime >= 604800 }
         };
 
         /**
@@ -1102,6 +1120,34 @@
                                     <div class="achievement-description">Hire 50 employees</div>
                                 </div>
                             </div>
+                            <div class="achievement locked" data-achievement="a100employees">
+                                <div class="achievement-icon">👥</div>
+                                <div class="achievement-info">
+                                    <div class="achievement-title">Uncommon Manager</div>
+                                    <div class="achievement-description">Hire 100 employees</div>
+                                </div>
+                            </div>
+                            <div class="achievement locked" data-achievement="a200employees">
+                                <div class="achievement-icon">👥</div>
+                                <div class="achievement-info">
+                                    <div class="achievement-title">Rare Manager</div>
+                                    <div class="achievement-description">Hire 200 employees</div>
+                                </div>
+                            </div>
+                            <div class="achievement locked" data-achievement="a500employees">
+                                <div class="achievement-icon">👥</div>
+                                <div class="achievement-info">
+                                    <div class="achievement-title">Epic Manager</div>
+                                    <div class="achievement-description">Hire 500 employees</div>
+                                </div>
+                            </div>
+                            <div class="achievement locked" data-achievement="a1000employees">
+                                <div class="achievement-icon">👥</div>
+                                <div class="achievement-info">
+                                    <div class="achievement-title">Legendary Manager</div>
+                                    <div class="achievement-description">Hire 1000 employees</div>
+                                </div>
+                            </div>
                             <div class="achievement locked" data-achievement="goldenTouch">
                                 <div class="achievement-icon">⭐</div>
                                 <div class="achievement-info">
@@ -1121,6 +1167,97 @@
                                 <div class="achievement-info">
                                     <div class="achievement-title">Easy clicking</div>
                                     <div class="achievement-description">Click the Burger 100 times.</div>
+                                </div>
+                            </div>
+                            <div class="achievement locked" data-achievement="a1000clicks">
+                                <div class="achievement-icon">👉</div>
+                                <div class="achievement-info">
+                                    <div class="achievement-title">Burger Devotee</div>
+                                    <div class="achievement-description">Click the Burger 1,000 times.</div>
+                                </div>
+                            </div>
+                            <div class="achievement locked" data-achievement="a10000clicks">
+                                <div class="achievement-icon">👉</div>
+                                <div class="achievement-info">
+                                    <div class="achievement-title">Burger Addict</div>
+                                    <div class="achievement-description">Click the Burger 10,000 times.</div>
+                                </div>
+                            </div>
+                            <div class="achievement locked" data-achievement="a50000clicks">
+                                <div class="achievement-icon">👉</div>
+                                <div class="achievement-info">
+                                    <div class="achievement-title">Burger Champion</div>
+                                    <div class="achievement-description">Click the Burger 50,000 times.</div>
+                                </div>
+                            </div>
+                            <div class="achievement locked" data-achievement="a100000clicks">
+                                <div class="achievement-icon">👉</div>
+                                <div class="achievement-info">
+                                    <div class="achievement-title">Burger Titan</div>
+                                    <div class="achievement-description">Click the Burger 100,000 times.</div>
+                                </div>
+                            </div>
+                            <div class="achievement locked" data-achievement="a1000000clicks">
+                                <div class="achievement-icon">👉</div>
+                                <div class="achievement-info">
+                                    <div class="achievement-title">Burger Elite</div>
+                                    <div class="achievement-description">Click the Burger 1,000,000 times.</div>
+                                </div>
+                            </div>
+                            <div class="achievement locked" data-achievement="a1minute">
+                                <div class="achievement-icon">⌛</div>
+                                <div class="achievement-info">
+                                    <div class="achievement-title">Just joined!</div>
+                                    <div class="achievement-description">Play the game for 1 minute!</div>
+                                </div>
+                            </div>
+                            <div class="achievement locked" data-achievement="a10minute">
+                                <div class="achievement-icon">⌛</div>
+                                <div class="achievement-info">
+                                    <div class="achievement-title">Just could have driven around 10 miles!</div>
+                                    <div class="achievement-description">Play the game for 10 minutes!</div>
+                                </div>
+                            </div>
+                            <div class="achievement locked" data-achievement="a30minute">
+                                <div class="achievement-icon">⌛</div>
+                                <div class="achievement-info">
+                                    <div class="achievement-title">Just enough for a lunch break!</div>
+                                    <div class="achievement-description">Play the game for 30 minutes!</div>
+                                </div>
+                            </div>
+                            <div class="achievement locked" data-achievement="a1hour">
+                                <div class="achievement-icon">⌛</div>
+                                <div class="achievement-info">
+                                    <div class="achievement-title">You could have run around 6 miles!</div>
+                                    <div class="achievement-description">Play the game for 1 hour!</div>
+                                </div>
+                            </div>
+                            <div class="achievement locked" data-achievement="a5hour">
+                                <div class="achievement-icon">⌛</div>
+                                <div class="achievement-info">
+                                    <div class="achievement-title">You could have run a marathon in this amount of time.</div>
+                                    <div class="achievement-description">Play the game for 5 hours!</div>
+                                </div>
+                            </div>
+                            <div class="achievement locked" data-achievement="a12hour">
+                                <div class="achievement-icon">⌛</div>
+                                <div class="achievement-info">
+                                    <div class="achievement-title">There goes half your day.</div>
+                                    <div class="achievement-description">Play the game for 12 hours!</div>
+                                </div>
+                            </div>
+                            <div class="achievement locked" data-achievement="a1day">
+                                <div class="achievement-icon">⌛</div>
+                                <div class="achievement-info">
+                                    <div class="achievement-title">Are you done yet?</div>
+                                    <div class="achievement-description">Play the game for 1 day!</div>
+                                </div>
+                            </div>
+                            <div class="achievement locked" data-achievement="a1week">
+                                <div class="achievement-icon">⌛</div>
+                                <div class="achievement-info">
+                                    <div class="achievement-title">Just Why?</div>
+                                    <div class="achievement-description">Play the game for 1 week!</div>
                                 </div>
                             </div>
                         </div>
@@ -1162,11 +1299,11 @@
                         </div>
                         <div class="tooltip-container">
                             <button id="bossbutton" onclick="baction()">Boss: $50 (0)</button>
-                            <span class="tooltip">Earns $35 per second</span>
+                            <span class="tooltip">Earns $55 per second</span>
                         </div>
                         <div class="tooltip-container">
                             <button id="ceobutton" onclick="caction()">CEO: $1500 (0)</button>
-                            <span class="tooltip">Earns $110 per second</span>
+                            <span class="tooltip">Earns $200 per second</span>
                         </div>
                     </div>
                     </div>
