@@ -416,6 +416,7 @@
         let ablepres = 0;               // Prestige system (not implemented)
         let franchises = 1;             // How many franchises you have
         let fcost = 500000;            // The cost of a franchise
+        let totalclicks = 0;
 
         //Everything Ice cream related
          let ice = 49,                             // Player's current ice creams
@@ -682,7 +683,7 @@
                 ips += 2.5;
                 iceupg1 += 1;
                 ice -= icost1;
-                icost1 = ((icost1 * 1.75) * 10) / 10;
+                icost1 = Math.round(icost1 * 1.75);
                 playSound('purchase', 0.4);
                 updateAll();
                 
@@ -798,6 +799,8 @@
         function addMoney() {
             count += (clicks * golden_burger) * moneymultiplier;
             updateAll();
+            totalclicks++;
+            checkAchievements();
         }
 
         /**
@@ -915,7 +918,8 @@
             millionaire: { unlocked: false, condition: () => count >= 1000000 },
             masterManager: { unlocked: false, condition: () => M + M2 + M4 + M5 >= 50 },
             goldenTouch: { unlocked: false, condition: () => golden_burger >= 2 },
-            coffeeMaster: { unlocked: false, condition: () => upg1 === 1 }
+            coffeeMaster: { unlocked: false, condition: () => upg1 === 1 },
+            a100clicks: { unlocked: false, condition: () => totalclicks === 100 }
         };
 
         /**
@@ -988,6 +992,7 @@
 
         // Event listeners and intervals
         window.addEventListener('load', initializeGame);
+        setInterval(updateAll, 1);
         setInterval(moneyps, 1000);  // Add money every second
     </script>
 </head>
@@ -1109,6 +1114,13 @@
                                 <div class="achievement-info">
                                     <div class="achievement-title">Coffee Master</div>
                                     <div class="achievement-description">Purchase the Coffee upgrade</div>
+                                </div>
+                            </div>
+                            <div class="achievement locked" data-achievement="a100clicks">
+                                <div class="achievement-icon">👉</div>
+                                <div class="achievement-info">
+                                    <div class="achievement-title">Easy clicking</div>
+                                    <div class="achievement-description">Click the Burger 100 times.</div>
                                 </div>
                             </div>
                         </div>
