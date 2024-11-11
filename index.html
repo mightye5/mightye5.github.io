@@ -383,8 +383,8 @@
             </style>
     <script>
         // ================ GAME STATE VARIABLES ================
-        // Basic game currency and costs
-        let count = 10000000000;                  // Player's current money
+        // Basic game currency and costs 
+        let count = 0000000000;                  // Player's current money
         let cost1 = 10,                 // Worker cost
             cost2 = 45,                 // Manager cost
             cost3 = 15,                 // Click upgrade cost
@@ -395,8 +395,10 @@
         let mps = 0,                    // Money per second
             worker = 1.5,               // Base manager production
             clicks = 1,                 // Money per click
-            manager = 3.5;
-        
+            manager = 3.5,
+            clickamount = 2,
+            boss = 55,
+            ceo = 200;
         // Upgrade counters
         let M = 0,                      // Number of workers
             M2 = 0,                     // Number of managers
@@ -419,11 +421,20 @@
         let totalclicks = 0;
         let totaltime = 0;
         //Everything Ice cream related
-         let ice = 49,                             // Player's current ice creams
-            ips = 0,                              // how many ice creams you get per second
-            icost1 = 50,                          // The first Ice cream upgrade cost      
-            icost2 = 100,                         // The second Ice cream upgrade cost      
-            iceupg1 = 0;
+         let ice = 0000000,                             // Player's current ice creams
+            ips = 0,                             // how many ice creams you get per second
+            icost1 = 50,                          // The first Ice cream upgrade cost     
+            icost2 = 75,                         // The second Ice cream upgrade cost 
+            icost3 = 100,                        // The third Ice cream upgrade cost 
+            icost4 = 150,                        // The fourth Ice cream upgrade cost 
+            icost5 = 200,                        // The fifth Ice cream upgrade cost 
+            icost6 = 250,                        // The sixth Ice cream upgrade cost
+            iceupg1 = 0,            // whether you have the first ice cream upgrade or not
+            iceupg2 = 0,           // whether you have the second ice cream upgrade or not
+            iceupg3 = 0,            // whether you have the third ice cream upgrade or not
+            iceupg4 = 0,           // whether you have the fourth ice cream upgrade or not
+            iceupg5 = 0,            // whether you have the fifth ice cream upgrade or not
+            iceupg6 = 0;            // whether you have the sixth ice cream upgrade or not
         // ================ AUDIO SYSTEM ================
         let audioContext;               // Web Audio API context
         let soundBuffers = {};          // Storage for loaded sound files
@@ -543,7 +554,7 @@
          */
         function clickadd() {
             if (count >= cost3) {
-                clicks += 2;
+                clicks += clickamount;
                 M3 += 1;
                 count -= cost3;
                 cost3 = Math.round(15 * (1.15 ** M3) * 10) / 10;
@@ -561,7 +572,7 @@
          */
         function baction() {
             if (count >= cost4) {
-                mps += 55;
+                mps += boss;
                 M4 += 1;
                 count -= cost4;
                 cost4 = Math.round(500 * (1.1 ** M4) * 10) / 10;
@@ -579,7 +590,7 @@
          */
         function caction() {
             if (count >= cost5) {
-                mps += 200;
+                mps += ceo;
                 M5 += 1;
                 count -= cost5;
                 cost5 = Math.round((1500*(1.1 ** M5) * 10) / 10);
@@ -683,10 +694,80 @@
                 ips += 2.5;
                 iceupg1 += 1;
                 ice -= icost1;
-                icost1 = Math.round(icost1 * 1.75);
+                icost1 = Math.round(icost1 * 1.5);
                 playSound('purchase', 0.4);
                 updateAll();
-                
+
+            } else {
+                playSound('error', 0.4);
+                updateAll();
+            }
+        }
+        function betterworker() {
+            if (ice >= icost2) {
+                worker += parseFloat((worker * 0.2).toFixed(1));
+                iceupg2 += 1;
+                ice -= icost2;
+                icost2 = Math.round(icost2 * 1.25);
+                playSound('purchase', 0.4);
+                updateAll();
+
+            } else {
+                playSound('error', 0.4);
+                updateAll();
+            }
+        }
+        function bettermanager() {
+            if (ice >= icost3) {
+                manager += Math.round(manager * 0.2);
+                iceupg3 += 1;
+                ice -= icost3;
+                icost3 = Math.round(icost3 * 1.25);
+                playSound('purchase', 0.4);
+                updateAll();
+
+            } else {
+                playSound('error', 0.4);
+                updateAll();
+            }
+        }
+        function betterclick() {
+            if (ice >= icost4) {
+                clickamount += parseFloat((clickamount * 0.2).toFixed(1));
+                iceupg4 += 1;
+                ice -= icost4;
+                icost4 = Math.round(icost4 * 1.25);
+                playSound('purchase', 0.4);
+                updateAll();
+
+            } else {
+                playSound('error', 0.4);
+                updateAll();
+            }
+        }
+        function betterboss() {
+            if (ice >= icost5) {
+                boss += Math.round(boss * 0.2);
+                iceupg5 += 1;
+                ice -= icost5;
+                icost5 = Math.round(icost5 * 1.25);
+                playSound('purchase', 0.4);
+                updateAll();
+
+            } else {
+                playSound('error', 0.4);
+                updateAll();
+            }
+        }
+        function betterceo() {
+            if (ice >= icost6) {
+                ceo += Math.round(ceo * 0.2);
+                iceupg6 += 1;
+                ice -= icost6;
+                icost6 = Math.round(icost6 * 1.25);
+                playSound('purchase', 0.4);
+                updateAll();
+
             } else {
                 playSound('error', 0.4);
                 updateAll();
@@ -811,6 +892,17 @@
             const canAffordColor = '#4CAF50';    // Green when affordable
             const cannotAffordColor = '#dddddd'; // Gray when can't afford
             document.getElementById('moreicepers').textContent = "Upgrade the Ice Cream machine! " + icost1 + ' ice';
+             document.getElementById('betterworker').textContent = "Make workers better! " + icost2 + ' ice';
+             document.getElementById('bettermanager').textContent = "Make managers better! " + icost3 + ' ice';
+             document.getElementById('betterclick').textContent = "Make more click money better! " + icost4 + ' ice';
+            document.getElementById('betterboss').textContent = "Make Bosses better! " + icost5 + ' ice';
+            document.getElementById('betterceo').textContent = "Make CEOs better! " + icost6 + ' ice';
+        
+            document.getElementById('Workertooltip').textContent = "Earns $" + worker + " per second";
+            document.getElementById('Managertooltip').textContent = "Earns $" + manager + " per second";
+            document.getElementById('Moreclicktooltip').textContent = "Increases click value by $" + clickamount;
+            document.getElementById('Bosstooltip').textContent = "Earns $" + boss + " per second";
+            document.getElementById('Ceotooltip').textContent = "Earns $" + ceo + " per second";
             const buttons = [
                 { id: 'extraButton', cost: cost1 },
                 { id: 'Button2', cost: cost2 },
@@ -824,7 +916,12 @@
 
             ];
             const Ibuttons = [
-                { id: 'moreicepers', cost: icost1 } 
+                { id: 'moreicepers', cost: icost1 } ,
+                { id: 'betterworker', cost: icost2 } ,
+                { id: 'bettermanager', cost: icost3 },
+                { id: 'betterclick', cost: icost4 } ,
+                { id: 'betterboss', cost: icost5 } ,
+                { id: 'betterceo', cost: icost6 } ,
             ]
             buttons.forEach(button => {
                 const buttonElement = document.getElementById(button.id);
@@ -921,7 +1018,7 @@
             a100employees: { unlocked: false, condition: () => M + M2 + M4 + M5 >= 100 },
             a200employees: { unlocked: false, condition: () => M + M2 + M4 + M5 >= 200 },
             a500employees: { unlocked: false, condition: () => M + M2 + M4 + M5 >= 500 },
-            a1000employees: { unlocked: false, condition: () => M + M2 + M4 + M5 >= 1000 },
+            a1000employees: {unlocked: false, condition: () => M + M2 + M4 + M5 >= 1000 },
             goldenTouch: { unlocked: false, condition: () => golden_burger >= 2 },
             coffeeMaster: { unlocked: false, condition: () => upg1 === 1 },
             a100clicks: { unlocked: false, condition: () => totalclicks === 100 },
@@ -1077,13 +1174,28 @@
                                 <button class="feature-button" id ="moreicepers" onclick = "moreicepers()">Upgrade the Ice Cream machine! 50 ice</button>
                                 <span class="tooltip">Gives you 2.5 more Ice Creams a second!</span>
                             </div>
-                            <button class="feature-button" disabled>Hire Special Staff</button>
-                            <button class="feature-button" disabled>Research New Recipes</button>
-                            <button class="feature-button" disabled>Marketing Campaign</button>
-                            <button class="feature-button" disabled>Restaurant Events</button>
-                            <button class="feature-button" disabled>Customer Loyalty Program</button>
-                            <button class="feature-button" disabled>Staff Training</button>
-                            <button class="feature-button" disabled>Equipment Upgrades</button>
+                            <div class="tooltip-container">
+                                <button class="feature-button" id ="betterworker" onclick = "betterworker()">Make workers better! 75 ice</button>
+                                <span class="tooltip">Increases what workers make by 0.2x</span>
+                            </div>
+                            <div class="tooltip-container">
+                                <button class="feature-button" id ="bettermanager" onclick = "bettermanager()">Make Managers better! 100 ice</button>
+                                <span class="tooltip">Increases what managers make by 0.2x</span>
+                            </div>
+                            <div class="tooltip-container">
+                                <button class="feature-button" id ="betterclick" onclick = "betterclick()">Make more click money better! 150 ice</button>
+                                <span class="tooltip">Increases what more click money give by 0.2x</span>
+                            </div>
+                            <div class="tooltip-container">
+                                <button class="feature-button" id ="betterboss" onclick = "betterboss()">Make Bosses better! 200 ice</button>
+                                <span class="tooltip">Increases what bosses make by 0.2x</span>
+                            </div>
+                            <div class="tooltip-container">
+                                <button class="feature-button" id ="betterceo" onclick = "betterceo()">Make CEOs better! 250 ice</button>
+                                <span class="tooltip">Increases what CEOs make by 0.2x</span>
+                            </div>
+                            <button class="feature-button" disabled style="display:none;">Staff Training</button>
+                            <button class="feature-button" disabled style="display:none;">Equipment Upgrades</button>
                             <input type="text" id="ice" value="Ice Creams: 0" readonly>
                             <input type="text" id="icepers" value="Ice Creams per second: 0" readonly>
                         </div>
@@ -1295,15 +1407,15 @@
                         </div>
                         <div class="tooltip-container">
                             <button id="Clickbutton" onclick="clickadd()">More click money: $15 (0)</button>
-                            <span class="tooltip">Increases click value by $2</span>
+                            <span class="tooltip" id="Moreclicktooltip">Increases click value by $2</span>
                         </div>
                         <div class="tooltip-container">
                             <button id="bossbutton" onclick="baction()">Boss: $50 (0)</button>
-                            <span class="tooltip">Earns $55 per second</span>
+                            <span class="tooltip" id="Bosstooltip">Earns $55 per second</span>
                         </div>
                         <div class="tooltip-container">
                             <button id="ceobutton" onclick="caction()">CEO: $1500 (0)</button>
-                            <span class="tooltip">Earns $200 per second</span>
+                            <span class="tooltip" id="Ceotooltip">Earns $200 per second</span>
                         </div>
                     </div>
                     </div>
