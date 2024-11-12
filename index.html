@@ -411,7 +411,8 @@
         let upgp1 = 40;                 // Coffee upgrade cost
         let upgp2 = 100000;           // Golden burger cost
         let upgp3 = 15000;              // Ice cream machine upgrade cost
-        
+        let upgp4 = 500000,
+        upgp5 = 800000;
         // Special features
         let golden_burger = 1;          // Golden burger multiplier
         let moneymultiplier = 1;        // Global money multiplier
@@ -554,7 +555,7 @@
          */
         function clickadd() {
             if (count >= cost3) {
-                clicks += clickamount;
+                clicks += parseFloat((clickamount).toFixed(1));
                 M3 += 1;
                 count -= cost3;
                 cost3 = Math.round(15 * (1.15 ** M3) * 10) / 10;
@@ -609,7 +610,7 @@
         function upgrade1() {
             if (count >= upgp1) {
                 count -= upgp1;
-                worker = 3; // Double worker efficiency
+                worker = manager*2; // Double worker efficiency
                 if (M >= 1) {
                     mps += 1.5 * M;
                 }
@@ -643,7 +644,7 @@
         function upgrade3() {
             if (count >= upgp3) {
                 count -= upgp3;
-                manager = 7; // Double worker efficiency
+                manager = manager*2; // Double worker efficiency
                 upg3 = 1;
                 ips = 1;
                 if (M2 >= 1) {
@@ -678,9 +679,49 @@
                 count -= upgp2;
                 golden_burger = 2;  // Double click value
                 chesburger.style.backgroundImage = "url('GoldenBurger.png')";
-   
+                 const upgrade4Button = document.getElementById("upgrade4");
+                    if (upgrade4Button) {
+                        upgrade4Button.style.display = 'flex';
+                         }
                 // Remove the upgrade2 button instead of hiding it
                 document.getElementById("upgrade2").remove();
+
+                playSound('golden', 0.6);
+                updateAll();
+            } else {
+                playSound('error', 0.4);
+                updateAll();
+            }
+        }
+        function upgrade4() {
+            const chesburger = document.querySelector('.image-button');
+            if (count >= upgp4) {
+                count -= upgp4;
+                golden_burger = 4;  // Double click value
+                chesburger.style.backgroundImage = "url('Diamondbuger.png')";
+
+                // Remove the upgrade2 button instead of hiding it
+                document.getElementById("upgrade4").remove();
+                const upgrade5Button = document.getElementById("upgrade5");
+                if (upgrade5Button) {
+                    upgrade5Button.style.display = 'flex';
+                     }
+                playSound('golden', 0.6);
+                updateAll();
+            } else {
+                playSound('error', 0.4);
+                updateAll();
+            }
+        }
+        function upgrade5() {
+            const chesburger = document.querySelector('.image-button');
+            if (count >= upgp5) {
+                count -= upgp5;
+                golden_burger = 6;  // Double click value
+                chesburger.style.backgroundImage = "url('Sapphireburger.png')";
+
+                // Remove the upgrade2 button instead of hiding it
+                document.getElementById("upgrade5").remove();
 
                 playSound('golden', 0.6);
                 updateAll();
@@ -702,38 +743,15 @@
                 playSound('error', 0.4);
                 updateAll();
             }
-        }
-        function betterworker() {
-            if (ice >= icost2) {
-                worker += parseFloat((worker * 0.2).toFixed(1));
-                iceupg2 += 1;
-                ice -= icost2;
-                icost2 = Math.round(icost2 * 1.25);
-                playSound('purchase', 0.4);
-                updateAll();
-
-            } else {
-                playSound('error', 0.4);
-                updateAll();
-            }
-        }
-        function bettermanager() {
-            if (ice >= icost3) {
-                manager += Math.round(manager * 0.2);
-                iceupg3 += 1;
-                ice -= icost3;
-                icost3 = Math.round(icost3 * 1.25);
-                playSound('purchase', 0.4);
-                updateAll();
-
-            } else {
-                playSound('error', 0.4);
-                updateAll();
-            }
-        }
+        }        
         function betterclick() {
             if (ice >= icost4) {
+                const oldClickAmount =  parseFloat((clickamount).toFixed(1));;
                 clickamount += parseFloat((clickamount * 0.2).toFixed(1));
+                if (M3 >= 1) {
+                    const clickIncrease = (clickamount - oldClickAmount) * M3;
+                    clicks +=  parseFloat((clickIncrease * 0.2).toFixed(1));
+                }
                 iceupg4 += 1;
                 ice -= icost4;
                 icost4 = Math.round(icost4 * 1.25);
@@ -745,29 +763,80 @@
                 updateAll();
             }
         }
-        function betterboss() {
-            if (ice >= icost5) {
-                boss += Math.round(boss * 0.2);
-                iceupg5 += 1;
-                ice -= icost5;
-                icost5 = Math.round(icost5 * 1.25);
+        function betterworker() {
+            if (ice >= icost2) {
+                const oldWorkerValue = worker;
+                worker += parseFloat((worker * 0.2).toFixed(1));
+                // Apply the increase to existing workers
+                if (M >= 1) {
+                    const increase = (worker - oldWorkerValue) * M;
+                    mps += increase;
+                }
+                iceupg2 += 1;
+                ice -= icost2;
+                icost2 = Math.round(icost2 * 1.25);
                 playSound('purchase', 0.4);
                 updateAll();
-
             } else {
                 playSound('error', 0.4);
                 updateAll();
             }
         }
+
+        function bettermanager() {
+            if (ice >= icost3) {
+                const oldManagerValue = manager;
+                manager += Math.round(manager * 0.2);
+                // Apply the increase to existing managers
+                if (M2 >= 1) {
+                    const increase = (manager - oldManagerValue) * M2;
+                    mps += increase;
+                }
+                iceupg3 += 1;
+                ice -= icost3;
+                icost3 = Math.round(icost3 * 1.25);
+                playSound('purchase', 0.4);
+                updateAll();
+            } else {
+                playSound('error', 0.4);
+                updateAll();
+            }
+        }
+
+        function betterboss() {
+            if (ice >= icost5) {
+                const oldBossValue = boss;
+                boss += Math.round(boss * 0.2);
+                // Apply the increase to existing bosses
+                if (M4 >= 1) {
+                    const increase = (boss - oldBossValue) * M4;
+                    mps += increase;
+                }
+                iceupg5 += 1;
+                ice -= icost5;
+                icost5 = Math.round(icost5 * 1.25);
+                playSound('purchase', 0.4);
+                updateAll();
+            } else {
+                playSound('error', 0.4);
+                updateAll();
+            }
+        }
+
         function betterceo() {
             if (ice >= icost6) {
+                const oldCeoValue = ceo;
                 ceo += Math.round(ceo * 0.2);
+                // Apply the increase to existing CEOs
+                if (M5 >= 1) {
+                    const increase = (ceo - oldCeoValue) * M5;
+                    mps += increase;
+                }
                 iceupg6 += 1;
                 ice -= icost6;
                 icost6 = Math.round(icost6 * 1.25);
                 playSound('purchase', 0.4);
                 updateAll();
-
             } else {
                 playSound('error', 0.4);
                 updateAll();
@@ -869,8 +938,8 @@
          */
         function updatemps() {
             document.getElementById('moneypersecond').value = "Money per second: $" + (mps * moneymultiplier);
-            document.getElementById('moneyperclick').value = "Money per click: $" + (clicks * golden_burger) * moneymultiplier;
-            document.getElementById('moneymultiplier').value = "Money multiplier: " + moneymultiplier;
+            document.getElementById('moneyperclick').value = "Money per click: $" + parseFloat(((clicks * golden_burger) * moneymultiplier).toFixed(1));
+            document.getElementById('moneymultiplier').value = "Money multiplier: " +  parseFloat((moneymultiplier).toFixed(1));
             document.getElementById('icepers').value = "Ice Creams per second: " + ips;
         }
 
@@ -878,7 +947,7 @@
          * Handles clicking the burger
          */
         function addMoney() {
-            count += (clicks * golden_burger) * moneymultiplier;
+            count += parseFloat(((clicks * golden_burger) * moneymultiplier).toFixed(1));
             updateAll();
             totalclicks++;
             checkAchievements();
@@ -1390,9 +1459,16 @@
                         </div>
                         <div class="tooltip-container">
                             <button id="upgrade2" onclick="upgrade2()">The Golden burger: $100000</button>
-                            <span class="tooltip">Doubles the money earned from clicking</span>
+                            <span class="tooltip">Increases how much money you make per click by 2x</span>
                         </div>
-
+                        <div class="tooltip-container">
+                            <button id="upgrade4" onclick="upgrade4()" style="display:none;" >The Diamond burger: $500000</button>
+                            <span class="tooltip">Increases how much money you make per click by 2x</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade5" onclick="upgrade5()" style="display:none;" >The Sapphire burger: $800000</button>
+                            <span class="tooltip">Increases how much money you make per click by 2x</span>
+                        </div>
                     </div>
 
                     <div id="container">
