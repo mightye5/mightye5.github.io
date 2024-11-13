@@ -477,8 +477,8 @@
                 audioLoaded = true;
 
                 // Start background music loop
-                playSound('music', 0.2);
-                setInterval(() => playSound('music', 0.2), 22700);
+                playSound('music', 0.3);
+                setInterval(() => playSound('music', 0.3), 22700);
             } catch (e) {
                 console.warn('Web Audio API initialization failed:', e);
                 audioLoaded = false;
@@ -937,7 +937,7 @@
          * Updates money per second and per click displays
          */
         function updatemps() {
-            document.getElementById('moneypersecond').value = "Money per second: $" + (mps * moneymultiplier);
+            document.getElementById('moneypersecond').value = "Money per second: $" + parseFloat(((mps * moneymultiplier)).toFixed(1));
             document.getElementById('moneyperclick').value = "Money per click: $" + parseFloat(((clicks * golden_burger) * moneymultiplier).toFixed(1));
             document.getElementById('moneymultiplier').value = "Money multiplier: " +  parseFloat((moneymultiplier).toFixed(1));
             document.getElementById('icepers').value = "Ice Creams per second: " + ips;
@@ -981,7 +981,9 @@
                 { id: 'upgrade1', cost: upgp1 },
                 { id: 'upgrade2', cost: upgp2 },
                 { id: 'Franchisebutton', cost: fcost},
-                { id: 'upgrade3', cost: upgp3 }
+                { id: 'upgrade3', cost: upgp3 },
+                { id: 'upgrade4', cost: upgp4 },
+                { id: 'upgrade5', cost: upgp5 }
 
             ];
             const Ibuttons = [
@@ -1206,7 +1208,10 @@
 
                     <!-- Franchises Tab (Original Content) -->
                     <div id="franchiseTab" class="tab-content active">
-                        <button class="franchise-button" onclick="openFranchise()" id="Franchisebutton">Open a new Franchise ($500000)</button>
+                        <div class="tooltip-container">
+                            <button class="franchise-button" id ="Franchisebutton" onclick = "openFranchise()">Open a new Franchise ($500000)</button>
+                            <span class="tooltip">Increases the money multiplier by 1x.</span>
+                        </div>
                         <div class="restaurant-container">
                             <!-- Your existing restaurant divs here -->
                             <div class="restaurant">
