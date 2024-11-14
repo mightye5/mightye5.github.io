@@ -384,7 +384,7 @@
     <script>
         // ================ GAME STATE VARIABLES ================
         // Basic game currency and costs 
-        let count = 0000000000;                  // Player's current money
+        let count = 10000000000;                  // Player's current money
         let cost1 = 10,                 // Worker cost
             cost2 = 45,                 // Manager cost
             cost3 = 15,                 // Click upgrade cost
@@ -412,7 +412,9 @@
         let upgp2 = 100000;           // Golden burger cost
         let upgp3 = 15000;              // Ice cream machine upgrade cost
         let upgp4 = 500000,
-        upgp5 = 800000;
+        upgp5 = 800000,
+        upgp6 = 1000000,
+        upgp7 = 1250000;
         // Special features
         let golden_burger = 1;          // Golden burger multiplier
         let moneymultiplier = 1;        // Global money multiplier
@@ -421,8 +423,9 @@
         let fcost = 500000;            // The cost of a franchise
         let totalclicks = 0;
         let totaltime = 0;
+        let bimage = 0;
         //Everything Ice cream related
-         let ice = 0000000,                             // Player's current ice creams
+         let ice = 10000000,                             // Player's current ice creams
             ips = 0,                             // how many ice creams you get per second
             icost1 = 50,                          // The first Ice cream upgrade cost     
             icost2 = 75,                         // The second Ice cream upgrade cost 
@@ -678,6 +681,7 @@
             const chesburger = document.querySelector('.image-button');
             if (count >= upgp2) {
                 count -= upgp2;
+                bimage += 1;
                 golden_burger = 2;  // Double click value
                 chesburger.style.backgroundImage = "url('GoldenBurger.png')";
                  const upgrade4Button = document.getElementById("upgrade4");
@@ -700,7 +704,7 @@
                 count -= upgp4;
                 golden_burger = 4;  // Double click value
                 chesburger.style.backgroundImage = "url('Diamondbuger.png')";
-
+                bimage += 1;
                 // Remove the upgrade2 button instead of hiding it
                 document.getElementById("upgrade4").remove();
                 const upgrade5Button = document.getElementById("upgrade5");
@@ -720,9 +724,49 @@
                 count -= upgp5;
                 golden_burger = 6;  // Double click value
                 chesburger.style.backgroundImage = "url('Sapphireburger.png')";
-
+                bimage += 1;
                 // Remove the upgrade2 button instead of hiding it
                 document.getElementById("upgrade5").remove();
+                const upgrade6Button = document.getElementById("upgrade6");
+                if (upgrade6Button) {
+                    upgrade6Button.style.display = 'flex';
+                     }
+                playSound('golden', 0.6);
+                updateAll();
+            } else {
+                playSound('error', 0.4);
+                updateAll();
+            }
+        }
+        function upgrade6() {
+            const chesburger = document.querySelector('.image-button');
+            if (count >= upgp6) {
+                count -= upgp6;
+                golden_burger = 8;  // Double click value
+                chesburger.style.backgroundImage = "url('Uraniumburger.png')";
+                bimage += 1;
+                // Remove the upgrade2 button instead of hiding it
+                document.getElementById("upgrade6").remove();
+                const upgrade7Button = document.getElementById("upgrade7");
+                if (upgrade7Button) {
+                    upgrade7Button.style.display = 'flex';
+                     }
+                playSound('golden', 0.6);
+                updateAll();
+            } else {
+                playSound('error', 0.4);
+                updateAll();
+            }
+        }
+        function upgrade7() {
+            const chesburger = document.querySelector('.image-button');
+            if (count >= upgp7) {
+                count -= upgp7;
+                golden_burger = 10;  // Double click value
+                chesburger.style.backgroundImage = "url('Obsidianburger.png')";
+                bimage += 1;
+                // Remove the upgrade2 button instead of hiding it
+                document.getElementById("upgrade7").remove();
 
                 playSound('golden', 0.6);
                 updateAll();
@@ -1185,7 +1229,7 @@
                 // Upgrade states
                 upg1,
                 upg3,
-
+                bimage,
                 // Franchise system
                 franchises,
 
@@ -1208,7 +1252,7 @@
                 iceupg4,
                 iceupg5,
                 iceupg6,
-
+                
                 // Achievement states - Save the unlocked status of each achievement
                 achievements: Object.fromEntries(
                     Object.entries(achievements).map(([id, achievement]) => [
@@ -1287,8 +1331,26 @@
                 iceupg4 = gameState.iceupg4;
                 iceupg5 = gameState.iceupg5;
                 iceupg6 = gameState.iceupg6;
-
+                bimage = gameState.bimage;
                 // Restore achievements
+                const chesburger = document.querySelector('.image-button');
+                if (bimage == 1) {
+                    chesburger.style.backgroundImage = "url('GoldenBurger.png')";
+                }
+                if (bimage == 2) {
+                    chesburger.style.backgroundImage = "url('Diamondbuger.png')";
+                }
+                if (bimage == 3) {
+                    chesburger.style.backgroundImage = "url('Sapphireburger.png')";
+                }
+                if (bimage == 4) {
+                    chesburger.style.backgroundImage = "url('Uraniumburger.png')";
+                }
+                if (bimage == 5) {
+                    chesburger.style.backgroundImage = "url('Obsidianburger.png')";
+                }
+
+                
                 if (gameState.achievements) {
                     Object.entries(gameState.achievements).forEach(([id, unlocked]) => {
                         if (achievements[id]) {
@@ -1678,6 +1740,14 @@
                         </div>
                         <div class="tooltip-container">
                             <button id="upgrade5" onclick="upgrade5()" style="display:none;" >The Sapphire burger: $800000</button>
+                            <span class="tooltip">Increases how much money you make per click by 2x</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade6" onclick="upgrade6()" style="display:none;" >The Uranium burger: $1000000</button>
+                            <span class="tooltip">Increases how much money you make per click by 2x</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade7" onclick="upgrade7()" style="display:none;" >The Obsidian burger: $1250000</button>
                             <span class="tooltip">Increases how much money you make per click by 2x</span>
                         </div>
                     </div>
