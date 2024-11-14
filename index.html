@@ -384,7 +384,7 @@
     <script>
         // ================ GAME STATE VARIABLES ================
         // Basic game currency and costs 
-        let count = 0000000000;                  // Player's current money
+        let count = 10000000000;                  // Player's current money
         let cost1 = 10,                 // Worker cost
             cost2 = 45,                 // Manager cost
             cost3 = 15,                 // Click upgrade cost
@@ -422,7 +422,7 @@
         let totalclicks = 0;
         let totaltime = 0;
         //Everything Ice cream related
-         let ice = 0000000,                             // Player's current ice creams
+         let ice = 10000000,                             // Player's current ice creams
             ips = 0,                             // how many ice creams you get per second
             icost1 = 50,                          // The first Ice cream upgrade cost     
             icost2 = 75,                         // The second Ice cream upgrade cost 
@@ -1349,93 +1349,10 @@
         function deleteSave() {
             if (confirm('Are you sure you want to delete your save? This cannot be undone!')) {
                 localStorage.removeItem('burgerGameSave');
-
-                // Reset all game variables to their initial values
-                count = 0;
-                mps = 0;
-                clicks = 1;
-                worker = 1.5;
-                manager = 3.5;
-                clickamount = 2;
-                boss = 55;
-                ceo = 200;
-                M = 0;
-                M2 = 0;
-                M3 = 0;
-                M4 = 0;
-                M5 = 0;
-                upg1 = 0;
-                upg3 = 0;
-                golden_burger = 1;
-                moneymultiplier = 1;
-                franchises = 1;
-                totalclicks = 0;
-                totaltime = 0;
-                ice = 0;
-                ips = 0;
-
-                // Reset costs
-                cost1 = 10;
-                cost2 = 45;
-                cost3 = 15;
-                cost4 = 500;
-                cost5 = 1500;
-                upgp1 = 40;
-                upgp2 = 100000;
-                upgp3 = 15000;
-                upgp4 = 500000;
-                upgp5 = 800000;
-                fcost = 500000;
-
-                // Reset ice cream costs
-                icost1 = 50;
-                icost2 = 75;
-                icost3 = 100;
-                icost4 = 150;
-                icost5 = 200;
-                icost6 = 250;
-
-                // Reset ice cream upgrades
-                iceupg1 = 0;
-                iceupg2 = 0;
-                iceupg3 = 0;
-                iceupg4 = 0;
-                iceupg5 = 0;
-                iceupg6 = 0;
-
-                // Reset achievements - Set unlocked to false and update UI
-                for (const [id, achievement] of Object.entries(achievements)) {
-                    achievement.unlocked = false;
-                    const achievementElement = document.querySelector(`[data-achievement="${id}"]`);
-                    if (achievementElement) {
-                        achievementElement.classList.add('locked'); // Mark as locked in the UI
-                    }
-                }
-
-                // Reset UI
-                updateAll();
-
-                // Reset franchise displays
-                for (let i = 2; i <= 6; i++) {
-                    const franchiseElement = document.getElementById(`Franchise${i}`);
-                    if (franchiseElement) franchiseElement.style.display = 'none';
-                }
-
-                // Reset franchise button
-                const franchiseButton = document.querySelector('.franchise-button');
-                if (franchiseButton) {
-                    franchiseButton.textContent = 'Open a new Franchise ($500000)';
-                    franchiseButton.disabled = false;
-                }
-
-                // Reset restaurant image
-                const franchiseImg = document.getElementById('Franchise1');
-                if (franchiseImg) franchiseImg.src = 'resturant.png';
-
-                playSound('error', 0.4);
-                alert('Save file deleted successfully!');
+                location.reload();
             }
         }
+
 
 
         // Add save buttons to HTML
