@@ -384,7 +384,7 @@
     <script>
         // ================ GAME STATE VARIABLES ================
         // Basic game currency and costs 
-        let count = 0000000000;                  // Player's current money
+        let count = 10000000000;                  // Player's current money
         let cost1 = 10,                 // Worker cost
             cost2 = 45,                 // Manager cost
             cost3 = 15,                 // Click upgrade cost
@@ -422,7 +422,7 @@
         let totalclicks = 0;
         let totaltime = 0;
         //Everything Ice cream related
-         let ice = 0000000,                             // Player's current ice creams
+         let ice = 10000000,                             // Player's current ice creams
             ips = 0,                             // how many ice creams you get per second
             icost1 = 50,                          // The first Ice cream upgrade cost     
             icost2 = 75,                         // The second Ice cream upgrade cost 
@@ -459,7 +459,8 @@
                     coffee: 'cash-register-purchase-87313.mp3',
                     error: 'error-sound-fx.wav',
                     golden: 'you-win-sequence-2-183949.mp3',
-                    achieve: 'game-level-complete-143022.mp3'
+                    achieve: 'game-level-complete-143022.mp3',
+                    save: 'Gamesaved.mp3'
                 };
 
                 // Load all sounds in parallel
@@ -1025,6 +1026,7 @@
          */
         function initializeGame() {
             initAudio();
+            loadGame();
             //loadAchievements();
             if (detectMobile()) {
                 Update();
@@ -1116,7 +1118,7 @@
             let newUnlocks = false;
 
             for (const [id, achievement] of Object.entries(achievements)) {
-                if (!achievement.unlocked && achievement.condition()) {
+                if (!achievement.unlocked && achievement.condition()) {  // Only unlock if condition is met
                     achievement.unlocked = true;
                     newUnlocks = true;
 
@@ -1124,51 +1126,14 @@
                     const achievementElement = document.querySelector(`[data-achievement="${id}"]`);
                     if (achievementElement) {
                         achievementElement.classList.remove('locked');
-                        // Play a sound effect for unlocking
                         playSound('achieve', 0.3);
                     }
                 }
             }
         }
 
-        /**
-         * Saves achievement state to localStorage
-      
-        function saveAchievements() {
-            try {
-                const achievementState = {};
-                for (const [id, achievement] of Object.entries(achievements)) {
-                    achievementState[id] = achievement.unlocked;
-                }
-                localStorage.setItem('restaurantAchievements', JSON.stringify(achievementState));
-            } catch (e) {
-                console.warn('Failed to save achievements:', e);
-            }
-        }
-         * Loads achievement state from localStorage
- 
-        function loadAchievements() {
-            try {
-                const savedState = localStorage.getItem('restaurantAchievements');
-                if (savedState) {
-                    const achievementState = JSON.parse(savedState);
-                    for (const [id, unlocked] of Object.entries(achievementState)) {
-                        if (achievements[id]) {
-                            achievements[id].unlocked = unlocked;
-                            if (unlocked) {
-                                const achievementElement = document.querySelector(`[data-achievement="${id}"]`);
-                                if (achievementElement) {
-                                    achievementElement.classList.remove('locked');
-                                }
-                            }
-                        }
-                    }
-                }
-            } catch (e) {
-                console.warn('Failed to load achievements:', e);
-            }
-        }
-        */
+        
+
         // Initialize tabs when page loads
         window.addEventListener('load', function() {
             // Show franchise tab by default
@@ -1180,6 +1145,330 @@
         window.addEventListener('load', initializeGame);
         setInterval(updateAll, 1);
         setInterval(moneyps, 1000);  // Add money every second
+        // Save game state
+        function saveGame() {
+            const gameState = {
+                // Money and multipliers
+                count,
+                mps,
+                clicks,
+                moneymultiplier,
+                golden_burger,
+
+                // Costs
+                cost1,
+                cost2,
+                cost3,
+                cost4,
+                cost5,
+                upgp1,
+                upgp2,
+                upgp3,
+                upgp4,
+                upgp5,
+                fcost,
+
+                // Production values
+                worker,
+                manager,
+                clickamount,
+                boss,
+                ceo,
+
+                // Counts
+                M,
+                M2,
+                M3,
+                M4,
+                M5,
+
+                // Upgrade states
+                upg1,
+                upg3,
+
+                // Franchise system
+                franchises,
+
+                // Statistics
+                totalclicks,
+                totaltime,
+
+                // Ice cream system
+                ice,
+                ips,
+                icost1,
+                icost2,
+                icost3,
+                icost4,
+                icost5,
+                icost6,
+                iceupg1,
+                iceupg2,
+                iceupg3,
+                iceupg4,
+                iceupg5,
+                iceupg6,
+
+                // Achievement states - Save the unlocked status of each achievement
+                achievements: Object.fromEntries(
+                    Object.entries(achievements).map(([id, achievement]) => [
+                        id,
+                        achievement.unlocked
+                    ])
+                )
+                };
+            localStorage.setItem('burgerGameSave', JSON.stringify(gameState));
+            playSound('save', 0.4);
+        }
+
+        // Load game state
+        function loadGame() {
+            const savedGame = localStorage.getItem('burgerGameSave');
+            if (savedGame) {
+                const gameState = JSON.parse(savedGame);
+
+                // Restore money and multipliers
+                count = gameState.count;
+                mps = gameState.mps;
+                clicks = gameState.clicks;
+                moneymultiplier = gameState.moneymultiplier;
+                golden_burger = gameState.golden_burger;
+
+                // Restore costs
+                cost1 = gameState.cost1;
+                cost2 = gameState.cost2;
+                cost3 = gameState.cost3;
+                cost4 = gameState.cost4;
+                cost5 = gameState.cost5;
+                upgp1 = gameState.upgp1;
+                upgp2 = gameState.upgp2;
+                upgp3 = gameState.upgp3;
+                upgp4 = gameState.upgp4;
+                upgp5 = gameState.upgp5;
+                fcost = gameState.fcost;
+
+                // Restore production values
+                worker = gameState.worker;
+                manager = gameState.manager;
+                clickamount = gameState.clickamount;
+                boss = gameState.boss;
+                ceo = gameState.ceo;
+
+                // Restore counts
+                M = gameState.M;
+                M2 = gameState.M2;
+                M3 = gameState.M3;
+                M4 = gameState.M4;
+                M5 = gameState.M5;
+
+                // Restore upgrade states
+                upg1 = gameState.upg1;
+                upg3 = gameState.upg3;
+
+                // Restore franchise system
+                franchises = gameState.franchises;
+
+                // Restore statistics
+                totalclicks = gameState.totalclicks;
+                totaltime = gameState.totaltime;
+
+                // Restore ice cream system
+                ice = gameState.ice;
+                ips = gameState.ips;
+                icost1 = gameState.icost1;
+                icost2 = gameState.icost2;
+                icost3 = gameState.icost3;
+                icost4 = gameState.icost4;
+                icost5 = gameState.icost5;
+                icost6 = gameState.icost6;
+                iceupg1 = gameState.iceupg1;
+                iceupg2 = gameState.iceupg2;
+                iceupg3 = gameState.iceupg3;
+                iceupg4 = gameState.iceupg4;
+                iceupg5 = gameState.iceupg5;
+                iceupg6 = gameState.iceupg6;
+
+                // Restore achievements
+                if (gameState.achievements) {
+                    Object.entries(gameState.achievements).forEach(([id, unlocked]) => {
+                        if (achievements[id]) {
+                            achievements[id].unlocked = unlocked;
+
+                            // Update achievement visual state
+                            const achievementElement = document.querySelector(`[data-achievement="${id}"]`);
+                            if (achievementElement) {
+                                achievementElement.classList.toggle('locked', !unlocked);
+                            }
+                        }
+                    });
+                }
+                checkAchievements();
+
+                // Update visuals
+                updateAll();
+
+                // Restore visual states based on upgrades
+                if (upg1 === 1) {
+                    const upgrade1Button = document.getElementById("upgrade1");
+                    if (upgrade1Button) upgrade1Button.remove();
+                    const franchiseImg = document.getElementById('Franchise1');
+                    if (franchiseImg) franchiseImg.src = 'Resturant+coffee.png';
+                }
+
+                if (upg3 === 1) {
+                    const upgrade3Button = document.getElementById("upgrade3");
+                    if (upgrade3Button) upgrade3Button.remove();
+                    const franchiseImg = document.getElementById('Franchise1');
+                    if (franchiseImg) franchiseImg.src = 'restaurantcoffee+ice.png';
+                }
+
+                // Restore franchise visuals
+                for (let i = 2; i <= franchises && i <= 6; i++) {
+                    const franchiseElement = document.getElementById(`Franchise${i}`);
+                    if (franchiseElement) franchiseElement.style.display = 'block';
+                }
+
+                // Update franchise button if max reached
+                if (franchises >= 6) {
+                    const franchiseButton = document.querySelector('.franchise-button');
+                    if (franchiseButton) {
+                        franchiseButton.textContent = 'Max Franchises!';
+                        franchiseButton.disabled = true;
+                    }
+                }
+
+                playSound('purchase', 0.4);
+                alert('Game loaded successfully!');
+            } else {
+                playSound('error', 0.4);
+                alert('No saved game found!');
+            }
+        }
+
+        // Delete save
+        function deleteSave() {
+            if (confirm('Are you sure you want to delete your save? This cannot be undone!')) {
+                localStorage.removeItem('burgerGameSave');
+
+                // Reset all game variables to their initial values
+                count = 0;
+                mps = 0;
+                clicks = 1;
+                worker = 1.5;
+                manager = 3.5;
+                clickamount = 2;
+                boss = 55;
+                ceo = 200;
+                M = 0;
+                M2 = 0;
+                M3 = 0;
+                M4 = 0;
+                M5 = 0;
+                upg1 = 0;
+                upg3 = 0;
+                golden_burger = 1;
+                moneymultiplier = 1;
+                franchises = 1;
+                totalclicks = 0;
+                totaltime = 0;
+                ice = 0;
+                ips = 0;
+
+                // Reset costs
+                cost1 = 10;
+                cost2 = 45;
+                cost3 = 15;
+                cost4 = 500;
+                cost5 = 1500;
+                upgp1 = 40;
+                upgp2 = 100000;
+                upgp3 = 15000;
+                upgp4 = 500000;
+                upgp5 = 800000;
+                fcost = 500000;
+
+                // Reset ice cream costs
+                icost1 = 50;
+                icost2 = 75;
+                icost3 = 100;
+                icost4 = 150;
+                icost5 = 200;
+                icost6 = 250;
+
+                // Reset ice cream upgrades
+                iceupg1 = 0;
+                iceupg2 = 0;
+                iceupg3 = 0;
+                iceupg4 = 0;
+                iceupg5 = 0;
+                iceupg6 = 0;
+
+                // Reset achievements - Set unlocked to false and update UI
+                for (const [id, achievement] of Object.entries(achievements)) {
+                    achievement.unlocked = false;
+                    const achievementElement = document.querySelector(`[data-achievement="${id}"]`);
+                    if (achievementElement) {
+                        achievementElement.classList.add('locked'); // Mark as locked in the UI
+                    }
+                }
+
+                // Reset UI
+                updateAll();
+
+                // Reset franchise displays
+                for (let i = 2; i <= 6; i++) {
+                    const franchiseElement = document.getElementById(`Franchise${i}`);
+                    if (franchiseElement) franchiseElement.style.display = 'none';
+                }
+
+                // Reset franchise button
+                const franchiseButton = document.querySelector('.franchise-button');
+                if (franchiseButton) {
+                    franchiseButton.textContent = 'Open a new Franchise ($500000)';
+                    franchiseButton.disabled = false;
+                }
+
+                // Reset restaurant image
+                const franchiseImg = document.getElementById('Franchise1');
+                if (franchiseImg) franchiseImg.src = 'resturant.png';
+
+                playSound('error', 0.4);
+                alert('Save file deleted successfully!');
+            }
+        }
+
+
+        // Add save buttons to HTML
+        const saveControls = document.createElement('div');
+        saveControls.className = 'save-controls';
+        saveControls.style.cssText = 'position: flex; top: 10px; right: 10px; display: flex; gap: 10px;';
+
+        const saveButton = document.createElement('button');
+        saveButton.textContent = 'Save Game';
+        saveButton.onclick = saveGame;
+        saveButton.style.cssText = 'padding: 8px 16px; cursor: pointer; background-color: #4CAF50; color: white; border: none; border-radius: 4px;';
+
+        const loadButton = document.createElement('button');
+        loadButton.textContent = 'Load Game';
+        loadButton.onclick = loadGame;
+        loadButton.style.cssText = 'padding: 8px 16px; cursor: pointer; background-color: #2196F3; color: white; border: none; border-radius: 4px;';
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete Save';
+        deleteButton.onclick = deleteSave;
+        deleteButton.style.cssText = 'padding: 8px 16px; cursor: pointer; background-color: #f44336; color: white; border: none; border-radius: 4px;';
+
+        saveControls.appendChild(saveButton);
+        saveControls.appendChild(loadButton);
+        saveControls.appendChild(deleteButton);
+
+        // Add save controls to the page when loaded
+        window.addEventListener('load', () => {
+            document.body.appendChild(saveControls);
+        });
+
+        // Auto-save every 5 minutes
+        setInterval(saveGame, 0.5 * 60 * 1000);
     </script>
 </head>
         <body>
