@@ -384,7 +384,7 @@
     <script>
         // ================ GAME STATE VARIABLES ================
         // Basic game currency and costs 
-        let count = 0000000000;                  // Player's current money
+        let count = 10000000000;                  // Player's current money
         let cost1 = 10,                 // Worker cost
             cost2 = 45,                 // Manager cost
             cost3 = 15,                 // Click upgrade cost
@@ -408,7 +408,7 @@
             upg1 = 0,                   // Coffee upgrade status
             upg3 = 0;                   // Ice cream machine upgrade status
         // Special upgrade costs
-        let upgp1 = 40;                 // Coffee upgrade cost
+        let upgp1 = 150;                 // Coffee upgrade cost
         let upgp2 = 100000;           // Golden burger cost
         let upgp3 = 15000;              // Ice cream machine upgrade cost
         let upgp4 = 500000,
@@ -425,7 +425,7 @@
         let totaltime = 0;
         let bimage = 0;
         //Everything Ice cream related
-         let ice = 0000000,                             // Player's current ice creams
+         let ice = 10000000,                             // Player's current ice creams
             ips = 0,                             // how many ice creams you get per second
             icost1 = 50,                          // The first Ice cream upgrade cost     
             icost2 = 75,                         // The second Ice cream upgrade cost 
@@ -614,13 +614,15 @@
         function upgrade1() {
             if (count >= upgp1) {
                 count -= upgp1;
-                worker = manager*2; // Double worker efficiency
+                const oldworkerAmount =  parseFloat((worker).toFixed(1));;
+                worker = parseFloat((worker * 2.5).toFixed(1));
                 if (M >= 1) {
-                    mps += 1.5 * M;
+                    const workerincrease = (worker - oldworkerAmount) * M;
+                    mps +=  parseFloat((workerincrease * 0.2).toFixed(1));
                 }
                 const upgrade1Button = document.getElementById("upgrade1");
                 document.getElementById('Workertooltip').textContent = "Earns $" + worker + " per second";
-                upgrade1Button.remove(); // Remove the button after update
+                  if (upgrade1Button) upgrade1Button.remove();
 
                 // Update the restaurant image
                 const franchiseImg = document.getElementById('Franchise1');
@@ -703,7 +705,7 @@
             if (count >= upgp4) {
                 count -= upgp4;
                 golden_burger = 4;  // Double click value
-                chesburger.style.backgroundImage = "url('Diamondbuger.png')";
+                chesburger.style.backgroundImage = "url('Diamondburger.png')";
                 bimage += 1;
                 // Remove the upgrade2 button instead of hiding it
                 document.getElementById("upgrade4").remove();
@@ -1177,8 +1179,64 @@
                 }
             }
         }
+        function updateUpgradeVisibility() {
+            // Coffee upgrade
+            const upgrade1Button = document.getElementById("upgrade1");
+            if (upg1 === 1 && upgrade1Button) {
+                upgrade1Button.style.display = 'none'; // Hide coffee upgrade button if already purchased
+            }
 
-        
+            // Ice cream machine upgrade (shown only if coffee upgrade is purchased)
+            const upgrade3Button = document.getElementById("upgrade3");
+            if (upg3 === 1) {
+                if (upgrade3Button) upgrade3Button.style.display = 'none'; // Hide if already purchased
+            } else if (upg1 === 1 && upgrade3Button) {
+                upgrade3Button.style.display = 'flex'; // Show if coffee upgrade is bought but ice cream upgrade isn't
+            }
+
+            // Burger upgrades
+            const burgerImage = document.querySelector('.image-button');
+            const upgrade2Button = document.getElementById("upgrade2"); // Golden
+            const upgrade4Button = document.getElementById("upgrade4"); // Diamond
+            const upgrade5Button = document.getElementById("upgrade5"); // Sapphire
+            const upgrade6Button = document.getElementById("upgrade6"); // Uranium
+            const upgrade7Button = document.getElementById("upgrade7"); // Obsidian
+
+            // Hide all burger upgrade buttons initially
+            if (upgrade2Button) upgrade2Button.style.display = 'none';
+            if (upgrade4Button) upgrade4Button.style.display = 'none';
+            if (upgrade5Button) upgrade5Button.style.display = 'none';
+            if (upgrade6Button) upgrade6Button.style.display = 'none';
+            if (upgrade7Button) upgrade7Button.style.display = 'none';
+
+            // Set burger image and display the next available upgrade button based on `bimage`
+            switch (bimage) {
+                case 1: // Golden burger purchased
+                    burgerImage.style.backgroundImage = "url('GoldenBurger.png')";
+                    if (upgrade4Button) upgrade4Button.style.display = 'flex'; // Show Diamond upgrade next
+                    break;
+                case 2: // Diamond burger purchased
+                    burgerImage.style.backgroundImage = "url('Diamondburger.png')";
+                    if (upgrade5Button) upgrade5Button.style.display = 'flex'; // Show Sapphire upgrade next
+                    break;
+                case 3: // Sapphire burger purchased
+                    burgerImage.style.backgroundImage = "url('Sapphireburger.png')";
+                    if (upgrade6Button) upgrade6Button.style.display = 'flex'; // Show Uranium upgrade next
+                    break;
+                case 4: // Uranium burger purchased
+                    burgerImage.style.backgroundImage = "url('Uraniumburger.png')";
+                    if (upgrade7Button) upgrade7Button.style.display = 'flex'; // Show Obsidian upgrade next
+                    break;
+                case 5: // Obsidian burger purchased (no further upgrades)
+                    burgerImage.style.backgroundImage = "url('Obsidianburger.png')";
+                    break;
+                default:
+                    // If no burgers have been upgraded, show the first upgrade (Golden)
+                    if (upgrade2Button) upgrade2Button.style.display = 'flex';
+            }
+        }
+
+
 
         // Initialize tabs when page loads
         window.addEventListener('load', function() {
@@ -1340,7 +1398,7 @@
                     chesburger.style.backgroundImage = "url('GoldenBurger.png')";
                 }
                 if (bimage == 2) {
-                    chesburger.style.backgroundImage = "url('Diamondbuger.png')";
+                    chesburger.style.backgroundImage = "url('Diamondburger.png')";
                 }
                 if (bimage == 3) {
                     chesburger.style.backgroundImage = "url('Sapphireburger.png')";
@@ -1370,7 +1428,7 @@
 
                 // Update visuals
                 updateAll();
-
+                   updateUpgradeVisibility(); 
                 // Restore visual states based on upgrades
                 if (upg1 === 1) {
                     const upgrade1Button = document.getElementById("upgrade1");
@@ -1725,8 +1783,8 @@
                     <div id="upgrade">
                         <div class="section-title">Upgrades</div>
                         <div class="tooltip-container">
-                            <button id="upgrade1" onclick="upgrade1()">Coffee: $40</button>
-                            <span class="tooltip">Doubles the money made from all workers</span>
+                            <button id="upgrade1" onclick="upgrade1()">Coffee: $150</button>
+                            <span class="tooltip">Increases the money made from all workers by 2.5x</span>
                         </div>
                         <div class="tooltip-container">
                             <button id="upgrade3" onclick="upgrade3()" style="display:none;">The Ice cream machine: $15000</button>
