@@ -254,6 +254,7 @@
                 background-color: #f5f5f5;
                 padding: 5px;
                 border-radius: 8px;
+                justify-content: flex-start;
             }
 
             .tab-button {
@@ -267,22 +268,27 @@
                 font-weight: 500;
                 color: #666;
                 transition: all 0.3s ease;
+                position: relative;
+                display: inline-block;
             }
 
             .tab-button.active {
                 background-color: #4CAF50;
                 color: white;
             }
-
             .tab-content {
                 display: none;
-                animation: fadeIn 0.3s ease-in;
             }
 
+            /* Display the active tab */
             .tab-content.active {
                 display: block;
             }
-
+            /* Highlight tab in red if an achievement is unlocked or an upgrade can be purchased */
+            .tab-button.highlight {
+                background-color: red;
+                color: white;
+            }
             /* Features Tab */
             .buttons-grid {
                 display: grid;
@@ -384,7 +390,7 @@
     <script>
         // ================ GAME STATE VARIABLES ================
         // Basic game currency and costs 
-        let count = 0000000000;                  // Player's current money
+        let count = 600000;                  // Player's current money
         let cost1 = 10,                 // Worker cost
             cost2 = 45,                 // Manager cost
             cost3 = 15,                 // Click upgrade cost
@@ -425,7 +431,7 @@
         let totaltime = 0;
         let bimage = 0;
         //Everything Ice cream related
-         let ice = 0000000,                             // Player's current ice creams
+         let ice = 10000000,                             // Player's current ice creams
             ips = 0,                             // how many ice creams you get per second
             icost1 = 50,                          // The first Ice cream upgrade cost     
             icost2 = 75,                         // The second Ice cream upgrade cost 
@@ -1004,6 +1010,7 @@
          * Updates button colors based on affordability
          */
         function Update() {
+            
             checkAchievements();
             const canAffordColor = '#4CAF50';    // Green when affordable
             const cannotAffordColor = '#dddddd'; // Gray when can't afford
@@ -1060,9 +1067,11 @@
         /**
          * Adds money per second
          */
+        
         function moneyps() {
             count += mps*moneymultiplier;
             updateAll();
+            checkTabHighlights();
             totaltime ++;
             if (upg3 == 1) {
                 ice += ips; //if you have upgrade 3, add 1 to the ice, per second
@@ -1118,19 +1127,71 @@
                 playSound('error', 0.4);
             }
         }
+        let viewedTabs = {
+            franchiseTab: false,
+            buttonsTab: false,
+            achievementsTab: false
+        };
+
+        /**
+         * Switches tabs and removes highlight once clicked
+         * @param {string} tabName - ID of the tab to switch to
+         */
         function switchTab(tabName) {
             // Hide all tab contents
             const tabContents = document.querySelectorAll('.tab-content');
             tabContents.forEach(tab => tab.classList.remove('active'));
 
-            // Deactivate all tab buttons
+            // Deactivate all tab buttons, remove highlight, and mark tab as viewed
             const tabButtons = document.querySelectorAll('.tab-button');
-            tabButtons.forEach(button => button.classList.remove('active'));
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+                if (button.dataset.tab === tabName) {
+                    button.classList.add('active');
+                    button.classList.remove('highlight');  // Remove highlight after clicking
+                    viewedTabs[tabName] = true; // Mark this tab as viewed
+                }
+            });
 
-            // Show selected tab content and activate button
+            // Show selected tab content
             document.getElementById(tabName).classList.add('active');
-            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
         }
+
+        /**
+         * Highlights tabs based on affordability of upgrades or unlocked achievements
+         */
+        function checkTabHighlights() {
+            const franchiseTab = document.querySelector('[data-tab="franchiseTab"]');
+            const buttonsTab = document.querySelector('[data-tab="buttonsTab"]');
+            const achievementsTab = document.querySelector('[data-tab="achievementsTab"]');
+
+            // Example checks for highlighting based on affordability or achievement unlock
+            if (count >= fcost && !viewedTabs.franchiseTab) {
+                franchiseTab.classList.add('highlight');
+            } else {
+                franchiseTab.classList.remove('highlight');
+            }
+
+            const affordableIceUpgrade = [icost1, icost2, icost3, icost4, icost5, icost6].some(cost => ice >= cost);
+            if (affordableIceUpgrade && !viewedTabs.buttonsTab) {
+                buttonsTab.classList.add('highlight');
+            } else {
+                buttonsTab.classList.remove('highlight');
+            }
+
+            const unlockedAchievements = Object.values(achievements).some(achievement => achievement.unlocked);
+            if (unlockedAchievements && !viewedTabs.achievementsTab) {
+                achievementsTab.classList.add('highlight');
+            } else {
+                achievementsTab.classList.remove('highlight');
+            }
+        }
+
+        // Initialize the default tab on page load
+        window.addEventListener('load', function() {
+            switchTab('franchiseTab');
+            setInterval(checkTabHighlights, 1000); // Periodically check for highlight conditions
+        });
         const achievements = {
             firstSteps: { unlocked: false, condition: () => franchises >= 2 },
             empireBuilder: { unlocked: false, condition: () => franchises >= 5 },
@@ -1177,6 +1238,10 @@
                         playSound('achieve', 0.3);
                     }
                 }
+            }
+            if (newUnlocks) {
+                viewedTabs.achievementsTab = false;
+                checkTabHighlights(); // Immediately check highlights to apply the new achievement notification
             }
         }
         function updateUpgradeVisibility() {
