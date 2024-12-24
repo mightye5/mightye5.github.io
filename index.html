@@ -1,401 +1,430 @@
-  <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta charset="UTF-8">
-        <title>Money Game</title>
-        <style>
-            /* Basic styling for the page layout */
-            body {
-                background-color: #f0f0f0;
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 20px;
-                display: flex;
-                flex-direction: column;
-                min-height: 100vh;
-                gap: 40px;
-            }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>Money Game</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>Money Game</title>
+    <style>
+        /* Basic styling for the page layout */
+        body {
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
 
-            /* Main content wrapper adjusted */
-            .game-wrapper {
-                display: flex;
-                width: 100%;
-            }
+        /* Main content wrapper adjusted */
+        .game-wrapper {
+            display: flex;
+            width: 100%;
+            height: 100%;
+          
+        }
 
-            /* Left side with burger button */
-            .game-left {
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-            }
+        /* Left side with burger button */
+        .game-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            overflow-y: auto; /* Enable scrolling within this section */
+            padding: 20px;
+        }
 
-            /* Right side with controls */
-            .game-right {
-                width: 250px;
-                padding-left: 20px;
-                display: flex;
-                flex-direction: column;
-                gap: 40px;  /* Increased gap between sections */
-            }
+        /* Right side with controls */
+        .game-right {
+    width: 250px;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
 
-            /* Money display section */
-            #moneypers {
-                margin-bottom: 20px;
-                width: auto;  /* Allow natural width */
-            }
 
-            #moneypers input {
-                display: block;
-                margin-bottom: 8px;
-                padding: 8px 12px;
-                width: 200px;  /* Fixed width for text boxes */
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                background-color: white;
-                font-size: 14px;
-            }
+        /* Money display section */
+        #moneypers {
+            margin-bottom: 20px;
+            width: auto;  /* Allow natural width */
+        }
 
-            /* Sections styling */
-            .section-title {
-                font-size: 18px;
-                font-weight: bold;
-                margin-bottom: 10px;
-                color: #333;
-            }
+        #moneypers input {
+            display: block;
+            margin-bottom: 8px;
+            padding: 8px 12px;
+            width: 200px;  /* Fixed width for text boxes */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: white;
+            font-size: 14px;
+        }
 
-            /* Container and upgrade sections */
-            #container, #upgrade {
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-                padding: 15px;
-                background-color: white;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }
+        /* Sections styling */
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
 
-            /* Center the main burger button */
-            #button {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 500px;
-            }
+        /* Container and upgrade sections */
+        #container,
+#upgrade {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-height: 650px; /* Decreased the max height */
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 20px;
+    position: relative;
+}
 
-            /* Default button styling */
-            button {
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 16px;
-                cursor: pointer;
-                border-radius: 12px;
-                width: 100%;
-                transition: background-color 0.3s ease;
-            }
+        
 
-            /* Style for disabled buttons */
-            button:disabled {
-                background-color: #dddddd;
-                color: #666666;
-            }
+        /* Center the main burger button */
+        #button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 500px;
+        }
 
-            /* Main burger button styling */
-            .image-button {
-                width: 500px;
-                height: 500px;
-                background-color: transparent;
-                background-image: url('https://png.pngtree.com/png-clipart/20230216/ourmid/pngtree-juicy-burgers-with-a-transparent-background-png-image_6603069.png');
-                background-size: 100% 100%;
-                border: none;
-                cursor: pointer;
-                background-position: center;
-                background-repeat: no-repeat;
-                box-shadow: 0 9px #999;
-            }
+        /* Default button styling */
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 12px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
 
-            /* Animation for burger button click */
-            .image-button:active {
-                background-color: transparent;
-                box-shadow: 0 5px #666;
-                transform: translateY(4px);
-            }
+        /* Style for disabled buttons */
+        button:disabled {
+            background-color: #dddddd;
+            color: #666666;
+        }
 
-            .tooltip-container {
-                position: relative;
-                width: 100%;
-            }
+        /* Main burger button styling */
+        .image-button {
+            width: 500px;
+            height: 500px;
+            background-color: transparent;
+            background-image: url('https://png.pngtree.com/png-clipart/20230216/ourmid/pngtree-juicy-burgers-with-a-transparent-background-png-image_6603069.png');
+            background-size: 100% 100%;
+            border: none;
+            cursor: pointer;
+            background-position: center;
+            background-repeat: no-repeat;
+            box-shadow: 0 9px #999;
+        }
 
-            .tooltip-container button {
-                width: 100%;
-            }
+        /* Animation for burger button click */
+        .image-button:active {
+            background-color: transparent;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
 
-            .tooltip {
-                visibility: hidden;
-                position: absolute;
-                right: 105%;  /* Changed from left: 105% to right: 105% */
-                top: 50%;
-                transform: translateY(-50%);
-                background-color: #333;
-                color: white;
-                padding: 8px 12px;
-                border-radius: 6px;
-                font-size: 14px;
-                white-space: nowrap;
-                z-index: 1;
-                opacity: 0;
-                transition: opacity 0.3s;
-            }
+        .tooltip-container {
+    position: relative;
+}
 
-            /* Adjust arrow to point right instead of left */
-            .tooltip::before {
-                content: "";
-                position: absolute;
-                right: -10px;  /* Changed from left: -10px to right: -10px */
-                top: 50%;
-                transform: translateY(-50%);
-                border-width: 5px;
-                border-style: solid;
-                border-color: transparent transparent transparent #333;  /* Adjusted border colors to point right */
-            }
+.tooltip-container button {
+    width: 100%;
+}
 
-            .tooltip-container:hover .tooltip {
-                visibility: visible;
-                opacity: 1;
-            }
-            .franchise-section {
-                width: 100%;
-                max-width: 1000px;
-                margin: 0 auto;
-                padding: 20px;
-                background-color: white;
-                border-radius: 8px;
-                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            }
+.tooltip {
+    visibility: hidden;
+    position: fixed;
+    background-color: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    white-space: nowrap;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
 
-            .franchise-header {
-                text-align: center;
-                margin-bottom: 20px;
-            }
+.tooltip::before {
+    content: "";
+    position: absolute;
+    right: -10px; /* Move the arrow to the right side */
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent transparent #333; /* Make the arrow point right */
+}
 
-            .franchise-button {
-                background-color: #4CAF50;
-                color: white;
-                padding: 15px 30px;
-                font-size: 18px;
-                border: none;
-                border-radius: 8px;
-                cursor: pointer;
-                margin: 20px 0;
-                transition: background-color 0.3s;
-            }
+.tooltip-container:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
 
-            .franchise-button:hover {
-                background-color: #45a049;
-            }
+        .franchise-section {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow-y: auto; /* Enable scrolling within this section */
+        }
 
-            .franchise-button:disabled {
-                background-color: #dddddd;
-                cursor: default;
-            }
+        .franchise-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-            .restaurant-container {
-                display: flex;
-                gap: 40px;
-                justify-content: center;
-                flex-wrap: wrap;
-                padding: 20px 0;
-            }
+        .franchise-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: background-color 0.3s;
+        }
 
-            .restaurant {
-                position: relative;
-                width: 300px;
-            }
+        .franchise-button:hover {
+            background-color: #45a049;
+        }
 
-            .restaurant-image {
-                width: 100%;
-                height: 200px;
-                object-fit: cover;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }
+        .franchise-button:disabled {
+            background-color: #dddddd;
+            cursor: default;
+        }
 
-            .restaurant-label {
-                position: absolute;
-                top: 10px;
-                left: 10px;
-                background-color: rgba(0, 0, 0, 0.7);
-                color: white;
-                padding: 5px 10px;
-                border-radius: 4px;
-                font-size: 14px;
-            }
+        .restaurant-container {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 20px 0;
+        }
 
-            .new-franchise {
-                display: none;
-                animation: fadeIn 0.5s ease-in;
-            }
+        .restaurant {
+            position: relative;
+            width: 300px;
+        }
 
-            @keyframes fadeIn {
-                from { opacity: 0; transform: translateY(20px); }
-                to { opacity: 1; transform: translateY(0); }
-            } z-index: 999;
-            }
-            .tabs {
-                display: flex;
-                gap: 2px;
-                margin-bottom: 20px;
-                background-color: #f5f5f5;
-                padding: 5px;
-                border-radius: 8px;
-                justify-content: flex-start;
-            }
+        .restaurant-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
 
-            .tab-button {
-                flex: 1;
-                padding: 12px 24px;
-                background-color: #e0e0e0;
-                border: none;
-                border-radius: 6px;
-                cursor: pointer;
-                font-size: 16px;
-                font-weight: 500;
-                color: #666;
-                transition: all 0.3s ease;
-                position: relative;
-                display: inline-block;
-            }
+        .restaurant-label {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
 
-            .tab-button.active {
-                background-color: #4CAF50;
-                color: white;
-            }
-            .tab-content {
-                display: none;
-            }
+        .new-franchise {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
 
-            /* Display the active tab */
-            .tab-content.active {
-                display: block;
-            }
-            /* Highlight tab in red if an achievement is unlocked or an upgrade can be purchased */
-            .tab-button.highlight {
-                background-color: red;
-                color: white;
-            }
-            /* Features Tab */
-            .buttons-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-                gap: 15px;
-                padding: 20px;
-                background-color: white;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .tabs {
+            display: flex;
+            gap: 2px;
+            margin-bottom: 20px;
+            background-color: #f5f5f5;
+            padding: 5px;
+            border-radius: 8px;
+            justify-content: flex-start;
+        }
 
-            .feature-button {
-                padding: 15px;
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                border-radius: 8px;
-                cursor: pointer;
-                font-size: 14px;
-                transition: background-color 0.3s;
-                width: 100%;
-            }
+        .tab-button {
+            flex: 1;
+            padding: 12px 24px;
+            background-color: #e0e0e0;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.3s ease;
+            position: relative;
+            display: inline-block;
+        }
 
-            .feature-button:hover {
-                background-color: #45a049;
-            }
+        .tab-button.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
 
-            .feature-button:disabled {
-                background-color: #cccccc;
-                cursor: not-allowed;
-            }
+        /* Display the active tab */
+        .tab-content.active {
+            display: block;
+        }
+        /* Highlight tab in red if an achievement is unlocked or an upgrade can be purchased */
+        .tab-button.highlight {
+            background-color: red;
+            color: white;
+        }
+        /* Features Tab */
+        .buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
 
-            /* Achievements Tab */
-            .achievements-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 20px;
-                padding: 20px;
-                background-color: white;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }
+        .feature-button {
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
 
-            .achievement {
-                background-color: #f5f5f5;
-                border-radius: 8px;
-                padding: 15px;
-                display: flex;
-                align-items: center;
-                gap: 15px;
-                transition: transform 0.2s;
-            }
+        .feature-button:hover {
+            background-color: #45a049;
+        }
 
-            .achievement:hover {
-                transform: translateY(-2px);
-            }
+        .feature-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
 
-            .achievement-icon {
-                width: 40px;
-                height: 40px;
-                background-color: #4CAF50;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: white;
-                font-size: 20px;
-            }
+        /* Achievements Tab */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
 
-            .achievement-info {
-                flex-grow: 1;
-            }
+        .achievement {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: transform 0.2s;
+        }
 
-            .achievement-title {
-                font-weight: bold;
-                margin-bottom: 5px;
-                color: #333;
-            }
+        .achievement:hover {
+            transform: translateY(-2px);
+        }
 
-            .achievement-description {
-                font-size: 14px;
-                color: #666;
-            }
+        .achievement-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
 
-            .achievement.locked {
-                opacity: 0.7;
-                background-color: #eaeaea;
-            }
+        .achievement-info {
+            flex-grow: 1;
+        }
 
-            .achievement.locked .achievement-icon {
-                background-color: #999;
-            }
+        .achievement-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
 
-            @keyframes fadeIn {
-                from { opacity: 0; transform: translateY(10px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
-            </style>
+        .achievement-description {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .achievement.locked {
+            opacity: 0.7;
+            background-color: #eaeaea;
+        }
+
+        .achievement.locked .achievement-icon {
+            background-color: #999;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
     <script>
         // ================ GAME STATE VARIABLES ================
         // Basic game currency and costs 
-        let count = 000000000;                  // Player's current money
+        let count = 10000000000000000000000000;                  // Player's current money
         let cost1 = 10,                 // Worker cost
-            cost2 = 45,                 // Manager cost
+            cost2 = 25,                 // Manager cost
             cost3 = 15,                 // Click upgrade cost
-            cost4 = 500,                // Boss cost
-            cost5 = 1500;               // CEO cost
+            cost4 = 100,                // director cost
+            cost5 = 225,               // VP cost
+            cost6 = 500,               // COO cost
+            cost7 = 1250;               // CEO cost
+            cost8 = 2275,                 // Chairman cost
+            cost9 = 5000,                 // Milkshake Oracle cost
+            cost10 = 12500,               // Shadow Fryer cost
+            cost11 = 17500,               // Keeper of the Hidden Feast cost
+            cost12 = 22500,              // Verdant Keeper cost
+            cost13 = 50000,              // Emulsifier Supreme cost
+            cost14 = 125000,             // Flame Whisperer cost
+            cost15 = 200000,             // Cheese Chancellor cost
+            cost16 = 375000,            // High Priest cost
+            cost17 = 525000,            // Golden Archmage cost
+            cost18 = 1000000,           // Patty Matriarch cost
+            cost19 = 5000000;           // Grand Grillmaster cost
             
         // Game mechanics variables
         let mps = 0,                    // Money per second
@@ -403,14 +432,43 @@
             clicks = 1,                 // Money per click
             manager = 3.5,
             clickamount = 2,
-            boss = 55,
-            ceo = 200;
+            director = 55,
+            VP = 100,
+            COO = 500,
+            ceo = 200,
+            chairman = 1,
+            oracle = 5,
+            fryer = 10,
+            feast = 50,
+            verdant = 100,
+            emulsifier = 500,
+            whisperer = 1000,
+            chancellor = 5000,
+            priest = 10000,
+            archmage = 50000,
+            matriarch = 100000,
+            grillmaster = 500000;
         // Upgrade counters
         let M = 0,                      // Number of workers
             M2 = 0,                     // Number of managers
             M3 = 0,                     // Number of click upgrades
-            M4 = 0,                     // Number of bosses
-            M5 = 0,                     // Number of CEOs
+            M4 = 0,                     // Number of directors
+            M5 = 0,                     // Number of VPs
+            M6 = 0,                     // Number of COOs
+            M7 = 0,                     // Number of CEOs 
+            M8 = 0,                     // Number of Chairmen
+            M9 = 0,                     // Number of Milkshake Oracles
+            M10 = 0,                    // Number of Shadow Fryers
+            M11 = 0,                    // Number of Keepers of the Hidden Feast
+            M12 = 0,                    // Number of Verdant Keepers
+            M13 = 0,                    // Number of Emulsifier Supremes
+            M14 = 0,                    // Number of Flame Whisperers
+            M15 = 0,                    // Number of Cheese Chancellors
+            M16 = 0,                    // Number of High Priests
+            M17 = 0,                    // Number of Golden Archmages
+            M18 = 0,                    // Number of Patty Matriarchs
+            M19 = 0;                    // Number of Grand Grillmasters
+        // Upgrade status
             upg1 = 0,                   // Coffee upgrade status
             upg3 = 0;                   // Ice cream machine upgrade status
         // Special upgrade costs
@@ -431,7 +489,7 @@
         let totaltime = 0;
         let bimage = 0;
         //Everything Ice cream related
-         let ice = 00000000,                             // Player's current ice creams
+         let ice = 100000000,                             // Player's current ice creams
             ips = 0,                             // how many ice creams you get per second
             icost1 = 50,                          // The first Ice cream upgrade cost     
             icost2 = 75,                         // The second Ice cream upgrade cost 
@@ -521,6 +579,10 @@
             }
         }
 
+
+
+
+
         // ================ GAME MECHANICS ================
 
         /**
@@ -550,7 +612,7 @@
                 mps += manager;
                 M2 += 1;
                 count -= cost2;
-                cost2 = Math.round(45 * (1.1 ** M2) * 10) / 10;
+                cost2 = Math.round(25 * (1.1 ** M2) * 10) / 10;
                 playSound('purchase', 0.4);
                 updateAll();
             } else {
@@ -578,15 +640,15 @@
         }
 
         /**
-         * Handles boss purchase
-         * Bosses provide significant income boost
+         * Handles director purchase
+         * directores provide significant income boost
          */
         function baction() {
             if (count >= cost4) {
-                mps += boss;
+                mps += director;
                 M4 += 1;
                 count -= cost4;
-                cost4 = Math.round(500 * (1.1 ** M4) * 10) / 10;
+                cost4 = Math.round(100 * (1.1 ** M4) * 10) / 10;
                 playSound('purchase', 0.4);
                 updateAll();
             } else {
@@ -595,16 +657,38 @@
             }
         }
 
-        /**
-         * Handles CEO purchase
-         * CEOs provide major income boost
-         */
+function vaction() {
+    if (count >= cost5) {
+        mps += VP;
+        M5 += 1;
+        count -= cost5;
+        cost5 = Math.round((225 * (1.1 ** M5) * 10) / 10);
+        playSound('purchase', 0.4);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+function COOaction() {
+    if (count >= cost6) {
+        mps += COO;
+        M6 += 1;
+        count -= cost6;
+        cost6 = Math.round((500 * (1.1 ** M6) * 10) / 10); // Corrected M7 to M6
+        playSound('purchase', 0.4);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
         function caction() {
-            if (count >= cost5) {
+            if (count >= cost7) {
                 mps += ceo;
-                M5 += 1;
-                count -= cost5;
-                cost5 = Math.round((1500*(1.1 ** M5) * 10) / 10);
+                M7 += 1;
+                count -= cost7;
+                cost7 = Math.round((1250*(1.1 ** M5) * 10) / 10);
                 playSound('purchase', 0.4);
                 updateAll();
             } else {
@@ -612,7 +696,185 @@
                 updateAll();
             }
         }
+        // Chairman Function
+function chairaction() {
+    if (count >= cost8) {
+        mps += chairman;
+        M8 += 1;
+        count -= cost8;
+        cost8 = Math.round((2275 * (1.1 ** M8) * 10) / 10);
+        playSound('purchase', 0.4);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
 
+// Milkshake Oracle Function
+function MOaction() {
+    if (count >= cost9) {
+        mps += oracle;
+        M9 += 1;
+        count -= cost9;
+        cost9 = Math.round((5000 * (1.1 ** M9) * 10) / 10);
+        playSound('purchase', 0.4);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+// Shadow Fryer Function
+function SFaction() {
+    if (count >= cost10) {
+        mps += fryer;
+        M10 += 1;
+        count -= cost10;
+        cost10 = Math.round((12500 * (1.1 ** M10) * 10) / 10);
+        playSound('purchase', 0.4);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+// Keeper of the Hidden Feast Function
+function feastaction() {
+    if (count >= cost11) {
+        mps += feast;
+        M11 += 1;
+        count -= cost11;
+        cost11 = Math.round((17500 * (1.1 ** M11) * 10) / 10);
+        playSound('purchase', 0.4);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+// Verdant Keeper Function
+function verdantaction() {
+    if (count >= cost12) {
+        mps += verdant;
+        M12 += 1;
+        count -= cost12;
+        cost12 = Math.round((22500 * (1.1 ** M12) * 10) / 10);
+        playSound('purchase', 0.4);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+// Emulsifier Supreme Function
+function ESaction() {
+    if (count >= cost13) {
+        mps += emulsifier;
+        M13 += 1;
+        count -= cost13;
+        cost13 = Math.round((50000 * (1.1 ** M13) * 10) / 10);
+        playSound('purchase', 0.4);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+// Flame Whisperer Function
+function FWaction() {
+    if (count >= cost14) {
+        mps += whisperer;
+        M14 += 1;
+        count -= cost14;
+        cost14 = Math.round((125000 * (1.1 ** M14) * 10) / 10);
+        playSound('purchase', 0.4);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+// Cheese Chancellor Function
+function CCaction() {
+    if (count >= cost15) {
+        mps += chancellor;
+        M15 += 1;
+        count -= cost15;
+        cost15 = Math.round((200000 * (1.1 ** M15) * 10) / 10);
+        playSound('purchase', 0.4);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+// High Priest Function
+function priestaction() {
+    if (count >= cost16) {
+        mps += priest;
+        M16 += 1;
+        count -= cost16;
+        cost16 = Math.round((375000 * (1.1 ** M16) * 10) / 10);
+        playSound('purchase', 0.4);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+// Golden Archmage Function
+function GAaction() {
+    if (count >= cost17) {
+        mps += archmage;
+        M17 += 1;
+        count -= cost17;
+        cost17 = Math.round((525000 * (1.1 ** M17) * 10) / 10);
+        playSound('purchase', 0.4);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+// Patty Matriarch Function
+function PMaction() {
+    if (count >= cost18) {
+        mps += matriarch;
+        M18 += 1;
+        count -= cost18;
+        cost18 = Math.round((1000000 * (1.1 ** M18) * 10) / 10);
+        playSound('purchase', 0.4);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+// Grand Grillmaster Function
+function GGaction() {
+    if (count >= cost19) {
+        mps += grillmaster;
+        M19 += 1;
+        count -= cost19;
+        cost19 = Math.round((5000000 * (1.1 ** M19) * 10) / 10);
+        playSound('purchase', 0.4);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
         /**
          * Coffee upgrade - increases worker efficiency
          */
@@ -856,13 +1118,13 @@
             }
         }
 
-        function betterboss() {
+        function betterdirector() {
             if (ice >= icost5) {
-                const oldBossValue = boss;
-                boss += Math.round(boss * 0.2);
-                // Apply the increase to existing bosses
+                const olddirectorValue = director;
+                director += Math.round(director * 0.2);
+                // Apply the increase to existing directores
                 if (M4 >= 1) {
-                    const increase = (boss - oldBossValue) * M4;
+                    const increase = (director - olddirectorValue) * M4;
                     mps += increase;
                 }
                 iceupg5 += 1;
@@ -929,73 +1191,153 @@
         /**
          * Updates button text with new costs
          */
-        function updateButtons(buttons) {
-            buttons.forEach(button => {
-                let element = document.getElementById(button.id);
-                if (element) {
-                    let countText = '';
-                    // Add count information based on button type
-                    switch (button.id) {
-                        case 'extraButton':
-                            countText = ` (${M})`;
-                            break;
-                        case 'Button2':
-                            countText = ` (${M2})`;
-                            break;
-                        case 'Clickbutton':
-                            countText = ` (${M3})`;
-                            break;
-                        case 'bossbutton':
-                            countText = ` (${M4})`;
-                            break;
-                        case 'ceobutton':
-                            countText = ` (${M5})`;
-                            break;
-                        default:
-                            countText = '';
-                    }
-                    element.textContent = `${button.label}: $${button.cost}${countText}`;
-                }
-            });
+function formatCurrency(num) {
+    if (num < 1000) {
+        return num.toFixed(1);
+    }
+    
+    const abbreviations = [
+        { value: 1e24, symbol: "Sp" },
+        { value: 1e21, symbol: "Sx" },
+        { value: 1e18, symbol: "Qn" },
+        { value: 1e15, symbol: "Qd" },
+        { value: 1e12, symbol: "T" },
+        { value: 1e9, symbol: "B" },
+        { value: 1e6, symbol: "M" },
+        { value: 1e3, symbol: "K" }
+    ];
+    
+    for (const { value, symbol } of abbreviations) {
+        if (num >= value) {
+            return (num / value).toFixed(1) + symbol;
         }
+    }
+}
+
+// Update the existing updateButtons function
+function updateButtons(buttons) {
+    buttons.forEach(button => {
+        let element = document.getElementById(button.id);
+        if (element) {
+            let countText = '';
+            switch (button.id) {
+                case 'extraButton':
+                    countText = ` (${M})`;
+                    break;
+                case 'Button2':
+                    countText = ` (${M2})`;
+                    break;
+                case 'Clickbutton':
+                    countText = ` (${M3})`;
+                    break;
+                case 'directorbutton':
+                    countText = ` (${M4})`;
+                    break;
+                case 'VPbutton':
+                    countText = ` (${M5})`;
+                    break;
+                case 'COObutton':
+                    countText = ` (${M6})`;
+                    break;
+                case 'ceobutton':
+                    countText = ` (${M7})`;
+                    break;
+                case 'chairbutton':
+                    countText = ` (${M8})`;
+                    break;
+                case 'MObutton':
+                    countText = ` (${M9})`;
+                    break;
+                case 'SFbutton':
+                    countText = ` (${M10})`;
+                    break;
+                case 'feastbutton':
+                    countText = ` (${M11})`;
+                    break;
+                case 'verdantbutton':
+                    countText = ` (${M12})`;
+                    break;
+                case 'ESbutton':
+                    countText = ` (${M13})`;
+                    break;
+                case 'FWbutton':
+                    countText = ` (${M14})`;
+                    break;
+                case 'CCbutton':
+                    countText = ` (${M15})`;
+                    break;
+                case 'priestbutton':
+                    countText = ` (${M16})`;
+                    break;
+                case 'GAbutton':
+                    countText = ` (${M17})`;
+                    break;
+                case 'PMbutton':
+                    countText = ` (${M18})`;
+                    break;
+                case 'GGbutton':
+                    countText = ` (${M19})`;
+                    break;
+                default:
+                    countText = '';
+            }
+            element.textContent = `${button.label}: $${formatCurrency(button.cost)}${countText}`;
+        }
+    });
+}
 
         /**
          * Updates all UI elements
          */
         
-        function updateAll() {
-            updateMoney();
-            updatemps();
-            updateButtons([
-                { id: 'extraButton', label: 'Worker', cost: cost1 },
-                { id: 'Button2', label: 'Manager', cost: cost2 },
-                { id: 'Clickbutton', label: 'More click money', cost: cost3 },
-                { id: 'bossbutton', label: 'Boss', cost: cost4 },
-                { id: 'ceobutton', label: 'CEO', cost: cost5 },
-                { id: 'upgrade1', label: 'Coffee', cost: upgp1 }
-            ]);
-            Update();
-            checkAchievements();
-        }
+         function updateAll() {
+    updateMoney();
+    updatemps();
+    updateButtons([
+        { id: 'extraButton', label: 'Worker', cost: cost1 },
+        { id: 'Button2', label: 'Manager', cost: cost2 },
+        { id: 'Clickbutton', label: 'More click money', cost: cost3 },
+        { id: 'directorbutton', label: 'Director', cost: cost4 },
+        { id: 'VPbutton', label: 'VP', cost: cost5 },
+        { id: 'COObutton', label: 'COO', cost: cost6 },
+        { id: 'ceobutton', label: 'CEO', cost: cost7 },
+        { id: 'chairbutton', label: 'Chairman', cost: cost8 },
+        { id: 'MObutton', label: 'Milkshake Oracle', cost: cost9 },
+        { id: 'SFbutton', label: 'Shadow Fryer', cost: cost10 },
+        { id: 'feastbutton', label: 'Keeper of the Hidden Feast', cost: cost11 },
+        { id: 'verdantbutton', label: 'Verdant Keeper', cost: cost12 },
+        { id: 'ESbutton', label: 'Emulsifier Supreme', cost: cost13 },
+        { id: 'FWbutton', label: 'Flame Whisperer', cost: cost14 },
+        { id: 'CCbutton', label: 'Cheese Chancellor', cost: cost15 },
+        { id: 'priestbutton', label: 'High Priest', cost: cost16 },
+        { id: 'GAbutton', label: 'Golden Archmage', cost: cost17 },
+        { id: 'PMbutton', label: 'Patty Matriarch', cost: cost18 },
+        { id: 'GGbutton', label: 'Grand Grillmaster', cost: cost19 },
+        { id: 'upgrade1', label: 'Coffee', cost: upgp1 }
+    ]);
+    Update();
+    checkAchievements();
+}
         /**
          * Updates money display
          */
-        function updateMoney() {
-            count = Math.round(count * 10) / 10;  // Round to 1 decimal place
-            document.getElementById('money').value = "Money: $" + count;
-            document.getElementById('ice').value = "Ice Creams: " + ice;
-        }
-
+function updateMoney() {
+    count = Math.round(count * 10) / 10;
+    document.getElementById('money').value = "Money: $" + formatCurrency(count);
+    document.getElementById('ice').value = "Ice Creams: " + formatCurrency(ice);
+}
         /**
          * Updates money per second and per click displays
          */
-        function updatemps() {
-            document.getElementById('moneypersecond').value = "Money per second: $" + parseFloat(((mps * moneymultiplier)).toFixed(1));
-            document.getElementById('moneyperclick').value = "Money per click: $" + parseFloat(((clicks * golden_burger) * moneymultiplier).toFixed(1));
-            document.getElementById('moneymultiplier').value = "Money multiplier: " +  parseFloat((moneymultiplier).toFixed(1));
-            document.getElementById('icepers').value = "Ice Creams per second: " + ips;
-        }
-
+function updatemps() {
+    const currentMps = parseFloat((mps * moneymultiplier).toFixed(1));
+    const currentClicks = parseFloat(((clicks * golden_burger) * moneymultiplier).toFixed(1));
+    
+    document.getElementById('moneypersecond').value = "Money per second: $" + formatCurrency(currentMps);
+    document.getElementById('moneyperclick').value = "Money per click: $" + formatCurrency(currentClicks);
+    document.getElementById('moneymultiplier').value = "Money multiplier: " + parseFloat((moneymultiplier).toFixed(1));
+    document.getElementById('icepers').value = "Ice Creams per second: " + formatCurrency(ips);
+}
         /**
          * Handles clicking the burger
          */
@@ -1018,20 +1360,49 @@
              document.getElementById('betterworker').textContent = "Make workers better! " + icost2 + ' ice';
              document.getElementById('bettermanager').textContent = "Make managers better! " + icost3 + ' ice';
              document.getElementById('betterclick').textContent = "Make more click money better! " + icost4 + ' ice';
-            document.getElementById('betterboss').textContent = "Make Bosses better! " + icost5 + ' ice';
+            document.getElementById('betterdirector').textContent = "Make directors better! " + icost5 + ' ice';
             document.getElementById('betterceo').textContent = "Make CEOs better! " + icost6 + ' ice';
         
             document.getElementById('Workertooltip').textContent = "Earns $" + worker + " per second";
             document.getElementById('Managertooltip').textContent = "Earns $" + manager + " per second";
             document.getElementById('Moreclicktooltip').textContent = "Increases click value by $" + clickamount;
-            document.getElementById('Bosstooltip').textContent = "Earns $" + boss + " per second";
+            document.getElementById('directortooltip').textContent = "Earns $" + director + " per second";
+            document.getElementById('VPtooltip').textContent = "Earns $" + VP + " per second";
+            document.getElementById('COOtooltip').textContent = "Earns $" + COO + " per second";
             document.getElementById('Ceotooltip').textContent = "Earns $" + ceo + " per second";
+            document.getElementById('Chairmantooltip').textContent = "Earns $" + chairman + " per second";
+            document.getElementById('MOtooltip').textContent = "Earns $" + oracle + " per second";
+            document.getElementById('SFtooltip').textContent = "Earns $" + fryer + " per second";
+            document.getElementById('Feasttooltip').textContent = "Earns $" + feast + " per second";
+            document.getElementById('Verdanttooltip').textContent = "Earns $" + verdant + " per second";
+            document.getElementById('EStooltip').textContent = "Earns $" + emulsifier + " per second";
+            document.getElementById('FWtooltip').textContent = "Earns $" + whisperer + " per second";
+            document.getElementById('CCtooltip').textContent = "Earns $" + chancellor + " per second";
+            document.getElementById('Priesttooltip').textContent = "Earns $" + priest + " per second";
+            document.getElementById('GAtooltip').textContent = "Earns $" + archmage + " per second";
+            document.getElementById('PMtooltip').textContent = "Earns $" + matriarch + " per second";
+            document.getElementById('GGtooltip').textContent = "Earns $" + grillmaster + " per second";
             const buttons = [
                 { id: 'extraButton', cost: cost1 },
                 { id: 'Button2', cost: cost2 },
                 { id: 'Clickbutton', cost: cost3 },
-                { id: 'bossbutton', cost: cost4 },
-                { id: 'ceobutton', cost: cost5 },
+                { id: 'directorbutton', cost: cost4 },
+                { id: 'VPbutton', cost: cost5 },
+                { id: 'COObutton', cost: cost6 },
+                { id: 'ceobutton', cost: cost7 },
+                { id: 'Chairmanbutton', cost: cost8 },
+                { id: 'MObutton', cost: cost9 },
+                { id: 'SFbutton', cost: cost10 },
+                { id: 'feastbutton', cost: cost11 },
+                { id: 'Verdantbutton', cost: cost12 },
+                { id: 'ESbutton', cost: cost13 },
+                { id: 'FWbutton', cost: cost14 },
+                { id: 'CCbutton', cost: cost15 },
+                { id: 'Priestbutton', cost: cost16 },
+                { id: 'GAbutton', cost: cost17 },
+                { id: 'PMbutton', cost: cost18 },
+                { id: 'GGbutton', cost: cost19 },
+
                 { id: 'upgrade1', cost: upgp1 },
                 { id: 'upgrade2', cost: upgp2 },
                 { id: 'Franchisebutton', cost: fcost},
@@ -1047,7 +1418,7 @@
                 { id: 'betterworker', cost: icost2 } ,
                 { id: 'bettermanager', cost: icost3 },
                 { id: 'betterclick', cost: icost4 } ,
-                { id: 'betterboss', cost: icost5 } ,
+                { id: 'betterdirector', cost: icost5 } ,
                 { id: 'betterceo', cost: icost6 } ,
             ]
             buttons.forEach(button => {
@@ -1100,7 +1471,7 @@
                 playSound('purchase', 0.4);
                 franchises += 1;
                 const franchiseButton = document.querySelector('.franchise-button');
-                franchiseButton.textContent = 'Open a new Franchise ($' + fcost + ')';
+                franchiseButton.textContent = 'Open a new Franchise ($' + formatCurrency(fcost) + ')';
                 // Update the button to show it's purchased
                 if (franchises == 2) {
                     document.getElementById('newFranchise').style.display = 'block';
@@ -1330,6 +1701,20 @@
                 cost3,
                 cost4,
                 cost5,
+                cost6,
+                cost7,
+                cost8,
+                cost9,
+                cost10,
+                cost11,
+                cost12,
+                cost13,
+                cost14,
+                cost15,
+                cost16,
+                cost17,
+                cost18,
+                cost19,
                 upgp1,
                 upgp2,
                 upgp3,
@@ -1341,7 +1726,7 @@
                 worker,
                 manager,
                 clickamount,
-                boss,
+                director,
                 ceo,
 
                 // Counts
@@ -1350,7 +1735,20 @@
                 M3,
                 M4,
                 M5,
-
+                M6,
+                M7,
+                M8,
+                M9,
+                M10,
+                M11,
+                M12,
+                M13,
+                M14,
+                M15,
+                M16,  
+                M17,
+                M18,
+                M19,
                 // Upgrade states
                 upg1,
                 upg3,
@@ -1409,6 +1807,20 @@
                 cost3 = gameState.cost3;
                 cost4 = gameState.cost4;
                 cost5 = gameState.cost5;
+                cost6 = gameState.cost6;
+                cost7 = gameState.cost7;
+                cost8 = gameState.cost8;
+                cost9 = gameState.cost9;
+                cost10 = gameState.cost10;
+                cost11 = gameState.cost11;
+                cost12 = gameState.cost12;
+                cost13 = gameState.cost13;
+                cost14 = gameState.cost14;
+                cost15 = gameState.cost15;
+                cost16 = gameState.cost16;
+                cost17 = gameState.cost17;
+                cost18 = gameState.cost18;
+                cost19 = gameState.cost19;
                 upgp1 = gameState.upgp1;
                 upgp2 = gameState.upgp2;
                 upgp3 = gameState.upgp3;
@@ -1420,7 +1832,7 @@
                 worker = gameState.worker;
                 manager = gameState.manager;
                 clickamount = gameState.clickamount;
-                boss = gameState.boss;
+                director = gameState.director;
                 ceo = gameState.ceo;
 
                 // Restore counts
@@ -1429,7 +1841,20 @@
                 M3 = gameState.M3;
                 M4 = gameState.M4;
                 M5 = gameState.M5;
-
+                M6 = gameState.M6;
+                M7 = gameState.M7;
+                M8 = gameState.M8;
+                M9 = gameState.M9;
+                M10 = gameState.M10;
+                M11 = gameState.M11;
+                M12 = gameState.M12;
+                M13 = gameState.M13;
+                M14 = gameState.M14;
+                M15 = gameState.M15;
+                M16 = gameState.M16;
+                M17 = gameState.M17;
+                M18 = gameState.M18;
+                M19 = gameState.M19;
                 // Restore upgrade states
                 upg1 = gameState.upg1;
                 upg3 = gameState.upg3;
@@ -1540,6 +1965,20 @@
             }
         }
 
+        function showTooltip(event, tooltipId) {
+    var tooltip = document.getElementById(tooltipId);
+    var rect = event.target.getBoundingClientRect();
+    tooltip.style.top = rect.top + window.scrollY + 'px';
+    tooltip.style.left = rect.left - tooltip.offsetWidth - 10 + 'px';
+    tooltip.style.visibility = 'visible';
+    tooltip.style.opacity = '1';
+}
+
+function hideTooltip(tooltipId) {
+    var tooltip = document.getElementById(tooltipId);
+    tooltip.style.visibility = 'hidden';
+    tooltip.style.opacity = '0';
+}
 
 
         // Add save buttons to HTML
@@ -1602,8 +2041,8 @@
                     <!-- Franchises Tab (Original Content) -->
                     <div id="franchiseTab" class="tab-content active">
                         <div class="tooltip-container">
-                            <button class="franchise-button" id ="Franchisebutton" onclick = "openFranchise()">Open a new Franchise ($500000)</button>
-                            <span class="tooltip">Increases the money multiplier by 1x.</span>
+                            <button class="franchise-button" id ="Franchisebutton" onclick = "openFranchise()" onmouseover="showTooltip(event, 'Franchisetooltip')" onmouseout="hideTooltip('Franchisetooltip')">Open a new Franchise ($500000)</button>
+                            <span class="tooltip" id="Franchisetooltip">Increases the money multiplier by 1x.</span>
                         </div>
                         <div class="restaurant-container">
                             <!-- Your existing restaurant divs here -->
@@ -1654,8 +2093,8 @@
                                 <span class="tooltip">Increases what more click money give by 0.2x</span>
                             </div>
                             <div class="tooltip-container">
-                                <button class="feature-button" id ="betterboss" onclick = "betterboss()">Make Bosses better! 200 ice</button>
-                                <span class="tooltip">Increases what bosses make by 0.2x</span>
+                                <button class="feature-button" id ="betterdirector" onclick = "betterdirector()">Make directores better! 200 ice</button>
+                                <span class="tooltip">Increases what directores make by 0.2x</span>
                             </div>
                             <div class="tooltip-container">
                                 <button class="feature-button" id ="betterceo" onclick = "betterceo()">Make CEOs better! 250 ice</button>
@@ -1847,60 +2286,121 @@
                     <!-- Upgrades section -->
                     <div id="upgrade">
                         <div class="section-title">Upgrades</div>
+                        <!-- Upgrades tooltips -->
                         <div class="tooltip-container">
-                            <button id="upgrade1" onclick="upgrade1()">Coffee: $150</button>
-                            <span class="tooltip">Increases the money made from all workers by 2.5x</span>
+                            <button id="upgrade1" onclick="upgrade1()" onmouseover="showTooltip(event, 'upgrade1tooltip')" onmouseout="hideTooltip('upgrade1tooltip')">Coffee: $150</button>
+                            <span class="tooltip" id="upgrade1tooltip">Increases the money made from all workers by 2.5x</span>
                         </div>
                         <div class="tooltip-container">
-                            <button id="upgrade3" onclick="upgrade3()" style="display:none;">The Ice cream machine: $15000</button>
-                            <span class="tooltip">Doubles the money made from all managers, and adds in a secret currency </span>
+                            <button id="upgrade3" onclick="upgrade3()" style="display:none;" onmouseover="showTooltip(event, 'upgrade3tooltip')" onmouseout="hideTooltip('upgrade3tooltip')">The Ice cream machine: $15000</button>
+                            <span class="tooltip" id="upgrade3tooltip">Doubles the money made from all managers, and adds in a secret currency</span>
                         </div>
                         <div class="tooltip-container">
-                            <button id="upgrade2" onclick="upgrade2()">The Golden burger: $100000</button>
-                            <span class="tooltip">Increases how much money you make per click by 2x</span>
+                            <button id="upgrade2" onclick="upgrade2()" onmouseover="showTooltip(event, 'upgrade2tooltip')" onmouseout="hideTooltip('upgrade2tooltip')">The Golden burger: $100000</button>
+                            <span class="tooltip" id="upgrade2tooltip">Increases how much money you make per click by 2x</span>
                         </div>
                         <div class="tooltip-container">
-                            <button id="upgrade4" onclick="upgrade4()" style="display:none;" >The Diamond burger: $500000</button>
-                            <span class="tooltip">Increases how much money you make per click by 2x</span>
+                            <button id="upgrade4" onclick="upgrade4()" style="display:none;" onmouseover="showTooltip(event, 'upgrade4tooltip')" onmouseout="hideTooltip('upgrade4tooltip')">The Diamond burger: $500000</button>
+                            <span class="tooltip" id="upgrade4tooltip">Increases how much money you make per click by 2x</span>
                         </div>
                         <div class="tooltip-container">
-                            <button id="upgrade5" onclick="upgrade5()" style="display:none;" >The Sapphire burger: $800000</button>
-                            <span class="tooltip">Increases how much money you make per click by 2x</span>
+                            <button id="upgrade5" onclick="upgrade5()" style="display:none;" onmouseover="showTooltip(event, 'upgrade5tooltip')" onmouseout="hideTooltip('upgrade5tooltip')">The Sapphire burger: $800000</button>
+                            <span class="tooltip" id="upgrade5tooltip">Increases how much money you make per click by 2x</span>
                         </div>
                         <div class="tooltip-container">
-                            <button id="upgrade6" onclick="upgrade6()" style="display:none;" >The Uranium burger: $1000000</button>
-                            <span class="tooltip">Increases how much money you make per click by 2x</span>
+                            <button id="upgrade6" onclick="upgrade6()" style="display:none;" onmouseover="showTooltip(event, 'upgrade6tooltip')" onmouseout="hideTooltip('upgrade6tooltip')">The Uranium burger: $1000000</button>
+                            <span class="tooltip" id="upgrade6tooltip">Increases how much money you make per click by 2x</span>
                         </div>
                         <div class="tooltip-container">
-                            <button id="upgrade7" onclick="upgrade7()" style="display:none;" >The Obsidian burger: $1250000</button>
-                            <span class="tooltip">Increases how much money you make per click by 2x</span>
+                            <button id="upgrade7" onclick="upgrade7()" style="display:none;" onmouseover="showTooltip(event, 'upgrade7tooltip')" onmouseout="hideTooltip('upgrade7tooltip')">The Obsidian burger: $1250000</button>
+                            <span class="tooltip" id="upgrade7tooltip">Increases how much money you make per click by 2x</span>
                         </div>
                     </div>
-
-                    <div id="container">
-                        <div class="section-title">Employees</div>
-                        <div class="tooltip-container">
-                            <button id="extraButton" onclick="extraAction();">Worker: $10 (0)</button>
-                            <span class="tooltip" id="Workertooltip">Earns $1.5 per second</span>
+                        <!-- Upgrades section -->
+                        <div id="container">
+                            <div class="section-title">Employees</div>
+                            <div class="tooltip-container">
+                                <button id="extraButton" onclick="extraAction();" onmouseover="showTooltip(event, 'Workertooltip')" onmouseout="hideTooltip('Workertooltip')">Worker: $10 (0)</button>
+                                <span class="tooltip" id="Workertooltip">Earns $1.5 per second</span>
+                            </div>
+                            <div class="tooltip-container">
+                                <button id="Button2" onclick="Action2()" onmouseover="showTooltip(event, 'Managertooltip')" onmouseout="hideTooltip('Managertooltip')">Manager: $25 (0)</button>
+                                <span class="tooltip" id="Managertooltip">Earns $3.5 per second</span>
+                            </div>
+                            <div class="tooltip-container">
+                                <button id="Clickbutton" onclick="clickadd()" onmouseover="showTooltip(event, 'Moreclicktooltip')" onmouseout="hideTooltip('Moreclicktooltip')">More click money: $15 (0)</button>
+                                <span class="tooltip" id="Moreclicktooltip">Increases click value by $2</span>
+                            </div>
+                            <div class="tooltip-container">
+                                <button id="directorbutton" onclick="baction()" onmouseover="showTooltip(event, 'directortooltip')" onmouseout="hideTooltip('directortooltip')">Director: $100 (0)</button>
+                                <span class="tooltip" id="directortooltip">Earns $5.5 per second</span>
+                            </div>
+                            <div class="tooltip-container">
+                                <button id="VPbutton" onclick="vaction()" onmouseover="showTooltip(event, 'VPtooltip')" onmouseout="hideTooltip('VPtooltip')">Vice President: $225 (0)</button>
+                                <span class="tooltip" id="VPtooltip">Earns $12 per second</span>
+                            </div>
+                            <div class="tooltip-container">
+                                <button id="COObutton" onclick="COOaction()" onmouseover="showTooltip(event, 'COOtooltip')" onmouseout="hideTooltip('COOtooltip')">COO: $500 (0)</button>
+                                <span class="tooltip" id="COOtooltip">Earns $___ per second</span>
+                            </div>
+                            <div class="tooltip-container">
+                                <button id="ceobutton" onclick="caction()" onmouseover="showTooltip(event, 'Ceotooltip')" onmouseout="hideTooltip('Ceotooltip')">CEO: $1250 (0)</button>
+                                <span class="tooltip" id="Ceotooltip">Earns $200 per second</span>
+                            </div>
+                            <div class="tooltip-container">
+                                <button id="chairbutton" onclick="chairaction()" onmouseover="showTooltip(event, 'Chairmantooltip')" onmouseout="hideTooltip('Chairmantooltip')">Chairman: $2275 (0)</button>
+                                <span class="tooltip" id="Chairmantooltip">Earns $___ per second</span>
+                            </div>
+                            <div class="tooltip-container">
+                                <button id="MObutton" onclick="MOaction()" style="display: flex;" onmouseover="showTooltip(event, 'MOtooltip')" onmouseout="hideTooltip('MOtooltip')">Milkshake Oracle: $5000 (0)</button>
+                                <span class="tooltip" id="MOtooltip">Earns $___ per second</span>
+                            </div>
+                            <div class="tooltip-container">
+                                <button id="SFbutton" onclick="SFaction()" style="display: flex;" onmouseover="showTooltip(event, 'SFtooltip')" onmouseout="hideTooltip('SFtooltip')">Shadow Fryer: $12500 (0)</button>
+                                <span class="tooltip" id="SFtooltip">Earns $___ per second</span>
+                            </div>
+                            <div class="tooltip-container">
+                                <button id="feastbutton" onclick="feastaction()" style="display: flex;" onmouseover="showTooltip(event, 'Feasttooltip')" onmouseout="hideTooltip('Feasttooltip')">The Keeper of the Hidden Feast: $17500 (0)</button>
+                                <span class="tooltip" id="Feasttooltip">Earns $___ per second</span>
+                            </div>
+                            <div class="tooltip-container">
+                                <button id="verdantbutton" onclick="verdantaction()" style="display: flex;" onmouseover="showTooltip(event, 'Verdanttooltip')" onmouseout="hideTooltip('Verdanttooltip')">Verdant Keeper: $22500 (0)</button>
+                                <span class="tooltip" id="Verdanttooltip">Earns $___ per second</span>
+                            </div>
+                            <div class="tooltip-container">
+                                <button id="ESbutton" onclick="ESaction()" style="display: flex;" onmouseover="showTooltip(event, 'EStooltip')" onmouseout="hideTooltip('EStooltip')">Emulsifier Supreme: $50000 (0)</button>
+                                <span class="tooltip" id="EStooltip">Earns $___ per second</span>
+                            </div>
+                            <div class="tooltip-container">
+                                <button id="FWbutton" onclick="FWaction()" style="display: flex;" onmouseover="showTooltip(event, 'FWtooltip')" onmouseout="hideTooltip('FWtooltip')">Flame Whisperer: $125000 (0)</button>
+                                <span class="tooltip" id="FWtooltip">Earns $___ per second</span>
+                            </div>
+                            <div class="tooltip-container">
+                                <button id="CCbutton" onclick="CCaction()" style="display: flex;" onmouseover="showTooltip(event, 'CCtooltip')" onmouseout="hideTooltip('CCtooltip')">Cheese Chancellor: $200000 (0)</button>
+                                <span class="tooltip" id="CCtooltip">Earns $___ per second</span>
+                            </div>
+                            <div class="tooltip-container">
+                                <button id="priestbutton" onclick="priestaction()" style="display: flex;" onmouseover="showTooltip(event, 'Priesttooltip')" onmouseout="hideTooltip('Priesttooltip')">High Priest of the Golden Bun: $375000 (0)</button>
+                                <span class="tooltip" id="Priesttooltip">Earns $___ per second</span>
+                            </div>
+                            <div class="tooltip-container">
+                                <button id="GAbutton" onclick="GAaction()" style="display: flex;" onmouseover="showTooltip(event, 'GAtooltip')" onmouseout="hideTooltip('GAtooltip')">Golden Archmage: $525000 (0)</button>
+                                <span class="tooltip" id="GAtooltip">Earns $___ per second</span>
+                            </div>
+                            <div class="tooltip-container">
+                                <button id="PMbutton" onclick="PMaction()" style="display: flex;" onmouseover="showTooltip(event, 'PMtooltip')" onmouseout="hideTooltip('PMtooltip')">Patty Matriarch: $1000000 (0)</button>
+                                <span class="tooltip" id="PMtooltip">Earns $___ per second</span>
+                            </div>
+                            <div class="tooltip-container">
+                                <button id="GGbutton" onclick="GGaction()" style="display: flex;" onmouseover="showTooltip(event, 'GGtooltip')" onmouseout="hideTooltip('GGtooltip')">Grand Grillmaster: $5000000 (0)</button>
+                                <span class="tooltip" id="GGtooltip">Earns $500k per second</span>
+                            </div>
                         </div>
-                        <div class="tooltip-container">
-                            <button id="Button2" onclick="Action2()">Manager: $45 (0)</button>
-                            <span class="tooltip" id="Managertooltip">Earns $3.5 per second</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="Clickbutton" onclick="clickadd()">More click money: $15 (0)</button>
-                            <span class="tooltip" id="Moreclicktooltip">Increases click value by $2</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="bossbutton" onclick="baction()">Boss: $50 (0)</button>
-                            <span class="tooltip" id="Bosstooltip">Earns $55 per second</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="ceobutton" onclick="caction()">CEO: $1500 (0)</button>
-                            <span class="tooltip" id="Ceotooltip">Earns $200 per second</span>
-                        </div>
+                    </div>
                     </div>
                     </div>
                     </div>
                     </body>
                     </html>
+
+
