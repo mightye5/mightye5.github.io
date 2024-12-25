@@ -13,22 +13,21 @@
     <style>
         /* Basic styling for the page layout */
         body {
-    background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    overflow: hidden;
-}
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
 
         /* Main content wrapper adjusted */
         .game-wrapper {
             display: flex;
             width: 100%;
             height: 100%;
-          
         }
 
         /* Left side with burger button */
@@ -43,13 +42,12 @@
 
         /* Right side with controls */
         .game-right {
-    width: 250px;
-    padding-left: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-}
-
+            width: 250px;
+            padding-left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
 
         /* Money display section */
         #moneypers {
@@ -78,23 +76,28 @@
 
         /* Container and upgrade sections */
         #container,
-#upgrade {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 15px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    max-height: 650px; /* Decreased the max height */
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding-right: 20px;
-    position: relative;
-}
-
-        
-
+        #upgrade {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-height: 600px; /* Decreased the max height */
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 20px;
+            position: relative;
+        }
+        .upgrade {
+            max-height: 200px; 
+            min-height: fit-content; /* Decreased the max height */
+        }
+        #upgrade {
+            max-height: 200px; 
+            min-height: fit-content; /* Decreased the max height */
+        }
         /* Center the main burger button */
         #button {
             display: flex;
@@ -147,42 +150,42 @@
         }
 
         .tooltip-container {
-    position: relative;
-}
+            position: relative;
+        }
 
-.tooltip-container button {
-    width: 100%;
-}
+        .tooltip-container button {
+            width: 100%;
+        }
 
-.tooltip {
-    visibility: hidden;
-    position: fixed;
-    background-color: #333;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-size: 14px;
-    white-space: nowrap;
-    z-index: 9999;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
+        .tooltip {
+            visibility: hidden;
+            position: fixed;
+            background-color: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            white-space: nowrap;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
 
-.tooltip::before {
-    content: "";
-    position: absolute;
-    right: -10px; /* Move the arrow to the right side */
-    top: 50%;
-    transform: translateY(-50%);
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent transparent transparent #333; /* Make the arrow point right */
-}
+        .tooltip::before {
+            content: "";
+            position: absolute;
+            right: -10px; /* Move the arrow to the right side */
+            top: 50%;
+            transform: translateY(-50%);
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent transparent #333; /* Make the arrow point right */
+        }
 
-.tooltip-container:hover .tooltip {
-    visibility: visible;
-    opacity: 1;
-}
+        .tooltip-container:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
 
         .franchise-section {
             width: 100%;
@@ -193,6 +196,7 @@
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             overflow-y: auto; /* Enable scrolling within this section */
+            max-height: fit-content;
         }
 
         .franchise-header {
@@ -262,6 +266,7 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
         .tabs {
             display: flex;
             gap: 2px;
@@ -291,6 +296,7 @@
             background-color: #4CAF50;
             color: white;
         }
+
         .tab-content {
             display: none;
         }
@@ -299,11 +305,13 @@
         .tab-content.active {
             display: block;
         }
+
         /* Highlight tab in red if an achievement is unlocked or an upgrade can be purchased */
         .tab-button.highlight {
             background-color: red;
             color: white;
         }
+
         /* Features Tab */
         .buttons-grid {
             display: grid;
@@ -345,7 +353,7 @@
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+        } 
 
         .achievement {
             background-color: #f5f5f5;
@@ -401,11 +409,16 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* Hide elements completely when not displayed */
+        .tooltip-container button[style*="display: none"] {
+            display: none !important;
+        }
     </style>
     <script>
         // ================ GAME STATE VARIABLES ================
         // Basic game currency and costs 
-        let count = 10000000000000000000000000;                  // Player's current money
+        let count = 0000000000000000000000000;                  // Player's current money
         let cost1 = 10,                 // Worker cost
             cost2 = 25,                 // Manager cost
             cost3 = 15,                 // Click upgrade cost
@@ -430,24 +443,24 @@
         let mps = 0,                    // Money per second
             worker = 1.5,               // Base manager production
             clicks = 1,                 // Money per click
-            manager = 3.5,
+            manager = 5,
             clickamount = 2,
-            director = 55,
-            VP = 100,
-            COO = 500,
-            ceo = 200,
-            chairman = 1,
-            oracle = 5,
-            fryer = 10,
-            feast = 50,
-            verdant = 100,
-            emulsifier = 500,
-            whisperer = 1000,
+            director = 7.5,
+            VP = 10,
+            COO = 17.5,
+            ceo = 50,
+            chairman = 125,
+            oracle = 250,
+            fryer = 400,
+            feast = 850,
+            verdant = 1250,
+            emulsifier = 1700,
+            whisperer = 2900,
             chancellor = 5000,
             priest = 10000,
-            archmage = 50000,
-            matriarch = 100000,
-            grillmaster = 500000;
+            archmage = 25000,
+            matriarch = 55000,
+            grillmaster = 250000;
         // Upgrade counters
         let M = 0,                      // Number of workers
             M2 = 0,                     // Number of managers
@@ -469,8 +482,31 @@
             M18 = 0,                    // Number of Patty Matriarchs
             M19 = 0;                    // Number of Grand Grillmasters
         // Upgrade status
-            upg1 = 0,                   // Coffee upgrade status
+          let  upg1 = 0,                   // Coffee upgrade status
             upg3 = 0;                   // Ice cream machine upgrade status
+            upg8 = 0,
+            upg9 = 0,
+            upg10 = 0,
+            upg11 = 0,
+            upg12 = 0,
+            upg13 = 0,
+            upg14 = 0,
+            upg15 = 0,
+            upg16 = 0,
+            upg17 = 0,
+            upg18 = 0,
+            upg19 = 0,
+            upg20 = 0,
+            upg21 = 0,
+            upg22 = 0,
+            upg23 = 0,
+            upg24 = 0,
+            upg25 = 0,
+            upg26 = 0,
+            upg27 = 0,
+            upg28 = 0,
+            upg29 = 0,
+            upg30 = 0;
         // Special upgrade costs
         let upgp1 = 150;                 // Coffee upgrade cost
         let upgp2 = 100000;           // Golden burger cost
@@ -479,6 +515,29 @@
         upgp5 = 800000,
         upgp6 = 1000000,
         upgp7 = 1250000;
+        let upgp8 = 25000,
+    upgp9 = 75000,
+    upgp10 = 100000,
+    upgp11 = 175000,
+    upgp12 = 225000,
+    upgp13 = 300000,
+    upgp14 = 500000,
+    upgp15 = 750000,
+    upgp16 = 1000000,
+    upgp17 = 1250000,
+    upgp18 = 1550000,
+    upgp19 = 2000000,
+    upgp20 = 3500000,
+    upgp21 = 6250000,
+    upgp22 = 10250000,
+    upgp23 = 15750000,
+    upgp24 = 22500000,
+    upgp25 = 55000000,
+    upgp26 = 125000000,
+    upgp27 = 250000000,
+    upgp28 = 500000000,
+    upgp29 = 750000000,
+    upgp30 = 1750000000;
         // Special features
         let golden_burger = 1;          // Golden burger multiplier
         let moneymultiplier = 1;        // Global money multiplier
@@ -489,7 +548,7 @@
         let totaltime = 0;
         let bimage = 0;
         //Everything Ice cream related
-         let ice = 100000000,                             // Player's current ice creams
+         let ice = 00000000,                             // Player's current ice creams
             ips = 0,                             // how many ice creams you get per second
             icost1 = 50,                          // The first Ice cream upgrade cost     
             icost2 = 75,                         // The second Ice cream upgrade cost 
@@ -593,6 +652,15 @@
             if (count >= cost1) {
                 mps += worker;                     // Increase money per second
                 M += 1;                                // Increment worker count
+                if (upg8 == 1) {
+                    const oldworkerAmount = parseFloat((manager).toFixed(1));
+    
+                if (M2 >= 1) {
+            manager += parseFloat((M * 0.5).toFixed(1));
+            const workerincrease = (manager - oldworkerAmount);
+            mps += parseFloat((workerincrease).toFixed(1));
+                 }
+                }
                 count -= cost1;                         // Deduct cost
                 cost1 = Math.round(10 * (1.1 ** M) * 10) / 10;  // Increase cost for next worker
                 playSound('purchase', 0.4);
@@ -880,171 +948,597 @@ function GGaction() {
          */
         // Update the upgrade1 function to handle the position shift
         function upgrade1() {
-            if (count >= upgp1) {
-                count -= upgp1;
-                const oldworkerAmount =  parseFloat((worker).toFixed(1));;
-                worker = parseFloat((worker * 2.5).toFixed(1));
-                if (M >= 1) {
-                    const workerincrease = (worker - oldworkerAmount) * M;
-                    mps +=  parseFloat((workerincrease * 0.2).toFixed(1));
-                }
-                const upgrade1Button = document.getElementById("upgrade1");
-                document.getElementById('Workertooltip').textContent = "Earns $" + worker + " per second";
-                  if (upgrade1Button) upgrade1Button.remove();
+    if (count >= upgp1) {
+        count -= upgp1;
+    
+        const oldworkerAmount = parseFloat((worker).toFixed(1));
+        worker = parseFloat((worker * 2.5).toFixed(1));
+        if (M >= 1) {
+            const workerincrease = (worker - oldworkerAmount) * M;
+            mps += parseFloat((workerincrease).toFixed(1));
+        }
 
-                // Update the restaurant image
-                const franchiseImg = document.getElementById('Franchise1');
-                if (franchiseImg) {
-                    franchiseImg.src = 'Resturant+coffee.png';
-                }
-                 const upgrade3Button = document.getElementById("upgrade3");
-                    if (upgrade3Button) {
-                        upgrade3Button.style.display = 'flex';
-                         }
-                // Move upgrade2 to the top position if it exists
-                const upgrade2Button = document.getElementById("upgrade2");
-                if (upgrade2Button) {
-                    upgrade2Button.style.order = "1";
-                }
-                    
-                upg1 = 1;
-                playSound('coffee', 0.4);
-                updateAll();
-            } else {
-                playSound('error', 0.4);
-                updateAll();
-            }
-        }
-        function upgrade3() {
-            if (count >= upgp3) {
-                count -= upgp3;
-                manager = manager*2; // Double worker efficiency
-                upg3 = 1;
-                ips = 1;
-                if (M2 >= 1) {
-                    mps += 3.5 * M2;
-                }
-                const upgrade3Button = document.getElementById("upgrade3");
-                document.getElementById('Managertooltip').textContent = "Earns $" + manager + " per second";
-                upgrade3Button.remove(); // Remove the button after update
+        // Just remove the button, not the container
+        document.getElementById("upgrade1").remove();
+     //   document.getElementById("upgrade1tooltipcontainer").remove();
+        hideTooltip('upgrade1tooltip');
 
-                // Update the restaurant image
-                const franchiseImg = document.getElementById('Franchise1');
-                if (franchiseImg) {
-                    franchiseImg.src = 'restaurantcoffee+ice.png';
-                }
+        // Store button in variable and check if it exists
+        const upgrade3Button = document.getElementById("upgrade3");
+        if (upgrade3Button) {
+            upgrade3Button.style.display = 'flex';
+        }
 
-                // Move upgrade2 to the top position if it exists
-                const upgrade2Button = document.getElementById("upgrade2");
-                if (upgrade2Button) {
-                    upgrade2Button.style.order = "1";
-                }
-                playSound('coffee', 0.4);
-                updateAll();
-            } else {
-                playSound('error', 0.4);
-                updateAll();
-            }
+        // Update the restaurant image
+        const franchiseImg = document.getElementById('Franchise1');
+        if (franchiseImg) {
+            franchiseImg.src = 'Resturant+coffee.png';
         }
-        // Update the upgrade2 function similarly
-        function upgrade2() {
-            const chesburger = document.querySelector('.image-button');
-            if (count >= upgp2) {
-                count -= upgp2;
-                bimage += 1;
-                golden_burger = 2;  // Double click value
-                chesburger.style.backgroundImage = "url('GoldenBurger.png')";
-                 const upgrade4Button = document.getElementById("upgrade4");
-                    if (upgrade4Button) {
-                        upgrade4Button.style.display = 'flex';
-                         }
-                // Remove the upgrade2 button instead of hiding it
-                document.getElementById("upgrade2").remove();
 
-                playSound('golden', 0.6);
-                updateAll();
-            } else {
-                playSound('error', 0.4);
-                updateAll();
-            }
-        }
-        function upgrade4() {
-            const chesburger = document.querySelector('.image-button');
-            if (count >= upgp4) {
-                count -= upgp4;
-                golden_burger = 4;  // Double click value
-                chesburger.style.backgroundImage = "url('Diamondburger.png')";
-                bimage += 1;
-                // Remove the upgrade2 button instead of hiding it
-                document.getElementById("upgrade4").remove();
-                const upgrade5Button = document.getElementById("upgrade5");
-                if (upgrade5Button) {
-                    upgrade5Button.style.display = 'flex';
-                     }
-                playSound('golden', 0.6);
-                updateAll();
-            } else {
-                playSound('error', 0.4);
-                updateAll();
-            }
-        }
-        function upgrade5() {
-            const chesburger = document.querySelector('.image-button');
-            if (count >= upgp5) {
-                count -= upgp5;
-                golden_burger = 6;  // Double click value
-                chesburger.style.backgroundImage = "url('Sapphireburger.png')";
-                bimage += 1;
-                // Remove the upgrade2 button instead of hiding it
-                document.getElementById("upgrade5").remove();
-                const upgrade6Button = document.getElementById("upgrade6");
-                if (upgrade6Button) {
-                    upgrade6Button.style.display = 'flex';
-                     }
-                playSound('golden', 0.6);
-                updateAll();
-            } else {
-                playSound('error', 0.4);
-                updateAll();
-            }
-        }
-        function upgrade6() {
-            const chesburger = document.querySelector('.image-button');
-            if (count >= upgp6) {
-                count -= upgp6;
-                golden_burger = 8;  // Double click value
-                chesburger.style.backgroundImage = "url('Uraniumburger.png')";
-                bimage += 1;
-                // Remove the upgrade2 button instead of hiding it
-                document.getElementById("upgrade6").remove();
-                const upgrade7Button = document.getElementById("upgrade7");
-                if (upgrade7Button) {
-                    upgrade7Button.style.display = 'flex';
-                     }
-                playSound('golden', 0.6);
-                updateAll();
-            } else {
-                playSound('error', 0.4);
-                updateAll();
-            }
-        }
-        function upgrade7() {
-            const chesburger = document.querySelector('.image-button');
-            if (count >= upgp7) {
-                count -= upgp7;
-                golden_burger = 10;  // Double click value
-                chesburger.style.backgroundImage = "url('Obsidianburger.png')";
-                bimage += 1;
-                // Remove the upgrade2 button instead of hiding it
-                document.getElementById("upgrade7").remove();
+        upg1 = 1;
+        playSound('coffee', 0.4);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
 
-                playSound('golden', 0.6);
-                updateAll();
-            } else {
-                playSound('error', 0.4);
-                updateAll();
-            }
+function upgrade2() {
+    const chesburger = document.querySelector('.image-button');
+    if (count >= upgp2) {
+        count -= upgp2;
+        bimage += 1;
+        golden_burger = 2;  // Double click value
+        chesburger.style.backgroundImage = "url('GoldenBurger.png')";
+        const upgrade4Button = document.getElementById("upgrade4");
+        if (upgrade4Button) {
+            upgrade4Button.style.display = 'flex';
         }
+        // Remove the upgrade2 button instead of hiding it
+        document.getElementById("upgrade2").remove();
+        hideTooltip('upgrade2tooltip'); // Hide the tooltip
+
+        playSound('golden', 0.6);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade3() {
+    if (count >= upgp3) {
+        count -= upgp3;
+        upg3 = 1;
+        ips = 1;
+
+
+        const oldworkerAmount = parseFloat((manager).toFixed(1));
+        manager = parseFloat((manager * 2.5).toFixed(1));
+        if (M2 >= 1) {
+            const workerincrease = (manager - oldworkerAmount) * M2;
+            mps += parseFloat((workerincrease).toFixed(1));
+        }
+
+        const upgrade3Button = document.getElementById("upgrade3");
+        document.getElementById('Managertooltip').textContent = "Earns $" + manager + " per second";
+        if (upgrade3Button) {
+            upgrade3Button.remove();
+            hideTooltip('upgrade3tooltip'); // Hide the tooltip
+        }
+        document.getElementById("upgrade8").style.display = 'flex';
+        // Update the restaurant image
+        const franchiseImg = document.getElementById('Franchise1');
+        if (franchiseImg) {
+            franchiseImg.src = 'restaurantcoffee+ice.png';
+        }
+
+        // Move upgrade2 to the top position if it exists
+        const upgrade2Button = document.getElementById("upgrade2");
+        if (upgrade2Button) {
+            upgrade2Button.style.order = "1";
+        }
+        playSound('coffee', 0.4);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade4() {
+    const chesburger = document.querySelector('.image-button');
+    if (count >= upgp4) {
+        count -= upgp4;
+        golden_burger = 4;  // Double click value
+        chesburger.style.backgroundImage = "url('Diamondburger.png')";
+        bimage += 1;
+        // Remove the upgrade4 button instead of hiding it
+        document.getElementById("upgrade4").remove();
+        hideTooltip('upgrade4tooltip'); // Hide the tooltip
+        const upgrade5Button = document.getElementById("upgrade5");
+        if (upgrade5Button) {
+            upgrade5Button.style.display = 'flex';
+        }
+        playSound('golden', 0.6);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade5() {
+    const chesburger = document.querySelector('.image-button');
+    if (count >= upgp5) {
+        count -= upgp5;
+        golden_burger = 6;  // Double click value
+        chesburger.style.backgroundImage = "url('Sapphireburger.png')";
+        bimage += 1;
+        // Remove the upgrade5 button instead of hiding it
+        document.getElementById("upgrade5").remove();
+        hideTooltip('upgrade5tooltip'); // Hide the tooltip
+        const upgrade6Button = document.getElementById("upgrade6");
+        if (upgrade6Button) {
+            upgrade6Button.style.display = 'flex';
+        }
+        playSound('golden', 0.6);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade6() {
+    const chesburger = document.querySelector('.image-button');
+    if (count >= upgp6) {
+        count -= upgp6;
+        golden_burger = 8;  // Double click value
+        chesburger.style.backgroundImage = "url('Uraniumburger.png')";
+        bimage += 1;
+        // Remove the upgrade6 button instead of hiding it
+        document.getElementById("upgrade6").remove();
+        hideTooltip('upgrade6tooltip'); // Hide the tooltip
+        const upgrade7Button = document.getElementById("upgrade7");
+        if (upgrade7Button) {
+            upgrade7Button.style.display = 'flex';
+        }
+        playSound('golden', 0.6);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade7() {
+    const chesburger = document.querySelector('.image-button');
+    if (count >= upgp7) {
+        count -= upgp7;
+        golden_burger = 10;  // Double click value
+        chesburger.style.backgroundImage = "url('Obsidianburger.png')";
+        bimage += 1;
+        // Remove the upgrade7 button instead of hiding it
+        document.getElementById("upgrade7").remove();
+        hideTooltip('upgrade7tooltip'); // Hide the tooltip
+
+        playSound('golden', 0.6);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade8() {
+    if (count >= upgp8) {
+        count -= upgp8;
+        upg8 = 1;
+        const oldworkerAmount = parseFloat((manager).toFixed(1));
+        if (M2 >= 1) {
+            manager += parseFloat((M * 0.5).toFixed(1));
+            const workerincrease = (manager - oldworkerAmount);
+            mps += parseFloat((workerincrease).toFixed(1));
+                 }
+        playSound('purchase', 0.4);
+        document.getElementById('Managertooltip').textContent = "Earns $" + manager + " per second";
+        document.getElementById("upgrade8").remove();
+        hideTooltip('upgrade8tooltip'); // Hide the tooltip
+        document.getElementById("upgrade9").style.display = 'flex';
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade9() {
+    if (count >= upgp9) {
+        count -= upgp9;
+        mps *= 1.5;
+        upg9 = 1;
+        playSound('purchase', 0.4);
+        document.getElementById("upgrade9").remove();
+        hideTooltip('upgrade9tooltip'); // Hide the tooltip
+        document.getElementById("upgrade10").style.display = 'flex';
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade10() {
+    if (count >= upgp10) {
+        count -= upgp10;
+        upg10 = 1;
+        VP *= 1.5;
+        COO *= 1.5;
+        ceo *= 1.5;
+        playSound('purchase', 0.4);
+        document.getElementById('VPtooltip').textContent = "Earns $" + VP + " per second";
+        document.getElementById('COOtooltip').textContent = "Earns $" + COO + " per second";
+        document.getElementById('Ceotooltip').textContent = "Earns $" + ceo + " per second";
+        document.getElementById("upgrade10").remove();
+        hideTooltip('upgrade10tooltip'); // Hide the tooltip
+        document.getElementById("upgrade11").style.display = 'flex';
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade11() {
+    if (count >= upgp11 && M4 >= 50 && M5 >= 50) {
+        count -= upgp11;
+        M4 -= 50; // Deduct 50 Directors
+        M5 -= 50; // Deduct 50 Vice Presidents
+        upg11 = 1;
+        playSound('purchase', 0.4);
+        document.getElementById("upgrade11").remove();
+        hideTooltip('upgrade11tooltip'); // Hide the tooltip
+        document.getElementById("upgrade12").style.display = 'flex';
+        document.getElementById("MObutton").style.display = 'flex'; // Show Milkshake Oracle
+        document.getElementById("SFbutton").style.display = 'flex'; // Show Shadow Fryer
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade12() {
+    if (count >= upgp12) {
+        count -= upgp12;
+        upg12 = 1;
+        ips *= 1.25;
+        oracle *= 1.5;
+        playSound('purchase', 0.4);
+        document.getElementById('MOtooltip').textContent = "Earns $" + oracle + " per second";
+        document.getElementById("upgrade12").remove();
+        hideTooltip('upgrade12tooltip'); // Hide the tooltip
+        document.getElementById("upgrade13").style.display = 'flex';
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade13() {
+    if (count >= upgp13) {
+        count -= upgp13;
+        upg13 = 1;
+        COO += M9 * 0.05;
+        playSound('purchase', 0.4);
+        document.getElementById('COOtooltip').textContent = "Earns $" + COO + " per second";
+        document.getElementById("upgrade13").remove();
+        hideTooltip('upgrade13tooltip'); // Hide the tooltip
+        document.getElementById("upgrade14").style.display = 'flex';
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade14() {
+    if (count >= upgp14) {
+        count -= upgp14;
+        upg14 = 1;
+        mps *= 1.25;
+        playSound('purchase', 0.4);
+        document.getElementById("upgrade14").remove();
+        hideTooltip('upgrade14tooltip'); // Hide the tooltip
+        document.getElementById("upgrade15").style.display = 'flex';
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade15() {
+    if (count >= upgp15 && M7 >= 50 && M9 >= 50) {
+        count -= upgp15;
+        M7 -= 50; // Deduct 50 CEOs
+        M9 -= 50; // Deduct 50 Oracles
+        upg15 = 1;
+        playSound('purchase', 0.4);
+        document.getElementById("upgrade15").remove();
+        hideTooltip('upgrade15tooltip'); // Hide the tooltip
+        document.getElementById("upgrade16").style.display = 'flex';
+        document.getElementById("feastbutton").style.display = 'flex'; // Show Keeper of the Hidden Feast
+        document.getElementById("verdantbutton").style.display = 'flex'; // Show Verdant Keeper
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+
+
+function upgrade16() {
+    if (count >= upgp16) {
+        count -= upgp16;
+        upg16 = 1;
+        verdant *= 1.5;
+        playSound('purchase', 0.4);
+        document.getElementById('Verdanttooltip').textContent = "Earns $" + verdant + " per second";
+        document.getElementById("upgrade16").remove();
+        hideTooltip('upgrade16tooltip'); // Hide the tooltip
+        document.getElementById("upgrade17").style.display = 'flex';
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade17() {
+    if (count >= upgp17) {
+        count -= upgp17;
+        upg17 = 1;
+        fryer += M12 * 0.05;
+        playSound('purchase', 0.4);
+        document.getElementById('SFtooltip').textContent = "Earns $" + fryer + " per second";
+        document.getElementById("upgrade17").remove();
+        hideTooltip('upgrade17tooltip'); // Hide the tooltip
+        document.getElementById("upgrade18").style.display = 'flex';
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade18() {
+    if (count >= upgp18) {
+        count -= upgp18;
+        upg18 = 1;
+        playSound('purchase', 0.4);
+        document.getElementById("upgrade18").remove();
+        hideTooltip('upgrade18tooltip'); // Hide the tooltip
+        document.getElementById("upgrade19").style.display = 'flex';
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+
+function upgrade19() {
+    if (count >= upgp19 && M12 >= 50 && M10 >= 50) {
+        count -= upgp19;
+        M12 -= 50; // Deduct 50 Verdant Keepers
+        M10 -= 50; // Deduct 50 Shadow Fryers
+        upg19 = 1;
+        playSound('purchase', 0.4);
+        document.getElementById("upgrade19").remove();
+        hideTooltip('upgrade19tooltip'); // Hide the tooltip
+        document.getElementById("upgrade20").style.display = 'flex';
+        document.getElementById("FWbutton").style.display = 'flex'; // Show Flame Whisperer
+        document.getElementById("CCbutton").style.display = 'flex'; // Show Cheese Chancellor
+        document.getElementById("ESbutton").style.display = 'flex'; // Show Emulsifier Supreme
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+
+
+function upgrade20() {
+    if (count >= upgp20) {
+        count -= upgp20;
+        upg20 = 1;
+        whisperer *= 1.5;
+        playSound('purchase', 0.4);
+        document.getElementById('FWtooltip').textContent = "Earns $" + whisperer + " per second";
+        document.getElementById("upgrade20").remove();
+        hideTooltip('upgrade20tooltip'); // Hide the tooltip
+        document.getElementById("upgrade21").style.display = 'flex';
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade21() {
+    if (count >= upgp21) {
+        count -= upgp21;
+        upg21 = 1;
+        VP += M14 * 0.1;
+        playSound('purchase', 0.4);
+        document.getElementById('VPtooltip').textContent = "Earns $" + VP + " per second";
+        document.getElementById("upgrade21").remove();
+        hideTooltip('upgrade21tooltip'); // Hide the tooltip
+        document.getElementById("upgrade22").style.display = 'flex';
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade22() {
+    if (count >= upgp22) {
+        count -= upgp22;
+        upg22 = 1;
+        emulsifier *= 1.5;
+        playSound('purchase', 0.4);
+        document.getElementById('EStooltip').textContent = "Earns $" + emulsifier + " per second";
+        document.getElementById("upgrade22").remove();
+        hideTooltip('upgrade22tooltip'); // Hide the tooltip
+        document.getElementById("upgrade23").style.display = 'flex';
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade23() {
+    if (count >= upgp23 && M15 >= 50 && M14 >= 50) {
+        count -= upgp23;
+        M15 -= 50; // Deduct 50 Cheese Chancellors
+        M14 -= 50; // Deduct 50 Flame Whisperers
+        upg23 = 1;
+        playSound('purchase', 0.4);
+        document.getElementById("upgrade23").remove();
+        hideTooltip('upgrade23tooltip'); // Hide the tooltip
+        document.getElementById("upgrade24").style.display = 'flex';
+        document.getElementById("GAbutton").style.display = 'flex'; // Show Golden Archmage
+        document.getElementById("priestbutton").style.display = 'flex'; // Show High Priest of the Golden Bun
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade24() {
+    if (count >= upgp24) {
+        count -= upgp24;
+        upg24 = 1;
+        archmage *= 1.5;
+        playSound('purchase', 0.4);
+        document.getElementById('GAtooltip').textContent = "Earns $" + archmage + " per second";
+        document.getElementById("upgrade24").remove();
+        hideTooltip('upgrade24tooltip'); // Hide the tooltip
+        document.getElementById("upgrade25").style.display = 'flex';
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade25() {
+    if (count >= upgp25) {
+        count -= upgp25;
+        upg25 = 1;
+        worker += archmage * 0.15;
+        playSound('purchase', 0.4);
+        document.getElementById('Workertooltip').textContent = "Earns $" + worker + " per second";
+        document.getElementById("upgrade25").remove();
+        hideTooltip('upgrade25tooltip'); // Hide the tooltip
+        document.getElementById("upgrade26").style.display = 'flex';
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade26() {
+    if (count >= upgp26) {
+        count -= upgp26;
+        upg26 = 1;
+        mps *= 1.35;
+        playSound('purchase', 0.4);
+        document.getElementById("upgrade26").remove();
+        hideTooltip('upgrade26tooltip'); // Hide the tooltip
+        document.getElementById("upgrade27").style.display = 'flex';
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade27() {
+    if (count >= upgp27 && M17 >= 50 && M13 >= 50) {
+        count -= upgp27;
+        M17 -= 50; // Deduct 50 Archmages
+        M13 -= 50; // Deduct 50 Emulsifier Supremes
+        upg27 = 1;
+        playSound('purchase', 0.4);
+        document.getElementById("upgrade27").remove();
+        hideTooltip('upgrade27tooltip'); // Hide the tooltip
+        document.getElementById("upgrade28").style.display = 'flex';
+        document.getElementById("PMbutton").style.display = 'flex'; // Show Patty Matriarch
+        document.getElementById("GGbutton").style.display = 'flex'; // Show Grand Grillmaster
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+function upgrade28() {
+    if (count >= upgp28) {
+        count -= upgp28;
+        upg28 = 1;
+        matriarch *= 1.5;
+        playSound('purchase', 0.4);
+        document.getElementById('PMtooltip').textContent = "Earns $" + matriarch + " per second";
+        document.getElementById("upgrade28").remove();
+        hideTooltip('upgrade28tooltip');
+        document.getElementById("upgrade29").style.display = 'flex';
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade29() {
+    if (count >= upgp29) {
+        count -= upgp29;
+        upg29 = 1;
+        emulsifier += matriarch * 0.2;
+        playSound('purchase', 0.4);
+        document.getElementById('EStooltip').textContent = "Earns $" + emulsifier + " per second";
+        document.getElementById("upgrade29").remove();
+        hideTooltip('upgrade29tooltip');
+        document.getElementById("upgrade30").style.display = 'flex';
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade30() {
+    if (count >= upgp30) {
+        count -= upgp30;
+        upg30 = 1;
+        playSound('purchase', 0.4);
+        document.getElementById("upgrade30").remove();
+        hideTooltip('upgrade30tooltip');
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
         function moreicepers() {
             if (ice >= icost1) {
                 ips += 2.5;
@@ -1351,90 +1845,149 @@ function updatemps() {
         /**
          * Updates button colors based on affordability
          */
-        function Update() {
-            
-            checkAchievements();
-            const canAffordColor = '#4CAF50';    // Green when affordable
-            const cannotAffordColor = '#dddddd'; // Gray when can't afford
-            document.getElementById('moreicepers').textContent = "Upgrade the Ice Cream machine! " + icost1 + ' ice';
-             document.getElementById('betterworker').textContent = "Make workers better! " + icost2 + ' ice';
-             document.getElementById('bettermanager').textContent = "Make managers better! " + icost3 + ' ice';
-             document.getElementById('betterclick').textContent = "Make more click money better! " + icost4 + ' ice';
-            document.getElementById('betterdirector').textContent = "Make directors better! " + icost5 + ' ice';
-            document.getElementById('betterceo').textContent = "Make CEOs better! " + icost6 + ' ice';
-        
-            document.getElementById('Workertooltip').textContent = "Earns $" + worker + " per second";
-            document.getElementById('Managertooltip').textContent = "Earns $" + manager + " per second";
-            document.getElementById('Moreclicktooltip').textContent = "Increases click value by $" + clickamount;
-            document.getElementById('directortooltip').textContent = "Earns $" + director + " per second";
-            document.getElementById('VPtooltip').textContent = "Earns $" + VP + " per second";
-            document.getElementById('COOtooltip').textContent = "Earns $" + COO + " per second";
-            document.getElementById('Ceotooltip').textContent = "Earns $" + ceo + " per second";
-            document.getElementById('Chairmantooltip').textContent = "Earns $" + chairman + " per second";
-            document.getElementById('MOtooltip').textContent = "Earns $" + oracle + " per second";
-            document.getElementById('SFtooltip').textContent = "Earns $" + fryer + " per second";
-            document.getElementById('Feasttooltip').textContent = "Earns $" + feast + " per second";
-            document.getElementById('Verdanttooltip').textContent = "Earns $" + verdant + " per second";
-            document.getElementById('EStooltip').textContent = "Earns $" + emulsifier + " per second";
-            document.getElementById('FWtooltip').textContent = "Earns $" + whisperer + " per second";
-            document.getElementById('CCtooltip').textContent = "Earns $" + chancellor + " per second";
-            document.getElementById('Priesttooltip').textContent = "Earns $" + priest + " per second";
-            document.getElementById('GAtooltip').textContent = "Earns $" + archmage + " per second";
-            document.getElementById('PMtooltip').textContent = "Earns $" + matriarch + " per second";
-            document.getElementById('GGtooltip').textContent = "Earns $" + grillmaster + " per second";
-            const buttons = [
-                { id: 'extraButton', cost: cost1 },
-                { id: 'Button2', cost: cost2 },
-                { id: 'Clickbutton', cost: cost3 },
-                { id: 'directorbutton', cost: cost4 },
-                { id: 'VPbutton', cost: cost5 },
-                { id: 'COObutton', cost: cost6 },
-                { id: 'ceobutton', cost: cost7 },
-                { id: 'Chairmanbutton', cost: cost8 },
-                { id: 'MObutton', cost: cost9 },
-                { id: 'SFbutton', cost: cost10 },
-                { id: 'feastbutton', cost: cost11 },
-                { id: 'Verdantbutton', cost: cost12 },
-                { id: 'ESbutton', cost: cost13 },
-                { id: 'FWbutton', cost: cost14 },
-                { id: 'CCbutton', cost: cost15 },
-                { id: 'Priestbutton', cost: cost16 },
-                { id: 'GAbutton', cost: cost17 },
-                { id: 'PMbutton', cost: cost18 },
-                { id: 'GGbutton', cost: cost19 },
+         function Update() {
+    checkAchievements();
+    const canAffordColor = '#4CAF50';    // Green when affordable
+    const cannotAffordColor = '#dddddd'; // Gray when can't afford
 
-                { id: 'upgrade1', cost: upgp1 },
-                { id: 'upgrade2', cost: upgp2 },
-                { id: 'Franchisebutton', cost: fcost},
-                { id: 'upgrade3', cost: upgp3 },
-                { id: 'upgrade4', cost: upgp4 },
-                { id: 'upgrade5', cost: upgp5 },
-                { id: 'upgrade6', cost: upgp6 },
-                { id: 'upgrade7', cost: upgp7 }
+    document.getElementById('moreicepers').textContent = "Upgrade the Ice Cream machine! " + icost1 + ' ice';
+    document.getElementById('betterworker').textContent = "Make workers better! " + icost2 + ' ice';
+    document.getElementById('bettermanager').textContent = "Make managers better! " + icost3 + ' ice';
+    document.getElementById('betterclick').textContent = "Make more click money better! " + icost4 + ' ice';
+    document.getElementById('betterdirector').textContent = "Make directors better! " + icost5 + ' ice';
+    document.getElementById('betterceo').textContent = "Make CEOs better! " + icost6 + ' ice';
 
-            ];
-            const Ibuttons = [
-                { id: 'moreicepers', cost: icost1 } ,
-                { id: 'betterworker', cost: icost2 } ,
-                { id: 'bettermanager', cost: icost3 },
-                { id: 'betterclick', cost: icost4 } ,
-                { id: 'betterdirector', cost: icost5 } ,
-                { id: 'betterceo', cost: icost6 } ,
-            ]
-            buttons.forEach(button => {
-                const buttonElement = document.getElementById(button.id);
-                if (buttonElement) {
-                    buttonElement.style.backgroundColor = count >= button.cost ? canAffordColor : cannotAffordColor;
-                }
-            });
-            Ibuttons.forEach(button => {
-                const buttonElement = document.getElementById(button.id);
-                if (buttonElement) {
-                    buttonElement.style.backgroundColor = ice >= button.cost ? canAffordColor : cannotAffordColor;
-                }
-            });
+    document.getElementById('Workertooltip').textContent = "Earns $" + worker + " per second";
+    document.getElementById('Managertooltip').textContent = "Earns $" + manager + " per second";
+    document.getElementById('Moreclicktooltip').textContent = "Increases click value by $" + clickamount;
+    document.getElementById('directortooltip').textContent = "Earns $" + director + " per second";
+    document.getElementById('VPtooltip').textContent = "Earns $" + VP + " per second";
+    document.getElementById('COOtooltip').textContent = "Earns $" + COO + " per second";
+    document.getElementById('Ceotooltip').textContent = "Earns $" + ceo + " per second";
+    document.getElementById('Chairmantooltip').textContent = "Earns $" + chairman + " per second";
+    document.getElementById('MOtooltip').textContent = "Earns $" + oracle + " per second";
+    document.getElementById('SFtooltip').textContent = "Earns $" + fryer + " per second";
+    document.getElementById('Feasttooltip').textContent = "Earns $" + feast + " per second";
+    document.getElementById('Verdanttooltip').textContent = "Earns $" + verdant + " per second";
+    document.getElementById('EStooltip').textContent = "Earns $" + emulsifier + " per second";
+    document.getElementById('FWtooltip').textContent = "Earns $" + whisperer + " per second";
+    document.getElementById('CCtooltip').textContent = "Earns $" + chancellor + " per second";
+    document.getElementById('Priesttooltip').textContent = "Earns $" + priest + " per second";
+    document.getElementById('GAtooltip').textContent = "Earns $" + archmage + " per second";
+    document.getElementById('PMtooltip').textContent = "Earns $" + matriarch + " per second";
+    document.getElementById('GGtooltip').textContent = "Earns $" + grillmaster + " per second";
+
+    const buttons = [
+        { id: 'extraButton', cost: cost1 },
+        { id: 'Button2', cost: cost2 },
+        { id: 'Clickbutton', cost: cost3 },
+        { id: 'directorbutton', cost: cost4 },
+        { id: 'VPbutton', cost: cost5 },
+        { id: 'COObutton', cost: cost6 },
+        { id: 'ceobutton', cost: cost7 },
+        { id: 'chairbutton', cost: cost8 },
+        { id: 'MObutton', cost: cost9 },
+        { id: 'SFbutton', cost: cost10 },
+        { id: 'feastbutton', cost: cost11 },
+        { id: 'Verdantbutton', cost: cost12 },
+        { id: 'ESbutton', cost: cost13 },
+        { id: 'FWbutton', cost: cost14 },
+        { id: 'CCbutton', cost: cost15 },
+        { id: 'Priestbutton', cost: cost16 },
+        { id: 'GAbutton', cost: cost17 },
+        { id: 'PMbutton', cost: cost18 },
+        { id: 'GGbutton', cost: cost19 },
+        { id: 'upgrade1', cost: upgp1 },
+        { id: 'upgrade2', cost: upgp2 },
+        { id: 'Franchisebutton', cost: fcost },
+        { id: 'upgrade3', cost: upgp3 },
+        { id: 'upgrade4', cost: upgp4 },
+        { id: 'upgrade5', cost: upgp5 },
+        { id: 'upgrade6', cost: upgp6 },
+        { id: 'upgrade7', cost: upgp7 },
+        { id: 'upgrade8', cost: upgp8 },
+        { id: 'upgrade9', cost: upgp9 },
+        { id: 'upgrade10', cost: upgp10 },
+        { id: 'upgrade11', cost: upgp11, requirements: { M4: 50, M5: 50 } },
+        { id: 'upgrade12', cost: upgp12 },
+        { id: 'upgrade13', cost: upgp13 },
+        { id: 'upgrade14', cost: upgp14 },
+        { id: 'upgrade15', cost: upgp15, requirements: { M7: 50, M9: 50 } },
+        { id: 'upgrade16', cost: upgp16 },
+        { id: 'upgrade17', cost: upgp17 },
+        { id: 'upgrade18', cost: upgp18 },
+        { id: 'upgrade19', cost: upgp19, requirements: { M12: 50, M10: 50 } },
+        { id: 'upgrade20', cost: upgp20 },
+        { id: 'upgrade21', cost: upgp21 },
+        { id: 'upgrade22', cost: upgp22 },
+        { id: 'upgrade23', cost: upgp23, requirements: { M15: 50, M14: 50 } },
+        { id: 'upgrade24', cost: upgp24 },
+        { id: 'upgrade25', cost: upgp25 },
+        { id: 'upgrade26', cost: upgp26 },
+        { id: 'upgrade27', cost: upgp27, requirements: { M17: 50, M13: 50 } },
+        { id: 'upgrade28', cost: upgp28 },
+        { id: 'upgrade29', cost: upgp29 },
+        { id: 'upgrade30', cost: upgp30 },
+    ];
+
+    const Ibuttons = [
+        { id: 'moreicepers', cost: icost1 },
+        { id: 'betterworker', cost: icost2 },
+        { id: 'bettermanager', cost: icost3 },
+        { id: 'betterclick', cost: icost4 },
+        { id: 'betterdirector', cost: icost5 },
+        { id: 'betterceo', cost: icost6 },
+    ];  
+    window.M4 = M4;
+    window.M5 = M5;
+    window.M7 = M7;
+    window.M9 = M9;
+    window.M12 = M12;
+    window.M10 = M10;
+    window.M15 = M15;
+    window.M14 = M14;
+    window.M17 = M17;
+    window.M13 = M13;
+    buttons.forEach(button => {
+        const buttonElement = document.getElementById(button.id);
+        if (buttonElement) {
+            const canAfford = count >= button.cost;
+            let meetsRequirements = true;
+
+            // Check additional requirements if they exist
+            if (button.requirements) {
+                meetsRequirements = Object.entries(button.requirements).every(([key, value]) => {
+                    return window[key] && window[key] >= value; // All requirements must pass
+                });
+            }
+
+            // Update button styling based on conditions
+            buttonElement.style.backgroundColor = (canAfford && meetsRequirements) 
+                ? canAffordColor 
+                : cannotAffordColor;
+
+            // Optional: Add debug logging for requirements
+            if (button.requirements) {
+                console.log(`Button ${button.id}:`, {
+                    canAfford,
+                    meetsRequirements,
+                    requirements: button.requirements,
+                    currentValues: Object.entries(button.requirements).reduce((acc, [key]) => {
+                        acc[key] = window[key] || 0; // Fallback to 0 if undefined
+                        return acc;
+                    }, {})
+                });
+            }
         }
+    });
 
+    Ibuttons.forEach(button => {
+        const buttonElement = document.getElementById(button.id);
+        if (buttonElement) {
+            buttonElement.style.backgroundColor = ice >= button.cost ? canAffordColor : cannotAffordColor;
+        }
+    });
+}
         /**
          * Adds money per second
          */
@@ -1453,6 +2006,7 @@ function updatemps() {
          * Initializes the game
          */
         function initializeGame() {
+            updateUpgradeVisibility();
             initAudio();
             loadGame();
             //loadAchievements();
@@ -1567,11 +2121,11 @@ function updatemps() {
             firstSteps: { unlocked: false, condition: () => franchises >= 2 },
             empireBuilder: { unlocked: false, condition: () => franchises >= 5 },
             millionaire: { unlocked: false, condition: () => count >= 1000000 },
-            masterManager: { unlocked: false, condition: () => M + M2 + M4 + M5 >= 50 },
-            a100employees: { unlocked: false, condition: () => M + M2 + M4 + M5 >= 100 },
-            a200employees: { unlocked: false, condition: () => M + M2 + M4 + M5 >= 200 },
-            a500employees: { unlocked: false, condition: () => M + M2 + M4 + M5 >= 500 },
-            a1000employees: {unlocked: false, condition: () => M + M2 + M4 + M5 >= 1000 },
+            masterManager: { unlocked: false, condition: () => M + M2 + M4 + M5 + M6 + M7 + M8 + M9 + M10 + M11 + M12 + M13 + M14 + M15 + M16 + M17 + M18 + M19 >= 50 },
+            a100employees: { unlocked: false, condition: () => M + M2 + M4 + M5 + M6 + M7 + M8 + M9 + M10 + M11 + M12 + M13 + M14 + M15 + M16 + M17 + M18 + M19 >= 100 },
+            a200employees: { unlocked: false, condition: () => M + M2 + M4 + M5 + M6 + M7 + M8 + M9 + M10 + M11 + M12 + M13 + M14 + M15 + M16 + M17 + M18 + M19 >= 200 },
+            a500employees: { unlocked: false, condition: () => M + M2 + M4 + M5 + M6 + M7 + M8 + M9 + M10 + M11 + M12 + M13 + M14 + M15 + M16 + M17 + M18 + M19 >= 500 },
+            a1000employees: {unlocked: false, condition: () => M + M2 + M4 + M5 + M6 + M7 + M8 + M9 + M10 + M11 + M12 + M13 + M14 + M15 + M16 + M17 + M18 + M19 >= 1000 },
             goldenTouch: { unlocked: false, condition: () => golden_burger >= 2 },
             coffeeMaster: { unlocked: false, condition: () => upg1 === 1 },
             a100clicks: { unlocked: false, condition: () => totalclicks === 100 },
@@ -1616,35 +2170,230 @@ function updatemps() {
             }
         }
         function updateUpgradeVisibility() {
-            // Coffee upgrade
-            const upgrade1Button = document.getElementById("upgrade1");
-            if (upg1 === 1 && upgrade1Button) {
-                upgrade1Button.style.display = 'none'; // Hide coffee upgrade button if already purchased
-            }
+            if (upg1 === 1) {
+        const upgrade1Button = document.getElementById("upgrade1");
+        if (upgrade1Button) upgrade1Button.remove();
+        const franchiseImg = document.getElementById('Franchise1');
+        if (franchiseImg) franchiseImg.src = 'Resturant+coffee.png';
+    }
 
-            // Ice cream machine upgrade (shown only if coffee upgrade is purchased)
-            const upgrade3Button = document.getElementById("upgrade3");
-            if (upg3 === 1) {
-                if (upgrade3Button) upgrade3Button.style.display = 'none'; // Hide if already purchased
-            } else if (upg1 === 1 && upgrade3Button) {
-                upgrade3Button.style.display = 'flex'; // Show if coffee upgrade is bought but ice cream upgrade isn't
-            }
+    // Ice cream machine upgrade (shown only if coffee upgrade is purchased)
+    if (upg3 === 1) {
+        const upgrade3Button = document.getElementById("upgrade3");
+        if (upgrade3Button) upgrade3Button.remove();
+        const franchiseImg = document.getElementById('Franchise1');
+        if (franchiseImg) franchiseImg.src = 'restaurantcoffee+ice.png';
+    } else if (upg1 === 1) {
+        const upgrade3Button = document.getElementById("upgrade3");
+        if (upgrade3Button) upgrade3Button.style.display = 'flex';
+    }
 
-            // Burger upgrades
-            const burgerImage = document.querySelector('.image-button');
-            const upgrade2Button = document.getElementById("upgrade2"); // Golden
-            const upgrade4Button = document.getElementById("upgrade4"); // Diamond
-            const upgrade5Button = document.getElementById("upgrade5"); // Sapphire
-            const upgrade6Button = document.getElementById("upgrade6"); // Uranium
-            const upgrade7Button = document.getElementById("upgrade7"); // Obsidian
+    // Burger upgrades
+    const burgerImage = document.querySelector('.image-button');
+    const upgrade2Button = document.getElementById("upgrade2"); // Golden
+    const upgrade4Button = document.getElementById("upgrade4"); // Diamond
+    const upgrade5Button = document.getElementById("upgrade5"); // Sapphire
+    const upgrade6Button = document.getElementById("upgrade6"); // Uranium
+    const upgrade7Button = document.getElementById("upgrade7"); // Obsidian
 
-            // Hide all burger upgrade buttons initially
-            if (upgrade2Button) upgrade2Button.style.display = 'none';
-            if (upgrade4Button) upgrade4Button.style.display = 'none';
-            if (upgrade5Button) upgrade5Button.style.display = 'none';
-            if (upgrade6Button) upgrade6Button.style.display = 'none';
-            if (upgrade7Button) upgrade7Button.style.display = 'none';
+    // Hide all burger upgrade buttons initially
+    if (upgrade2Button) upgrade2Button.style.display = 'none';
+    if (upgrade4Button) upgrade4Button.style.display = 'none';
+    if (upgrade5Button) upgrade5Button.style.display = 'none';
+    if (upgrade6Button) upgrade6Button.style.display = 'none';
+    if (upgrade7Button) upgrade7Button.style.display = 'none';
 
+    // Set burger image and display the next available upgrade button based on `bimage`
+    switch (bimage) {
+        case 1: // Golden burger purchased
+            burgerImage.style.backgroundImage = "url('GoldenBurger.png')";
+            if (upgrade4Button) upgrade4Button.style.display = 'flex'; // Show Diamond upgrade next
+            break;
+        case 2: // Diamond burger purchased
+            burgerImage.style.backgroundImage = "url('Diamondburger.png')";
+            if (upgrade5Button) upgrade5Button.style.display = 'flex'; // Show Sapphire upgrade next
+            break;
+        case 3: // Sapphire burger purchased
+            burgerImage.style.backgroundImage = "url('Sapphireburger.png')";
+            if (upgrade6Button) upgrade6Button.style.display = 'flex'; // Show Uranium upgrade next
+            break;
+        case 4: // Uranium burger purchased
+            burgerImage.style.backgroundImage = "url('Uraniumburger.png')";
+            if (upgrade7Button) upgrade7Button.style.display = 'flex'; // Show Obsidian upgrade next
+            break;
+        case 5: // Obsidian burger purchased (no further upgrades)
+            burgerImage.style.backgroundImage = "url('Obsidianburger.png')";
+            break;
+        default:
+            // If no burgers have been upgraded, show the first upgrade (Golden)
+            if (upgrade2Button) upgrade2Button.style.display = 'flex';
+    }
+
+    // Other upgrades visibility based on conditions
+    const upgrade8Button = document.getElementById("upgrade8");
+    if (upg8 === 1) {
+        if (upgrade8Button) upgrade8Button.remove();
+    } else if (upg3 === 1) {
+        if (upgrade8Button) upgrade8Button.style.display = 'flex';
+    }
+
+    const upgrade9Button = document.getElementById("upgrade9");
+    if (upg9 === 1) {
+        if (upgrade9Button) upgrade9Button.remove();
+    } else if (upg8 === 1) {
+        if (upgrade9Button) upgrade9Button.style.display = 'flex';
+    }
+
+    const upgrade10Button = document.getElementById("upgrade10");
+    if (upg10 === 1) {
+        if (upgrade10Button) upgrade10Button.remove();
+    } else if (upg9 === 1) {
+        if (upgrade10Button) upgrade10Button.style.display = 'flex';
+    }
+
+    const upgrade11Button = document.getElementById("upgrade11");
+    if (upg11 === 1) {
+        if (upgrade11Button) upgrade11Button.remove();
+    } else if (upg10 === 1) {
+        if (upgrade11Button) upgrade11Button.style.display = 'flex';
+    }
+
+    const upgrade12Button = document.getElementById("upgrade12");
+    if (upg12 === 1) {
+        if (upgrade12Button) upgrade12Button.remove();
+    } else if (upg11 === 1) {
+        if (upgrade12Button) upgrade12Button.style.display = 'flex';
+    }
+
+    const upgrade13Button = document.getElementById("upgrade13");
+    if (upg13 === 1) {
+        if (upgrade13Button) upgrade13Button.remove();
+    } else if (upg12 === 1) {
+        if (upgrade13Button) upgrade13Button.style.display = 'flex';
+    }
+
+    const upgrade14Button = document.getElementById("upgrade14");
+    if (upg14 === 1) {
+        if (upgrade14Button) upgrade14Button.remove();
+    } else if (upg13 === 1) {
+        if (upgrade14Button) upgrade14Button.style.display = 'flex';
+    }
+
+    const upgrade15Button = document.getElementById("upgrade15");
+    if (upg15 === 1) {
+        if (upgrade15Button) upgrade15Button.remove();
+    } else if (upg14 === 1) {
+        if (upgrade15Button) upgrade15Button.style.display = 'flex';
+    }
+
+    const upgrade16Button = document.getElementById("upgrade16");
+    if (upg16 === 1) {
+        if (upgrade16Button) upgrade16Button.remove();
+    } else if (upg15 === 1) {
+        if (upgrade16Button) upgrade16Button.style.display = 'flex';
+    }
+
+    const upgrade17Button = document.getElementById("upgrade17");
+    if (upg17 === 1) {
+        if (upgrade17Button) upgrade17Button.remove();
+    } else if (upg16 === 1) {
+        if (upgrade17Button) upgrade17Button.style.display = 'flex';
+    }
+
+    const upgrade18Button = document.getElementById("upgrade18");
+    if (upg18 === 1) {
+        if (upgrade18Button) upgrade18Button.remove();
+    } else if (upg17 === 1) {
+        if (upgrade18Button) upgrade18Button.style.display = 'flex';
+    }
+
+    const upgrade19Button = document.getElementById("upgrade19");
+    if (upg19 === 1) {
+        if (upgrade19Button) upgrade19Button.remove();
+    } else if (upg18 === 1) {
+        if (upgrade19Button) upgrade19Button.style.display = 'flex';
+    }
+
+    const upgrade20Button = document.getElementById("upgrade20");
+    if (upg20 === 1) {
+        if (upgrade20Button) upgrade20Button.remove();
+    } else if (upg19 === 1) {
+        if (upgrade20Button) upgrade20Button.style.display = 'flex';
+    }
+
+    const upgrade21Button = document.getElementById("upgrade21");
+    if (upg21 === 1) {
+        if (upgrade21Button) upgrade21Button.remove();
+    } else if (upg20 === 1) {
+        if (upgrade21Button) upgrade21Button.style.display = 'flex';
+    }
+
+    const upgrade22Button = document.getElementById("upgrade22");
+    if (upg22 === 1) {
+        if (upgrade22Button) upgrade22Button.remove();
+    } else if (upg21 === 1) {
+        if (upgrade22Button) upgrade22Button.style.display = 'flex';
+    }
+
+    const upgrade23Button = document.getElementById("upgrade23");
+    if (upg23 === 1) {
+        if (upgrade23Button) upgrade23Button.remove();
+    } else if (upg22 === 1) {
+        if (upgrade23Button) upgrade23Button.style.display = 'flex';
+    }
+
+    const upgrade24Button = document.getElementById("upgrade24");
+    if (upg24 === 1) {
+        if (upgrade24Button) upgrade24Button.remove();
+    } else if (upg23 === 1) {
+        if (upgrade24Button) upgrade24Button.style.display = 'flex';
+    }
+
+    const upgrade25Button = document.getElementById("upgrade25");
+    if (upg25 === 1) {
+        if (upgrade25Button) upgrade25Button.remove();
+    } else if (upg24 === 1) {
+        if (upgrade25Button) upgrade25Button.style.display = 'flex';
+    }
+
+    const upgrade26Button = document.getElementById("upgrade26");
+    if (upg26 === 1) {
+        if (upgrade26Button) upgrade26Button.remove();
+    } else if (upg25 === 1) {
+        if (upgrade26Button) upgrade26Button.style.display = 'flex';
+    }
+
+    const upgrade27Button = document.getElementById("upgrade27");
+    if (upg27 === 1) {
+        if (upgrade27Button) upgrade27Button.remove();
+    } else if (upg26 === 1) {
+        if (upgrade27Button) upgrade27Button.style.display = 'flex';
+    }
+
+    const upgrade28Button = document.getElementById("upgrade28");
+    if (upg28 === 1) {
+        if (upgrade28Button) upgrade28Button.remove();
+    } else if (upg27 === 1) {
+        if (upgrade28Button) upgrade28Button.style.display = 'flex';
+    }
+
+    const upgrade29Button = document.getElementById("upgrade29");
+    if (upg29 === 1) {
+        if (upgrade29Button) upgrade29Button.remove();
+    } else if (upg28 === 1) {
+        if (upgrade29Button) upgrade29Button.style.display = 'flex';
+    }
+
+    const upgrade30Button = document.getElementById("upgrade30");
+    if (upg30 === 1) {
+        if (upgrade30Button) upgrade30Button.remove();
+    } else if (upg29 === 1) {
+        if (upgrade30Button) upgrade30Button.style.display = 'flex';
+    }
+
+        // Other upgrades visibility based on conditions
+
+    
             // Set burger image and display the next available upgrade button based on `bimage`
             switch (bimage) {
                 case 1: // Golden burger purchased
@@ -1715,11 +2464,37 @@ function updatemps() {
                 cost17,
                 cost18,
                 cost19,
+
                 upgp1,
                 upgp2,
                 upgp3,
                 upgp4,
                 upgp5,
+                upgp6,
+                upgp7,
+                upgp8,
+                upgp9,
+                upgp10,
+                upgp11,
+                upgp12,
+                upgp13,
+                upgp14,
+                upgp15,
+                upgp16,
+                upgp17,
+                upgp18,
+                upgp19,
+                upgp20,
+                upgp21,
+                upgp22,
+                upgp23,
+                upgp24,
+                upgp25,
+                upgp26,
+                upgp27,
+                upgp28,
+                upgp29,
+                upgp30,
                 fcost,
 
                 // Production values
@@ -1727,7 +2502,22 @@ function updatemps() {
                 manager,
                 clickamount,
                 director,
+                VP,
+                COO,
                 ceo,
+                chairman,
+                oracle,
+                fryer,
+                feast,
+                verdant,
+                emulsifier,
+                whisperer,
+                chancellor,
+                priest,
+                archmage,
+                matriarch,
+                grillmaster,
+
 
                 // Counts
                 M,
@@ -1752,6 +2542,29 @@ function updatemps() {
                 // Upgrade states
                 upg1,
                 upg3,
+                upg8,
+                upg9,
+                upg10,
+                upg11,
+                upg12,
+                upg13,
+                upg14,
+                upg15,
+                upg16,
+                upg17,
+                upg18,
+                upg19,
+                upg20,
+                upg21,
+                upg22,
+                upg23,
+                upg24,
+                upg25,
+                upg26,
+                upg27,
+                upg28,
+                upg29,
+                upg30,
                 bimage,
                 // Franchise system
                 franchises,
@@ -1826,6 +2639,31 @@ function updatemps() {
                 upgp3 = gameState.upgp3;
                 upgp4 = gameState.upgp4;
                 upgp5 = gameState.upgp5;
+                upgp6 = gameState.upgp6;
+                upgp7 = gameState.upgp7;
+                upgp8 = gameState.upgp8;
+                upgp9 = gameState.upgp9;
+                upgp10 = gameState.upgp10;
+                upgp11 = gameState.upgp11;
+                upgp12 = gameState.upgp12;
+                upgp13 = gameState.upgp13;
+                upgp14 = gameState.upgp14;
+                upgp15 = gameState.upgp15;
+                upgp16 = gameState.upgp16;
+                upgp17 = gameState.upgp17;
+                upgp18 = gameState.upgp18;
+                upgp19 = gameState.upgp19;
+                upgp20 = gameState.upgp20;
+                upgp21 = gameState.upgp21;
+                upgp22 = gameState.upgp22;
+                upgp23 = gameState.upgp23;
+                upgp24 = gameState.upgp24;
+                upgp25 = gameState.upgp25;
+                upgp26 = gameState.upgp26;
+                upgp27 = gameState.upgp27;
+                upgp28 = gameState.upgp28;
+                upgp29 = gameState.upgp29;
+                upgp30 = gameState.upgp30;
                 fcost = gameState.fcost;
 
                 // Restore production values
@@ -1833,7 +2671,22 @@ function updatemps() {
                 manager = gameState.manager;
                 clickamount = gameState.clickamount;
                 director = gameState.director;
+                VP = gameState.VP;
+                COO = gameState.COO;
                 ceo = gameState.ceo;
+                chairman = gameState.chairman;
+                oracle = gameState.oracle;
+                fryer = gameState.fryer;
+                feast = gameState.feast;
+                verdant = gameState.verdant;
+                emulsifier = gameState.emulsifier;
+                whisperer = gameState.whisperer;
+                chancellor = gameState.chancellor;
+                priest = gameState.priest;
+                archmage = gameState.archmage;
+                matriarch = gameState.matriarch;
+                grillmaster = gameState.grillmaster;
+
 
                 // Restore counts
                 M = gameState.M;
@@ -1858,6 +2711,29 @@ function updatemps() {
                 // Restore upgrade states
                 upg1 = gameState.upg1;
                 upg3 = gameState.upg3;
+                upg8 = gameState.upg8;
+                upg9 = gameState.upg9;
+                upg10 = gameState.upg10;
+                upg11 = gameState.upg11;
+                upg12 = gameState.upg12;
+                upg13 = gameState.upg13;
+                upg14 = gameState.upg14;
+                upg15 = gameState.upg15;
+                upg16 = gameState.upg16;
+                upg17 = gameState.upg17;
+                upg18 = gameState.upg18;
+                upg19 = gameState.upg19;
+                upg20 = gameState.upg20;
+                upg21 = gameState.upg21;
+                upg22 = gameState.upg22;
+                upg23 = gameState.upg23;
+                upg24 = gameState.upg24;
+                upg25 = gameState.upg25;
+                upg26 = gameState.upg26;
+                upg27 = gameState.upg27;
+                upg28 = gameState.upg28;
+                upg29 = gameState.upg29;
+                upg30 = gameState.upg30;
 
                 // Restore franchise system
                 franchises = gameState.franchises;
@@ -1899,6 +2775,27 @@ function updatemps() {
                 if (bimage == 5) {
                     chesburger.style.backgroundImage = "url('Obsidianburger.png')";
                 }
+                if (upg11 === 1) {
+                document.getElementById("MObutton").style.display = 'flex'; // Show Milkshake Oracle
+                document.getElementById("SFbutton").style.display = 'flex'; // Show Shadow Fryer
+                }
+            if (upg15 === 1) {
+                document.getElementById("feastbutton").style.display = 'flex'; // Show Keeper of the Hidden Feast
+                document.getElementById("verdantbutton").style.display = 'flex'; // Show Verdant Keeper
+            }
+            if (upg19 === 1) {
+                document.getElementById("FWbutton").style.display = 'flex'; // Show Flame Whisperer
+                document.getElementById("CCbutton").style.display = 'flex'; // Show Cheese Chancellor
+                document.getElementById("ESbutton").style.display = 'flex'; // Show Emulsifier Supreme
+            }
+            if (upg23 === 1) {
+                document.getElementById("GAbutton").style.display = 'flex'; // Show Golden Archmage
+                document.getElementById("priestbutton").style.display = 'flex'; // Show High Priest of the Golden Bun
+            }
+            if (upg27 === 1) {
+                document.getElementById("PMbutton").style.display = 'flex'; // Show Patty Matriarch
+                document.getElementById("GGbutton").style.display = 'flex'; // Show Grand Grillmaster
+            }
 
                 
                 if (gameState.achievements) {
@@ -2287,19 +3184,112 @@ function hideTooltip(tooltipId) {
                     <div id="upgrade">
                         <div class="section-title">Upgrades</div>
                         <!-- Upgrades tooltips -->
-                        <div class="tooltip-container">
+                        <div class="tooltip-container" id="upgrade1tooltipcontainer">
                             <button id="upgrade1" onclick="upgrade1()" onmouseover="showTooltip(event, 'upgrade1tooltip')" onmouseout="hideTooltip('upgrade1tooltip')">Coffee: $150</button>
                             <span class="tooltip" id="upgrade1tooltip">Increases the money made from all workers by 2.5x</span>
                         </div>
-                        <div class="tooltip-container">
+                        <div class="tooltip-container" id="upgrade3tooltipcontainer">
                             <button id="upgrade3" onclick="upgrade3()" style="display:none;" onmouseover="showTooltip(event, 'upgrade3tooltip')" onmouseout="hideTooltip('upgrade3tooltip')">The Ice cream machine: $15000</button>
                             <span class="tooltip" id="upgrade3tooltip">Doubles the money made from all managers, and adds in a secret currency</span>
                         </div>
+                        <div class="tooltip-container" id="upgrade8tooltipcontainer">
+                            <button id="upgrade8" onclick="upgrade8()" style="display:none;" onmouseover="showTooltip(event, 'upgrade8tooltip')" onmouseout="hideTooltip('upgrade8tooltip')">Manager Boost: $25000</button>
+                            <span class="tooltip" id="upgrade8tooltip">Gives Manager +0.5x per worker you have</span>
+                        </div>
+                        <div class="tooltip-container" id="upgrade9tooltipcontainer">
+                            <button id="upgrade9" onclick="upgrade9()" style="display:none;" onmouseover="showTooltip(event, 'upgrade9tooltip')" onmouseout="hideTooltip('upgrade9tooltip')">Overall Boost: $75000</button>
+                            <span class="tooltip" id="upgrade9tooltip">Overall 1.5x production</span>
+                        </div>
+                        <div class="tooltip-container" id="upgrade10tooltipcontainer">
+                            <button id="upgrade10" onclick="upgrade10()" style="display:none;" onmouseover="showTooltip(event, 'upgrade10tooltip')" onmouseout="hideTooltip('upgrade10tooltip')">Executive Boost: $100000</button>
+                            <span class="tooltip" id="upgrade10tooltip">VP, COO and CEO get 1.5x more money</span>
+                        </div>
                         <div class="tooltip-container">
+                            <button id="upgrade11" onclick="upgrade11()" style="display:none;" onmouseover="showTooltip(event, 'upgrade11tooltip')" onmouseout="hideTooltip('upgrade11tooltip')">Unlock the secret society tier one: $175000, 50 Directors, and 50 VPs </button>
+                            <span class="tooltip" id="upgrade11tooltip">unlocks Milkshake Oracle and shadow fryer</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade12" onclick="upgrade12()" style="display:none;" onmouseover="showTooltip(event, 'upgrade12tooltip')" onmouseout="hideTooltip('upgrade12tooltip')">Ice Cream Boost: $225000</button>
+                            <span class="tooltip" id="upgrade12tooltip">Increases ice cream production by 1.25x and Oracle by 1.5x</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade13" onclick="upgrade13()" style="display:none;" onmouseover="showTooltip(event, 'upgrade13tooltip')" onmouseout="hideTooltip('upgrade13tooltip')">COO Boost: $300000</button>
+                            <span class="tooltip" id="upgrade13tooltip">COO + 0.05x per Oracle</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade14" onclick="upgrade14()" style="display:none;" onmouseover="showTooltip(event, 'upgrade14tooltip')" onmouseout="hideTooltip('upgrade14tooltip')">Production Boost: $500000</button>
+                            <span class="tooltip" id="upgrade14tooltip">All production increase by 1.25x</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade15" onclick="upgrade15()" style="display:none;" onmouseover="showTooltip(event, 'upgrade15tooltip')" onmouseout="hideTooltip('upgrade15tooltip')">Unlock the secret society tier two: $750000, 50 CEOs, and 50 Oracles</button>
+                            <span class="tooltip" id="upgrade15tooltip">unlocks The Keeper of the Hidden Feast, and verdant keeper</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade16" onclick="upgrade16()" style="display:none;" onmouseover="showTooltip(event, 'upgrade16tooltip')" onmouseout="hideTooltip('upgrade16tooltip')">Verdant Boost: $1000000</button>
+                            <span class="tooltip" id="upgrade16tooltip">1.5x to Verdant Keeper</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade17" onclick="upgrade17()" style="display:none;" onmouseover="showTooltip(event, 'upgrade17tooltip')" onmouseout="hideTooltip('upgrade17tooltip')">Fryer Boost: $1250000</button>
+                            <span class="tooltip" id="upgrade17tooltip">Shadow Fryer +0.05x per Verdant Keeper</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade18" onclick="upgrade18()" style="display:none;" onmouseover="showTooltip(event, 'upgrade18tooltip')" onmouseout="hideTooltip('upgrade18tooltip')">Expand the secret menu: $1550000</button>
+                            <span class="tooltip" id="upgrade18tooltip">1.25x buff to Keeper of Hidden Feast, and unlocks new burger upgrades</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade19" onclick="upgrade19()" style="display:none;" onmouseover="showTooltip(event, 'upgrade19tooltip')" onmouseout="hideTooltip('upgrade19tooltip')">Unlock the secret society tier three: $2000000, 50 Verdant Keepers, and 50 Shadow Fryers</button>
+                            <span class="tooltip" id="upgrade19tooltip">unlocks flame whisperer, cheese chancellor, and emulsifier supreme</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade20" onclick="upgrade20()" style="display:none;" onmouseover="showTooltip(event, 'upgrade20tooltip')" onmouseout="hideTooltip('upgrade20tooltip')">Whisperer Boost: $3500000</button>
+                            <span class="tooltip" id="upgrade20tooltip">1.5x to Flame Whisperer</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade21" onclick="upgrade21()" style="display:none;" onmouseover="showTooltip(event, 'upgrade21tooltip')" onmouseout="hideTooltip('upgrade21tooltip')">VP Boost: $6250000</button>
+                            <span class="tooltip" id="upgrade21tooltip">VP + 0.10x per Flame Whisperer</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade22" onclick="upgrade22()" style="display:none;" onmouseover="showTooltip(event, 'upgrade22tooltip')" onmouseout="hideTooltip('upgrade22tooltip')">Make a new sauce: $10250000</button>
+                            <span class="tooltip" id="upgrade22tooltip">1.5x to emulsifier supreme</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade23" onclick="upgrade23()" style="display:none;" onmouseover="showTooltip(event, 'upgrade23tooltip')" onmouseout="hideTooltip('upgrade23tooltip')">Unlock the secret society tier four: $15750000, 50 Cheese Chancellors, and 50 Flame Whisperers</button>
+                            <span class="tooltip" id="upgrade23tooltip">unlocks Golden Archmage, and high priest of the Golden bun</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade24" onclick="upgrade24()" style="display:none;" onmouseover="showTooltip(event, 'upgrade24tooltip')" onmouseout="hideTooltip('upgrade24tooltip')">New strategy: $22500000</button>
+                            <span class="tooltip" id="upgrade24tooltip">1.5x to golden archmage</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade25" onclick="upgrade25()" style="display:none;" onmouseover="showTooltip(event, 'upgrade25tooltip')" onmouseout="hideTooltip('upgrade25tooltip')">Worker boost: $55000000</button>
+                            <span class="tooltip" id="upgrade25tooltip">Worker + 0.15x per archmage </span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade26" onclick="upgrade26()" style="display:none;" onmouseover="showTooltip(event, 'upgrade26tooltip')" onmouseout="hideTooltip('upgrade26tooltip')">David goggins: $125000000</button>
+                            <span class="tooltip" id="upgrade26tooltip">1.35x all</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade27" onclick="upgrade27()" style="display:none;" onmouseover="showTooltip(event, 'upgrade27tooltip')" onmouseout="hideTooltip('upgrade27tooltip')">Unlock the secret society tier five: $250000000, 50 Golden Archmages, and 50 Emulsifier Supremes</button>
+                            <span class="tooltip" id="upgrade27tooltip">unlocks grand grill master and patty matriarch</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade28" onclick="upgrade28()" style="display:none;" onmouseover="showTooltip(event, 'upgrade28tooltip')" onmouseout="hideTooltip('upgrade28tooltip')">Learn an ancient tradition: $500000000</button>
+                            <span class="tooltip" id="upgrade28tooltip">1.5x Patty Matriarch</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade29" onclick="upgrade29()" style="display:none;" onmouseover="showTooltip(event, 'upgrade29tooltip')" onmouseout="hideTooltip('upgrade29tooltip')">Emulsifier boost: $750000000</button>
+                            <span class="tooltip" id="upgrade29tooltip">Emulsifier supreme + 0.20x per matriarch
+                            </span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade30" onclick="upgrade30()" style="display:none;" onmouseover="showTooltip(event, 'upgrade30tooltip')" onmouseout="hideTooltip('upgrade30tooltip')">Learn from the grand grill master: $1750000000</button>
+                            <span class="tooltip" id="upgrade30tooltip">Coming soon </span>
+                        </div>
+                        <div class="tooltip-container" id="upgrade2tooltipcontainer">
                             <button id="upgrade2" onclick="upgrade2()" onmouseover="showTooltip(event, 'upgrade2tooltip')" onmouseout="hideTooltip('upgrade2tooltip')">The Golden burger: $100000</button>
                             <span class="tooltip" id="upgrade2tooltip">Increases how much money you make per click by 2x</span>
                         </div>
-                        <div class="tooltip-container">
+                        <div class="tooltip-container" id="upgrade4tooltipcontainer">
                             <button id="upgrade4" onclick="upgrade4()" style="display:none;" onmouseover="showTooltip(event, 'upgrade4tooltip')" onmouseout="hideTooltip('upgrade4tooltip')">The Diamond burger: $500000</button>
                             <span class="tooltip" id="upgrade4tooltip">Increases how much money you make per click by 2x</span>
                         </div>
@@ -2352,47 +3342,47 @@ function hideTooltip(tooltipId) {
                                 <span class="tooltip" id="Chairmantooltip">Earns $___ per second</span>
                             </div>
                             <div class="tooltip-container">
-                                <button id="MObutton" onclick="MOaction()" style="display: flex;" onmouseover="showTooltip(event, 'MOtooltip')" onmouseout="hideTooltip('MOtooltip')">Milkshake Oracle: $5000 (0)</button>
+                                <button id="MObutton" onclick="MOaction()" style="display: none;" onmouseover="showTooltip(event, 'MOtooltip')" onmouseout="hideTooltip('MOtooltip')">Milkshake Oracle: $5000 (0)</button>
                                 <span class="tooltip" id="MOtooltip">Earns $___ per second</span>
                             </div>
                             <div class="tooltip-container">
-                                <button id="SFbutton" onclick="SFaction()" style="display: flex;" onmouseover="showTooltip(event, 'SFtooltip')" onmouseout="hideTooltip('SFtooltip')">Shadow Fryer: $12500 (0)</button>
+                                <button id="SFbutton" onclick="SFaction()" style="display: none;" onmouseover="showTooltip(event, 'SFtooltip')" onmouseout="hideTooltip('SFtooltip')">Shadow Fryer: $12500 (0)</button>
                                 <span class="tooltip" id="SFtooltip">Earns $___ per second</span>
                             </div>
                             <div class="tooltip-container">
-                                <button id="feastbutton" onclick="feastaction()" style="display: flex;" onmouseover="showTooltip(event, 'Feasttooltip')" onmouseout="hideTooltip('Feasttooltip')">The Keeper of the Hidden Feast: $17500 (0)</button>
+                                <button id="feastbutton" onclick="feastaction()" style="display: none;" onmouseover="showTooltip(event, 'Feasttooltip')" onmouseout="hideTooltip('Feasttooltip')">The Keeper of the Hidden Feast: $17500 (0)</button>
                                 <span class="tooltip" id="Feasttooltip">Earns $___ per second</span>
                             </div>
                             <div class="tooltip-container">
-                                <button id="verdantbutton" onclick="verdantaction()" style="display: flex;" onmouseover="showTooltip(event, 'Verdanttooltip')" onmouseout="hideTooltip('Verdanttooltip')">Verdant Keeper: $22500 (0)</button>
+                                <button id="verdantbutton" onclick="verdantaction()" style="display: none;" onmouseover="showTooltip(event, 'Verdanttooltip')" onmouseout="hideTooltip('Verdanttooltip')">Verdant Keeper: $22500 (0)</button>
                                 <span class="tooltip" id="Verdanttooltip">Earns $___ per second</span>
                             </div>
                             <div class="tooltip-container">
-                                <button id="ESbutton" onclick="ESaction()" style="display: flex;" onmouseover="showTooltip(event, 'EStooltip')" onmouseout="hideTooltip('EStooltip')">Emulsifier Supreme: $50000 (0)</button>
+                                <button id="ESbutton" onclick="ESaction()" style="display: none;" onmouseover="showTooltip(event, 'EStooltip')" onmouseout="hideTooltip('EStooltip')">Emulsifier Supreme: $50000 (0)</button>
                                 <span class="tooltip" id="EStooltip">Earns $___ per second</span>
                             </div>
                             <div class="tooltip-container">
-                                <button id="FWbutton" onclick="FWaction()" style="display: flex;" onmouseover="showTooltip(event, 'FWtooltip')" onmouseout="hideTooltip('FWtooltip')">Flame Whisperer: $125000 (0)</button>
+                                <button id="FWbutton" onclick="FWaction()" style="display: none;" onmouseover="showTooltip(event, 'FWtooltip')" onmouseout="hideTooltip('FWtooltip')">Flame Whisperer: $125000 (0)</button>
                                 <span class="tooltip" id="FWtooltip">Earns $___ per second</span>
                             </div>
                             <div class="tooltip-container">
-                                <button id="CCbutton" onclick="CCaction()" style="display: flex;" onmouseover="showTooltip(event, 'CCtooltip')" onmouseout="hideTooltip('CCtooltip')">Cheese Chancellor: $200000 (0)</button>
+                                <button id="CCbutton" onclick="CCaction()" style="display: none;" onmouseover="showTooltip(event, 'CCtooltip')" onmouseout="hideTooltip('CCtooltip')">Cheese Chancellor: $200000 (0)</button>
                                 <span class="tooltip" id="CCtooltip">Earns $___ per second</span>
                             </div>
                             <div class="tooltip-container">
-                                <button id="priestbutton" onclick="priestaction()" style="display: flex;" onmouseover="showTooltip(event, 'Priesttooltip')" onmouseout="hideTooltip('Priesttooltip')">High Priest of the Golden Bun: $375000 (0)</button>
+                                <button id="priestbutton" onclick="priestaction()" style="display: none;" onmouseover="showTooltip(event, 'Priesttooltip')" onmouseout="hideTooltip('Priesttooltip')">High Priest of the Golden Bun: $375000 (0)</button>
                                 <span class="tooltip" id="Priesttooltip">Earns $___ per second</span>
                             </div>
                             <div class="tooltip-container">
-                                <button id="GAbutton" onclick="GAaction()" style="display: flex;" onmouseover="showTooltip(event, 'GAtooltip')" onmouseout="hideTooltip('GAtooltip')">Golden Archmage: $525000 (0)</button>
+                                <button id="GAbutton" onclick="GAaction()" style="display: none;" onmouseover="showTooltip(event, 'GAtooltip')" onmouseout="hideTooltip('GAtooltip')">Golden Archmage: $525000 (0)</button>
                                 <span class="tooltip" id="GAtooltip">Earns $___ per second</span>
                             </div>
                             <div class="tooltip-container">
-                                <button id="PMbutton" onclick="PMaction()" style="display: flex;" onmouseover="showTooltip(event, 'PMtooltip')" onmouseout="hideTooltip('PMtooltip')">Patty Matriarch: $1000000 (0)</button>
+                                <button id="PMbutton" onclick="PMaction()" style="display: none;" onmouseover="showTooltip(event, 'PMtooltip')" onmouseout="hideTooltip('PMtooltip')">Patty Matriarch: $1000000 (0)</button>
                                 <span class="tooltip" id="PMtooltip">Earns $___ per second</span>
                             </div>
                             <div class="tooltip-container">
-                                <button id="GGbutton" onclick="GGaction()" style="display: flex;" onmouseover="showTooltip(event, 'GGtooltip')" onmouseout="hideTooltip('GGtooltip')">Grand Grillmaster: $5000000 (0)</button>
+                                <button id="GGbutton" onclick="GGaction()" style="display: none;" onmouseover="showTooltip(event, 'GGtooltip')" onmouseout="hideTooltip('GGtooltip')">Grand Grillmaster: $5000000 (0)</button>
                                 <span class="tooltip" id="GGtooltip">Earns $500k per second</span>
                             </div>
                         </div>
