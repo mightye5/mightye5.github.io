@@ -130,7 +130,9 @@
 
         /* Main burger button styling */
         .image-button {
+            z-index: 9999999;
             width: 500px;
+            min-width: fit-content;
             height: 500px;
             background-color: transparent;
             background-image: url('https://png.pngtree.com/png-clipart/20230216/ourmid/pngtree-juicy-burgers-with-a-transparent-background-png-image_6603069.png');
@@ -188,15 +190,17 @@
         }
 
         .franchise-section {
+            z-index: 0;
             width: 100%;
             max-width: 1000px;
+            min-width: fit-content;
             margin: 0 auto;
             padding: 20px;
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             overflow-y: auto; /* Enable scrolling within this section */
-            max-height: fit-content;
+          
         }
 
         .franchise-header {
@@ -418,7 +422,7 @@
     <script>
         // ================ GAME STATE VARIABLES ================
         // Basic game currency and costs 
-        let count = 0000000000000000000000000;                  // Player's current money
+        let count = 10000000000000000000000000;                  // Player's current money
         let cost1 = 10,                 // Worker cost
             cost2 = 25,                 // Manager cost
             cost3 = 15,                 // Click upgrade cost
@@ -2881,7 +2885,7 @@ function hideTooltip(tooltipId) {
         // Add save buttons to HTML
         const saveControls = document.createElement('div');
         saveControls.className = 'save-controls';
-        saveControls.style.cssText = 'position: flex; top: 10px; right: 10px; display: flex; gap: 10px;';
+        saveControls.style.cssText = 'position: fixed;  bottom: 0; width: 100%; display: flex; justify-content: center; gap: 10px; padding: 10px;  background-color: #f0f0f0;  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);';
 
         const saveButton = document.createElement('button');
         saveButton.textContent = 'Save Game';
