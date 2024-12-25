@@ -510,7 +510,8 @@
             upg27 = 0,
             upg28 = 0,
             upg29 = 0,
-            upg30 = 0;
+            upg30 = 0,
+            upg31 = 0;
         // Special upgrade costs
         let upgp1 = 150;                 // Coffee upgrade cost
         let upgp2 = 100000;           // Golden burger cost
@@ -541,7 +542,15 @@
     upgp27 = 250000000,
     upgp28 = 500000000,
     upgp29 = 750000000,
-    upgp30 = 1750000000;
+    upgp30 = 1750000000,
+    upgp31 = 2000000000,
+    upgp32 = 2500000000,
+    upgp33 = 3000000000,
+    upgp34 = 3500000000,
+    upgp35 = 4000000000,
+    upgp36 = 4500000000,
+    upgp37 = 5000000000,
+    upgp38 = 5500000000;
         // Special features
         let golden_burger = 1;          // Golden burger multiplier
         let moneymultiplier = 1;        // Global money multiplier
@@ -552,7 +561,7 @@
         let totaltime = 0;
         let bimage = 0;
         //Everything Ice cream related
-         let ice = 00000000,                             // Player's current ice creams
+         let ice = 100000000,                             // Player's current ice creams
             ips = 0,                             // how many ice creams you get per second
             icost1 = 50,                          // The first Ice cream upgrade cost     
             icost2 = 75,                         // The second Ice cream upgrade cost 
@@ -760,7 +769,7 @@ function COOaction() {
                 mps += ceo;
                 M7 += 1;
                 count -= cost7;
-                cost7 = Math.round((1250*(1.1 ** M5) * 10) / 10);
+                cost7 = Math.round((1250*(1.1 ** M7) * 10) / 10);
                 playSound('purchase', 0.4);
                 updateAll();
             } else {
@@ -993,7 +1002,7 @@ function upgrade2() {
     if (count >= upgp2) {
         count -= upgp2;
         bimage += 1;
-        golden_burger = 2;  // Double click value
+        golden_burger += 2;  // Double click value
         chesburger.style.backgroundImage = "url('GoldenBurger.png')";
         const upgrade4Button = document.getElementById("upgrade4");
         if (upgrade4Button) {
@@ -1055,7 +1064,7 @@ function upgrade4() {
     const chesburger = document.querySelector('.image-button');
     if (count >= upgp4) {
         count -= upgp4;
-        golden_burger = 4;  // Double click value
+        golden_burger += 2.5;  // Double click value
         chesburger.style.backgroundImage = "url('Diamondburger.png')";
         bimage += 1;
         // Remove the upgrade4 button instead of hiding it
@@ -1077,7 +1086,7 @@ function upgrade5() {
     const chesburger = document.querySelector('.image-button');
     if (count >= upgp5) {
         count -= upgp5;
-        golden_burger = 6;  // Double click value
+        golden_burger += 3;  // Double click value
         chesburger.style.backgroundImage = "url('Sapphireburger.png')";
         bimage += 1;
         // Remove the upgrade5 button instead of hiding it
@@ -1096,10 +1105,11 @@ function upgrade5() {
 }
 
 function upgrade6() {
-    const chesburger = document.querySelector('.image-button');
+  
     if (count >= upgp6) {
         count -= upgp6;
-        golden_burger = 8;  // Double click value
+        golden_burger += 3.5;  // Double click value
+        const chesburger = document.querySelector('.image-button');
         chesburger.style.backgroundImage = "url('Uraniumburger.png')";
         bimage += 1;
         // Remove the upgrade6 button instead of hiding it
@@ -1121,9 +1131,12 @@ function upgrade7() {
     const chesburger = document.querySelector('.image-button');
     if (count >= upgp7) {
         count -= upgp7;
-        golden_burger = 10;  // Double click value
+        golden_burger += 4;  // Double click value
         chesburger.style.backgroundImage = "url('Obsidianburger.png')";
         bimage += 1;
+        if (upg18 == 1) {
+            document.getElementById("upgrade31").style.display = 'flex'; // Show the first secret menu item upgrade
+        }
         // Remove the upgrade7 button instead of hiding it
         document.getElementById("upgrade7").remove();
         hideTooltip('upgrade7tooltip'); // Hide the tooltip
@@ -1328,6 +1341,9 @@ function upgrade18() {
         document.getElementById("upgrade18").remove();
         hideTooltip('upgrade18tooltip'); // Hide the tooltip
         document.getElementById("upgrade19").style.display = 'flex';
+        if (upg31 == 0 && bimage == 5) {
+            document.getElementById("upgrade31").style.display = 'flex'; // Show the first secret menu item upgrade
+        }
         updateAll();
     } else {
         playSound('error', 0.4);
@@ -1537,6 +1553,149 @@ function upgrade30() {
         playSound('purchase', 0.4);
         document.getElementById("upgrade30").remove();
         hideTooltip('upgrade30tooltip');
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+function upgrade31() {
+    if (count >= upgp31) {
+        count -= upgp31;
+        upg31 = 1;
+        golden_burger += 5.5;
+        bimage += 1;
+        const chesburger = document.querySelector('.image-button');
+        chesburger.style.backgroundImage = "url('Prismburger.png')";
+        document.getElementById("upgrade31").remove();
+        hideTooltip('upgrade31tooltip');
+        document.getElementById("upgrade32").style.display = 'flex';
+        playSound('golden', 0.6);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade32() {
+    if (count >= upgp32) {
+        count -= upgp32;
+        golden_burger += 6.5;
+        bimage += 1;
+        const chesburger = document.querySelector('.image-button');
+        chesburger.style.backgroundImage = "url('Infernoburger.png')";
+        document.getElementById("upgrade32").remove();
+        hideTooltip('upgrade32tooltip');
+        document.getElementById("upgrade33").style.display = 'flex';
+        playSound('golden', 0.6);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade33() {
+    if (count >= upgp33) {
+        count -= upgp33;
+        golden_burger += 7.5;
+        bimage += 1;
+        const chesburger = document.querySelector('.image-button');
+        chesburger.style.backgroundImage = "url('Auroraburger.png')";
+        document.getElementById("upgrade33").remove();
+        hideTooltip('upgrade33tooltip');
+        document.getElementById("upgrade34").style.display = 'flex';
+        playSound('golden', 0.6);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade34() {
+    if (count >= upgp34) {
+        count -= upgp34;
+        golden_burger += 9;
+        bimage += 1;
+        const chesburger = document.querySelector('.image-button');
+        chesburger.style.backgroundImage = "url('Phoenixburger.png')";
+        document.getElementById("upgrade34").remove();
+        hideTooltip('upgrade34tooltip');
+        document.getElementById("upgrade35").style.display = 'flex';
+        playSound('golden', 0.6);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade35() {
+    if (count >= upgp35) {
+        count -= upgp35;
+        golden_burger += 10;
+        bimage += 1;
+        const chesburger = document.querySelector('.image-button');
+        chesburger.style.backgroundImage = "url('Galacticburger.png')";
+        document.getElementById("upgrade35").remove();
+        hideTooltip('upgrade35tooltip');
+        document.getElementById("upgrade36").style.display = 'flex';
+        playSound('golden', 0.6);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade36() {
+    if (count >= upgp36) {
+        count -= upgp36;
+        golden_burger += 12;
+        bimage += 1;
+        const chesburger = document.querySelector('.image-button');
+        chesburger.style.backgroundImage = "url('Eldritchburger.png')";
+        document.getElementById("upgrade36").remove();
+        hideTooltip('upgrade36tooltip');
+        document.getElementById("upgrade37").style.display = 'flex';
+        playSound('golden', 0.6);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade37() {
+    if (count >= upgp37) {
+        count -= upgp37;
+        golden_burger += 14;
+        bimage += 1;
+        const chesburger = document.querySelector('.image-button');
+        chesburger.style.backgroundImage = "url('Heavenlyburger.png')";
+        document.getElementById("upgrade37").remove();
+        hideTooltip('upgrade37tooltip');
+        document.getElementById("upgrade38").style.display = 'flex';
+        playSound('golden', 0.6);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade38() {
+    if (count >= upgp38) {
+        count -= upgp38;
+        bimage += 1;
+        golden_burger += 16.5;
+        const chesburger = document.querySelector('.image-button');
+        chesburger.style.backgroundImage = "url('Infinitefeastburger.png')";
+        document.getElementById("upgrade38").remove();
+        hideTooltip('upgrade38tooltip');
+        playSound('golden', 0.6);
         updateAll();
     } else {
         playSound('error', 0.4);
@@ -1893,11 +2052,11 @@ function updatemps() {
         { id: 'MObutton', cost: cost9 },
         { id: 'SFbutton', cost: cost10 },
         { id: 'feastbutton', cost: cost11 },
-        { id: 'Verdantbutton', cost: cost12 },
+        { id: 'verdantbutton', cost: cost12 },
         { id: 'ESbutton', cost: cost13 },
         { id: 'FWbutton', cost: cost14 },
         { id: 'CCbutton', cost: cost15 },
-        { id: 'Priestbutton', cost: cost16 },
+        { id: 'priestbutton', cost: cost16 },
         { id: 'GAbutton', cost: cost17 },
         { id: 'PMbutton', cost: cost18 },
         { id: 'GGbutton', cost: cost19 },
@@ -1932,6 +2091,14 @@ function updatemps() {
         { id: 'upgrade28', cost: upgp28 },
         { id: 'upgrade29', cost: upgp29 },
         { id: 'upgrade30', cost: upgp30 },
+        { id: 'upgrade31', cost: upgp31},
+        { id: 'upgrade32', cost: upgp32 },
+        { id: 'upgrade33', cost: upgp33 },
+        { id: 'upgrade34', cost: upgp34 },
+        { id: 'upgrade35', cost: upgp35 },
+        { id: 'upgrade36', cost: upgp36 },
+        { id: 'upgrade37', cost: upgp37 },
+        { id: 'upgrade38', cost: upgp38 },
     ];
 
     const Ibuttons = [
@@ -2199,6 +2366,14 @@ function updatemps() {
     const upgrade5Button = document.getElementById("upgrade5"); // Sapphire
     const upgrade6Button = document.getElementById("upgrade6"); // Uranium
     const upgrade7Button = document.getElementById("upgrade7"); // Obsidian
+    const upgrade31Button = document.getElementById("upgrade31");
+    const upgrade32Button = document.getElementById("upgrade32");
+    const upgrade33Button = document.getElementById("upgrade33");
+    const upgrade34Button = document.getElementById("upgrade34");
+    const upgrade35Button = document.getElementById("upgrade35");
+    const upgrade36Button = document.getElementById("upgrade36");
+    const upgrade37Button = document.getElementById("upgrade37");
+    const upgrade38Button = document.getElementById("upgrade38");
 
     // Hide all burger upgrade buttons initially
     if (upgrade2Button) upgrade2Button.style.display = 'none';
@@ -2206,32 +2381,72 @@ function updatemps() {
     if (upgrade5Button) upgrade5Button.style.display = 'none';
     if (upgrade6Button) upgrade6Button.style.display = 'none';
     if (upgrade7Button) upgrade7Button.style.display = 'none';
+    if (upgrade31Button) upgrade31Button.style.display = 'none';
+    if (upgrade32Button) upgrade32Button.style.display = 'none';
+    if (upgrade33Button) upgrade33Button.style.display = 'none';
+    if (upgrade34Button) upgrade34Button.style.display = 'none';
+    if (upgrade35Button) upgrade35Button.style.display = 'none';
+    if (upgrade36Button) upgrade36Button.style.display = 'none';
+    if (upgrade37Button) upgrade37Button.style.display = 'none';
+    if (upgrade38Button) upgrade38Button.style.display = 'none';
 
     // Set burger image and display the next available upgrade button based on `bimage`
     switch (bimage) {
-        case 1: // Golden burger purchased
+        case 1:
             burgerImage.style.backgroundImage = "url('GoldenBurger.png')";
-            if (upgrade4Button) upgrade4Button.style.display = 'flex'; // Show Diamond upgrade next
+            if (upgrade4Button) upgrade4Button.style.display = 'flex';
             break;
-        case 2: // Diamond burger purchased
+        case 2:
             burgerImage.style.backgroundImage = "url('Diamondburger.png')";
-            if (upgrade5Button) upgrade5Button.style.display = 'flex'; // Show Sapphire upgrade next
+            if (upgrade5Button) upgrade5Button.style.display = 'flex';
             break;
-        case 3: // Sapphire burger purchased
+        case 3:
             burgerImage.style.backgroundImage = "url('Sapphireburger.png')";
-            if (upgrade6Button) upgrade6Button.style.display = 'flex'; // Show Uranium upgrade next
+            if (upgrade6Button) upgrade6Button.style.display = 'flex';
             break;
-        case 4: // Uranium burger purchased
+        case 4:
             burgerImage.style.backgroundImage = "url('Uraniumburger.png')";
-            if (upgrade7Button) upgrade7Button.style.display = 'flex'; // Show Obsidian upgrade next
+            if (upgrade7Button) upgrade7Button.style.display = 'flex';
             break;
-        case 5: // Obsidian burger purchased (no further upgrades)
+        case 5:
             burgerImage.style.backgroundImage = "url('Obsidianburger.png')";
+            if (upgrade31Button) upgrade31Button.style.display = 'flex';
+            break;
+        case 6:
+            burgerImage.style.backgroundImage = "url('Prismburger.png')";
+            if (upgrade32Button) upgrade32Button.style.display = 'flex';
+            break;
+        case 7:
+            burgerImage.style.backgroundImage = "url('Infernoburger.png')";
+            if (upgrade33Button) upgrade33Button.style.display = 'flex';
+            break;
+        case 8:
+            burgerImage.style.backgroundImage = "url('Auroraburger.png')";
+            if (upgrade34Button) upgrade34Button.style.display = 'flex';
+            break;
+        case 9:
+            burgerImage.style.backgroundImage = "url('Phoenixburger.png')";
+            if (upgrade35Button) upgrade35Button.style.display = 'flex';
+            break;
+        case 10:
+            burgerImage.style.backgroundImage = "url('Galacticburger.png')";
+            if (upgrade36Button) upgrade36Button.style.display = 'flex';
+            break;
+        case 11:
+            burgerImage.style.backgroundImage = "url('Eldritchburger.png')";
+            if (upgrade37Button) upgrade37Button.style.display = 'flex';
+            break;
+        case 12:
+            burgerImage.style.backgroundImage = "url('Heavenlyburger.png')";
+            if (upgrade38Button) upgrade38Button.style.display = 'flex';
+            break;
+        case 13:
+            burgerImage.style.backgroundImage = "url('Infinitefeastburger.png')";
             break;
         default:
-            // If no burgers have been upgraded, show the first upgrade (Golden)
             if (upgrade2Button) upgrade2Button.style.display = 'flex';
     }
+
 
     // Other upgrades visibility based on conditions
     const upgrade8Button = document.getElementById("upgrade8");
@@ -2394,35 +2609,6 @@ function updatemps() {
     } else if (upg29 === 1) {
         if (upgrade30Button) upgrade30Button.style.display = 'flex';
     }
-
-        // Other upgrades visibility based on conditions
-
-    
-            // Set burger image and display the next available upgrade button based on `bimage`
-            switch (bimage) {
-                case 1: // Golden burger purchased
-                    burgerImage.style.backgroundImage = "url('GoldenBurger.png')";
-                    if (upgrade4Button) upgrade4Button.style.display = 'flex'; // Show Diamond upgrade next
-                    break;
-                case 2: // Diamond burger purchased
-                    burgerImage.style.backgroundImage = "url('Diamondburger.png')";
-                    if (upgrade5Button) upgrade5Button.style.display = 'flex'; // Show Sapphire upgrade next
-                    break;
-                case 3: // Sapphire burger purchased
-                    burgerImage.style.backgroundImage = "url('Sapphireburger.png')";
-                    if (upgrade6Button) upgrade6Button.style.display = 'flex'; // Show Uranium upgrade next
-                    break;
-                case 4: // Uranium burger purchased
-                    burgerImage.style.backgroundImage = "url('Uraniumburger.png')";
-                    if (upgrade7Button) upgrade7Button.style.display = 'flex'; // Show Obsidian upgrade next
-                    break;
-                case 5: // Obsidian burger purchased (no further upgrades)
-                    burgerImage.style.backgroundImage = "url('Obsidianburger.png')";
-                    break;
-                default:
-                    // If no burgers have been upgraded, show the first upgrade (Golden)
-                    if (upgrade2Button) upgrade2Button.style.display = 'flex';
-            }
         }
 
 
@@ -3295,19 +3481,51 @@ function hideTooltip(tooltipId) {
                         </div>
                         <div class="tooltip-container" id="upgrade4tooltipcontainer">
                             <button id="upgrade4" onclick="upgrade4()" style="display:none;" onmouseover="showTooltip(event, 'upgrade4tooltip')" onmouseout="hideTooltip('upgrade4tooltip')">The Diamond burger: $500000</button>
-                            <span class="tooltip" id="upgrade4tooltip">Increases how much money you make per click by 2x</span>
+                            <span class="tooltip" id="upgrade4tooltip">Increases how much money you make per click by 2.5x</span>
                         </div>
                         <div class="tooltip-container">
                             <button id="upgrade5" onclick="upgrade5()" style="display:none;" onmouseover="showTooltip(event, 'upgrade5tooltip')" onmouseout="hideTooltip('upgrade5tooltip')">The Sapphire burger: $800000</button>
-                            <span class="tooltip" id="upgrade5tooltip">Increases how much money you make per click by 2x</span>
+                            <span class="tooltip" id="upgrade5tooltip">Increases how much money you make per click by 3x</span>
                         </div>
                         <div class="tooltip-container">
                             <button id="upgrade6" onclick="upgrade6()" style="display:none;" onmouseover="showTooltip(event, 'upgrade6tooltip')" onmouseout="hideTooltip('upgrade6tooltip')">The Uranium burger: $1000000</button>
-                            <span class="tooltip" id="upgrade6tooltip">Increases how much money you make per click by 2x</span>
+                            <span class="tooltip" id="upgrade6tooltip">Increases how much money you make per click by 3.5x</span>
                         </div>
                         <div class="tooltip-container">
                             <button id="upgrade7" onclick="upgrade7()" style="display:none;" onmouseover="showTooltip(event, 'upgrade7tooltip')" onmouseout="hideTooltip('upgrade7tooltip')">The Obsidian burger: $1250000</button>
-                            <span class="tooltip" id="upgrade7tooltip">Increases how much money you make per click by 2x</span>
+                            <span class="tooltip" id="upgrade7tooltip">Increases how much money you make per click by 4x</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade31" onclick="upgrade31()" style="display:none;" onmouseover="showTooltip(event, 'upgrade31tooltip')" onmouseout="hideTooltip('upgrade31tooltip')">Prism Burger: $2000000000</button>
+                            <span class="tooltip" id="upgrade31tooltip">Increases how much money you make per click by 5.5x</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade32" onclick="upgrade32()" style="display:none;" onmouseover="showTooltip(event, 'upgrade32tooltip')" onmouseout="hideTooltip('upgrade32tooltip')">Inferno Slider Trio: $2500000000</button>
+                            <span class="tooltip" id="upgrade32tooltip">Increases how much money you make per click by 6.5x</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade33" onclick="upgrade33()" style="display:none;" onmouseover="showTooltip(event, 'upgrade33tooltip')" onmouseout="hideTooltip('upgrade33tooltip')">Aurora Royale: $3000000000</button>
+                            <span class="tooltip" id="upgrade33tooltip">Increases how much money you make per click by 7.5x</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade34" onclick="upgrade34()" style="display:none;" onmouseover="showTooltip(event, 'upgrade34tooltip')" onmouseout="hideTooltip('upgrade34tooltip')">Phoenix Feast: $3500000000</button>
+                            <span class="tooltip" id="upgrade34tooltip">Increases how much money you make per click by 9x</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade35" onclick="upgrade35()" style="display:none;" onmouseover="showTooltip(event, 'upgrade35tooltip')" onmouseout="hideTooltip('upgrade35tooltip')">Galactic Burger: $4000000000</button>
+                            <span class="tooltip" id="upgrade35tooltip">Increases how much money you make per click by 10x</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade36" onclick="upgrade36()" style="display:none;" onmouseover="showTooltip(event, 'upgrade36tooltip')" onmouseout="hideTooltip('upgrade36tooltip')">Eldritch Stack: $4500000000</button>
+                            <span class="tooltip" id="upgrade36tooltip">Increases how much money you make per click by 12x</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade37" onclick="upgrade37()" style="display:none;" onmouseover="showTooltip(event, 'upgrade37tooltip')" onmouseout="hideTooltip('upgrade37tooltip')">Heavenly Bite: $5000000000</button>
+                            <span class="tooltip" id="upgrade37tooltip">Increases how much money you make per click by 14x</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade38" onclick="upgrade38()" style="display:none;" onmouseover="showTooltip(event, 'upgrade38tooltip')" onmouseout="hideTooltip('upgrade38tooltip')">Infinite Feast: $5500000000</button>
+                            <span class="tooltip" id="upgrade38tooltip">Increases how much money you make per click by 16.5x</span>
                         </div>
                     </div>
                         <!-- Upgrades section -->
