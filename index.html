@@ -36,6 +36,7 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+            min-width: fit-content;
             overflow-y: auto; /* Enable scrolling within this section */
             padding: 20px;
         }
@@ -193,7 +194,7 @@
             z-index: 0;
             width: 100%;
             max-width: 1000px;
-            min-width: fit-content;
+           
             margin: 0 auto;
             padding: 20px;
             background-color: white;
@@ -1848,7 +1849,7 @@ function upgrade38() {
         /**
          * Updates button text with new costs
          */
-function formatCurrency(num) {
+  function formatCurrency(num) {
     if (num < 1000) {
         return num.toFixed(1);
     }
@@ -1869,78 +1870,126 @@ function formatCurrency(num) {
             return (num / value).toFixed(1) + symbol;
         }
     }
+    
+    return num.toFixed(1);
 }
 
-// Update the existing updateButtons function
+// Update buttons with formatted currency and counts
 function updateButtons(buttons) {
     buttons.forEach(button => {
         let element = document.getElementById(button.id);
         if (element) {
             let countText = '';
-            switch (button.id) {
-                case 'extraButton':
-                    countText = ` (${M})`;
-                    break;
-                case 'Button2':
-                    countText = ` (${M2})`;
-                    break;
-                case 'Clickbutton':
-                    countText = ` (${M3})`;
-                    break;
-                case 'directorbutton':
-                    countText = ` (${M4})`;
-                    break;
-                case 'VPbutton':
-                    countText = ` (${M5})`;
-                    break;
-                case 'COObutton':
-                    countText = ` (${M6})`;
-                    break;
-                case 'ceobutton':
-                    countText = ` (${M7})`;
-                    break;
-                case 'chairbutton':
-                    countText = ` (${M8})`;
-                    break;
-                case 'MObutton':
-                    countText = ` (${M9})`;
-                    break;
-                case 'SFbutton':
-                    countText = ` (${M10})`;
-                    break;
-                case 'feastbutton':
-                    countText = ` (${M11})`;
-                    break;
-                case 'verdantbutton':
-                    countText = ` (${M12})`;
-                    break;
-                case 'ESbutton':
-                    countText = ` (${M13})`;
-                    break;
-                case 'FWbutton':
-                    countText = ` (${M14})`;
-                    break;
-                case 'CCbutton':
-                    countText = ` (${M15})`;
-                    break;
-                case 'priestbutton':
-                    countText = ` (${M16})`;
-                    break;
-                case 'GAbutton':
-                    countText = ` (${M17})`;
-                    break;
-                case 'PMbutton':
-                    countText = ` (${M18})`;
-                    break;
-                case 'GGbutton':
-                    countText = ` (${M19})`;
-                    break;
-                default:
-                    countText = '';
+            // Map of button IDs to their respective count variables
+            const countMap = {
+                'extraButton': M,
+                'Button2': M2,
+                'Clickbutton': M3,
+                'directorbutton': M4,
+                'VPbutton': M5,
+                'COObutton': M6,
+                'ceobutton': M7,
+                'chairbutton': M8,
+                'MObutton': M9,
+                'SFbutton': M10,
+                'feastbutton': M11,
+                'verdantbutton': M12,
+                'ESbutton': M13,
+                'FWbutton': M14,
+                'CCbutton': M15,
+                'priestbutton': M16,
+                'GAbutton': M17,
+                'PMbutton': M18,
+                'GGbutton': M19
+            };
+            
+            if (countMap.hasOwnProperty(button.id)) {
+                countText = ` (${countMap[button.id]})`;
             }
+            
             element.textContent = `${button.label}: $${formatCurrency(button.cost)}${countText}`;
         }
     });
+}
+
+// Update upgrade buttons with formatted currency
+function updateUpgradeButtons() {
+    const upgradeMap = {
+        'upgrade1': { cost: upgp1, condition: true },
+        'upgrade2': { cost: upgp2, condition: true },
+        'upgrade3': { cost: upgp3, condition: upg1 === 1 },
+        'upgrade4': { cost: upgp4, condition: bimage === 1 },
+        'upgrade5': { cost: upgp5, condition: bimage === 2 },
+        'upgrade6': { cost: upgp6, condition: bimage === 3 },
+        'upgrade7': { cost: upgp7, condition: bimage === 4 },
+        'upgrade8': { cost: upgp8, condition: upg3 === 1 },
+        'upgrade9': { cost: upgp9, condition: upg8 === 1 },
+        'upgrade10': { cost: upgp10, condition: upg9 === 1 },
+        'upgrade11': { cost: upgp11, condition: upg10 === 1 },
+        'upgrade12': { cost: upgp12, condition: upg11 === 1 },
+        'upgrade13': { cost: upgp13, condition: upg12 === 1 },
+        'upgrade14': { cost: upgp14, condition: upg13 === 1 },
+        'upgrade15': { cost: upgp15, condition: upg14 === 1 },
+        'upgrade16': { cost: upgp16, condition: upg15 === 1 },
+        'upgrade17': { cost: upgp17, condition: upg16 === 1 },
+        'upgrade18': { cost: upgp18, condition: upg17 === 1 },
+        'upgrade19': { cost: upgp19, condition: upg18 === 1 },
+        'upgrade20': { cost: upgp20, condition: upg19 === 1 },
+        'upgrade21': { cost: upgp21, condition: upg20 === 1 },
+        'upgrade22': { cost: upgp22, condition: upg21 === 1 },
+        'upgrade23': { cost: upgp23, condition: upg22 === 1 },
+        'upgrade24': { cost: upgp24, condition: upg23 === 1 },
+        'upgrade25': { cost: upgp25, condition: upg24 === 1 },
+        'upgrade26': { cost: upgp26, condition: upg25 === 1 },
+        'upgrade27': { cost: upgp27, condition: upg26 === 1 },
+        'upgrade28': { cost: upgp28, condition: upg27 === 1 },
+        'upgrade29': { cost: upgp29, condition: upg28 === 1 },
+        'upgrade30': { cost: upgp30, condition: upg29 === 1 },
+        'upgrade31': { cost: upgp31, condition: (upg18 === 1 && bimage === 5) || bimage === 6 },
+        'upgrade32': { cost: upgp32, condition: bimage === 7 },
+        'upgrade33': { cost: upgp33, condition: bimage === 8 },
+        'upgrade34': { cost: upgp34, condition: bimage === 9 },
+        'upgrade35': { cost: upgp35, condition: bimage === 10 },
+        'upgrade36': { cost: upgp36, condition: bimage === 11 },
+        'upgrade37': { cost: upgp37, condition: bimage === 12 },
+        'upgrade38': { cost: upgp38, condition: bimage === 13 }
+    };
+
+    for (const [id, data] of Object.entries(upgradeMap)) {
+        const element = document.getElementById(id);
+        if (element && data.condition) {
+            const currentText = element.textContent;
+            const label = currentText.split(':')[0];
+            element.textContent = `${label}: $${formatCurrency(data.cost)}`;
+        }
+    }
+}
+
+// Update franchise button with formatted currency
+function updateFranchiseButton() {
+    const franchiseButton = document.getElementById('Franchisebutton');
+    if (franchiseButton) {
+        const franchiseCost = 500000; // Base franchise cost
+        const formattedCost = formatCurrency(franchiseCost);
+        franchiseButton.textContent = `Open a new Franchise ($${formattedCost})`;
+    }
+}
+
+// Main update function to keep all currency displays synchronized
+function updateAllCurrency() {
+    const moneyDisplay = document.getElementById('money');
+    if (moneyDisplay) {
+        moneyDisplay.textContent = `$${formatCurrency(count)}`;
+    }
+    
+    const mpsDisplay = document.getElementById('mps');
+    if (mpsDisplay) {
+        mpsDisplay.textContent = `$${formatCurrency(mps)} per second`;
+    }
+    
+    updateButtons(buttonConfigs); // Assuming buttonConfigs is your array of button configurations
+    updateUpgradeButtons();
+    updateFranchiseButton();
 }
 
         /**
