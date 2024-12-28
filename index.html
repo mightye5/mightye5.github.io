@@ -1820,8 +1820,7 @@ function upgrade38() {
          * Redirects to mobile page if available
          */
         function detectMobile() {
-            if (/Android|iPhone|iPad|iPod|Opera Mini/i.test(navigator.userAgent) || 
-                (window.innerWidth <= 650)) {
+            if ((window.innerWidth <= 950)) {
                 try {
                     fetch('mobile_restricted.html')
                         .then(response => {
