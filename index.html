@@ -3209,32 +3209,31 @@ function hideTooltip(tooltipId) {
                         </div>
                     </div>
 
-                    <!-- Features Tab -->
                     <div id="buttonsTab" class="tab-content">
                         <div class="buttons-grid">
                             <div class="tooltip-container">
-                                <button class="feature-button" id ="moreicepers" onclick = "moreicepers()">Upgrade the Ice Cream machine! 50 ice</button>
-                                <span class="tooltip">Gives you 2.5 more Ice Creams a second!</span>
+                                <button class="feature-button" id="moreicepers" onclick="moreicepers()" onmouseover="showTooltip(event, 'moreiceperstooltip')" onmouseout="hideTooltip('moreiceperstooltip')">Upgrade the Ice Cream machine! 50 ice</button>
+                                <span class="tooltip" id="moreiceperstooltip">Gives you 2.5 more Ice Creams a second!</span>
                             </div>
                             <div class="tooltip-container">
-                                <button class="feature-button" id ="betterworker" onclick = "betterworker()">Make workers better! 75 ice</button>
-                                <span class="tooltip">Increases what workers make by 0.2x</span>
+                                <button class="feature-button" id="betterworker" onclick="betterworker()" onmouseover="showTooltip(event, 'betterworkertooltip')" onmouseout="hideTooltip('betterworkertooltip')">Make workers better! 75 ice</button>
+                                <span class="tooltip" id="betterworkertooltip">Increases what workers make by 0.2x</span>
                             </div>
                             <div class="tooltip-container">
-                                <button class="feature-button" id ="bettermanager" onclick = "bettermanager()">Make Managers better! 100 ice</button>
-                                <span class="tooltip">Increases what managers make by 0.2x</span>
+                                <button class="feature-button" id="bettermanager" onclick="bettermanager()" onmouseover="showTooltip(event, 'bettermanagertooltip')" onmouseout="hideTooltip('bettermanagertooltip')">Make Managers better! 100 ice</button>
+                                <span class="tooltip" id="bettermanagertooltip">Increases what managers make by 0.2x</span>
                             </div>
                             <div class="tooltip-container">
-                                <button class="feature-button" id ="betterclick" onclick = "betterclick()">Make more click money better! 150 ice</button>
-                                <span class="tooltip">Increases what more click money give by 0.2x</span>
+                                <button class="feature-button" id="betterclick" onclick="betterclick()" onmouseover="showTooltip(event, 'betterclicktooltip')" onmouseout="hideTooltip('betterclicktooltip')">Make more click money better! 150 ice</button>
+                                <span class="tooltip" id="betterclicktooltip">Increases what more click money give by 0.2x</span>
                             </div>
                             <div class="tooltip-container">
-                                <button class="feature-button" id ="betterdirector" onclick = "betterdirector()">Make directores better! 200 ice</button>
-                                <span class="tooltip">Increases what directores make by 0.2x</span>
+                                <button class="feature-button" id="betterdirector" onclick="betterdirector()" onmouseover="showTooltip(event, 'betterdirectortooltip')" onmouseout="hideTooltip('betterdirectortooltip')">Make directors better! 200 ice</button>
+                                <span class="tooltip" id="betterdirectortooltip">Increases what directors make by 0.2x</span>
                             </div>
                             <div class="tooltip-container">
-                                <button class="feature-button" id ="betterceo" onclick = "betterceo()">Make CEOs better! 250 ice</button>
-                                <span class="tooltip">Increases what CEOs make by 0.2x</span>
+                                <button class="feature-button" id="betterceo" onclick="betterceo()" onmouseover="showTooltip(event, 'betterceotooltip')" onmouseout="hideTooltip('betterceotooltip')">Make CEOs better! 250 ice</button>
+                                <span class="tooltip" id="betterceotooltip">Increases what CEOs make by 0.2x</span>
                             </div>
                             <button class="feature-button" disabled style="display:none;">Staff Training</button>
                             <button class="feature-button" disabled style="display:none;">Equipment Upgrades</button>
