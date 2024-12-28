@@ -2212,6 +2212,7 @@ function updatemps() {
          */
         
         function moneyps() {
+            detectMobile();
             count += mps*moneymultiplier;
             updateAll();
             checkTabHighlights();
@@ -2225,13 +2226,15 @@ function updatemps() {
          * Initializes the game
          */
         function initializeGame() {
-            updateUpgradeVisibility();
-            initAudio();
-            loadGame();
-            //loadAchievements();
-            if (detectMobile()) {
-                Update();
-            }
+            
+    if (detectMobile()) {
+        updateUpgradeVisibility();
+        initAudio();
+        setTimeout(loadGame, 300); // Delay loadGame to ensure other initializations are complete
+        loadAchievements();
+        Update();
+    }
+
         }
 
 
@@ -2333,6 +2336,7 @@ function updatemps() {
 
         // Initialize the default tab on page load
         window.addEventListener('load', function() {
+            detectMobile();
             switchTab('franchiseTab');
             setInterval(checkTabHighlights, 1000); // Periodically check for highlight conditions
         });
@@ -2663,6 +2667,7 @@ function updatemps() {
 
         // Initialize tabs when page loads
         window.addEventListener('load', function() {
+            detectMobile();
             // Show franchise tab by default
             switchTab('franchiseTab');
         });
