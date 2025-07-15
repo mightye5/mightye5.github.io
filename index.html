@@ -136,7 +136,7 @@
             min-width: fit-content;
             height: 500px;
             background-color: transparent;
-            background-image: url('https://png.pngtree.com/png-clipart/20230216/ourmid/pngtree-juicy-burgers-with-a-transparent-background-png-image_6603069.png');
+            background-image: url('Burger-images/Burger.png');
             background-size: 100% 100%;
             border: none;
             cursor: pointer;
@@ -423,7 +423,7 @@
     <script>
         // ================ GAME STATE VARIABLES ================
         // Basic game currency and costs 
-        let count = 0000000000000000000000000;                  // Player's current money
+        let count =  0;                  // Player's current money
         let cost1 = 10,                 // Worker cost
             cost2 = 25,                 // Manager cost
             cost3 = 15,                 // Click upgrade cost
@@ -562,7 +562,7 @@
         let totaltime = 0;
         let bimage = 0;
         //Everything Ice cream related
-         let ice = 00000000,                             // Player's current ice creams
+         let ice = 0,                             // Player's current ice creams
             ips = 0,                             // how many ice creams you get per second
             icost1 = 50,                          // The first Ice cream upgrade cost     
             icost2 = 75,                         // The second Ice cream upgrade cost 
@@ -593,14 +593,14 @@
 
                 // Define sound files to load
                 const sounds = {
-                    music: 'busy-restaurant-dining-room-ambience-128466.mp3',
-                    click: 'mixkit-hard-typewriter-click-1119.mp3',
-                    purchase: 'purchase-succesful-ingame-230550.mp3',
-                    coffee: 'cash-register-purchase-87313.mp3',
-                    error: 'error-sound-fx.wav',
-                    golden: 'you-win-sequence-2-183949.mp3',
-                    achieve: 'game-level-complete-143022.mp3',
-                    save: 'Gamesaved.mp3'
+                    music: 'Sound-effects/busy-restaurant-dining-room-ambience-128466.mp3',
+                    click: 'Sound-effects/mixkit-hard-typewriter-click-1119.mp3',
+                    purchase: 'Sound-effects/purchase-succesful-ingame-230550.mp3',
+                    coffee: 'Sound-effects/cash-register-purchase-87313.mp3',
+                    error: 'Sound-effects/error-sound-fx.wav',
+                    golden: 'Sound-effects/you-win-sequence-2-183949.mp3',
+                    achieve: 'Sound-effects/game-level-complete-143022.mp3',
+                    save: 'Sound-effects/Gamesaved.mp3'
                 };
 
                 // Load all sounds in parallel
@@ -986,7 +986,7 @@ function GGaction() {
         // Update the restaurant image
         const franchiseImg = document.getElementById('Franchise1');
         if (franchiseImg) {
-            franchiseImg.src = 'Resturant+coffee.png';
+            franchiseImg.src = 'Restaurant-images/Restaurant+coffee.png';
         }
 
         upg1 = 1;
@@ -1004,7 +1004,7 @@ function upgrade2() {
         count -= upgp2;
         bimage += 1;
         golden_burger += 2;  // Double click value
-        chesburger.style.backgroundImage = "url('GoldenBurger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/GoldenBurger.png')";
         const upgrade4Button = document.getElementById("upgrade4");
         if (upgrade4Button) {
             upgrade4Button.style.display = 'flex';
@@ -1045,7 +1045,7 @@ function upgrade3() {
         // Update the restaurant image
         const franchiseImg = document.getElementById('Franchise1');
         if (franchiseImg) {
-            franchiseImg.src = 'restaurantcoffee+ice.png';
+            franchiseImg.src = 'Restaurant-images/restaurantcoffee+ice.png';
         }
 
         // Move upgrade2 to the top position if it exists
@@ -1066,7 +1066,7 @@ function upgrade4() {
     if (count >= upgp4) {
         count -= upgp4;
         golden_burger += 2.5;  // Double click value
-        chesburger.style.backgroundImage = "url('Diamondburger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Diamondburger.png')";
         bimage += 1;
         // Remove the upgrade4 button instead of hiding it
         document.getElementById("upgrade4").remove();
@@ -1088,7 +1088,7 @@ function upgrade5() {
     if (count >= upgp5) {
         count -= upgp5;
         golden_burger += 3;  // Double click value
-        chesburger.style.backgroundImage = "url('Sapphireburger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Sapphireburger.png')";
         bimage += 1;
         // Remove the upgrade5 button instead of hiding it
         document.getElementById("upgrade5").remove();
@@ -1111,7 +1111,7 @@ function upgrade6() {
         count -= upgp6;
         golden_burger += 3.5;  // Double click value
         const chesburger = document.querySelector('.image-button');
-        chesburger.style.backgroundImage = "url('Uraniumburger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Uraniumburger.png')";
         bimage += 1;
         // Remove the upgrade6 button instead of hiding it
         document.getElementById("upgrade6").remove();
@@ -1133,7 +1133,7 @@ function upgrade7() {
     if (count >= upgp7) {
         count -= upgp7;
         golden_burger += 4;  // Double click value
-        chesburger.style.backgroundImage = "url('Obsidianburger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Obsidianburger.png')";
         bimage += 1;
         if (upg18 == 1) {
             document.getElementById("upgrade31").style.display = 'flex'; // Show the first secret menu item upgrade
@@ -1567,7 +1567,7 @@ function upgrade31() {
         golden_burger += 5.5;
         bimage += 1;
         const chesburger = document.querySelector('.image-button');
-        chesburger.style.backgroundImage = "url('Prismburger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Prismburger.png')";
         document.getElementById("upgrade31").remove();
         hideTooltip('upgrade31tooltip');
         document.getElementById("upgrade32").style.display = 'flex';
@@ -1585,7 +1585,7 @@ function upgrade32() {
         golden_burger += 6.5;
         bimage += 1;
         const chesburger = document.querySelector('.image-button');
-        chesburger.style.backgroundImage = "url('Infernoburger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Infernoburger.png')";
         document.getElementById("upgrade32").remove();
         hideTooltip('upgrade32tooltip');
         document.getElementById("upgrade33").style.display = 'flex';
@@ -1603,7 +1603,7 @@ function upgrade33() {
         golden_burger += 7.5;
         bimage += 1;
         const chesburger = document.querySelector('.image-button');
-        chesburger.style.backgroundImage = "url('Auroraburger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Auroraburger.png')";
         document.getElementById("upgrade33").remove();
         hideTooltip('upgrade33tooltip');
         document.getElementById("upgrade34").style.display = 'flex';
@@ -1621,7 +1621,7 @@ function upgrade34() {
         golden_burger += 9;
         bimage += 1;
         const chesburger = document.querySelector('.image-button');
-        chesburger.style.backgroundImage = "url('Phoenixburger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Phoenixburger.png')";
         document.getElementById("upgrade34").remove();
         hideTooltip('upgrade34tooltip');
         document.getElementById("upgrade35").style.display = 'flex';
@@ -1639,7 +1639,7 @@ function upgrade35() {
         golden_burger += 10;
         bimage += 1;
         const chesburger = document.querySelector('.image-button');
-        chesburger.style.backgroundImage = "url('Galacticburger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Galacticburger.png')";
         document.getElementById("upgrade35").remove();
         hideTooltip('upgrade35tooltip');
         document.getElementById("upgrade36").style.display = 'flex';
@@ -1657,7 +1657,7 @@ function upgrade36() {
         golden_burger += 12;
         bimage += 1;
         const chesburger = document.querySelector('.image-button');
-        chesburger.style.backgroundImage = "url('Eldritchburger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Eldritchburger.png')";
         document.getElementById("upgrade36").remove();
         hideTooltip('upgrade36tooltip');
         document.getElementById("upgrade37").style.display = 'flex';
@@ -1675,7 +1675,7 @@ function upgrade37() {
         golden_burger += 14;
         bimage += 1;
         const chesburger = document.querySelector('.image-button');
-        chesburger.style.backgroundImage = "url('Heavenlyburger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Heavenlyburger.png')";
         document.getElementById("upgrade37").remove();
         hideTooltip('upgrade37tooltip');
         document.getElementById("upgrade38").style.display = 'flex';
@@ -1693,7 +1693,7 @@ function upgrade38() {
         bimage += 1;
         golden_burger += 16.5;
         const chesburger = document.querySelector('.image-button');
-        chesburger.style.backgroundImage = "url('Infinitefeastburger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Infinitefeastburger.png')";
         document.getElementById("upgrade38").remove();
         hideTooltip('upgrade38tooltip');
         playSound('golden', 0.6);
@@ -2397,7 +2397,7 @@ function updatemps() {
         const upgrade1Button = document.getElementById("upgrade1");
         if (upgrade1Button) upgrade1Button.remove();
         const franchiseImg = document.getElementById('Franchise1');
-        if (franchiseImg) franchiseImg.src = 'Resturant+coffee.png';
+        if (franchiseImg) franchiseImg.src = 'Restaurant-images/Restaurant+coffee.png';
     }
 
     // Ice cream machine upgrade (shown only if coffee upgrade is purchased)
@@ -2405,7 +2405,7 @@ function updatemps() {
         const upgrade3Button = document.getElementById("upgrade3");
         if (upgrade3Button) upgrade3Button.remove();
         const franchiseImg = document.getElementById('Franchise1');
-        if (franchiseImg) franchiseImg.src = 'restaurantcoffee+ice.png';
+        if (franchiseImg) franchiseImg.src = 'Restaurant-images/restaurantcoffee+ice.png';
     } else if (upg1 === 1) {
         const upgrade3Button = document.getElementById("upgrade3");
         if (upgrade3Button) upgrade3Button.style.display = 'flex';
@@ -3064,14 +3064,14 @@ function updatemps() {
                     const upgrade1Button = document.getElementById("upgrade1");
                     if (upgrade1Button) upgrade1Button.remove();
                     const franchiseImg = document.getElementById('Franchise1');
-                    if (franchiseImg) franchiseImg.src = 'Resturant+coffee.png';
+                    if (franchiseImg) franchiseImg.src = 'Restaurant-images/Restaurant+coffee.png';
                 }
 
                 if (upg3 === 1) {
                     const upgrade3Button = document.getElementById("upgrade3");
                     if (upgrade3Button) upgrade3Button.remove();
                     const franchiseImg = document.getElementById('Franchise1');
-                    if (franchiseImg) franchiseImg.src = 'restaurantcoffee+ice.png';
+                    if (franchiseImg) franchiseImg.src = 'Restaurant-images/restaurantcoffee+ice.png';
                 }
 
                 // Restore franchise visuals
@@ -3188,27 +3188,27 @@ function hideTooltip(tooltipId) {
                             <!-- Your existing restaurant divs here -->
                             <div class="restaurant">
                                 <div class="restaurant-label">Main Restaurant</div>
-                                <img src="restaurant.png" alt="Main Restaurant" class="restaurant-image" id="Franchise1">
+                                <img src="Restaurant-images/restaurant.png" alt="Main Restaurant" class="restaurant-image" id="Franchise1">
                             </div>
                             <div class="restaurant new-franchise" id="newFranchise">
                                 <div class="restaurant-label">New Franchise</div>
-                                <img src="restaurant.png" alt="New Franchise" class="restaurant-image">
+                                <img src="Restaurant-images/restaurant.png" alt="New Franchise" class="restaurant-image">
                             </div>
                             <div class="restaurant new-franchise" id="Franchise3">
                                 <div class="restaurant-label">New Franchise</div>
-                                <img src="restaurant.png" alt="New Franchise" class="restaurant-image">
+                                <img src="Restaurant-images/restaurant.png" alt="New Franchise" class="restaurant-image">
                             </div>
                             <div class="restaurant new-franchise" id="Franchise4">
                                 <div class="restaurant-label">New Franchise</div>
-                                <img src="restaurant.png" alt="New Franchise" class="restaurant-image">
+                                <img src="Restaurant-images/restaurant.png" alt="New Franchise" class="restaurant-image">
                             </div>
                             <div class="restaurant new-franchise" id="Franchise5">
                                 <div class="restaurant-label">New Franchise</div>
-                                <img src="restaurant.png" alt="New Franchise" class="restaurant-image">
+                                <img src="Restaurant-images/restaurant.png" alt="New Franchise" class="restaurant-image">
                             </div>
                             <div class="restaurant new-franchise" id="Franchise6">
                                 <div class="restaurant-label">New Franchise</div>
-                                <img src="restaurant.png" alt="New Franchise" class="restaurant-image">
+                                <img src="Restaurant-images/restaurant.png" alt="New Franchise" class="restaurant-image">
                             </div>
                         </div>
                     </div>
