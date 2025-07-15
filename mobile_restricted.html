@@ -6,7 +6,20 @@
   <title>Access Restricted</title>
 </head>
 <body>
-  <h1>Sorry, our website is not Mobile compatible. You could either try to change the website on your browser to desktop mode, or visit on a desktop.</h1>
-  <p></p>
+  <h1>Sorry, our website is not Mobile compatible. </h1>
+  <p>You could either try to change the website on your browser to desktop mode, or visit on a desktop.</p>
 </body>
+<script>
+function detectDevice() {
+    if (window.innerWidth > 950) {
+        // If not mobile, redirect to main page
+        window.location.href = "index.html";
+    }
+}
+
+window.onload = function() {
+    detectDevice();
+    setInterval(detectDevice, 1000);
+};
+</script>
 </html>
