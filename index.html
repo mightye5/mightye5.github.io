@@ -78,27 +78,32 @@
         /* Container and upgrade sections */
         #container,
         #upgrade {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding: 15px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            max-height: 600px; /* Decreased the max height */
-            overflow-y: auto;
-            overflow-x: hidden;
-            padding-right: 20px;
-            position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Add spacing between buttons */
+    padding: 15px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-height: 600px;
+    overflow-y: auto;
         }
         .upgrade {
-            max-height: 200px; 
-            min-height: fit-content; /* Decreased the max height */
-        }
-        #upgrade {
-            max-height: 200px; 
-            min-height: fit-content; /* Decreased the max height */
-        }
+    max-height: 200px; 
+    min-height: fit-content; /* Adjust height dynamically */
+}
+  #upgrade {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1px;               /* small vertical gap */
+    padding: 15px;
+  }
+  #upgrade .tooltip-container {
+    margin: 0;
+  }
+  #upgrade .tooltip-container.burger-upgrade {
+    order: 100;
+  }
         /* Center the main burger button */
         #button {
             display: flex;
@@ -121,6 +126,7 @@
             border-radius: 12px;
             width: 100%;
             transition: background-color 0.3s ease;
+
         }
 
         /* Style for disabled buttons */
@@ -153,9 +159,11 @@
         }
 
         .tooltip-container {
-            position: relative;
-        }
-
+    position: relative; /* Position elements absolutely within the container */
+    top: 0; /* Align to the top */
+    left: 0; /* Align to the left */
+    width: 100%; /* Ensure buttons span the container width */
+}
         .tooltip-container button {
             width: 100%;
         }
@@ -423,7 +431,7 @@
     <script>
         // ================ GAME STATE VARIABLES ================
         // Basic game currency and costs 
-        let count =  0;                  // Player's current money
+        let count =  9999999999999999999999990;                  // Player's current money
         let cost1 = 10,                 // Worker cost
             cost2 = 25,                 // Manager cost
             cost3 = 15,                 // Click upgrade cost
@@ -2445,55 +2453,55 @@ function updatemps() {
     // Set burger image and display the next available upgrade button based on `bimage`
     switch (bimage) {
         case 1:
-            burgerImage.style.backgroundImage = "url('GoldenBurger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/GoldenBurger.png')";
             if (upgrade4Button) upgrade4Button.style.display = 'flex';
             break;
         case 2:
-            burgerImage.style.backgroundImage = "url('Diamondburger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/Diamondburger.png')";
             if (upgrade5Button) upgrade5Button.style.display = 'flex';
             break;
         case 3:
-            burgerImage.style.backgroundImage = "url('Sapphireburger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/Sapphireburger.png')";
             if (upgrade6Button) upgrade6Button.style.display = 'flex';
             break;
         case 4:
-            burgerImage.style.backgroundImage = "url('Uraniumburger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/Uraniumburger.png')";
             if (upgrade7Button) upgrade7Button.style.display = 'flex';
             break;
         case 5:
-            burgerImage.style.backgroundImage = "url('Obsidianburger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/Obsidianburger.png')";
             if (upgrade31Button) upgrade31Button.style.display = 'flex';
             break;
         case 6:
-            burgerImage.style.backgroundImage = "url('Prismburger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/Prismburger.png')";
             if (upgrade32Button) upgrade32Button.style.display = 'flex';
             break;
         case 7:
-            burgerImage.style.backgroundImage = "url('Infernoburger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/Infernoburger.png')";
             if (upgrade33Button) upgrade33Button.style.display = 'flex';
             break;
         case 8:
-            burgerImage.style.backgroundImage = "url('Auroraburger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/Auroraburger.png')";
             if (upgrade34Button) upgrade34Button.style.display = 'flex';
             break;
         case 9:
-            burgerImage.style.backgroundImage = "url('Phoenixburger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/Phoenixburger.png')";
             if (upgrade35Button) upgrade35Button.style.display = 'flex';
             break;
         case 10:
-            burgerImage.style.backgroundImage = "url('Galacticburger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/Galacticburger.png')";
             if (upgrade36Button) upgrade36Button.style.display = 'flex';
             break;
         case 11:
-            burgerImage.style.backgroundImage = "url('Eldritchburger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/Eldritchburger.png')";
             if (upgrade37Button) upgrade37Button.style.display = 'flex';
             break;
         case 12:
-            burgerImage.style.backgroundImage = "url('Heavenlyburger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/Heavenlyburger.png')";
             if (upgrade38Button) upgrade38Button.style.display = 'flex';
             break;
         case 13:
-            burgerImage.style.backgroundImage = "url('Infinitefeastburger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/Infinitefeastburger.png')";
             break;
         default:
             if (upgrade2Button) upgrade2Button.style.display = 'flex';
@@ -3527,55 +3535,55 @@ function hideTooltip(tooltipId) {
                             <button id="upgrade30" onclick="upgrade30()" style="display:none;" onmouseover="showTooltip(event, 'upgrade30tooltip')" onmouseout="hideTooltip('upgrade30tooltip')">Learn from the grand grill master: $1750000000</button>
                             <span class="tooltip" id="upgrade30tooltip">Coming soon </span>
                         </div>
-                        <div class="tooltip-container" id="upgrade2tooltipcontainer">
+                        <div class="tooltip-container  burger-upgrade" id="upgrade2tooltipcontainer">
                             <button id="upgrade2" onclick="upgrade2()" onmouseover="showTooltip(event, 'upgrade2tooltip')" onmouseout="hideTooltip('upgrade2tooltip')">The Golden burger: $100000</button>
                             <span class="tooltip" id="upgrade2tooltip">Increases how much money you make per click by 2x</span>
                         </div>
-                        <div class="tooltip-container" id="upgrade4tooltipcontainer">
+                        <div class="tooltip-container  burger-upgrade" id="upgrade4tooltipcontainer">
                             <button id="upgrade4" onclick="upgrade4()" style="display:none;" onmouseover="showTooltip(event, 'upgrade4tooltip')" onmouseout="hideTooltip('upgrade4tooltip')">The Diamond burger: $500000</button>
                             <span class="tooltip" id="upgrade4tooltip">Increases how much money you make per click by 2.5x</span>
                         </div>
-                        <div class="tooltip-container">
+                        <div class="tooltip-container  burger-upgrade">
                             <button id="upgrade5" onclick="upgrade5()" style="display:none;" onmouseover="showTooltip(event, 'upgrade5tooltip')" onmouseout="hideTooltip('upgrade5tooltip')">The Sapphire burger: $800000</button>
                             <span class="tooltip" id="upgrade5tooltip">Increases how much money you make per click by 3x</span>
                         </div>
-                        <div class="tooltip-container">
+                        <div class="tooltip-container  burger-upgrade">
                             <button id="upgrade6" onclick="upgrade6()" style="display:none;" onmouseover="showTooltip(event, 'upgrade6tooltip')" onmouseout="hideTooltip('upgrade6tooltip')">The Uranium burger: $1000000</button>
                             <span class="tooltip" id="upgrade6tooltip">Increases how much money you make per click by 3.5x</span>
                         </div>
-                        <div class="tooltip-container">
+                        <div class="tooltip-container  burger-upgrade">
                             <button id="upgrade7" onclick="upgrade7()" style="display:none;" onmouseover="showTooltip(event, 'upgrade7tooltip')" onmouseout="hideTooltip('upgrade7tooltip')">The Obsidian burger: $1250000</button>
                             <span class="tooltip" id="upgrade7tooltip">Increases how much money you make per click by 4x</span>
                         </div>
-                        <div class="tooltip-container">
+                        <div class="tooltip-container  burger-upgrade">
                             <button id="upgrade31" onclick="upgrade31()" style="display:none;" onmouseover="showTooltip(event, 'upgrade31tooltip')" onmouseout="hideTooltip('upgrade31tooltip')">Prism Burger: $2000000000</button>
                             <span class="tooltip" id="upgrade31tooltip">Increases how much money you make per click by 5.5x</span>
                         </div>
-                        <div class="tooltip-container">
+                        <div class="tooltip-container  burger-upgrade">
                             <button id="upgrade32" onclick="upgrade32()" style="display:none;" onmouseover="showTooltip(event, 'upgrade32tooltip')" onmouseout="hideTooltip('upgrade32tooltip')">Inferno Slider Trio: $2500000000</button>
                             <span class="tooltip" id="upgrade32tooltip">Increases how much money you make per click by 6.5x</span>
                         </div>
-                        <div class="tooltip-container">
+                        <div class="tooltip-container  burger-upgrade">
                             <button id="upgrade33" onclick="upgrade33()" style="display:none;" onmouseover="showTooltip(event, 'upgrade33tooltip')" onmouseout="hideTooltip('upgrade33tooltip')">Aurora Royale: $3000000000</button>
                             <span class="tooltip" id="upgrade33tooltip">Increases how much money you make per click by 7.5x</span>
                         </div>
-                        <div class="tooltip-container">
+                        <div class="tooltip-container  burger-upgrade">
                             <button id="upgrade34" onclick="upgrade34()" style="display:none;" onmouseover="showTooltip(event, 'upgrade34tooltip')" onmouseout="hideTooltip('upgrade34tooltip')">Phoenix Feast: $3500000000</button>
                             <span class="tooltip" id="upgrade34tooltip">Increases how much money you make per click by 9x</span>
                         </div>
-                        <div class="tooltip-container">
+                        <div class="tooltip-container  burger-upgrade">
                             <button id="upgrade35" onclick="upgrade35()" style="display:none;" onmouseover="showTooltip(event, 'upgrade35tooltip')" onmouseout="hideTooltip('upgrade35tooltip')">Galactic Burger: $4000000000</button>
                             <span class="tooltip" id="upgrade35tooltip">Increases how much money you make per click by 10x</span>
                         </div>
-                        <div class="tooltip-container">
+                        <div class="tooltip-container  burger-upgrade">
                             <button id="upgrade36" onclick="upgrade36()" style="display:none;" onmouseover="showTooltip(event, 'upgrade36tooltip')" onmouseout="hideTooltip('upgrade36tooltip')">Eldritch Stack: $4500000000</button>
                             <span class="tooltip" id="upgrade36tooltip">Increases how much money you make per click by 12x</span>
                         </div>
-                        <div class="tooltip-container">
+                        <div class="tooltip-container  burger-upgrade">
                             <button id="upgrade37" onclick="upgrade37()" style="display:none;" onmouseover="showTooltip(event, 'upgrade37tooltip')" onmouseout="hideTooltip('upgrade37tooltip')">Heavenly Bite: $5000000000</button>
                             <span class="tooltip" id="upgrade37tooltip">Increases how much money you make per click by 14x</span>
                         </div>
-                        <div class="tooltip-container">
+                        <div class="tooltip-container  burger-upgrade">
                             <button id="upgrade38" onclick="upgrade38()" style="display:none;" onmouseover="showTooltip(event, 'upgrade38tooltip')" onmouseout="hideTooltip('upgrade38tooltip')">Infinite Feast: $5500000000</button>
                             <span class="tooltip" id="upgrade38tooltip">Increases how much money you make per click by 16.5x</span>
                         </div>
