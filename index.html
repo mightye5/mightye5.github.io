@@ -4,12 +4,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
     <title>Money Game</title>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="UTF-8">
-    <title>Money Game</title>
     <style>
         /* Basic styling for the page layout */
         body {
@@ -29,7 +23,9 @@
             width: 100%;
             height: 100%;
         }
-
+        #save-controls {
+            padding: 10px;
+        }
         /* Left side with burger button */
         .game-left {
             flex: 1;
@@ -43,11 +39,15 @@
 
         /* Right side with controls */
         .game-right {
-            width: 250px;
+            width: 300px;
             padding-left: 20px;
+            height: 100%;
+            box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            gap: 40px;
+            gap: 4px;
+            padding-bottom: 60px; /* Space for the save button */
+       
         }
 
         /* Money display section */
@@ -74,6 +74,14 @@
             margin-bottom: 10px;
             color: #333;
         }
+.purchase-options {
+  display: flex;
+  flex-wrap: wrap;     /* ← allow wrapping */
+  gap: 10px;
+  margin-bottom: 10px;
+  /* optional, to keep them left‑aligned: */
+  justify-content: flex-start;
+}
 
         /* Container and upgrade sections */
         #container,
@@ -87,12 +95,23 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     max-height: 600px;
     overflow-y: auto;
+
         }
+        #container {
+  flex: 1 1 auto;         /* fill all vertical space in .game-right */
+  max-height: none;       /* remove your old max-height */
+  overflow-y: auto;       /* scroll if its content is too tall */
+}
         .upgrade {
-    max-height: 200px; 
-    min-height: fit-content; /* Adjust height dynamically */
+    min-height: fit-content;
+    max-height: 250px; 
+    
 }
   #upgrade {
+    flex: 0 0 auto;    /* don’t shrink or grow—just size to content height */
+  overflow: visible; /* disable any scrollbar */
+max-height: none;
+
     display: flex;
     flex-direction: column;
     gap: 0.1px;               /* small vertical gap */
@@ -104,6 +123,11 @@
   #upgrade .tooltip-container.burger-upgrade {
     order: 100;
   }
+  #container {
+ flex: 1 1 auto;  /* take up all leftover vertical space */
+  min-height: 0;   /* super-important so flexbox allows it to shrink */
+  overflow-y: auto;
+}
         /* Center the main burger button */
         #button {
             display: flex;
@@ -201,7 +225,7 @@
         .franchise-section {
             z-index: 0;
             width: 100%;
-            max-width: 1000px;
+            max-width: 900px;
            
             margin: 0 auto;
             padding: 20px;
@@ -258,7 +282,11 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-
+        .purchase-options button {
+            width: auto;
+            flex: 1;
+            flex-wrap: wrap;
+        }
         .restaurant-label {
             position: absolute;
             top: 10px;
@@ -427,6 +455,12 @@
         .tooltip-container button[style*="display: none"] {
             display: none !important;
         }
+
+        .purchase-options {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
     </style>
     <script>
         // ================ GAME STATE VARIABLES ================
@@ -475,7 +509,7 @@
             matriarch = 55000,
             grillmaster = 250000;
         // Upgrade counters
-        let M = 0,                      // Number of workers
+        var M = 0,                      // Number of workers
             M2 = 0,                     // Number of managers
             M3 = 0,                     // Number of click upgrades
             M4 = 0,                     // Number of directors
@@ -584,6 +618,60 @@
             iceupg4 = 0,           // whether you have the fourth ice cream upgrade or not
             iceupg5 = 0,            // whether you have the fifth ice cream upgrade or not
             iceupg6 = 0;            // whether you have the sixth ice cream upgrade or not
+
+        let purchaseAmount = 1;     // quantity of employees to buy
+        const employeeInfo = {
+            extraButton: { base: 10, rate: 1.1, costVar: 'cost1', countVar: 'M' },
+            Button2: { base: 25, rate: 1.1, costVar: 'cost2', countVar: 'M2' },
+            Clickbutton: { base: 15, rate: 1.15, costVar: 'cost3', countVar: 'M3' },
+            directorbutton: { base: 100, rate: 1.1, costVar: 'cost4', countVar: 'M4' },
+            VPbutton: { base: 225, rate: 1.1, costVar: 'cost5', countVar: 'M5' },
+            COObutton: { base: 500, rate: 1.1, costVar: 'cost6', countVar: 'M6' },
+            ceobutton: { base: 1250, rate: 1.1, costVar: 'cost7', countVar: 'M7' },
+            chairbutton: { base: 2275, rate: 1.1, costVar: 'cost8', countVar: 'M8' },
+            MObutton: { base: 5000, rate: 1.1, costVar: 'cost9', countVar: 'M9' },
+            SFbutton: { base: 12500, rate: 1.1, costVar: 'cost10', countVar: 'M10' },
+            feastbutton: { base: 17500, rate: 1.1, costVar: 'cost11', countVar: 'M11' },
+            verdantbutton: { base: 22500, rate: 1.1, costVar: 'cost12', countVar: 'M12' },
+            ESbutton: { base: 50000, rate: 1.1, costVar: 'cost13', countVar: 'M13' },
+            FWbutton: { base: 125000, rate: 1.1, costVar: 'cost14', countVar: 'M14' },
+            CCbutton: { base: 200000, rate: 1.1, costVar: 'cost15', countVar: 'M15' },
+            priestbutton: { base: 375000, rate: 1.1, costVar: 'cost16', countVar: 'M16' },
+            GAbutton: { base: 525000, rate: 1.1, costVar: 'cost17', countVar: 'M17' },
+            PMbutton: { base: 1000000, rate: 1.1, costVar: 'cost18', countVar: 'M18' },
+            GGbutton: { base: 5000000, rate: 1.1, costVar: 'cost19', countVar: 'M19' }
+        };
+
+        function setPurchaseAmount(amount) {
+            purchaseAmount = amount;
+            updateAll();
+        }
+
+        function computeEmployeeCost(id, quantity) {
+            const info = employeeInfo[id];
+            if (!info || quantity <= 0) return 0;
+            let total = 0;
+            for (let i = 0; i < quantity; i++) {
+                total += Math.round(info.base * Math.pow(info.rate, window[info.countVar] + i) * 10) / 10;
+            }
+            return total;
+        }
+
+        function getMaxAffordable(id) {
+            const info = employeeInfo[id];
+            if (!info) return 0;
+            let qty = 0;
+            let current = window[info.countVar];
+            let available = count;
+            let cost = Math.round(info.base * Math.pow(info.rate, current) * 10) / 10;
+            while (available >= cost) {
+                available -= cost;
+                current++;
+                qty++;
+                cost = Math.round(info.base * Math.pow(info.rate, current) * 10) / 10;
+            }
+            return qty;
+        }
         // ================ AUDIO SYSTEM ================
         let audioContext;               // Web Audio API context
         let soundBuffers = {};          // Storage for loaded sound files
@@ -603,7 +691,7 @@
                 const sounds = {
                     music: 'Sound-effects/busy-restaurant-dining-room-ambience-128466.mp3',
                     click: 'Sound-effects/mixkit-hard-typewriter-click-1119.mp3',
-                    purchase: 'Sound-effects/purchase-succesful-ingame-230550.mp3',
+                    purchase: 'Sound-effects/purchase-successful-ingame-230550.mp3',
                     coffee: 'Sound-effects/cash-register-purchase-87313.mp3',
                     error: 'Sound-effects/error-sound-fx.wav',
                     golden: 'Sound-effects/you-win-sequence-2-183949.mp3',
@@ -671,26 +759,30 @@
          * Workers provide steady income over time
          */
         function extraAction() {
-            if (count >= cost1) {
-                mps += worker;                     // Increase money per second
-                M += 1;                                // Increment worker count
+            let quantity = purchaseAmount === 'max' ? getMaxAffordable('extraButton') : purchaseAmount;
+            let bought = 0;
+            while (quantity > 0 && count >= cost1) {
+                mps += worker;
+                M += 1;
                 if (upg8 == 1) {
                     const oldworkerAmount = parseFloat((manager).toFixed(1));
-    
-                if (M2 >= 1) {
-            manager += parseFloat((M * 0.5).toFixed(1));
-            const workerincrease = (manager - oldworkerAmount);
-            mps += parseFloat((workerincrease).toFixed(1));
-                 }
+                    if (M2 >= 1) {
+                        manager += parseFloat((M * 0.5).toFixed(1));
+                        const workerincrease = (manager - oldworkerAmount);
+                        mps += parseFloat((workerincrease).toFixed(1));
+                    }
                 }
-                count -= cost1;                         // Deduct cost
-                cost1 = Math.round(10 * (1.1 ** M) * 10) / 10;  // Increase cost for next worker
+                count -= cost1;
+                cost1 = Math.round(10 * (1.1 ** M) * 10) / 10;
+                quantity--;
+                bought++;
+            }
+            if (bought > 0) {
                 playSound('purchase', 0.4);
-                updateAll();
             } else {
                 playSound('error', 0.4);
-                updateAll();
             }
+            updateAll();
         }
 
         /**
@@ -698,17 +790,22 @@
          * Managers provide more income than workers
          */
         function Action2() {
-            if (count >= cost2) {
+            let quantity = purchaseAmount === 'max' ? getMaxAffordable('Button2') : purchaseAmount;
+            let bought = 0;
+            while (quantity > 0 && count >= cost2) {
                 mps += manager;
                 M2 += 1;
                 count -= cost2;
                 cost2 = Math.round(25 * (1.1 ** M2) * 10) / 10;
+                quantity--;
+                bought++;
+            }
+            if (bought > 0) {
                 playSound('purchase', 0.4);
-                updateAll();
             } else {
                 playSound('error', 0.4);
-                updateAll();
             }
+            updateAll();
         }
 
         /**
@@ -716,17 +813,22 @@
          * Increases money earned per click
          */
         function clickadd() {
-            if (count >= cost3) {
+            let quantity = purchaseAmount === 'max' ? getMaxAffordable('Clickbutton') : purchaseAmount;
+            let bought = 0;
+            while (quantity > 0 && count >= cost3) {
                 clicks += parseFloat((clickamount).toFixed(1));
                 M3 += 1;
                 count -= cost3;
                 cost3 = Math.round(15 * (1.15 ** M3) * 10) / 10;
+                quantity--;
+                bought++;
+            }
+            if (bought > 0) {
                 playSound('purchase', 0.4);
-                updateAll();
             } else {
                 playSound('error', 0.4);
-                updateAll();
             }
+            updateAll();
         }
 
         /**
@@ -734,236 +836,316 @@
          * directores provide significant income boost
          */
         function baction() {
-            if (count >= cost4) {
+            let quantity = purchaseAmount === 'max' ? getMaxAffordable('directorbutton') : purchaseAmount;
+            let bought = 0;
+            while (quantity > 0 && count >= cost4) {
                 mps += director;
                 M4 += 1;
                 count -= cost4;
                 cost4 = Math.round(100 * (1.1 ** M4) * 10) / 10;
+                quantity--;
+                bought++;
+            }
+            if (bought > 0) {
                 playSound('purchase', 0.4);
-                updateAll();
             } else {
                 playSound('error', 0.4);
-                updateAll();
             }
+            updateAll();
         }
 
 function vaction() {
-    if (count >= cost5) {
+    let quantity = purchaseAmount === 'max' ? getMaxAffordable('VPbutton') : purchaseAmount;
+    let bought = 0;
+    while (quantity > 0 && count >= cost5) {
         mps += VP;
         M5 += 1;
         count -= cost5;
         cost5 = Math.round((225 * (1.1 ** M5) * 10) / 10);
+        quantity--;
+        bought++;
+    }
+    if (bought > 0) {
         playSound('purchase', 0.4);
-        updateAll();
     } else {
         playSound('error', 0.4);
-        updateAll();
     }
+    updateAll();
 }
 function COOaction() {
-    if (count >= cost6) {
+    let quantity = purchaseAmount === 'max' ? getMaxAffordable('COObutton') : purchaseAmount;
+    let bought = 0;
+    while (quantity > 0 && count >= cost6) {
         mps += COO;
         M6 += 1;
         count -= cost6;
-        cost6 = Math.round((500 * (1.1 ** M6) * 10) / 10); // Corrected M7 to M6
+        cost6 = Math.round((500 * (1.1 ** M6) * 10) / 10);
+        quantity--;
+        bought++;
+    }
+    if (bought > 0) {
         playSound('purchase', 0.4);
-        updateAll();
     } else {
         playSound('error', 0.4);
-        updateAll();
     }
+    updateAll();
 }
         function caction() {
-            if (count >= cost7) {
+            let quantity = purchaseAmount === 'max' ? getMaxAffordable('ceobutton') : purchaseAmount;
+            let bought = 0;
+            while (quantity > 0 && count >= cost7) {
                 mps += ceo;
                 M7 += 1;
                 count -= cost7;
-                cost7 = Math.round((1250*(1.1 ** M7) * 10) / 10);
+                cost7 = Math.round((1250 * (1.1 ** M7) * 10) / 10);
+                quantity--;
+                bought++;
+            }
+            if (bought > 0) {
                 playSound('purchase', 0.4);
-                updateAll();
             } else {
                 playSound('error', 0.4);
-                updateAll();
             }
+            updateAll();
         }
         // Chairman Function
 function chairaction() {
-    if (count >= cost8) {
+    let quantity = purchaseAmount === 'max' ? getMaxAffordable('chairbutton') : purchaseAmount;
+    let bought = 0;
+    while (quantity > 0 && count >= cost8) {
         mps += chairman;
         M8 += 1;
         count -= cost8;
         cost8 = Math.round((2275 * (1.1 ** M8) * 10) / 10);
+        quantity--;
+        bought++;
+    }
+    if (bought > 0) {
         playSound('purchase', 0.4);
-        updateAll();
     } else {
         playSound('error', 0.4);
-        updateAll();
     }
+    updateAll();
 }
 
 // Milkshake Oracle Function
 function MOaction() {
-    if (count >= cost9) {
+    let quantity = purchaseAmount === 'max' ? getMaxAffordable('MObutton') : purchaseAmount;
+    let bought = 0;
+    while (quantity > 0 && count >= cost9) {
         mps += oracle;
         M9 += 1;
         count -= cost9;
         cost9 = Math.round((5000 * (1.1 ** M9) * 10) / 10);
+        quantity--;
+        bought++;
+    }
+    if (bought > 0) {
         playSound('purchase', 0.4);
-        updateAll();
     } else {
         playSound('error', 0.4);
-        updateAll();
     }
+    updateAll();
 }
 
 // Shadow Fryer Function
 function SFaction() {
-    if (count >= cost10) {
+    let quantity = purchaseAmount === 'max' ? getMaxAffordable('SFbutton') : purchaseAmount;
+    let bought = 0;
+    while (quantity > 0 && count >= cost10) {
         mps += fryer;
         M10 += 1;
         count -= cost10;
         cost10 = Math.round((12500 * (1.1 ** M10) * 10) / 10);
+        quantity--;
+        bought++;
+    }
+    if (bought > 0) {
         playSound('purchase', 0.4);
-        updateAll();
     } else {
         playSound('error', 0.4);
-        updateAll();
     }
+    updateAll();
 }
 
 // Keeper of the Hidden Feast Function
 function feastaction() {
-    if (count >= cost11) {
+    let quantity = purchaseAmount === 'max' ? getMaxAffordable('feastbutton') : purchaseAmount;
+    let bought = 0;
+    while (quantity > 0 && count >= cost11) {
         mps += feast;
         M11 += 1;
         count -= cost11;
         cost11 = Math.round((17500 * (1.1 ** M11) * 10) / 10);
+        quantity--;
+        bought++;
+    }
+    if (bought > 0) {
         playSound('purchase', 0.4);
-        updateAll();
     } else {
         playSound('error', 0.4);
-        updateAll();
     }
+    updateAll();
 }
 
 // Verdant Keeper Function
 function verdantaction() {
-    if (count >= cost12) {
+    let quantity = purchaseAmount === 'max' ? getMaxAffordable('verdantbutton') : purchaseAmount;
+    let bought = 0;
+    while (quantity > 0 && count >= cost12) {
         mps += verdant;
         M12 += 1;
         count -= cost12;
         cost12 = Math.round((22500 * (1.1 ** M12) * 10) / 10);
+        quantity--;
+        bought++;
+    }
+    if (bought > 0) {
         playSound('purchase', 0.4);
-        updateAll();
     } else {
         playSound('error', 0.4);
-        updateAll();
     }
+    updateAll();
 }
 
 // Emulsifier Supreme Function
 function ESaction() {
-    if (count >= cost13) {
+    let quantity = purchaseAmount === 'max' ? getMaxAffordable('ESbutton') : purchaseAmount;
+    let bought = 0;
+    while (quantity > 0 && count >= cost13) {
         mps += emulsifier;
         M13 += 1;
         count -= cost13;
         cost13 = Math.round((50000 * (1.1 ** M13) * 10) / 10);
+        quantity--;
+        bought++;
+    }
+    if (bought > 0) {
         playSound('purchase', 0.4);
-        updateAll();
     } else {
         playSound('error', 0.4);
-        updateAll();
     }
+    updateAll();
 }
 
 // Flame Whisperer Function
 function FWaction() {
-    if (count >= cost14) {
+    let quantity = purchaseAmount === 'max' ? getMaxAffordable('FWbutton') : purchaseAmount;
+    let bought = 0;
+    while (quantity > 0 && count >= cost14) {
         mps += whisperer;
         M14 += 1;
         count -= cost14;
         cost14 = Math.round((125000 * (1.1 ** M14) * 10) / 10);
+        quantity--;
+        bought++;
+    }
+    if (bought > 0) {
         playSound('purchase', 0.4);
-        updateAll();
     } else {
         playSound('error', 0.4);
-        updateAll();
     }
+    updateAll();
 }
 
 // Cheese Chancellor Function
 function CCaction() {
-    if (count >= cost15) {
+    let quantity = purchaseAmount === 'max' ? getMaxAffordable('CCbutton') : purchaseAmount;
+    let bought = 0;
+    while (quantity > 0 && count >= cost15) {
         mps += chancellor;
         M15 += 1;
         count -= cost15;
         cost15 = Math.round((200000 * (1.1 ** M15) * 10) / 10);
+        quantity--;
+        bought++;
+    }
+    if (bought > 0) {
         playSound('purchase', 0.4);
-        updateAll();
     } else {
         playSound('error', 0.4);
-        updateAll();
     }
+    updateAll();
 }
 
 // High Priest Function
 function priestaction() {
-    if (count >= cost16) {
+    let quantity = purchaseAmount === 'max' ? getMaxAffordable('priestbutton') : purchaseAmount;
+    let bought = 0;
+    while (quantity > 0 && count >= cost16) {
         mps += priest;
         M16 += 1;
         count -= cost16;
         cost16 = Math.round((375000 * (1.1 ** M16) * 10) / 10);
+        quantity--;
+        bought++;
+    }
+    if (bought > 0) {
         playSound('purchase', 0.4);
-        updateAll();
     } else {
         playSound('error', 0.4);
-        updateAll();
     }
+    updateAll();
 }
 
 // Golden Archmage Function
 function GAaction() {
-    if (count >= cost17) {
+    let quantity = purchaseAmount === 'max' ? getMaxAffordable('GAbutton') : purchaseAmount;
+    let bought = 0;
+    while (quantity > 0 && count >= cost17) {
         mps += archmage;
         M17 += 1;
         count -= cost17;
         cost17 = Math.round((525000 * (1.1 ** M17) * 10) / 10);
+        quantity--;
+        bought++;
+    }
+    if (bought > 0) {
         playSound('purchase', 0.4);
-        updateAll();
     } else {
         playSound('error', 0.4);
-        updateAll();
     }
+    updateAll();
 }
 
 // Patty Matriarch Function
 function PMaction() {
-    if (count >= cost18) {
+    let quantity = purchaseAmount === 'max' ? getMaxAffordable('PMbutton') : purchaseAmount;
+    let bought = 0;
+    while (quantity > 0 && count >= cost18) {
         mps += matriarch;
         M18 += 1;
         count -= cost18;
         cost18 = Math.round((1000000 * (1.1 ** M18) * 10) / 10);
+        quantity--;
+        bought++;
+    }
+    if (bought > 0) {
         playSound('purchase', 0.4);
-        updateAll();
     } else {
         playSound('error', 0.4);
-        updateAll();
     }
+    updateAll();
 }
 
 // Grand Grillmaster Function
 function GGaction() {
-    if (count >= cost19) {
+    let quantity = purchaseAmount === 'max' ? getMaxAffordable('GGbutton') : purchaseAmount;
+    let bought = 0;
+    while (quantity > 0 && count >= cost19) {
         mps += grillmaster;
         M19 += 1;
         count -= cost19;
         cost19 = Math.round((5000000 * (1.1 ** M19) * 10) / 10);
+        quantity--;
+        bought++;
+    }
+    if (bought > 0) {
         playSound('purchase', 0.4);
-        updateAll();
     } else {
         playSound('error', 0.4);
-        updateAll();
     }
+    updateAll();
 }
         /**
          * Coffee upgrade - increases worker efficiency
@@ -1884,10 +2066,9 @@ function upgrade38() {
 // Update buttons with formatted currency and counts
 function updateButtons(buttons) {
     buttons.forEach(button => {
-        let element = document.getElementById(button.id);
+        const element = document.getElementById(button.id);
         if (element) {
             let countText = '';
-            // Map of button IDs to their respective count variables
             const countMap = {
                 'extraButton': M,
                 'Button2': M2,
@@ -1909,12 +2090,20 @@ function updateButtons(buttons) {
                 'PMbutton': M18,
                 'GGbutton': M19
             };
-            
+
             if (countMap.hasOwnProperty(button.id)) {
                 countText = ` (${countMap[button.id]})`;
             }
-            
-            element.textContent = `${button.label}: $${formatCurrency(button.cost)}${countText}`;
+
+            let quantity = purchaseAmount === 'max' ? getMaxAffordable(button.id) : purchaseAmount;
+            if (quantity < 1) quantity = 1;
+            let cost = button.cost;
+            if (employeeInfo.hasOwnProperty(button.id)) {
+                cost = computeEmployeeCost(button.id, quantity);
+            }
+
+            const qtyText = quantity > 1 ? ` x${quantity}` : '';
+            element.textContent = `${button.label}${qtyText}: $${formatCurrency(cost)}${countText}`;
         }
     });
 }
@@ -2007,26 +2196,26 @@ function updateAllCurrency() {
     updateMoney();
     updatemps();
     updateButtons([
-        { id: 'extraButton', label: 'Worker', cost: cost1 },
-        { id: 'Button2', label: 'Manager', cost: cost2 },
-        { id: 'Clickbutton', label: 'More click money', cost: cost3 },
-        { id: 'directorbutton', label: 'Director', cost: cost4 },
-        { id: 'VPbutton', label: 'VP', cost: cost5 },
-        { id: 'COObutton', label: 'COO', cost: cost6 },
-        { id: 'ceobutton', label: 'CEO', cost: cost7 },
-        { id: 'chairbutton', label: 'Chairman', cost: cost8 },
-        { id: 'MObutton', label: 'Milkshake Oracle', cost: cost9 },
-        { id: 'SFbutton', label: 'Shadow Fryer', cost: cost10 },
-        { id: 'feastbutton', label: 'Keeper of the Hidden Feast', cost: cost11 },
-        { id: 'verdantbutton', label: 'Verdant Keeper', cost: cost12 },
-        { id: 'ESbutton', label: 'Emulsifier Supreme', cost: cost13 },
-        { id: 'FWbutton', label: 'Flame Whisperer', cost: cost14 },
-        { id: 'CCbutton', label: 'Cheese Chancellor', cost: cost15 },
-        { id: 'priestbutton', label: 'High Priest', cost: cost16 },
-        { id: 'GAbutton', label: 'Golden Archmage', cost: cost17 },
-        { id: 'PMbutton', label: 'Patty Matriarch', cost: cost18 },
-        { id: 'GGbutton', label: 'Grand Grillmaster', cost: cost19 },
-        { id: 'upgrade1', label: 'Coffee', cost: upgp1 }
+        { id: 'extraButton', label: 'Worker' },
+        { id: 'Button2', label: 'Manager' },
+        { id: 'Clickbutton', label: 'More click money' },
+        { id: 'directorbutton', label: 'Director' },
+        { id: 'VPbutton', label: 'VP' },
+        { id: 'COObutton', label: 'COO' },
+        { id: 'ceobutton', label: 'CEO' },
+        { id: 'chairbutton', label: 'Chairman' },
+        { id: 'MObutton', label: 'Milkshake Oracle' },
+        { id: 'SFbutton', label: 'Shadow Fryer' },
+        { id: 'feastbutton', label: 'Keeper of the Hidden Feast' },
+        { id: 'verdantbutton', label: 'Verdant Keeper' },
+        { id: 'ESbutton', label: 'Emulsifier Supreme' },
+        { id: 'FWbutton', label: 'Flame Whisperer' },
+        { id: 'CCbutton', label: 'Cheese Chancellor' },
+        { id: 'priestbutton', label: 'High Priest' },
+        { id: 'GAbutton', label: 'Golden Archmage' },
+        { id: 'PMbutton', label: 'Patty Matriarch' },
+        { id: 'GGbutton', label: 'Grand Grillmaster' },
+       // { id: 'upgrade1', label: 'Coffee', cost: upgp1 }
     ]);
     Update();
     checkAchievements();
@@ -2178,7 +2367,16 @@ function updatemps() {
     buttons.forEach(button => {
         const buttonElement = document.getElementById(button.id);
         if (buttonElement) {
-            const canAfford = count >= button.cost;
+            let quantity = purchaseAmount === 'max' ? getMaxAffordable(button.id) : purchaseAmount;
+            if (employeeInfo.hasOwnProperty(button.id)) {
+                if (quantity < 1) quantity = 1;
+            } else {
+                quantity = 1; // upgrades always purchased once
+            }
+            const costToCheck = employeeInfo.hasOwnProperty(button.id)
+                ? computeEmployeeCost(button.id, quantity)
+                : button.cost;
+            const canAfford = count >= costToCheck;
             let meetsRequirements = true;
 
             // Check additional requirements if they exist
@@ -3591,6 +3789,14 @@ function hideTooltip(tooltipId) {
                         <!-- Upgrades section -->
                         <div id="container">
                             <div class="section-title">Employees</div>
+                            <div class="purchase-options">
+                                <button onclick="setPurchaseAmount(1)">1x</button>
+                                <button onclick="setPurchaseAmount(5)">5x</button>
+                                <button onclick="setPurchaseAmount(10)">10x</button>
+                                <button onclick="setPurchaseAmount(25)">25x</button>
+                                <button onclick="setPurchaseAmount(50)">50x</button>
+                                <button onclick="setPurchaseAmount('max')">Max</button>
+                            </div>
                             <div class="tooltip-container">
                                 <button id="extraButton" onclick="extraAction();" onmouseover="showTooltip(event, 'Workertooltip')" onmouseout="hideTooltip('Workertooltip')">Worker: $10 (0)</button>
                                 <span class="tooltip" id="Workertooltip">Earns $1.5 per second</span>
@@ -3674,5 +3880,4 @@ function hideTooltip(tooltipId) {
                     </div>
                     </body>
                     </html>
-
 
