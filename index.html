@@ -2258,12 +2258,21 @@ function updatemps() {
     const canAffordColor = '#4CAF50';    // Green when affordable
     const cannotAffordColor = '#dddddd'; // Gray when can't afford
 
-    document.getElementById('moreicepers').textContent = "Upgrade the Ice Cream machine! " + icost1 + ' ice';
-    document.getElementById('betterworker').textContent = "Make workers better! " + icost2 + ' ice';
-    document.getElementById('bettermanager').textContent = "Make managers better! " + icost3 + ' ice';
-    document.getElementById('betterclick').textContent = "Make more click money better! " + icost4 + ' ice';
-    document.getElementById('betterdirector').textContent = "Make directors better! " + icost5 + ' ice';
-    document.getElementById('betterceo').textContent = "Make CEOs better! " + icost6 + ' ice';
+    document.getElementById('moreicepers').textContent =
+        "Upgrade the Ice Cream machine! " + formatCurrency(icost1) + ' ice';
+    document.getElementById('betterworker').textContent =
+        "Make workers better! " + formatCurrency(icost2) + ' ice';
+    document.getElementById('bettermanager').textContent =
+        "Make managers better! " + formatCurrency(icost3) + ' ice';
+    document.getElementById('betterclick').textContent =
+        "Make more click money better! " + formatCurrency(icost4) + ' ice';
+    document.getElementById('betterdirector').textContent =
+        "Make directors better! " + formatCurrency(icost5) + ' ice';
+    document.getElementById('betterceo').textContent =
+        "Make CEOs better! " + formatCurrency(icost6) + ' ice';
+
+    updateUpgradeButtons();
+    updateFranchiseButton();
 
     document.getElementById('Workertooltip').textContent = "Earns $" + worker + " per second";
     document.getElementById('Managertooltip').textContent = "Earns $" + manager + " per second";
