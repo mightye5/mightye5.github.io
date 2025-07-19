@@ -1738,7 +1738,9 @@ function upgrade29() {
 }
 
 function upgrade30() {
-    if (count >= upgp30) {
+      playSound('error', 0.4);
+    return;
+    /* if (count >= upgp30) {
         count -= upgp30;
         upg30 = 1;
         playSound('purchase', 0.4);
@@ -1749,6 +1751,7 @@ function upgrade30() {
         playSound('error', 0.4);
         updateAll();
     }
+        */
 }
 function upgrade31() {
     if (count >= upgp31) {
@@ -2121,23 +2124,23 @@ function updateUpgradeButtons() {
         'upgrade8': { cost: upgp8, condition: upg3 === 1 },
         'upgrade9': { cost: upgp9, condition: upg8 === 1 },
         'upgrade10': { cost: upgp10, condition: upg9 === 1 },
-        'upgrade11': { cost: upgp11, condition: upg10 === 1 },
+        'upgrade11': { cost: upgp11, condition: upg10 === 1, requirements: { M4: 50, M5: 50 } },
         'upgrade12': { cost: upgp12, condition: upg11 === 1 },
         'upgrade13': { cost: upgp13, condition: upg12 === 1 },
         'upgrade14': { cost: upgp14, condition: upg13 === 1 },
-        'upgrade15': { cost: upgp15, condition: upg14 === 1 },
+        'upgrade15': { cost: upgp15, condition: upg14 === 1, requirements: { M7: 50, M9: 50 } },
         'upgrade16': { cost: upgp16, condition: upg15 === 1 },
         'upgrade17': { cost: upgp17, condition: upg16 === 1 },
         'upgrade18': { cost: upgp18, condition: upg17 === 1 },
-        'upgrade19': { cost: upgp19, condition: upg18 === 1 },
+        'upgrade19': { cost: upgp19, condition: upg18 === 1, requirements: { M12: 50, M10: 50 } },
         'upgrade20': { cost: upgp20, condition: upg19 === 1 },
         'upgrade21': { cost: upgp21, condition: upg20 === 1 },
         'upgrade22': { cost: upgp22, condition: upg21 === 1 },
-        'upgrade23': { cost: upgp23, condition: upg22 === 1 },
+        'upgrade23': { cost: upgp23, condition: upg22 === 1, requirements: { M15: 50, M14: 50 } },
         'upgrade24': { cost: upgp24, condition: upg23 === 1 },
         'upgrade25': { cost: upgp25, condition: upg24 === 1 },
         'upgrade26': { cost: upgp26, condition: upg25 === 1 },
-        'upgrade27': { cost: upgp27, condition: upg26 === 1 },
+        'upgrade27': { cost: upgp27, condition: upg26 === 1, requirements: { M17: 50, M13: 50 } },
         'upgrade28': { cost: upgp28, condition: upg27 === 1 },
         'upgrade29': { cost: upgp29, condition: upg28 === 1 },
         'upgrade30': { cost: upgp30, condition: upg29 === 1 },
@@ -2151,12 +2154,32 @@ function updateUpgradeButtons() {
         'upgrade38': { cost: upgp38, condition: bimage === 13 }
     };
 
+    const employeeNames = {
+        M4: "Directors",
+        M5: "VPs",
+        M7: "CEOs",
+        M9: "Oracles",
+        M10: "Shadow Fryers",
+        M12: "Verdant Keepers",
+        M13: "Emulsifier Supremes",
+        M14: "Flame Whisperers",
+        M15: "Cheese Chancellors",
+        M17: "Golden Archmages"
+    };
+
     for (const [id, data] of Object.entries(upgradeMap)) {
         const element = document.getElementById(id);
         if (element && data.condition) {
             const currentText = element.textContent;
             const label = currentText.split(':')[0];
-            element.textContent = `${label}: $${formatCurrency(data.cost)}`;
+            let reqText = '';
+            if (data.requirements) {
+                reqText = Object.entries(data.requirements)
+                    .map(([emp, amt]) => `${amt} ${employeeNames[emp] || emp}`)
+                    .join(', ');
+                reqText = `, ${reqText}`;
+            }
+            element.textContent = `${label}: $${formatCurrency(data.cost)}${reqText}`;
         }
     }
 }
@@ -2273,26 +2296,29 @@ function updatemps() {
 
     updateUpgradeButtons();
     updateFranchiseButton();
-
-    document.getElementById('Workertooltip').textContent = "Earns $" + worker + " per second";
-    document.getElementById('Managertooltip').textContent = "Earns $" + manager + " per second";
-    document.getElementById('Moreclicktooltip').textContent = "Increases click value by $" + clickamount;
-    document.getElementById('directortooltip').textContent = "Earns $" + director + " per second";
-    document.getElementById('VPtooltip').textContent = "Earns $" + VP + " per second";
-    document.getElementById('COOtooltip').textContent = "Earns $" + COO + " per second";
-    document.getElementById('Ceotooltip').textContent = "Earns $" + ceo + " per second";
-    document.getElementById('Chairmantooltip').textContent = "Earns $" + chairman + " per second";
-    document.getElementById('MOtooltip').textContent = "Earns $" + oracle + " per second";
-    document.getElementById('SFtooltip').textContent = "Earns $" + fryer + " per second";
-    document.getElementById('Feasttooltip').textContent = "Earns $" + feast + " per second";
-    document.getElementById('Verdanttooltip').textContent = "Earns $" + verdant + " per second";
-    document.getElementById('EStooltip').textContent = "Earns $" + emulsifier + " per second";
-    document.getElementById('FWtooltip').textContent = "Earns $" + whisperer + " per second";
-    document.getElementById('CCtooltip').textContent = "Earns $" + chancellor + " per second";
-    document.getElementById('Priesttooltip').textContent = "Earns $" + priest + " per second";
-    document.getElementById('GAtooltip').textContent = "Earns $" + archmage + " per second";
-    document.getElementById('PMtooltip').textContent = "Earns $" + matriarch + " per second";
-    document.getElementById('GGtooltip').textContent = "Earns $" + grillmaster + " per second";
+if (button.id === 'upgrade30' && buttonElement) {
+    buttonElement.disabled = true;
+    buttonElement.style.backgroundColor = cannotAffordColor;
+}
+    document.getElementById('Workertooltip').textContent = "Earns $" + formatCurrency(worker) + " per second";
+    document.getElementById('Managertooltip').textContent = "Earns $" + formatCurrency(manager) + " per second";
+    document.getElementById('Moreclicktooltip').textContent = "Increases click value by $" + formatCurrency(clickamount);
+    document.getElementById('directortooltip').textContent = "Earns $" + formatCurrency(director) + " per second";
+    document.getElementById('VPtooltip').textContent = "Earns $" + formatCurrency(VP) + " per second";
+    document.getElementById('COOtooltip').textContent = "Earns $" + formatCurrency(COO) + " per second";
+    document.getElementById('Ceotooltip').textContent = "Earns $" + formatCurrency(ceo) + " per second";
+    document.getElementById('Chairmantooltip').textContent = "Earns $" + formatCurrency(chairman) + " per second";
+    document.getElementById('MOtooltip').textContent = "Earns $" + formatCurrency(oracle) + " per second";
+    document.getElementById('SFtooltip').textContent = "Earns $" + formatCurrency(fryer) + " per second";
+    document.getElementById('Feasttooltip').textContent = "Earns $" + formatCurrency(feast) + " per second";
+    document.getElementById('Verdanttooltip').textContent = "Earns $" + formatCurrency(verdant) + " per second";
+    document.getElementById('EStooltip').textContent = "Earns $" + formatCurrency(emulsifier) + " per second";
+    document.getElementById('FWtooltip').textContent = "Earns $" + formatCurrency(whisperer) + " per second";
+    document.getElementById('CCtooltip').textContent = "Earns $" + formatCurrency(chancellor) + " per second";
+    document.getElementById('Priesttooltip').textContent = "Earns $" + formatCurrency(priest) + " per second";
+    document.getElementById('GAtooltip').textContent = "Earns $" + formatCurrency(archmage) + " per second";
+    document.getElementById('PMtooltip').textContent = "Earns $" + formatCurrency(matriarch) + " per second";
+    document.getElementById('GGtooltip').textContent = "Earns $" + formatCurrency(grillmaster) + " per second";
 
     const buttons = [
         { id: 'extraButton', cost: cost1 },
@@ -2421,6 +2447,12 @@ function updatemps() {
             buttonElement.style.backgroundColor = ice >= button.cost ? canAffordColor : cannotAffordColor;
         }
     });
+    const upgrade30Btn = document.getElementById('upgrade30');
+if (upgrade30Btn) {
+    upgrade30Btn.disabled = true;
+    upgrade30Btn.style.backgroundColor = '#dddddd';
+    upgrade30Btn.textContent = 'Learn from the grand grill master: $???';
+}
 }
         /**
          * Adds money per second
@@ -3739,7 +3771,7 @@ function hideTooltip(tooltipId) {
                             </span>
                         </div>
                         <div class="tooltip-container">
-                            <button id="upgrade30" onclick="upgrade30()" style="display:none;" onmouseover="showTooltip(event, 'upgrade30tooltip')" onmouseout="hideTooltip('upgrade30tooltip')">Learn from the grand grill master: $1750000000</button>
+                            <button id="upgrade30" onclick="upgrade30()" disabled style="display:none;" onmouseover="showTooltip(event, 'upgrade30tooltip')" onmouseout="hideTooltip('upgrade30tooltip')">Learn from the grand grill master: $???</button>
                             <span class="tooltip" id="upgrade30tooltip">Coming soon </span>
                         </div>
                         <div class="tooltip-container  burger-upgrade" id="upgrade2tooltipcontainer">
@@ -3879,7 +3911,7 @@ function hideTooltip(tooltipId) {
                                 <span class="tooltip" id="PMtooltip">Earns $___ per second</span>
                             </div>
                             <div class="tooltip-container">
-                                <button id="GGbutton" onclick="GGaction()" style="display: none;" onmouseover="showTooltip(event, 'GGtooltip')" onmouseout="hideTooltip('GGtooltip')">Grand Grillmaster: $5000000 (0)</button>
+                                <button id="GGbutton" onclick="GGaction()" style="display: none;" onmouseover="showTooltip(event, 'GGtooltip')" onmouseout="hideTooltip('GGtooltip')">Grand Grillmaster: $??? (0)</button>
                                 <span class="tooltip" id="GGtooltip">Earns $500k per second</span>
                             </div>
                         </div>
