@@ -554,7 +554,11 @@ max-height: none;
             upg28 = 0,
             upg29 = 0,
             upg30 = 0,
-            upg31 = 0;
+            upg31 = 0,
+            upg39 = 0,
+            upg40 = 0,
+            upg41 = 0,
+            upg42 = 0;
         // Special upgrade costs
         let upgp1 = 150;                 // Coffee upgrade cost
         let upgp2 = 100000;           // Golden burger cost
@@ -593,7 +597,11 @@ max-height: none;
     upgp35 = 4000000000,
     upgp36 = 4500000000,
     upgp37 = 5000000000,
-    upgp38 = 5500000000;
+    upgp38 = 5500000000,
+    upgp39 = 600000,
+    upgp40 = 1750000,
+    upgp41 = 13000000,
+    upgp42 = 175000000;
         // Special features
         let golden_burger = 1;          // Golden burger multiplier
         let moneymultiplier = 1;        // Global money multiplier
@@ -610,14 +618,30 @@ max-height: none;
             icost2 = 75,                         // The second Ice cream upgrade cost 
             icost3 = 100,                        // The third Ice cream upgrade cost 
             icost4 = 150,                        // The fourth Ice cream upgrade cost 
-            icost5 = 200,                        // The fifth Ice cream upgrade cost 
+            icost5 = 200,                        // The fifth Ice cream upgrade cost
             icost6 = 250,                        // The sixth Ice cream upgrade cost
+            icost7 = 300,
+            icost8 = 350,
+            icost9 = 400,
+            icost10 = 450,
+            icost11 = 500,
+            icost12 = 550,
+            icost13 = 600,
+            icost14 = 650,
             iceupg1 = 0,            // whether you have the first ice cream upgrade or not
             iceupg2 = 0,           // whether you have the second ice cream upgrade or not
             iceupg3 = 0,            // whether you have the third ice cream upgrade or not
             iceupg4 = 0,           // whether you have the fourth ice cream upgrade or not
             iceupg5 = 0,            // whether you have the fifth ice cream upgrade or not
-            iceupg6 = 0;            // whether you have the sixth ice cream upgrade or not
+            iceupg6 = 0,            // whether you have the sixth ice cream upgrade or not
+            iceupg7 = 0,
+            iceupg8 = 0,
+            iceupg9 = 0,
+            iceupg10 = 0,
+            iceupg11 = 0,
+            iceupg12 = 0,
+            iceupg13 = 0,
+            iceupg14 = 0;
 
         let purchaseAmount = 1;     // quantity of employees to buy
         const employeeInfo = {
@@ -1461,6 +1485,23 @@ function upgrade14() {
         playSound('purchase', 0.4);
         document.getElementById("upgrade14").remove();
         hideTooltip('upgrade14tooltip'); // Hide the tooltip
+        document.getElementById("upgrade39").style.display = 'flex';
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade39() {
+    if (count >= upgp39) {
+        count -= upgp39;
+        upg39 = 1;
+        playSound('purchase', 0.4);
+        document.getElementById("upgrade39").remove();
+        hideTooltip('upgrade39tooltip');
+        document.getElementById("betteroracle").style.display = 'flex';
+        document.getElementById("betterfryer").style.display = 'flex';
         document.getElementById("upgrade15").style.display = 'flex';
         updateAll();
     } else {
@@ -1531,10 +1572,27 @@ function upgrade18() {
         playSound('purchase', 0.4);
         document.getElementById("upgrade18").remove();
         hideTooltip('upgrade18tooltip'); // Hide the tooltip
-        document.getElementById("upgrade19").style.display = 'flex';
+        document.getElementById("upgrade40").style.display = 'flex';
         if (upg31 == 0 && bimage == 5) {
             document.getElementById("upgrade31").style.display = 'flex'; // Show the first secret menu item upgrade
         }
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade40() {
+    if (count >= upgp40) {
+        count -= upgp40;
+        upg40 = 1;
+        playSound('purchase', 0.4);
+        document.getElementById("upgrade40").remove();
+        hideTooltip('upgrade40tooltip');
+        document.getElementById("betterfeast").style.display = 'flex';
+        document.getElementById("betterverdant").style.display = 'flex';
+        document.getElementById("upgrade19").style.display = 'flex';
         updateAll();
     } else {
         playSound('error', 0.4);
@@ -1608,6 +1666,23 @@ function upgrade22() {
         document.getElementById('EStooltip').textContent = "Earns $" + emulsifier + " per second";
         document.getElementById("upgrade22").remove();
         hideTooltip('upgrade22tooltip'); // Hide the tooltip
+        document.getElementById("upgrade41").style.display = 'flex';
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade41() {
+    if (count >= upgp41) {
+        count -= upgp41;
+        upg41 = 1;
+        playSound('purchase', 0.4);
+        document.getElementById("upgrade41").remove();
+        hideTooltip('upgrade41tooltip');
+        document.getElementById("betterwhisperer").style.display = 'flex';
+        document.getElementById("betterchancellor").style.display = 'flex';
         document.getElementById("upgrade23").style.display = 'flex';
         updateAll();
     } else {
@@ -1677,6 +1752,23 @@ function upgrade26() {
         playSound('purchase', 0.4);
         document.getElementById("upgrade26").remove();
         hideTooltip('upgrade26tooltip'); // Hide the tooltip
+        document.getElementById("upgrade42").style.display = 'flex';
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function upgrade42() {
+    if (count >= upgp42) {
+        count -= upgp42;
+        upg42 = 1;
+        playSound('purchase', 0.4);
+        document.getElementById("upgrade42").remove();
+        hideTooltip('upgrade42tooltip');
+        document.getElementById("betterarchmage").style.display = 'flex';
+        document.getElementById("betterpriest").style.display = 'flex';
         document.getElementById("upgrade27").style.display = 'flex';
         updateAll();
     } else {
@@ -1989,7 +2081,7 @@ function upgrade38() {
             }
         }
 
-        function betterceo() {
+function betterceo() {
             if (ice >= icost6) {
                 const oldCeoValue = ceo;
                 ceo += Math.round(ceo * 0.2);
@@ -2066,6 +2158,158 @@ function upgrade38() {
     return num.toFixed(1);
 }
 
+function betteroracle() {
+    if (ice >= icost7) {
+        const oldVal = oracle;
+        oracle += Math.round(oracle * 0.2);
+        if (M9 >= 1) {
+            const increase = (oracle - oldVal) * M9;
+            mps += increase;
+        }
+        iceupg7 += 1;
+        ice -= icost7;
+        icost7 = Math.round(icost7 * 1.25);
+        playSound('purchase', 0.4);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function betterfryer() {
+    if (ice >= icost8) {
+        const oldVal = fryer;
+        fryer += Math.round(fryer * 0.2);
+        if (M10 >= 1) {
+            const increase = (fryer - oldVal) * M10;
+            mps += increase;
+        }
+        iceupg8 += 1;
+        ice -= icost8;
+        icost8 = Math.round(icost8 * 1.25);
+        playSound('purchase', 0.4);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function betterfeast() {
+    if (ice >= icost9) {
+        const oldVal = feast;
+        feast += Math.round(feast * 0.2);
+        if (M11 >= 1) {
+            const increase = (feast - oldVal) * M11;
+            mps += increase;
+        }
+        iceupg9 += 1;
+        ice -= icost9;
+        icost9 = Math.round(icost9 * 1.25);
+        playSound('purchase', 0.4);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function betterverdant() {
+    if (ice >= icost10) {
+        const oldVal = verdant;
+        verdant += Math.round(verdant * 0.2);
+        if (M12 >= 1) {
+            const increase = (verdant - oldVal) * M12;
+            mps += increase;
+        }
+        iceupg10 += 1;
+        ice -= icost10;
+        icost10 = Math.round(icost10 * 1.25);
+        playSound('purchase', 0.4);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function betterwhisperer() {
+    if (ice >= icost11) {
+        const oldVal = whisperer;
+        whisperer += Math.round(whisperer * 0.2);
+        if (M14 >= 1) {
+            const increase = (whisperer - oldVal) * M14;
+            mps += increase;
+        }
+        iceupg11 += 1;
+        ice -= icost11;
+        icost11 = Math.round(icost11 * 1.25);
+        playSound('purchase', 0.4);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function betterchancellor() {
+    if (ice >= icost12) {
+        const oldVal = chancellor;
+        chancellor += Math.round(chancellor * 0.2);
+        if (M15 >= 1) {
+            const increase = (chancellor - oldVal) * M15;
+            mps += increase;
+        }
+        iceupg12 += 1;
+        ice -= icost12;
+        icost12 = Math.round(icost12 * 1.25);
+        playSound('purchase', 0.4);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function betterarchmage() {
+    if (ice >= icost13) {
+        const oldVal = archmage;
+        archmage += Math.round(archmage * 0.2);
+        if (M17 >= 1) {
+            const increase = (archmage - oldVal) * M17;
+            mps += increase;
+        }
+        iceupg13 += 1;
+        ice -= icost13;
+        icost13 = Math.round(icost13 * 1.25);
+        playSound('purchase', 0.4);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
+function betterpriest() {
+    if (ice >= icost14) {
+        const oldVal = priest;
+        priest += Math.round(priest * 0.2);
+        if (M16 >= 1) {
+            const increase = (priest - oldVal) * M16;
+            mps += increase;
+        }
+        iceupg14 += 1;
+        ice -= icost14;
+        icost14 = Math.round(icost14 * 1.25);
+        playSound('purchase', 0.4);
+        updateAll();
+    } else {
+        playSound('error', 0.4);
+        updateAll();
+    }
+}
+
 // Update buttons with formatted currency and counts
 function updateButtons(buttons) {
     buttons.forEach(button => {
@@ -2128,19 +2372,23 @@ function updateUpgradeButtons() {
         'upgrade12': { cost: upgp12, condition: upg11 === 1 },
         'upgrade13': { cost: upgp13, condition: upg12 === 1 },
         'upgrade14': { cost: upgp14, condition: upg13 === 1 },
-        'upgrade15': { cost: upgp15, condition: upg14 === 1, requirements: { M7: 50, M9: 50 } },
+        'upgrade39': { cost: upgp39, condition: upg14 === 1 },
+        'upgrade15': { cost: upgp15, condition: upg39 === 1, requirements: { M7: 50, M9: 50 } },
         'upgrade16': { cost: upgp16, condition: upg15 === 1 },
         'upgrade17': { cost: upgp17, condition: upg16 === 1 },
         'upgrade18': { cost: upgp18, condition: upg17 === 1 },
-        'upgrade19': { cost: upgp19, condition: upg18 === 1, requirements: { M12: 50, M10: 50 } },
+        'upgrade40': { cost: upgp40, condition: upg18 === 1 },
+        'upgrade19': { cost: upgp19, condition: upg40 === 1, requirements: { M12: 50, M10: 50 } },
         'upgrade20': { cost: upgp20, condition: upg19 === 1 },
         'upgrade21': { cost: upgp21, condition: upg20 === 1 },
         'upgrade22': { cost: upgp22, condition: upg21 === 1 },
-        'upgrade23': { cost: upgp23, condition: upg22 === 1, requirements: { M15: 50, M14: 50 } },
+        'upgrade41': { cost: upgp41, condition: upg22 === 1 },
+        'upgrade23': { cost: upgp23, condition: upg41 === 1, requirements: { M15: 50, M14: 50 } },
         'upgrade24': { cost: upgp24, condition: upg23 === 1 },
         'upgrade25': { cost: upgp25, condition: upg24 === 1 },
         'upgrade26': { cost: upgp26, condition: upg25 === 1 },
-        'upgrade27': { cost: upgp27, condition: upg26 === 1, requirements: { M17: 50, M13: 50 } },
+        'upgrade42': { cost: upgp42, condition: upg26 === 1 },
+        'upgrade27': { cost: upgp27, condition: upg42 === 1, requirements: { M17: 50, M13: 50 } },
         'upgrade28': { cost: upgp28, condition: upg27 === 1 },
         'upgrade29': { cost: upgp29, condition: upg28 === 1 },
         'upgrade30': { cost: upgp30, condition: upg29 === 1 },
@@ -2293,6 +2541,22 @@ function updatemps() {
         "Make directors better! " + formatCurrency(icost5) + ' ice';
     document.getElementById('betterceo').textContent =
         "Make CEOs better! " + formatCurrency(icost6) + ' ice';
+    document.getElementById('betteroracle').textContent =
+        "Oracle secrets! " + formatCurrency(icost7) + ' ice';
+    document.getElementById('betterfryer').textContent =
+        "Fryer tricks! " + formatCurrency(icost8) + ' ice';
+    document.getElementById('betterfeast').textContent =
+        "Enhance feast! " + formatCurrency(icost9) + ' ice';
+    document.getElementById('betterverdant').textContent =
+        "Grow verdant! " + formatCurrency(icost10) + ' ice';
+    document.getElementById('betterwhisperer').textContent =
+        "Whisperer smoke! " + formatCurrency(icost11) + ' ice';
+    document.getElementById('betterchancellor').textContent =
+        "Cheese mastery! " + formatCurrency(icost12) + ' ice';
+    document.getElementById('betterarchmage').textContent =
+        "Arcane tips! " + formatCurrency(icost13) + ' ice';
+    document.getElementById('betterpriest').textContent =
+        "Sacred buns! " + formatCurrency(icost14) + ' ice';
 
     updateUpgradeButtons();
     updateFranchiseButton();
@@ -2355,18 +2619,22 @@ if (button.id === 'upgrade30' && buttonElement) {
         { id: 'upgrade12', cost: upgp12 },
         { id: 'upgrade13', cost: upgp13 },
         { id: 'upgrade14', cost: upgp14 },
+        { id: 'upgrade39', cost: upgp39 },
         { id: 'upgrade15', cost: upgp15, requirements: { M7: 50, M9: 50 } },
         { id: 'upgrade16', cost: upgp16 },
         { id: 'upgrade17', cost: upgp17 },
         { id: 'upgrade18', cost: upgp18 },
+        { id: 'upgrade40', cost: upgp40 },
         { id: 'upgrade19', cost: upgp19, requirements: { M12: 50, M10: 50 } },
         { id: 'upgrade20', cost: upgp20 },
         { id: 'upgrade21', cost: upgp21 },
         { id: 'upgrade22', cost: upgp22 },
+        { id: 'upgrade41', cost: upgp41 },
         { id: 'upgrade23', cost: upgp23, requirements: { M15: 50, M14: 50 } },
         { id: 'upgrade24', cost: upgp24 },
         { id: 'upgrade25', cost: upgp25 },
         { id: 'upgrade26', cost: upgp26 },
+        { id: 'upgrade42', cost: upgp42 },
         { id: 'upgrade27', cost: upgp27, requirements: { M17: 50, M13: 50 } },
         { id: 'upgrade28', cost: upgp28 },
         { id: 'upgrade29', cost: upgp29 },
@@ -2388,6 +2656,14 @@ if (button.id === 'upgrade30' && buttonElement) {
         { id: 'betterclick', cost: icost4 },
         { id: 'betterdirector', cost: icost5 },
         { id: 'betterceo', cost: icost6 },
+        { id: 'betteroracle', cost: icost7 },
+        { id: 'betterfryer', cost: icost8 },
+        { id: 'betterfeast', cost: icost9 },
+        { id: 'betterverdant', cost: icost10 },
+        { id: 'betterwhisperer', cost: icost11 },
+        { id: 'betterchancellor', cost: icost12 },
+        { id: 'betterarchmage', cost: icost13 },
+        { id: 'betterpriest', cost: icost14 },
     ];  
     window.M4 = M4;
     window.M5 = M5;
@@ -2566,7 +2842,7 @@ if (upgrade30Btn) {
                 franchiseTab.classList.remove('highlight');
             }
 
-            const affordableIceUpgrade = [icost1, icost2, icost3, icost4, icost5, icost6].some(cost => ice >= cost);
+            const affordableIceUpgrade = [icost1, icost2, icost3, icost4, icost5, icost6, icost7, icost8, icost9, icost10, icost11, icost12, icost13, icost14].some(cost => ice >= cost);
             if (affordableIceUpgrade ) {
                 buttonsTab.classList.add('highlight');
             } else {
@@ -2797,10 +3073,17 @@ if (upgrade30Btn) {
         if (upgrade14Button) upgrade14Button.style.display = 'flex';
     }
 
+    const upgrade39Button = document.getElementById("upgrade39");
+    if (upg39 === 1) {
+        if (upgrade39Button) upgrade39Button.remove();
+    } else if (upg14 === 1) {
+        if (upgrade39Button) upgrade39Button.style.display = 'flex';
+    }
+
     const upgrade15Button = document.getElementById("upgrade15");
     if (upg15 === 1) {
         if (upgrade15Button) upgrade15Button.remove();
-    } else if (upg14 === 1) {
+    } else if (upg39 === 1) {
         if (upgrade15Button) upgrade15Button.style.display = 'flex';
     }
 
@@ -2825,10 +3108,17 @@ if (upgrade30Btn) {
         if (upgrade18Button) upgrade18Button.style.display = 'flex';
     }
 
+    const upgrade40Button = document.getElementById("upgrade40");
+    if (upg40 === 1) {
+        if (upgrade40Button) upgrade40Button.remove();
+    } else if (upg18 === 1) {
+        if (upgrade40Button) upgrade40Button.style.display = 'flex';
+    }
+
     const upgrade19Button = document.getElementById("upgrade19");
     if (upg19 === 1) {
         if (upgrade19Button) upgrade19Button.remove();
-    } else if (upg18 === 1) {
+    } else if (upg40 === 1) {
         if (upgrade19Button) upgrade19Button.style.display = 'flex';
     }
 
@@ -2853,10 +3143,17 @@ if (upgrade30Btn) {
         if (upgrade22Button) upgrade22Button.style.display = 'flex';
     }
 
+    const upgrade41Button = document.getElementById("upgrade41");
+    if (upg41 === 1) {
+        if (upgrade41Button) upgrade41Button.remove();
+    } else if (upg22 === 1) {
+        if (upgrade41Button) upgrade41Button.style.display = 'flex';
+    }
+
     const upgrade23Button = document.getElementById("upgrade23");
     if (upg23 === 1) {
         if (upgrade23Button) upgrade23Button.remove();
-    } else if (upg22 === 1) {
+    } else if (upg41 === 1) {
         if (upgrade23Button) upgrade23Button.style.display = 'flex';
     }
 
@@ -2881,10 +3178,17 @@ if (upgrade30Btn) {
         if (upgrade26Button) upgrade26Button.style.display = 'flex';
     }
 
+    const upgrade42Button = document.getElementById("upgrade42");
+    if (upg42 === 1) {
+        if (upgrade42Button) upgrade42Button.remove();
+    } else if (upg26 === 1) {
+        if (upgrade42Button) upgrade42Button.style.display = 'flex';
+    }
+
     const upgrade27Button = document.getElementById("upgrade27");
     if (upg27 === 1) {
         if (upgrade27Button) upgrade27Button.remove();
-    } else if (upg26 === 1) {
+    } else if (upg42 === 1) {
         if (upgrade27Button) upgrade27Button.style.display = 'flex';
     }
 
@@ -2985,6 +3289,10 @@ if (upgrade30Btn) {
                 upgp28,
                 upgp29,
                 upgp30,
+                upgp39,
+                upgp40,
+                upgp41,
+                upgp42,
                 fcost,
 
                 // Production values
@@ -3055,6 +3363,10 @@ if (upgrade30Btn) {
                 upg28,
                 upg29,
                 upg30,
+                upg39,
+                upg40,
+                upg41,
+                upg42,
                 bimage,
                 // Franchise system
                 franchises,
@@ -3072,12 +3384,28 @@ if (upgrade30Btn) {
                 icost4,
                 icost5,
                 icost6,
+                icost7,
+                icost8,
+                icost9,
+                icost10,
+                icost11,
+                icost12,
+                icost13,
+                icost14,
                 iceupg1,
                 iceupg2,
                 iceupg3,
                 iceupg4,
                 iceupg5,
                 iceupg6,
+                iceupg7,
+                iceupg8,
+                iceupg9,
+                iceupg10,
+                iceupg11,
+                iceupg12,
+                iceupg13,
+                iceupg14,
                 
                 // Achievement states - Save the unlocked status of each achievement
                 achievements: Object.fromEntries(
@@ -3154,6 +3482,10 @@ if (upgrade30Btn) {
                 upgp28 = gameState.upgp28;
                 upgp29 = gameState.upgp29;
                 upgp30 = gameState.upgp30;
+                upgp39 = gameState.upgp39;
+                upgp40 = gameState.upgp40;
+                upgp41 = gameState.upgp41;
+                upgp42 = gameState.upgp42;
                 fcost = gameState.fcost;
 
                 // Restore production values
@@ -3224,6 +3556,10 @@ if (upgrade30Btn) {
                 upg28 = gameState.upg28;
                 upg29 = gameState.upg29;
                 upg30 = gameState.upg30;
+                upg39 = gameState.upg39;
+                upg40 = gameState.upg40;
+                upg41 = gameState.upg41;
+                upg42 = gameState.upg42;
 
                 // Restore franchise system
                 franchises = gameState.franchises;
@@ -3241,12 +3577,28 @@ if (upgrade30Btn) {
                 icost4 = gameState.icost4;
                 icost5 = gameState.icost5;
                 icost6 = gameState.icost6;
+                icost7 = gameState.icost7;
+                icost8 = gameState.icost8;
+                icost9 = gameState.icost9;
+                icost10 = gameState.icost10;
+                icost11 = gameState.icost11;
+                icost12 = gameState.icost12;
+                icost13 = gameState.icost13;
+                icost14 = gameState.icost14;
                 iceupg1 = gameState.iceupg1;
                 iceupg2 = gameState.iceupg2;
                 iceupg3 = gameState.iceupg3;
                 iceupg4 = gameState.iceupg4;
                 iceupg5 = gameState.iceupg5;
                 iceupg6 = gameState.iceupg6;
+                iceupg7 = gameState.iceupg7;
+                iceupg8 = gameState.iceupg8;
+                iceupg9 = gameState.iceupg9;
+                iceupg10 = gameState.iceupg10;
+                iceupg11 = gameState.iceupg11;
+                iceupg12 = gameState.iceupg12;
+                iceupg13 = gameState.iceupg13;
+                iceupg14 = gameState.iceupg14;
                 bimage = gameState.bimage;
                 // Restore achievements
                 const chesburger = document.querySelector('.image-button');
@@ -3265,22 +3617,38 @@ if (upgrade30Btn) {
                 if (bimage == 5) {
                     chesburger.style.backgroundImage = "url('Obsidianburger.png')";
                 }
-                if (upg11 === 1) {
+            if (upg11 === 1) {
                 document.getElementById("MObutton").style.display = 'flex'; // Show Milkshake Oracle
                 document.getElementById("SFbutton").style.display = 'flex'; // Show Shadow Fryer
-                }
+            }
+            if (upg39 === 1) {
+                document.getElementById("betteroracle").style.display = 'flex';
+                document.getElementById("betterfryer").style.display = 'flex';
+            }
             if (upg15 === 1) {
                 document.getElementById("feastbutton").style.display = 'flex'; // Show Keeper of the Hidden Feast
                 document.getElementById("verdantbutton").style.display = 'flex'; // Show Verdant Keeper
+            }
+            if (upg40 === 1) {
+                document.getElementById("betterfeast").style.display = 'flex';
+                document.getElementById("betterverdant").style.display = 'flex';
             }
             if (upg19 === 1) {
                 document.getElementById("FWbutton").style.display = 'flex'; // Show Flame Whisperer
                 document.getElementById("CCbutton").style.display = 'flex'; // Show Cheese Chancellor
                 document.getElementById("ESbutton").style.display = 'flex'; // Show Emulsifier Supreme
             }
+            if (upg41 === 1) {
+                document.getElementById("betterwhisperer").style.display = 'flex';
+                document.getElementById("betterchancellor").style.display = 'flex';
+            }
             if (upg23 === 1) {
                 document.getElementById("GAbutton").style.display = 'flex'; // Show Golden Archmage
                 document.getElementById("priestbutton").style.display = 'flex'; // Show High Priest of the Golden Bun
+            }
+            if (upg42 === 1) {
+                document.getElementById("betterarchmage").style.display = 'flex';
+                document.getElementById("betterpriest").style.display = 'flex';
             }
             if (upg27 === 1) {
                 document.getElementById("PMbutton").style.display = 'flex'; // Show Patty Matriarch
@@ -3485,6 +3853,38 @@ function hideTooltip(tooltipId) {
                             <div class="tooltip-container">
                                 <button class="feature-button" id="betterceo" onclick="betterceo()" onmouseover="showTooltip(event, 'betterceotooltip')" onmouseout="hideTooltip('betterceotooltip')">Make CEOs better! 250 ice</button>
                                 <span class="tooltip" id="betterceotooltip">Increases what CEOs make by 0.2x</span>
+                            </div>
+                            <div class="tooltip-container" style="display:none;">
+                                <button class="feature-button" id="betteroracle" onclick="betteroracle()" onmouseover="showTooltip(event, 'betteroracletooltip')" onmouseout="hideTooltip('betteroracletooltip')">Oracle secrets! 300 ice</button>
+                                <span class="tooltip" id="betteroracletooltip">Increases Milkshake Oracle by 0.2x</span>
+                            </div>
+                            <div class="tooltip-container" style="display:none;">
+                                <button class="feature-button" id="betterfryer" onclick="betterfryer()" onmouseover="showTooltip(event, 'betterfryertooltip')" onmouseout="hideTooltip('betterfryertooltip')">Fryer tricks! 350 ice</button>
+                                <span class="tooltip" id="betterfryertooltip">Increases Shadow Fryer by 0.2x</span>
+                            </div>
+                            <div class="tooltip-container" style="display:none;">
+                                <button class="feature-button" id="betterfeast" onclick="betterfeast()" onmouseover="showTooltip(event, 'betterfeasttooltip')" onmouseout="hideTooltip('betterfeasttooltip')">Enhance feast! 400 ice</button>
+                                <span class="tooltip" id="betterfeasttooltip">Increases Keeper of the Hidden Feast by 0.2x</span>
+                            </div>
+                            <div class="tooltip-container" style="display:none;">
+                                <button class="feature-button" id="betterverdant" onclick="betterverdant()" onmouseover="showTooltip(event, 'betterverdanttooltip')" onmouseout="hideTooltip('betterverdanttooltip')">Grow verdant! 450 ice</button>
+                                <span class="tooltip" id="betterverdanttooltip">Increases Verdant Keeper by 0.2x</span>
+                            </div>
+                            <div class="tooltip-container" style="display:none;">
+                                <button class="feature-button" id="betterwhisperer" onclick="betterwhisperer()" onmouseover="showTooltip(event, 'betterwhisperertooltip')" onmouseout="hideTooltip('betterwhisperertooltip')">Whisperer smoke! 500 ice</button>
+                                <span class="tooltip" id="betterwhisperertooltip">Increases Flame Whisperer by 0.2x</span>
+                            </div>
+                            <div class="tooltip-container" style="display:none;">
+                                <button class="feature-button" id="betterchancellor" onclick="betterchancellor()" onmouseover="showTooltip(event, 'betterchancellortooltip')" onmouseout="hideTooltip('betterchancellortooltip')">Cheese mastery! 550 ice</button>
+                                <span class="tooltip" id="betterchancellortooltip">Increases Cheese Chancellor by 0.2x</span>
+                            </div>
+                            <div class="tooltip-container" style="display:none;">
+                                <button class="feature-button" id="betterarchmage" onclick="betterarchmage()" onmouseover="showTooltip(event, 'betterarchmagetooltip')" onmouseout="hideTooltip('betterarchmagetooltip')">Arcane tips! 600 ice</button>
+                                <span class="tooltip" id="betterarchmagetooltip">Increases Golden Archmage by 0.2x</span>
+                            </div>
+                            <div class="tooltip-container" style="display:none;">
+                                <button class="feature-button" id="betterpriest" onclick="betterpriest()" onmouseover="showTooltip(event, 'betterpriesttooltip')" onmouseout="hideTooltip('betterpriesttooltip')">Sacred buns! 650 ice</button>
+                                <span class="tooltip" id="betterpriesttooltip">Increases High Priest by 0.2x</span>
                             </div>
                             <button class="feature-button" disabled style="display:none;">Staff Training</button>
                             <button class="feature-button" disabled style="display:none;">Equipment Upgrades</button>
@@ -3710,6 +4110,10 @@ function hideTooltip(tooltipId) {
                             <span class="tooltip" id="upgrade14tooltip">All production increase by 1.25x</span>
                         </div>
                         <div class="tooltip-container">
+                            <button id="upgrade39" onclick="upgrade39()" style="display:none;" onmouseover="showTooltip(event, 'upgrade39tooltip')" onmouseout="hideTooltip('upgrade39tooltip')">Oracle's Frozen Manual: $600000</button>
+                            <span class="tooltip" id="upgrade39tooltip">Unlocks Oracle and Fryer ice cream upgrades</span>
+                        </div>
+                        <div class="tooltip-container">
                             <button id="upgrade15" onclick="upgrade15()" style="display:none;" onmouseover="showTooltip(event, 'upgrade15tooltip')" onmouseout="hideTooltip('upgrade15tooltip')">Unlock the secret society tier two: $750000, 50 CEOs, and 50 Oracles</button>
                             <span class="tooltip" id="upgrade15tooltip">unlocks The Keeper of the Hidden Feast, and verdant keeper</span>
                         </div>
@@ -3724,6 +4128,10 @@ function hideTooltip(tooltipId) {
                         <div class="tooltip-container">
                             <button id="upgrade18" onclick="upgrade18()" style="display:none;" onmouseover="showTooltip(event, 'upgrade18tooltip')" onmouseout="hideTooltip('upgrade18tooltip')">Expand the secret menu: $1550000</button>
                             <span class="tooltip" id="upgrade18tooltip">1.25x buff to Keeper of Hidden Feast, and unlocks new burger upgrades</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade40" onclick="upgrade40()" style="display:none;" onmouseover="showTooltip(event, 'upgrade40tooltip')" onmouseout="hideTooltip('upgrade40tooltip')">Feastkeeper's Ice Guide: $1.75M</button>
+                            <span class="tooltip" id="upgrade40tooltip">Unlocks Feast and Verdant ice cream upgrades</span>
                         </div>
                         <div class="tooltip-container">
                             <button id="upgrade19" onclick="upgrade19()" style="display:none;" onmouseover="showTooltip(event, 'upgrade19tooltip')" onmouseout="hideTooltip('upgrade19tooltip')">Unlock the secret society tier three: $2000000, 50 Verdant Keepers, and 50 Shadow Fryers</button>
@@ -3742,6 +4150,10 @@ function hideTooltip(tooltipId) {
                             <span class="tooltip" id="upgrade22tooltip">1.5x to emulsifier supreme</span>
                         </div>
                         <div class="tooltip-container">
+                            <button id="upgrade41" onclick="upgrade41()" style="display:none;" onmouseover="showTooltip(event, 'upgrade41tooltip')" onmouseout="hideTooltip('upgrade41tooltip')">Whisperer's Chilling Scroll: $13M</button>
+                            <span class="tooltip" id="upgrade41tooltip">Unlocks Whisperer and Chancellor ice cream upgrades</span>
+                        </div>
+                        <div class="tooltip-container">
                             <button id="upgrade23" onclick="upgrade23()" style="display:none;" onmouseover="showTooltip(event, 'upgrade23tooltip')" onmouseout="hideTooltip('upgrade23tooltip')">Unlock the secret society tier four: $15750000, 50 Cheese Chancellors, and 50 Flame Whisperers</button>
                             <span class="tooltip" id="upgrade23tooltip">unlocks Golden Archmage, and high priest of the Golden bun</span>
                         </div>
@@ -3756,6 +4168,10 @@ function hideTooltip(tooltipId) {
                         <div class="tooltip-container">
                             <button id="upgrade26" onclick="upgrade26()" style="display:none;" onmouseover="showTooltip(event, 'upgrade26tooltip')" onmouseout="hideTooltip('upgrade26tooltip')">David goggins: $125000000</button>
                             <span class="tooltip" id="upgrade26tooltip">1.35x all</span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade42" onclick="upgrade42()" style="display:none;" onmouseover="showTooltip(event, 'upgrade42tooltip')" onmouseout="hideTooltip('upgrade42tooltip')">Archmage's Frozen Codex: $175M</button>
+                            <span class="tooltip" id="upgrade42tooltip">Unlocks Archmage and Priest ice cream upgrades</span>
                         </div>
                         <div class="tooltip-container">
                             <button id="upgrade27" onclick="upgrade27()" style="display:none;" onmouseover="showTooltip(event, 'upgrade27tooltip')" onmouseout="hideTooltip('upgrade27tooltip')">Unlock the secret society tier five: $250000000, 50 Golden Archmages, and 50 Emulsifier Supremes</button>
