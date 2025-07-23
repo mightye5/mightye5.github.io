@@ -161,7 +161,7 @@ max-height: none;
 
         /* Main burger button styling */
         .image-button {
-            z-index: 9999999;
+            z-index: 1;
             width: 500px;
             min-width: fit-content;
             height: 500px;
@@ -182,29 +182,34 @@ max-height: none;
             transform: translateY(4px);
         }
 
-        .tooltip-container {
-    position: relative; /* Position elements absolutely within the container */
-    top: 0; /* Align to the top */
-    left: 0; /* Align to the left */
-    width: 100%; /* Ensure buttons span the container width */
+.tooltip-container {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 99999999;
 }
         .tooltip-container button {
             width: 100%;
         }
 
-        .tooltip {
-            visibility: hidden;
-            position: fixed;
-            background-color: #333;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 14px;
-            white-space: nowrap;
-            z-index: 9999;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
+.tooltip {
+    visibility: hidden;
+    position: fixed;
+    background-color: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    white-space: nowrap;
+    z-index: 999999999; /* Even higher z-index */
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    /* Force the tooltip to appear on top */
+    transform: translateZ(0);
+    will-change: transform;
+}
 
         .tooltip::before {
             content: "";
@@ -223,7 +228,7 @@ max-height: none;
         }
 
         .franchise-section {
-            z-index: 0;
+            z-index: 90;
             width: 100%;
             max-width: 900px;
            
@@ -465,7 +470,7 @@ max-height: none;
     <script>
         // ================ GAME STATE VARIABLES ================
         // Basic game currency and costs 
-        let count =  0;                  // Player's current money
+        let count =  09999999999999;                  // Player's current money
         let cost1 = 10,                 // Worker cost
             cost2 = 25,                 // Manager cost
             cost3 = 15,                 // Click upgrade cost
@@ -3854,40 +3859,40 @@ function hideTooltip(tooltipId) {
                                 <button class="feature-button" id="betterceo" onclick="betterceo()" onmouseover="showTooltip(event, 'betterceotooltip')" onmouseout="hideTooltip('betterceotooltip')">Make CEOs better! 250 ice</button>
                                 <span class="tooltip" id="betterceotooltip">Increases what CEOs make by 0.2x</span>
                             </div>
-                            <div class="tooltip-container" style="display:none;">
-                                <button class="feature-button" id="betteroracle" onclick="betteroracle()" onmouseover="showTooltip(event, 'betteroracletooltip')" onmouseout="hideTooltip('betteroracletooltip')">Oracle secrets! 300 ice</button>
-                                <span class="tooltip" id="betteroracletooltip">Increases Milkshake Oracle by 0.2x</span>
+                            <div class="tooltip-container" >
+                                <button class="feature-button" id="betteroracle" style="display:none;" onclick="betteroracle()" onmouseover="showTooltip(event, 'betteroracletooltip')" onmouseout="hideTooltip('betteroracletooltip')">Oracle secrets! 300 ice</button>
+                                <span class="tooltip" id="betteroracletooltip">Increases what Milkshake Oracles make by 0.2x</span>
                             </div>
-                            <div class="tooltip-container" style="display:none;">
-                                <button class="feature-button" id="betterfryer" onclick="betterfryer()" onmouseover="showTooltip(event, 'betterfryertooltip')" onmouseout="hideTooltip('betterfryertooltip')">Fryer tricks! 350 ice</button>
-                                <span class="tooltip" id="betterfryertooltip">Increases Shadow Fryer by 0.2x</span>
+                            <div class="tooltip-container" >
+                                <button class="feature-button" style="display:none;" id="betterfryer" onclick="betterfryer()" onmouseover="showTooltip(event, 'betterfryertooltip')" onmouseout="hideTooltip('betterfryertooltip')">Fryer tricks! 350 ice</button>
+                                <span class="tooltip" id="betterfryertooltip">Increases what Shadow Fryers make by 0.2x</span>
                             </div>
-                            <div class="tooltip-container" style="display:none;">
-                                <button class="feature-button" id="betterfeast" onclick="betterfeast()" onmouseover="showTooltip(event, 'betterfeasttooltip')" onmouseout="hideTooltip('betterfeasttooltip')">Enhance feast! 400 ice</button>
-                                <span class="tooltip" id="betterfeasttooltip">Increases Keeper of the Hidden Feast by 0.2x</span>
+                            <div class="tooltip-container" >
+                                <button class="feature-button" style="display:none;" id="betterfeast" onclick="betterfeast()" onmouseover="showTooltip(event, 'betterfeasttooltip')" onmouseout="hideTooltip('betterfeasttooltip')">Enhance feast! 400 ice</button>
+                                <span class="tooltip" id="betterfeasttooltip">Increases what Keeper of the Hidden Feasts make by 0.2x</span>
                             </div>
-                            <div class="tooltip-container" style="display:none;">
-                                <button class="feature-button" id="betterverdant" onclick="betterverdant()" onmouseover="showTooltip(event, 'betterverdanttooltip')" onmouseout="hideTooltip('betterverdanttooltip')">Grow verdant! 450 ice</button>
-                                <span class="tooltip" id="betterverdanttooltip">Increases Verdant Keeper by 0.2x</span>
+                            <div class="tooltip-container" >
+                                <button class="feature-button" style="display:none;" id="betterverdant" onclick="betterverdant()" onmouseover="showTooltip(event, 'betterverdanttooltip')" onmouseout="hideTooltip('betterverdanttooltip')">Grow verdant! 450 ice</button>
+                                <span class="tooltip" id="betterverdanttooltip">Increases what Verdant Keepers make by 0.2x</span>
                             </div>
-                            <div class="tooltip-container" style="display:none;">
-                                <button class="feature-button" id="betterwhisperer" onclick="betterwhisperer()" onmouseover="showTooltip(event, 'betterwhisperertooltip')" onmouseout="hideTooltip('betterwhisperertooltip')">Whisperer smoke! 500 ice</button>
-                                <span class="tooltip" id="betterwhisperertooltip">Increases Flame Whisperer by 0.2x</span>
+                            <div class="tooltip-container" >
+                                <button class="feature-button" style="display:none;" id="betterwhisperer" onclick="betterwhisperer()" onmouseover="showTooltip(event, 'betterwhisperertooltip')" onmouseout="hideTooltip('betterwhisperertooltip')">Whisperer smoke! 500 ice</button>
+                                <span class="tooltip" id="betterwhisperertooltip">Increases what Flame Whisperers make by 0.2x</span>
                             </div>
-                            <div class="tooltip-container" style="display:none;">
-                                <button class="feature-button" id="betterchancellor" onclick="betterchancellor()" onmouseover="showTooltip(event, 'betterchancellortooltip')" onmouseout="hideTooltip('betterchancellortooltip')">Cheese mastery! 550 ice</button>
-                                <span class="tooltip" id="betterchancellortooltip">Increases Cheese Chancellor by 0.2x</span>
+                            <div class="tooltip-container" >
+                                <button class="feature-button" style="display:none;" id="betterchancellor" onclick="betterchancellor()" onmouseover="showTooltip(event, 'betterchancellortooltip')" onmouseout="hideTooltip('betterchancellortooltip')">Cheese mastery! 550 ice</button>
+                                <span class="tooltip" id="betterchancellortooltip">Increases what Cheese Chancellors make by 0.2x</span>
                             </div>
-                            <div class="tooltip-container" style="display:none;">
-                                <button class="feature-button" id="betterarchmage" onclick="betterarchmage()" onmouseover="showTooltip(event, 'betterarchmagetooltip')" onmouseout="hideTooltip('betterarchmagetooltip')">Arcane tips! 600 ice</button>
-                                <span class="tooltip" id="betterarchmagetooltip">Increases Golden Archmage by 0.2x</span>
+                            <div class="tooltip-container" >
+                                <button class="feature-button" style="display:none;" id="betterarchmage" onclick="betterarchmage()" onmouseover="showTooltip(event, 'betterarchmagetooltip')" onmouseout="hideTooltip('betterarchmagetooltip')">Arcane tips! 600 ice</button>
+                                <span class="tooltip" id="betterarchmagetooltip">Increases what Golden Archmages make by 0.2x</span>
                             </div>
-                            <div class="tooltip-container" style="display:none;">
-                                <button class="feature-button" id="betterpriest" onclick="betterpriest()" onmouseover="showTooltip(event, 'betterpriesttooltip')" onmouseout="hideTooltip('betterpriesttooltip')">Sacred buns! 650 ice</button>
-                                <span class="tooltip" id="betterpriesttooltip">Increases High Priest by 0.2x</span>
+                            <div class="tooltip-container" >
+                                <button class="feature-button" style="display:none;" id="betterpriest" onclick="betterpriest()" onmouseover="showTooltip(event, 'betterpriesttooltip')" onmouseout="hideTooltip('betterpriesttooltip')">Sacred buns! 650 ice</button>
+                                <span class="tooltip" id="betterpriesttooltip">Increases what High Priests make by 0.2x</span>
                             </div>
-                            <button class="feature-button" disabled style="display:none;">Staff Training</button>
-                            <button class="feature-button" disabled style="display:none;">Equipment Upgrades</button>
+                            <button class="feature-button"   style="display:none;">Staff Training</button>
+                            <button class="feature-button"   style="display:none;">Equipment Upgrades</button>
                             <input type="text" id="ice" value="Ice Creams: 0" readonly>
                             <input type="text" id="icepers" value="Ice Creams per second: 0" readonly>
                         </div>
