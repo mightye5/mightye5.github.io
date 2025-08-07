@@ -1,6 +1,6 @@
         // ================ GAME STATE VARIABLES ================
         // Basic game currency and costs 
-        let count =  999999999999990;                  // Player's current money
+        let count =  0;                  // Player's current money
         let cost1 = 10,                 // Worker cost
             cost2 = 25,                 // Manager cost
             cost3 = 15,                 // Click upgrade cost
