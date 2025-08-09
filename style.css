@@ -172,7 +172,7 @@ max-height: none;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 500px;
+            
         }
 
         /* Default button styling */
@@ -201,17 +201,21 @@ max-height: none;
         /* Main burger button styling */
         .image-button {
             z-index: 1;
-            width: 500px;
-            min-width: fit-content;
-            height: 500px;
+            width: 100%;
+            max-width: 500px;
+            min-width: 300px;
+            height: 100%;
+            max-height: 500px;
+            min-height: 300px;
             background-color: transparent;
             background-image: url('Burger-images/Burger.png');
-            background-size: 100% 100%;
+            background-size: cover;
             border: none;
             cursor: pointer;
             background-position: center;
             background-repeat: no-repeat;
             box-shadow: 0 9px #999;
+            transition: max-width 0.3s, max-height 0.3s, width 0.3s, height 0.3s;
         }
 
         /* Animation for burger button click */

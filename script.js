@@ -205,15 +205,15 @@
             purchaseAmount = amount;
             updateAll();
         }
-window.givemoney = function(amount) {
-  if (typeof amount !== 'number' || amount < 0) {
-    console.error("Invalid amount!");
-    return;
-  }
-  window.count += amount;
-  console.log(`Money updated: ${window.money}`);
-  updateAll();
-};
+        window.givemoney = function(amount) {
+        if (typeof amount !== 'number' || amount < 0) {
+            console.error("Invalid amount!");
+            return;
+        }
+        window.count += amount;
+        console.log(`Money updated: ${window.count}`);
+        updateAll();
+        };
         function computeEmployeeCost(id, quantity) {
             const info = employeeInfo[id];
             if (!info || quantity <= 0) return 0;
