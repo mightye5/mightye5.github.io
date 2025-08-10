@@ -1,4 +1,34 @@
-        // ================ GAME STATE VARIABLES ================
+       var slider = document.getElementById("myRange");
+var output = document.getElementById("sfxVolumeValue");
+
+output.innerHTML = slider.value;
+var sfxVolume = slider.value / 100;
+slider.oninput = function() {
+  output.innerHTML = this.value;
+  sfxVolume = slider.value / 100;
+  console.log("SFX Volume set to: " + sfxVolume);
+}
+let musicGainNode;
+var musicVolume = 0.5;
+var musicSlider = document.getElementById("musicRange");
+var musicOutput = document.getElementById("musicVolumeValue");
+
+// Initialize the music volume display
+if (musicOutput) musicOutput.innerHTML = musicSlider.value;
+
+// Add music volume slider listener
+if (musicSlider) {
+    musicSlider.oninput = function() {
+        musicOutput.innerHTML = this.value;
+        musicVolume = this.value / 100;
+        if (musicGainNode) {
+            musicGainNode.gain.value = musicVolume;
+        }
+        console.log("Music Volume set to: " + musicVolume);
+    }
+}
+
+       // ================ GAME STATE VARIABLES ================
         // Basic game currency and costs 
         window.count =  0;                  // Player's current money
         let cost1 = 10,                 // Worker cost
@@ -276,13 +306,12 @@
                         })
                         .catch(e => console.warn(`Failed to load sound ${key}:`, e))
                 );
-                
+                audioLoaded = true;
                 await Promise.all(loadPromises);
                 audioLoaded = true;
 
                 // Start background music loop
-                playSound('music', 0.05);
-                soundBuffers['music'].loop = true; // Ensure music loops
+musicSource = playSound('music', musicVolume);
             } catch (e) {
                 console.warn('Web Audio API initialization failed:', e);
                 audioLoaded = false;
@@ -294,27 +323,37 @@
          * @param {string} soundType - The type of sound to play (from soundBuffers)
          * @param {number} volume - Volume level from 0 to 1
          */
-        function playSound(soundType = 'click', volume = 0.5) {
-            if (!audioContext || !audioLoaded || !soundBuffers[soundType]) {
-                return;
-            }
+function playSound(soundType = 'click', volume = 0.5) {
+    if (!audioContext || !audioLoaded || !soundBuffers[soundType]) {
+        return;
+    }
 
-            try {
-                const source = audioContext.createBufferSource();
-                source.buffer = soundBuffers[soundType];
+    try {
+        const source = audioContext.createBufferSource();
+        source.buffer = soundBuffers[soundType];
 
-                const gainNode = audioContext.createGain();
-                gainNode.gain.value = volume;
-
-                source.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-
-                source.start(0);
-            } catch (e) {
-                console.warn('Error playing sound:', e);
-            }
+        const gainNode = audioContext.createGain();
+        
+        // Use different volume for music vs sound effects
+        if (soundType === 'music') {
+            musicGainNode = gainNode;
+            gainNode.gain.value = musicVolume;
+            source.loop = true;
+        } else {
+            gainNode.gain.value = volume * sfxVolume;
         }
 
+        source.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        source.start(0);
+        
+        return source; // Return the source for potential future reference
+    } catch (e) {
+        console.warn('Error playing sound:', e);
+    }
+}
+let musicSource;
 
 
 
@@ -345,9 +384,9 @@
                 bought++;
             }
             if (bought > 0) {
-                playSound('purchase', 0.4);
+                playSound('purchase', 0.4*sfxVolume);
             } else {
-                playSound('error', 0.4);
+                playSound('error', 0.4*sfxVolume);
             }
             updateAll();
         }
@@ -368,9 +407,9 @@
                 bought++;
             }
             if (bought > 0) {
-                playSound('purchase', 0.4);
+                playSound('purchase', 0.4*sfxVolume);
             } else {
-                playSound('error', 0.4);
+                playSound('error', 0.4*sfxVolume);
             }
             updateAll();
         }
@@ -391,9 +430,9 @@
                 bought++;
             }
             if (bought > 0) {
-                playSound('purchase', 0.4);
+                playSound('purchase', 0.4*sfxVolume);
             } else {
-                playSound('error', 0.4);
+                playSound('error', 0.4*sfxVolume);
             }
             updateAll();
         }
@@ -414,9 +453,9 @@
                 bought++;
             }
             if (bought > 0) {
-                playSound('purchase', 0.4);
+                playSound('purchase', 0.4*sfxVolume);
             } else {
-                playSound('error', 0.4);
+                playSound('error', 0.4*sfxVolume);
             }
             updateAll();
         }
@@ -433,9 +472,9 @@ function vaction() {
         bought++;
     }
     if (bought > 0) {
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
     }
     updateAll();
 }
@@ -451,9 +490,9 @@ function COOaction() {
         bought++;
     }
     if (bought > 0) {
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
     }
     updateAll();
 }
@@ -469,9 +508,9 @@ function COOaction() {
                 bought++;
             }
             if (bought > 0) {
-                playSound('purchase', 0.4);
+                playSound('purchase', 0.4*sfxVolume);
             } else {
-                playSound('error', 0.4);
+                playSound('error', 0.4*sfxVolume);
             }
             updateAll();
         }
@@ -488,9 +527,9 @@ function chairaction() {
         bought++;
     }
     if (bought > 0) {
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
     }
     updateAll();
 }
@@ -508,9 +547,9 @@ function MOaction() {
         bought++;
     }
     if (bought > 0) {
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
     }
     updateAll();
 }
@@ -528,9 +567,9 @@ function SFaction() {
         bought++;
     }
     if (bought > 0) {
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
     }
     updateAll();
 }
@@ -548,9 +587,9 @@ function feastaction() {
         bought++;
     }
     if (bought > 0) {
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
     }
     updateAll();
 }
@@ -568,9 +607,9 @@ function verdantaction() {
         bought++;
     }
     if (bought > 0) {
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
     }
     updateAll();
 }
@@ -588,9 +627,9 @@ function ESaction() {
         bought++;
     }
     if (bought > 0) {
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
     }
     updateAll();
 }
@@ -608,9 +647,9 @@ function FWaction() {
         bought++;
     }
     if (bought > 0) {
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
     }
     updateAll();
 }
@@ -628,9 +667,9 @@ function CCaction() {
         bought++;
     }
     if (bought > 0) {
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
     }
     updateAll();
 }
@@ -648,9 +687,9 @@ function priestaction() {
         bought++;
     }
     if (bought > 0) {
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
     }
     updateAll();
 }
@@ -668,9 +707,9 @@ function GAaction() {
         bought++;
     }
     if (bought > 0) {
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
     }
     updateAll();
 }
@@ -688,9 +727,9 @@ function PMaction() {
         bought++;
     }
     if (bought > 0) {
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
     }
     updateAll();
 }
@@ -708,9 +747,9 @@ function GGaction() {
         bought++;
     }
     if (bought > 0) {
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
     }
     updateAll();
 }
@@ -747,10 +786,10 @@ function GGaction() {
         }
 
         upg1 = 1;
-        playSound('coffee', 0.4);
+        playSound('coffee', 0.4*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -770,10 +809,10 @@ function upgrade2() {
         document.getElementById("upgrade2").remove();
         hideTooltip('upgrade2tooltip'); // Hide the tooltip
 
-        playSound('golden', 0.6);
+        playSound('golden', 0.6*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -810,10 +849,10 @@ function upgrade3() {
         if (upgrade2Button) {
             upgrade2Button.style.order = "1";
         }
-        playSound('coffee', 0.4);
+        playSound('coffee', 0.4*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -832,10 +871,10 @@ function upgrade4() {
         if (upgrade5Button) {
             upgrade5Button.style.display = 'flex';
         }
-        playSound('golden', 0.6);
+        playSound('golden', 0.6*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -854,10 +893,10 @@ function upgrade5() {
         if (upgrade6Button) {
             upgrade6Button.style.display = 'flex';
         }
-        playSound('golden', 0.6);
+        playSound('golden', 0.6*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -877,10 +916,10 @@ function upgrade6() {
         if (upgrade7Button) {
             upgrade7Button.style.display = 'flex';
         }
-        playSound('golden', 0.6);
+        playSound('golden', 0.6*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -899,10 +938,10 @@ function upgrade7() {
         document.getElementById("upgrade7").remove();
         hideTooltip('upgrade7tooltip'); // Hide the tooltip
 
-        playSound('golden', 0.6);
+        playSound('golden', 0.6*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -917,14 +956,14 @@ function upgrade8() {
             const workerincrease = (manager - oldworkerAmount);
             mps += parseFloat((workerincrease).toFixed(1));
                  }
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById('Managertooltip').textContent = "Earns $" + manager + " per second";
         document.getElementById("upgrade8").remove();
         hideTooltip('upgrade8tooltip'); // Hide the tooltip
         document.getElementById("upgrade9").style.display = 'flex';
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -934,13 +973,13 @@ function upgrade9() {
         count -= upgp9;
         mps *= 1.5;
         upg9 = 1;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById("upgrade9").remove();
         hideTooltip('upgrade9tooltip'); // Hide the tooltip
         document.getElementById("upgrade10").style.display = 'flex';
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -952,7 +991,7 @@ function upgrade10() {
         VP *= 1.5;
         COO *= 1.5;
         ceo *= 1.5;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById('VPtooltip').textContent = "Earns $" + VP + " per second";
         document.getElementById('COOtooltip').textContent = "Earns $" + COO + " per second";
         document.getElementById('Ceotooltip').textContent = "Earns $" + ceo + " per second";
@@ -961,7 +1000,7 @@ function upgrade10() {
         document.getElementById("upgrade11").style.display = 'flex';
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -972,7 +1011,7 @@ function upgrade11() {
         M4 -= 50; // Deduct 50 Directors
         M5 -= 50; // Deduct 50 Vice Presidents
         upg11 = 1;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById("upgrade11").remove();
         hideTooltip('upgrade11tooltip'); // Hide the tooltip
         document.getElementById("upgrade12").style.display = 'flex';
@@ -980,7 +1019,7 @@ function upgrade11() {
         document.getElementById("SFbutton").style.display = 'flex'; // Show Shadow Fryer
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -991,14 +1030,14 @@ function upgrade12() {
         upg12 = 1;
         ips *= 1.25;
         oracle *= 1.5;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById('MOtooltip').textContent = "Earns $" + oracle + " per second";
         document.getElementById("upgrade12").remove();
         hideTooltip('upgrade12tooltip'); // Hide the tooltip
         document.getElementById("upgrade13").style.display = 'flex';
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1008,14 +1047,14 @@ function upgrade13() {
         count -= upgp13;
         upg13 = 1;
         COO += M9 * 0.05;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById('COOtooltip').textContent = "Earns $" + COO + " per second";
         document.getElementById("upgrade13").remove();
         hideTooltip('upgrade13tooltip'); // Hide the tooltip
         document.getElementById("upgrade14").style.display = 'flex';
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1025,13 +1064,13 @@ function upgrade14() {
         count -= upgp14;
         upg14 = 1;
         mps *= 1.25;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById("upgrade14").remove();
         hideTooltip('upgrade14tooltip'); // Hide the tooltip
         document.getElementById("upgrade39").style.display = 'flex';
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1040,7 +1079,7 @@ function upgrade39() {
     if (count >= upgp39) {
         count -= upgp39;
         upg39 = 1;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById("upgrade39").remove();
         hideTooltip('upgrade39tooltip');
         document.getElementById("betteroracle").style.display = 'flex';
@@ -1048,7 +1087,7 @@ function upgrade39() {
         document.getElementById("upgrade15").style.display = 'flex';
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1059,7 +1098,7 @@ function upgrade15() {
         M7 -= 50; // Deduct 50 CEOs
         M9 -= 50; // Deduct 50 Oracles
         upg15 = 1;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById("upgrade15").remove();
         hideTooltip('upgrade15tooltip'); // Hide the tooltip
         document.getElementById("upgrade16").style.display = 'flex';
@@ -1067,7 +1106,7 @@ function upgrade15() {
         document.getElementById("verdantbutton").style.display = 'flex'; // Show Verdant Keeper
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1079,14 +1118,14 @@ function upgrade16() {
         count -= upgp16;
         upg16 = 1;
         verdant *= 1.5;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById('Verdanttooltip').textContent = "Earns $" + verdant + " per second";
         document.getElementById("upgrade16").remove();
         hideTooltip('upgrade16tooltip'); // Hide the tooltip
         document.getElementById("upgrade17").style.display = 'flex';
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1096,14 +1135,14 @@ function upgrade17() {
         count -= upgp17;
         upg17 = 1;
         fryer += M12 * 0.05;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById('SFtooltip').textContent = "Earns $" + fryer + " per second";
         document.getElementById("upgrade17").remove();
         hideTooltip('upgrade17tooltip'); // Hide the tooltip
         document.getElementById("upgrade18").style.display = 'flex';
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1112,7 +1151,7 @@ function upgrade18() {
     if (count >= upgp18) {
         count -= upgp18;
         upg18 = 1;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById("upgrade18").remove();
         hideTooltip('upgrade18tooltip'); // Hide the tooltip
         document.getElementById("upgrade40").style.display = 'flex';
@@ -1121,7 +1160,7 @@ function upgrade18() {
         }
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1130,7 +1169,7 @@ function upgrade40() {
     if (count >= upgp40) {
         count -= upgp40;
         upg40 = 1;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById("upgrade40").remove();
         hideTooltip('upgrade40tooltip');
         document.getElementById("betterfeast").style.display = 'flex';
@@ -1138,7 +1177,7 @@ function upgrade40() {
         document.getElementById("upgrade19").style.display = 'flex';
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1150,7 +1189,7 @@ function upgrade19() {
         M12 -= 50; // Deduct 50 Verdant Keepers
         M10 -= 50; // Deduct 50 Shadow Fryers
         upg19 = 1;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById("upgrade19").remove();
         hideTooltip('upgrade19tooltip'); // Hide the tooltip
         document.getElementById("upgrade20").style.display = 'flex';
@@ -1159,7 +1198,7 @@ function upgrade19() {
         document.getElementById("ESbutton").style.display = 'flex'; // Show Emulsifier Supreme
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1171,14 +1210,14 @@ function upgrade20() {
         count -= upgp20;
         upg20 = 1;
         whisperer *= 1.5;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById('FWtooltip').textContent = "Earns $" + whisperer + " per second";
         document.getElementById("upgrade20").remove();
         hideTooltip('upgrade20tooltip'); // Hide the tooltip
         document.getElementById("upgrade21").style.display = 'flex';
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1188,14 +1227,14 @@ function upgrade21() {
         count -= upgp21;
         upg21 = 1;
         VP += M14 * 0.1;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById('VPtooltip').textContent = "Earns $" + VP + " per second";
         document.getElementById("upgrade21").remove();
         hideTooltip('upgrade21tooltip'); // Hide the tooltip
         document.getElementById("upgrade22").style.display = 'flex';
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1205,14 +1244,14 @@ function upgrade22() {
         count -= upgp22;
         upg22 = 1;
         emulsifier *= 1.5;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById('EStooltip').textContent = "Earns $" + emulsifier + " per second";
         document.getElementById("upgrade22").remove();
         hideTooltip('upgrade22tooltip'); // Hide the tooltip
         document.getElementById("upgrade41").style.display = 'flex';
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1221,7 +1260,7 @@ function upgrade41() {
     if (count >= upgp41) {
         count -= upgp41;
         upg41 = 1;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById("upgrade41").remove();
         hideTooltip('upgrade41tooltip');
         document.getElementById("betterwhisperer").style.display = 'flex';
@@ -1229,7 +1268,7 @@ function upgrade41() {
         document.getElementById("upgrade23").style.display = 'flex';
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1240,7 +1279,7 @@ function upgrade23() {
         M15 -= 50; // Deduct 50 Cheese Chancellors
         M14 -= 50; // Deduct 50 Flame Whisperers
         upg23 = 1;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById("upgrade23").remove();
         hideTooltip('upgrade23tooltip'); // Hide the tooltip
         document.getElementById("upgrade24").style.display = 'flex';
@@ -1248,7 +1287,7 @@ function upgrade23() {
         document.getElementById("priestbutton").style.display = 'flex'; // Show High Priest of the Golden Bun
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1258,14 +1297,14 @@ function upgrade24() {
         count -= upgp24;
         upg24 = 1;
         archmage *= 1.5;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById('GAtooltip').textContent = "Earns $" + archmage + " per second";
         document.getElementById("upgrade24").remove();
         hideTooltip('upgrade24tooltip'); // Hide the tooltip
         document.getElementById("upgrade25").style.display = 'flex';
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1275,14 +1314,14 @@ function upgrade25() {
         count -= upgp25;
         upg25 = 1;
         worker += archmage * 0.15;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById('Workertooltip').textContent = "Earns $" + worker + " per second";
         document.getElementById("upgrade25").remove();
         hideTooltip('upgrade25tooltip'); // Hide the tooltip
         document.getElementById("upgrade26").style.display = 'flex';
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1292,13 +1331,13 @@ function upgrade26() {
         count -= upgp26;
         upg26 = 1;
         mps *= 1.35;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById("upgrade26").remove();
         hideTooltip('upgrade26tooltip'); // Hide the tooltip
         document.getElementById("upgrade42").style.display = 'flex';
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1307,7 +1346,7 @@ function upgrade42() {
     if (count >= upgp42) {
         count -= upgp42;
         upg42 = 1;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById("upgrade42").remove();
         hideTooltip('upgrade42tooltip');
         document.getElementById("betterarchmage").style.display = 'flex';
@@ -1315,7 +1354,7 @@ function upgrade42() {
         document.getElementById("upgrade27").style.display = 'flex';
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1326,7 +1365,7 @@ function upgrade27() {
         M17 -= 50; // Deduct 50 Archmages
         M13 -= 50; // Deduct 50 Emulsifier Supremes
         upg27 = 1;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById("upgrade27").remove();
         hideTooltip('upgrade27tooltip'); // Hide the tooltip
         document.getElementById("upgrade28").style.display = 'flex';
@@ -1334,7 +1373,7 @@ function upgrade27() {
         document.getElementById("GGbutton").style.display = 'flex'; // Show Grand Grillmaster
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1343,14 +1382,14 @@ function upgrade28() {
         count -= upgp28;
         upg28 = 1;
         matriarch *= 1.5;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById('PMtooltip').textContent = "Earns $" + matriarch + " per second";
         document.getElementById("upgrade28").remove();
         hideTooltip('upgrade28tooltip');
         document.getElementById("upgrade29").style.display = 'flex';
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1360,14 +1399,14 @@ function upgrade29() {
         count -= upgp29;
         upg29 = 1;
         emulsifier += matriarch * 0.2;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById('EStooltip').textContent = "Earns $" + emulsifier + " per second";
         document.getElementById("upgrade29").remove();
         hideTooltip('upgrade29tooltip');
         document.getElementById("upgrade30").style.display = 'flex';
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1378,12 +1417,12 @@ function upgrade30() {
     /* if (count >= upgp30) {
         count -= upgp30;
         upg30 = 1;
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         document.getElementById("upgrade30").remove();
         hideTooltip('upgrade30tooltip');
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
         */
@@ -1399,10 +1438,10 @@ function upgrade31() {
         document.getElementById("upgrade31").remove();
         hideTooltip('upgrade31tooltip');
         document.getElementById("upgrade32").style.display = 'flex';
-        playSound('golden', 0.6);
+        playSound('golden', 0.6*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1417,10 +1456,10 @@ function upgrade32() {
         document.getElementById("upgrade32").remove();
         hideTooltip('upgrade32tooltip');
         document.getElementById("upgrade33").style.display = 'flex';
-        playSound('golden', 0.6);
+        playSound('golden', 0.6*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1435,10 +1474,10 @@ function upgrade33() {
         document.getElementById("upgrade33").remove();
         hideTooltip('upgrade33tooltip');
         document.getElementById("upgrade34").style.display = 'flex';
-        playSound('golden', 0.6);
+        playSound('golden', 0.6*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1453,10 +1492,10 @@ function upgrade34() {
         document.getElementById("upgrade34").remove();
         hideTooltip('upgrade34tooltip');
         document.getElementById("upgrade35").style.display = 'flex';
-        playSound('golden', 0.6);
+        playSound('golden', 0.6*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1471,10 +1510,10 @@ function upgrade35() {
         document.getElementById("upgrade35").remove();
         hideTooltip('upgrade35tooltip');
         document.getElementById("upgrade36").style.display = 'flex';
-        playSound('golden', 0.6);
+        playSound('golden', 0.6*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1489,10 +1528,10 @@ function upgrade36() {
         document.getElementById("upgrade36").remove();
         hideTooltip('upgrade36tooltip');
         document.getElementById("upgrade37").style.display = 'flex';
-        playSound('golden', 0.6);
+        playSound('golden', 0.6*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1507,10 +1546,10 @@ function upgrade37() {
         document.getElementById("upgrade37").remove();
         hideTooltip('upgrade37tooltip');
         document.getElementById("upgrade38").style.display = 'flex';
-        playSound('golden', 0.6);
+        playSound('golden', 0.6*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1524,10 +1563,10 @@ function upgrade38() {
         chesburger.style.backgroundImage = "url('Burger-images/Infinitefeastburger.png')";
         document.getElementById("upgrade38").remove();
         hideTooltip('upgrade38tooltip');
-        playSound('golden', 0.6);
+        playSound('golden', 0.6*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1537,11 +1576,11 @@ function upgrade38() {
                 iceupg1 += 1;
                 ice -= icost1;
                 icost1 = Math.round(icost1 * 1.5);
-                playSound('purchase', 0.4);
+                playSound('purchase', 0.4*sfxVolume);
                 updateAll();
 
             } else {
-                playSound('error', 0.4);
+                playSound('error', 0.4*sfxVolume);
                 updateAll();
             }
         }        
@@ -1556,11 +1595,11 @@ function upgrade38() {
                 iceupg4 += 1;
                 ice -= icost4;
                 icost4 = Math.round(icost4 * 1.25);
-                playSound('purchase', 0.4);
+                playSound('purchase', 0.4*sfxVolume);
                 updateAll();
 
             } else {
-                playSound('error', 0.4);
+                playSound('error', 0.4*sfxVolume);
                 updateAll();
             }
         }
@@ -1576,10 +1615,10 @@ function upgrade38() {
                 iceupg2 += 1;
                 ice -= icost2;
                 icost2 = Math.round(icost2 * 1.25);
-                playSound('purchase', 0.4);
+                playSound('purchase', 0.4*sfxVolume);
                 updateAll();
             } else {
-                playSound('error', 0.4);
+                playSound('error', 0.4*sfxVolume);
                 updateAll();
             }
         }
@@ -1596,10 +1635,10 @@ function upgrade38() {
                 iceupg3 += 1;
                 ice -= icost3;
                 icost3 = Math.round(icost3 * 1.25);
-                playSound('purchase', 0.4);
+                playSound('purchase', 0.4*sfxVolume);
                 updateAll();
             } else {
-                playSound('error', 0.4);
+                playSound('error', 0.4*sfxVolume);
                 updateAll();
             }
         }
@@ -1616,10 +1655,10 @@ function upgrade38() {
                 iceupg5 += 1;
                 ice -= icost5;
                 icost5 = Math.round(icost5 * 1.25);
-                playSound('purchase', 0.4);
+                playSound('purchase', 0.4*sfxVolume);
                 updateAll();
             } else {
-                playSound('error', 0.4);
+                playSound('error', 0.4*sfxVolume);
                 updateAll();
             }
         }
@@ -1636,10 +1675,10 @@ function betterceo() {
                 iceupg6 += 1;
                 ice -= icost6;
                 icost6 = Math.round(icost6 * 1.25);
-                playSound('purchase', 0.4);
+                playSound('purchase', 0.4*sfxVolume);
                 updateAll();
             } else {
-                playSound('error', 0.4);
+                playSound('error', 0.4*sfxVolume);
                 updateAll();
             }
         }
@@ -1725,10 +1764,10 @@ function betteroracle() {
         iceupg7 += 1;
         ice -= icost7;
         icost7 = Math.round(icost7 * 1.25);
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1744,10 +1783,10 @@ function betterfryer() {
         iceupg8 += 1;
         ice -= icost8;
         icost8 = Math.round(icost8 * 1.25);
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1763,10 +1802,10 @@ function betterfeast() {
         iceupg9 += 1;
         ice -= icost9;
         icost9 = Math.round(icost9 * 1.25);
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1782,10 +1821,10 @@ function betterverdant() {
         iceupg10 += 1;
         ice -= icost10;
         icost10 = Math.round(icost10 * 1.25);
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1801,10 +1840,10 @@ function betterwhisperer() {
         iceupg11 += 1;
         ice -= icost11;
         icost11 = Math.round(icost11 * 1.25);
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1820,10 +1859,10 @@ function betterchancellor() {
         iceupg12 += 1;
         ice -= icost12;
         icost12 = Math.round(icost12 * 1.25);
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1839,10 +1878,10 @@ function betterarchmage() {
         iceupg13 += 1;
         ice -= icost13;
         icost13 = Math.round(icost13 * 1.25);
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -1858,10 +1897,10 @@ function betterpriest() {
         iceupg14 += 1;
         ice -= icost14;
         icost14 = Math.round(icost14 * 1.25);
-        playSound('purchase', 0.4);
+        playSound('purchase', 0.4*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4);
+        playSound('error', 0.4*sfxVolume);
         updateAll();
     }
 }
@@ -2079,6 +2118,7 @@ function updatemps() {
             updateAll();
             totalclicks++;
             checkAchievements();
+            playSound('click', 0.4*sfxVolume);
         }
 
         /**
@@ -2328,7 +2368,7 @@ if (upgrade30Btn) {
                 moneymultiplier += 1;
                 fcost = ((fcost * 2.5) * 10) / 10;
                 updateAll();
-                playSound('purchase', 0.4);
+                playSound('purchase', 0.4*sfxVolume);
                 franchises += 1;
                 const franchiseButton = document.querySelector('.franchise-button');
                 franchiseButton.textContent = 'Open a new Franchise ($' + formatCurrency(fcost) + ')';
@@ -2355,7 +2395,7 @@ if (upgrade30Btn) {
 
                 }
             } else {
-                playSound('error', 0.4);
+                playSound('error', 0.4*sfxVolume);
             }
         }
         let viewedTabs = {
@@ -2467,7 +2507,7 @@ if (upgrade30Btn) {
                     const achievementElement = document.querySelector(`[data-achievement="${id}"]`);
                     if (achievementElement) {
                         achievementElement.classList.remove('locked');
-                        playSound('achieve', 0.1);
+                        playSound('achieve', 0.1*sfxVolume);
                     }
                 }
             }
@@ -2968,6 +3008,7 @@ if (upgrade30Btn) {
                 iceupg13,
                 iceupg14,
                 
+                
                 // Achievement states - Save the unlocked status of each achievement
                 achievements: Object.fromEntries(
                     Object.entries(achievements).map(([id, achievement]) => [
@@ -2976,8 +3017,10 @@ if (upgrade30Btn) {
                     ])
                 )
                 };
+                    gameState.musicVolume = musicVolume;
+    gameState.sfxVolume = sfxVolume;
             localStorage.setItem('burgerGameSave', JSON.stringify(gameState));
-            playSound('save', 0.03);
+            playSound('save', 0.03*sfxVolume);
         }
 
         // Load game state
@@ -3161,6 +3204,20 @@ if (upgrade30Btn) {
                 iceupg13 = gameState.iceupg13;
                 iceupg14 = gameState.iceupg14;
                 bimage = gameState.bimage;
+                    if (gameState.musicVolume !== undefined) {
+        musicVolume = gameState.musicVolume;
+        musicSlider.value = musicVolume * 100;
+        musicOutput.innerHTML = musicSlider.value;
+        if (musicGainNode) {
+            musicGainNode.gain.value = musicVolume;
+        }
+    }
+    
+    if (gameState.sfxVolume !== undefined) {
+        sfxVolume = gameState.sfxVolume;
+        slider.value = sfxVolume * 100;
+        output.innerHTML = slider.value;
+    }
                 // Restore achievements
                 const chesburger = document.querySelector('.image-button');
                 if (bimage == 1) {
@@ -3265,10 +3322,10 @@ if (upgrade30Btn) {
                     }
                 }
 
-                playSound('purchase', 0.4);
+                playSound('purchase', 0.4*sfxVolume);
                 alert('Game loaded successfully!');
             } else {
-                playSound('error', 0.4);
+                playSound('error', 0.4*sfxVolume);
                 alert('No saved game found!');
             }
         }
@@ -3295,7 +3352,6 @@ function hideTooltip(tooltipId) {
     tooltip.style.visibility = 'hidden';
     tooltip.style.opacity = '0';
 }
-
 
         // Auto-save every 5 minutes
         setInterval(saveGame, 0.5 * 60 * 1000);

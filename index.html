@@ -18,7 +18,7 @@
                         <input type="text" id="money" value="Money: $0" readonly>
                     </div>
                     <div id="button">
-                        <button class="image-button" onclick="addMoney(); playSound('click');"></button>
+                        <button class="image-button" onclick="addMoney();"></button>
                     </div>
                 </div>
                 <div class ="save-controls" >
@@ -33,7 +33,7 @@
                         <div class="tabs">
                             <button class="tab-button active" data-tab="franchiseTab" onclick="switchTab('franchiseTab')">Franchises</button>
                             <button class="tab-button" data-tab="buttonsTab" onclick="switchTab('buttonsTab')">Ice cream upgrades!</button>
-                            <button class="tab-button" data-tab="achievementsTab" onclick="switchTab('achievementsTab')">Achievements</button>
+                            <button class="tab-button" data-tab="achievementsTab" onclick="switchTab('achievementsTab')">Achievements & Settings</button>
                         </div>
                     </div>
 
@@ -309,6 +309,14 @@
                                     <div class="achievement-description">Play the game for 1 week!</div>
                                 </div>
                             </div>
+                            <div class="slidecontainer">
+                                <p>Sfx volume value: <span id="sfxVolumeValue">50</span>%</p>
+                                <input type="range" min="0" max="100" value="50"  id="myRange">
+                              <p>Music volume value: <span id="musicVolumeValue">50</span>%</p>
+                                <input type="range" min="0" max="100" value="50"  id="musicRange">
+                            
+                            </div>
+
                         </div>
                     </div>
 
