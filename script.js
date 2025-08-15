@@ -235,6 +235,10 @@ if (musicSlider) {
             purchaseAmount = amount;
             updateAll();
         }
+function ToggleDark() {
+
+    document.documentElement.classList.toggle("dark-mode");
+}
         window.givemoney = function(amount) {
         if (typeof amount !== 'number' || amount < 0) {
             console.error("Invalid amount!");
