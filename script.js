@@ -176,6 +176,7 @@ if (musicSlider) {
         let totalclicks = 0;
         let totaltime = 0;
         let bimage = 0;
+        let dark_mode = false;          // Dark mode toggle
         //Everything Ice cream related
          let ice = 0,                             // Player's current ice creams
             ips = 0,                             // how many ice creams you get per second
@@ -236,7 +237,7 @@ if (musicSlider) {
             updateAll();
         }
 function ToggleDark() {
-
+    dark_mode = !dark_mode;
     document.documentElement.classList.toggle("dark-mode");
 }
         window.givemoney = function(amount) {
@@ -2842,7 +2843,7 @@ if (upgrade30Btn) {
                 clicks,
                 moneymultiplier,
                 golden_burger,
-
+                dark_mode,
                 // Costs
                 cost1,
                 cost2,
@@ -3095,7 +3096,7 @@ if (upgrade30Btn) {
                 upgp41 = gameState.upgp41;
                 upgp42 = gameState.upgp42;
                 fcost = gameState.fcost;
-
+                dark_mode = gameState.dark_mode;
                 // Restore production values
                 worker = gameState.worker;
                 manager = gameState.manager;
@@ -3216,7 +3217,10 @@ if (upgrade30Btn) {
             musicGainNode.gain.value = musicVolume;
         }
     }
-    
+    if (gameState.dark_mode === true) {
+        document.documentElement.classList.toggle("dark-mode");
+        dark_mode = true;
+    }
     if (gameState.sfxVolume !== undefined) {
         sfxVolume = gameState.sfxVolume;
         slider.value = sfxVolume * 100;
