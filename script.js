@@ -2835,6 +2835,173 @@ if (upgrade30Btn) {
         setInterval(updateAll, 1);
         setInterval(moneyps, 1000);  // Add money every second
         // Save game state
+function exportSave(saveObj, filename) {
+    try {
+        // Build fallback save if none provided
+        if (!saveObj) {
+            if (typeof buildSave === 'function') {
+                saveObj = buildSave();
+            } else {
+                const stored = localStorage.getItem('burgerGameSave');
+                if (stored) {
+                    try {
+                        saveObj = JSON.parse(stored);
+                    } catch (e) {
+                        console.warn('Stored save is invalid JSON.', e);
+                    }
+                }
+            }
+            if (!saveObj) {
+                alert('No save data available to export.');
+                return;
+            }
+        }
+
+        const json = JSON.stringify(saveObj, null, 2);
+        const base64 = btoa(unescape(encodeURIComponent(json))); // obfuscated text for copy
+
+        // remove existing export overlay if present
+        const existing = document.getElementById('exportOverlay');
+        if (existing) existing.remove();
+
+        // create overlay using same classes as import overlay
+        const overlay = document.createElement('div');
+        overlay.id = 'exportOverlay';
+        overlay.className = 'overlay visible';
+        overlay.setAttribute('aria-hidden', 'false');
+
+        const panel = document.createElement('div');
+        panel.className = 'overlay-panel';
+
+        const info = document.createElement('div');
+        info.className = 'overlay-title';
+        info.textContent = 'Copy the obfuscated save text below (paste into Import).';
+
+        const textarea = document.createElement('textarea');
+        textarea.id = 'exportOverlayTextarea';
+        textarea.value = base64;
+        textarea.readOnly = true;
+
+        const btnRow = document.createElement('div');
+        btnRow.className = 'btn-row';
+
+        const copyBtn = document.createElement('button');
+        copyBtn.textContent = 'Copy';
+        copyBtn.onclick = async () => {
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(textarea.value);
+                } else {
+                    textarea.select();
+                    document.execCommand('copy');
+                }
+                copyBtn.textContent = 'Copied!';
+                setTimeout(() => copyBtn.textContent = 'Copy', 1500);
+            } catch (e) {
+                console.error('Copy failed', e);
+                alert('Copy failed. You can manually select and copy the text.');
+            }
+        };
+
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = 'Close';
+        closeBtn.onclick = () => {
+            overlay.remove();
+        };
+
+        btnRow.appendChild(copyBtn);
+        btnRow.appendChild(closeBtn);
+
+        panel.appendChild(info);
+        panel.appendChild(textarea);
+        panel.appendChild(btnRow);
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+
+        // Autofocus & select for easier copying
+        textarea.focus();
+        textarea.select();
+    } catch (err) {
+        console.error('exportSave error:', err);
+        alert('Failed to produce export text: ' + (err && err.message ? err.message : err));
+    }
+}
+function decodeBase64ToUtf8(b64) {
+    try {
+        const binary = atob(b64);
+        const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+        if (window.TextDecoder) return new TextDecoder('utf-8').decode(bytes);
+        // fallback
+        let str = '';
+        for (let i = 0; i < bytes.length; i++) str += String.fromCharCode(bytes[i]);
+        return decodeURIComponent(escape(str));
+    } catch (e) {
+        try { return decodeURIComponent(escape(atob(b64))); } catch (_) { throw e; }
+    }
+}
+
+function importSaveObject(saveObj) {
+    if (!saveObj || typeof saveObj !== 'object' || typeof saveObj.count === 'undefined') {
+        alert('Invalid save data. Import aborted.');
+        return;
+    }
+    if (!confirm('Importing a save will overwrite your current progress. Continue?')) return;
+    localStorage.setItem('burgerGameSave', JSON.stringify(saveObj));
+    playSound && playSound('save', 0.03 * (typeof sfxVolume !== 'undefined' ? sfxVolume : 0.5));
+    loadGame();
+    alert('Save imported successfully.');
+}
+
+function showImportOverlay() {
+    const overlay = document.getElementById('importOverlay');
+    if (!overlay) return;
+    overlay.classList.add('visible');
+    overlay.setAttribute('aria-hidden', 'false');
+    const ta = document.getElementById('importOverlayTextarea');
+    if (ta) { ta.focus(); ta.select(); }
+}
+
+function hideImportOverlay() {
+    const overlay = document.getElementById('importOverlay');
+    if (!overlay) return;
+    overlay.classList.remove('visible');
+    overlay.setAttribute('aria-hidden', 'true');
+    const ta = document.getElementById('importOverlayTextarea');
+    if (ta) ta.value = '';
+}
+
+// Initialize buttons inside the static overlay (safe to call multiple times)
+function initImportOverlay() {
+    const importBtn = document.getElementById('importOverlayImport');
+    const cancelBtn = document.getElementById('importOverlayCancel');
+    const textarea = document.getElementById('importOverlayTextarea');
+
+    if (cancelBtn) cancelBtn.onclick = hideImportOverlay;
+
+    if (importBtn && textarea) {
+        importBtn.onclick = function () {
+            const val = textarea.value.trim();
+            if (!val) { alert('Paste a save first.'); return; }
+            try {
+                let parsed;
+                if (val.startsWith('{') || val.startsWith('[')) {
+                    parsed = JSON.parse(val);
+                } else {
+                    const json = decodeBase64ToUtf8(val);
+                    parsed = JSON.parse(json);
+                }
+                importSaveObject(parsed);
+                hideImportOverlay();
+            } catch (err) {
+                console.error('Import text failed:', err);
+                alert('Invalid save text. Make sure you pasted exact export text or valid JSON.');
+            }
+        };
+    }
+}
+
+// wire up after DOM ready
+window.addEventListener('DOMContentLoaded', initImportOverlay);
         function saveGame() {
             const gameState = {
                 // Money and multipliers

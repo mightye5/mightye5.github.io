@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
-    <title>Money Game</title>
+    <title>Burger Clicker</title>
 <link rel="stylesheet" href="style.css">
 </head>
         <body>
@@ -21,11 +21,7 @@
                         <button class="image-button" onclick="addMoney();"></button>
                     </div>
                 </div>
-                <div class ="save-controls" >
-                    <button onclick="saveGame()" class ="save-button" >Save Game</button>
-                    <button onclick="loadGame()" class ="load-button" >Load Game</button>
-                    <button onclick="deleteSave()" class ="delete-button">Delete Save</button>
-                </div>
+
                 <div class="franchise-section">
                     
                     <div class="franchise-header">
@@ -320,9 +316,17 @@
                                 <input type="range" min="0" max="100" value="50"  id="myRange">
                               <p>Music volume value: <span id="musicVolumeValue">50</span>%</p>
                                 <input type="range" min="0" max="100" value="50"  id="musicRange">
-                                <button onclick="ToggleDark()">Toggle dark mode</button>
-                    </div>
+                             <p>  <button onclick="ToggleDark()" style="max-width: fit-content;">Toggle dark mode</button></p> 
+<p>                    <button onclick="saveGame()" class ="save-button" >Save Game</button>
+                    <button onclick="loadGame()" class ="load-button" >Load Game</button>
+                    <button onclick="deleteSave()" class ="delete-button">Delete Save</button></p>
+                             <p> <button onclick="showImportOverlay()" class="import-button" style="max-width: fit-content;">Import save</button>
+                            <button onclick="exportSave()" class="export-button" style="max-width: fit-content;">Export save</button>
+
+                        </div>
+
 </div>
+
                 </div>
                 <div class="game-right">
                     <!-- Upgrades section -->
@@ -592,6 +596,16 @@
                     </div>
                     </div>
                      <script src="script.js"></script>
+                                                 <div id="importOverlay" class="overlay" aria-hidden="true">
+                                    <div class="overlay-panel">
+                                    <div class="overlay-title">Import save (paste export text or JSON)</div>
+                                    <textarea id="importOverlayTextarea" placeholder="Paste export text (base64) or raw JSON here"></textarea>
+                                    <div class="btn-row">
+                                        <button id="importOverlayImport">Import</button>
+                                        <button id="importOverlayCancel">Cancel</button>
+                                    </div>
+                                </div>
+                           </div>
                     </body>
                     </html>
 
