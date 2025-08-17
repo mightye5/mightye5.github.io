@@ -2360,7 +2360,7 @@ if (upgrade30Btn) {
         updateUpgradeVisibility();
         initAudio();
         setTimeout(loadGame, 300); // Delay loadGame to ensure other initializations are complete
-        loadAchievements();
+        checkAchievements();
         Update();
     }
 
