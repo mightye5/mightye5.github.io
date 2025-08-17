@@ -1692,6 +1692,9 @@ function betterceo() {
          * Redirects to mobile page if available
          */
         function detectMobile() {
+                        if (window.location.pathname.includes('mobile_restricted.html')) {
+                return true;
+            }
             if ((window.innerWidth <= 950)) {
                 try {
                     fetch('mobile_restricted.html')

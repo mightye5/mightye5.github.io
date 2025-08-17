@@ -272,8 +272,8 @@ max-height: none;
 
         .franchise-section {
             z-index: 90;
-            width: 100%;
-            max-width: 900px;
+           width: 100%;
+            max-width: fit-screen;
            
             margin: 0 auto;
             padding: 20px;

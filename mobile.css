@@ -1,0 +1,84 @@
+@media (max-width: 950px) {
+  html,
+  body {
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .game-wrapper {
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .game-left,
+  .franchise-section {
+    width: 100%;
+    box-sizing: border-box;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .game-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+  }
+
+  #moneypers {
+    width: 100%;
+    padding: 0 10px;
+  }
+
+  #moneypers input {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 4vw;
+  }
+
+  #button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .image-button {
+    width: 40vw;
+    height: 40vw;
+    max-width: 250px;
+    max-height: 250px;
+    min-width: 150px;
+    min-height: 150px;
+  }
+
+  .franchise-section {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .franchise-section .tab-content {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .restaurant-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .restaurant {
+    flex: 1 1 45%;
+    max-width: 45%;
+  }
+
+  .buttons-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
