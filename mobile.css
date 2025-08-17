@@ -1,14 +1,14 @@
 @media (max-width: 950px) {
   html,
   body {
-    height: 100vh;
+ min-height: 100vh;
     margin: 0;
-    overflow: hidden;
+      overflow: auto; /* allow scrolling and zooming */
   }
 
   .game-wrapper {
     flex-direction: column;
-    height: 100%;
+
   }
 
   .game-left,
@@ -16,7 +16,7 @@
     width: 100%;
     box-sizing: border-box;
     flex: 1;
-    overflow: hidden;
+
   }
 
   .game-left {
