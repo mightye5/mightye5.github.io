@@ -231,7 +231,7 @@ if (musicSlider) {
             GAbutton: { base: 525000, rate: 1.1, costVar: 'cost17', countVar: 'M17' },
             PMbutton: { base: 1000000, rate: 1.1, costVar: 'cost18', countVar: 'M18' },
             GGbutton: { base: 5000000, rate: 1.1, costVar: 'cost19', countVar: 'M19' },
-            Clickbutton2: { base: 20, rate: 1.1, costVar: 'cost20', countVar: 'M20' }
+            Clickbutton2: { base: 20, rate: 1.15, costVar: 'cost20', countVar: 'M20' }
         };
 
         function setPurchaseAmount(amount) {
@@ -444,7 +444,7 @@ let musicSource;
             updateAll();
         }
   function clickmultiply() {
-            let quantity = purchaseAmount === 'max' ? getMaxAffordable('Clickbutton') : purchaseAmount;
+            let quantity = purchaseAmount === 'max' ? getMaxAffordable('Clickbutton2') : purchaseAmount;
             let bought = 0;
             while (quantity > 0 && count >= cost20) {
                 clicks += clicks*0.1;
@@ -1943,6 +1943,7 @@ function updateButtons(buttons) {
                 'extraButton': M,
                 'Button2': M2,
                 'Clickbutton': M3,
+                'Clickbutton2': M20,
                 'directorbutton': M4,
                 'VPbutton': M5,
                 'COObutton': M6,
