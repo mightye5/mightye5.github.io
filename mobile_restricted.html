@@ -505,6 +505,16 @@
                             <span class="tooltip" id="upgrade38tooltip">Increases how much money you make per click by 16.5x</span>
                         </div>
                     </div>
+                        <div id="upgrade"><div class="section-title">Clicker Upgrades</div>
+                            <div class="tooltip-container">
+                                <button id="Clickbutton" onclick="clickadd()" onmouseover="showTooltip(event, 'Moreclicktooltip')" onmouseout="hideTooltip('Moreclicktooltip')">Better clicks: $15 (0)</button>
+                                <span class="tooltip" id="Moreclicktooltip">Increases click value by $2</span>
+                            </div>
+                            <div class="tooltip-container">
+                                <button id="Clickbutton2" onclick="clickmultiply()" onmouseover="showTooltip(event, 'Multiplyclicktooltip')" onmouseout="hideTooltip('Multiplyclicktooltip')">Multiplicative clicks: $20 (0)</button>
+                                <span class="tooltip" id="Multiplyclicktooltip">Increases click value by 0.1x</span>
+                            </div>
+                        </div>
                         <!-- Upgrades section -->
                         <div id="container">
                             <div class="section-title">Employees</div>
@@ -524,10 +534,7 @@
                                 <button id="Button2" onclick="Action2()" onmouseover="showTooltip(event, 'Managertooltip')" onmouseout="hideTooltip('Managertooltip')">Manager: $25 (0)</button>
                                 <span class="tooltip" id="Managertooltip">Earns $3.5 per second</span>
                             </div>
-                            <div class="tooltip-container">
-                                <button id="Clickbutton" onclick="clickadd()" onmouseover="showTooltip(event, 'Moreclicktooltip')" onmouseout="hideTooltip('Moreclicktooltip')">More click money: $15 (0)</button>
-                                <span class="tooltip" id="Moreclicktooltip">Increases click value by $2</span>
-                            </div>
+
                             <div class="tooltip-container">
                                 <button id="directorbutton" onclick="baction()" onmouseover="showTooltip(event, 'directortooltip')" onmouseout="hideTooltip('directortooltip')">Director: $100 (0)</button>
                                 <span class="tooltip" id="directortooltip">Earns $5.5 per second</span>

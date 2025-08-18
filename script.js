@@ -3415,6 +3415,12 @@ window.addEventListener('DOMContentLoaded', initImportOverlay);
         musicVolume = gameState.musicVolume;
         musicSlider.value = musicVolume * 100;
         musicOutput.innerHTML = musicSlider.value;
+        cost20 = (typeof gameState.cost20 === 'number' && !isNaN(gameState.cost20))
+        ? gameState.cost20
+        : 15;
+M20 = (typeof gameState.M20 === 'number' && !isNaN(gameState.M20))
+    ? gameState.M20
+    : 0;
         if (musicGainNode) {
             musicGainNode.gain.value = musicVolume;
         }
