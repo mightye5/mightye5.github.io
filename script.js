@@ -448,6 +448,7 @@ let musicSource;
             let bought = 0;
             while (quantity > 0 && count >= cost20) {
                 clicks += clicks*0.1;
+                clickamount += clicks*0.1;
                 M20 += 1;
                 count -= cost20;
                 cost20 = Math.round(20 * (1.15 ** M20) * 10) / 10;
