@@ -37,7 +37,7 @@ if (musicSlider) {
             cost4 = 100,                // director cost
             cost5 = 225,               // VP cost
             cost6 = 500,               // COO cost
-            cost7 = 1250;               // CEO cost
+            cost7 = 1250,                // CEO cost
             cost8 = 2275,                 // Chairman cost
             cost9 = 5000,                 // Milkshake Oracle cost
             cost10 = 12500,               // Shadow Fryer cost
@@ -49,8 +49,8 @@ if (musicSlider) {
             cost16 = 375000,            // High Priest cost
             cost17 = 525000,            // Golden Archmage cost
             cost18 = 1000000,           // Patty Matriarch cost
-            cost19 = 5000000;           // Grand Grillmaster cost
-            
+            cost19 = 5000000,           // Grand Grillmaster cost
+            cost20 = 20;            // Click multiply cost
         // Game mechanics variables
         let mps = 0,                    // Money per second
             worker = 1.5,               // Base manager production
@@ -92,7 +92,8 @@ if (musicSlider) {
             M16 = 0,                    // Number of High Priests
             M17 = 0,                    // Number of Golden Archmages
             M18 = 0,                    // Number of Patty Matriarchs
-            M19 = 0;                    // Number of Grand Grillmasters
+            M19 = 0,                    // Number of Grand Grillmasters
+            M20 = 0;            // Number of Click Multipliers
         // Upgrade status
           let  upg1 = 0,                   // Coffee upgrade status
             upg3 = 0;                   // Ice cream machine upgrade status
@@ -229,7 +230,8 @@ if (musicSlider) {
             priestbutton: { base: 375000, rate: 1.1, costVar: 'cost16', countVar: 'M16' },
             GAbutton: { base: 525000, rate: 1.1, costVar: 'cost17', countVar: 'M17' },
             PMbutton: { base: 1000000, rate: 1.1, costVar: 'cost18', countVar: 'M18' },
-            GGbutton: { base: 5000000, rate: 1.1, costVar: 'cost19', countVar: 'M19' }
+            GGbutton: { base: 5000000, rate: 1.1, costVar: 'cost19', countVar: 'M19' },
+            Clickbutton2: { base: 20, rate: 1.1, costVar: 'cost20', countVar: 'M20' }
         };
 
         function setPurchaseAmount(amount) {
@@ -441,7 +443,25 @@ let musicSource;
             }
             updateAll();
         }
-
+  function clickmultiply() {
+            let quantity = purchaseAmount === 'max' ? getMaxAffordable('Clickbutton') : purchaseAmount;
+            let bought = 0;
+            while (quantity > 0 && count >= cost20) {
+                clicks += clicks*0.1;
+                M20 += 1;
+                count -= cost20;
+                cost20 = Math.round(20 * (1.15 ** M20) * 10) / 10;
+                quantity--;
+                bought++;
+                console.log(cost20)
+            }
+            if (bought > 0) {
+                playSound('purchase', 0.4*sfxVolume);
+            } else {
+                playSound('error', 0.4*sfxVolume);
+            }
+            updateAll();
+        }
         /**
          * Handles director purchase
          * directores provide significant income boost
@@ -1975,34 +1995,39 @@ function updateUpgradeButtons() {
         'upgrade12': { cost: upgp12, condition: upg11 === 1 },
         'upgrade13': { cost: upgp13, condition: upg12 === 1 },
         'upgrade14': { cost: upgp14, condition: upg13 === 1 },
-        'upgrade39': { cost: upgp39, condition: upg14 === 1 },
+      
         'upgrade15': { cost: upgp15, condition: upg39 === 1, requirements: { M7: 50, M9: 50 } },
         'upgrade16': { cost: upgp16, condition: upg15 === 1 },
         'upgrade17': { cost: upgp17, condition: upg16 === 1 },
         'upgrade18': { cost: upgp18, condition: upg17 === 1 },
-        'upgrade40': { cost: upgp40, condition: upg18 === 1 },
+        
         'upgrade19': { cost: upgp19, condition: upg40 === 1, requirements: { M12: 50, M10: 50 } },
         'upgrade20': { cost: upgp20, condition: upg19 === 1 },
         'upgrade21': { cost: upgp21, condition: upg20 === 1 },
         'upgrade22': { cost: upgp22, condition: upg21 === 1 },
-        'upgrade41': { cost: upgp41, condition: upg22 === 1 },
+     
         'upgrade23': { cost: upgp23, condition: upg41 === 1, requirements: { M15: 50, M14: 50 } },
         'upgrade24': { cost: upgp24, condition: upg23 === 1 },
         'upgrade25': { cost: upgp25, condition: upg24 === 1 },
         'upgrade26': { cost: upgp26, condition: upg25 === 1 },
-        'upgrade42': { cost: upgp42, condition: upg26 === 1 },
+       
         'upgrade27': { cost: upgp27, condition: upg42 === 1, requirements: { M17: 50, M13: 50 } },
         'upgrade28': { cost: upgp28, condition: upg27 === 1 },
         'upgrade29': { cost: upgp29, condition: upg28 === 1 },
+        
         'upgrade30': { cost: upgp30, condition: upg29 === 1 },
         'upgrade31': { cost: upgp31, condition: (upg18 === 1 && bimage === 5) || bimage === 6 },
-        'upgrade32': { cost: upgp32, condition: bimage === 7 },
-        'upgrade33': { cost: upgp33, condition: bimage === 8 },
-        'upgrade34': { cost: upgp34, condition: bimage === 9 },
-        'upgrade35': { cost: upgp35, condition: bimage === 10 },
-        'upgrade36': { cost: upgp36, condition: bimage === 11 },
-        'upgrade37': { cost: upgp37, condition: bimage === 12 },
-        'upgrade38': { cost: upgp38, condition: bimage === 13 }
+               'upgrade32': { cost: upgp32, condition: bimage === 6 },
+        'upgrade33': { cost: upgp33, condition: bimage === 7 },
+        'upgrade34': { cost: upgp34, condition: bimage === 8 },
+        'upgrade35': { cost: upgp35, condition: bimage === 9 },
+        'upgrade36': { cost: upgp36, condition: bimage === 10 },
+        'upgrade37': { cost: upgp37, condition: bimage === 11 },
+        'upgrade38': { cost: upgp38, condition: bimage === 12 },
+        'upgrade39': { cost: upgp39, condition: upg14 === 1 },
+          'upgrade40': { cost: upgp40, condition: upg18 === 1 },
+             'upgrade41': { cost: upgp41, condition: upg22 === 1 },
+              'upgrade42': { cost: upgp42, condition: upg26 === 1 } 
     };
 
     const employeeNames = {
@@ -2076,7 +2101,7 @@ function updateAllCurrency() {
     updateButtons([
         { id: 'extraButton', label: 'Worker' },
         { id: 'Button2', label: 'Manager' },
-        { id: 'Clickbutton', label: 'More click money' },
+        { id: 'Clickbutton', label: 'Better clicks' },
         { id: 'directorbutton', label: 'Director' },
         { id: 'VPbutton', label: 'VP' },
         { id: 'COObutton', label: 'COO' },
@@ -2093,6 +2118,7 @@ function updateAllCurrency() {
         { id: 'GAbutton', label: 'Golden Archmage' },
         { id: 'PMbutton', label: 'Patty Matriarch' },
         { id: 'GGbutton', label: 'Grand Grillmaster' },
+        { id: 'Clickbutton2', label: 'Multiplicative clicks' },
        // { id: 'upgrade1', label: 'Coffee', cost: upgp1 }
     ]);
     Update();
@@ -2191,11 +2217,12 @@ if (button.id === 'upgrade30' && buttonElement) {
     document.getElementById('GAtooltip').textContent = "Earns $" + formatCurrency(archmage) + " per second";
     document.getElementById('PMtooltip').textContent = "Earns $" + formatCurrency(matriarch) + " per second";
     document.getElementById('GGtooltip').textContent = "Earns $" + formatCurrency(grillmaster) + " per second";
-
+    document.getElementById('Multiplyclicktooltip').textContent = "Increases click value by 0.1x";
     const buttons = [
         { id: 'extraButton', cost: cost1 },
         { id: 'Button2', cost: cost2 },
         { id: 'Clickbutton', cost: cost3 },
+        { id: 'Clickbutton2', cost: cost20 },
         { id: 'directorbutton', cost: cost4 },
         { id: 'VPbutton', cost: cost5 },
         { id: 'COObutton', cost: cost6 },
@@ -2254,7 +2281,7 @@ if (button.id === 'upgrade30' && buttonElement) {
         { id: 'upgrade35', cost: upgp35 },
         { id: 'upgrade36', cost: upgp36 },
         { id: 'upgrade37', cost: upgp37 },
-        { id: 'upgrade38', cost: upgp38 },
+        { id: 'upgrade38', cost: upgp38 }
     ];
 
     const Ibuttons = [
@@ -3034,7 +3061,7 @@ window.addEventListener('DOMContentLoaded', initImportOverlay);
                 cost17,
                 cost18,
                 cost19,
-
+                cost20,
                 upgp1,
                 upgp2,
                 upgp3,
@@ -3113,6 +3140,7 @@ window.addEventListener('DOMContentLoaded', initImportOverlay);
                 M17,
                 M18,
                 M19,
+                M20,
                 // Upgrade states
                 upg1,
                 upg3,
@@ -3231,6 +3259,8 @@ window.addEventListener('DOMContentLoaded', initImportOverlay);
                 cost17 = gameState.cost17;
                 cost18 = gameState.cost18;
                 cost19 = gameState.cost19;
+                M20 = gameState.M20;
+                   cost20 = gameState.cost20;
                 upgp1 = gameState.upgp1;
                 upgp2 = gameState.upgp2;
                 upgp3 = gameState.upgp3;
