@@ -453,8 +453,8 @@ let musicSource;
             let quantity = purchaseAmount === 'max' ? getMaxAffordable('Clickbutton2') : purchaseAmount;
             let bought = 0;
             while (quantity > 0 && count >= cost20) {
-                clicks += clicks*0.1;
-                clickamount += clicks*0.1;
+                clicks += clicks*0.01;
+                clickamount += clicks*0.01;
                 M20 += 1;
                 count -= cost20;
                 cost20 = Math.round(20 * (1.15 ** M20) * 10) / 10;
@@ -2305,7 +2305,7 @@ if (button.id === 'upgrade30' && buttonElement) {
     document.getElementById('GAtooltip').textContent = "Earns $" + formatCurrency(archmage) + " per second";
     document.getElementById('PMtooltip').textContent = "Earns $" + formatCurrency(matriarch) + " per second";
     document.getElementById('GGtooltip').textContent = "Earns $" + formatCurrency(grillmaster) + " per second";
-    document.getElementById('Multiplyclicktooltip').textContent = "Increases click value by 0.1x";
+    document.getElementById('Multiplyclicktooltip').textContent = "Increases click value by 0.01x";
     const buttons = [
         { id: 'extraButton', cost: cost1 },
         { id: 'Button2', cost: cost2 },
