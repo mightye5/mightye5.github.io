@@ -137,6 +137,20 @@
 
         }
         #container {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;     /* ↓ smaller spacing between upgrade buttons */
+  padding: 5x; /* ↓ less inner padding around the whole section */
+}
+
+#container button {
+  padding: 6px 10px; /* ↓ tighten button padding if you want smaller buttons */
+  font-size: 14px;   /* optional, slightly smaller text */
+}
+        #container {
   flex: 1 1 auto;         /* fill all vertical space in .game-right */
   max-height: none;       /* remove your old max-height */
   overflow-y: auto;       /* scroll if its content is too tall */
@@ -153,8 +167,8 @@ max-height: none;
 
     display: flex;
     flex-direction: column;
-    gap: 0.1px;               /* small vertical gap */
-    padding: 15px;
+    gap: 0.3px;               /* small vertical gap */
+    padding: 20px;
   }
   #upgrade .tooltip-container {
     margin: 0;

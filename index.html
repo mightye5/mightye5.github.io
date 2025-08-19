@@ -130,8 +130,14 @@
                                 <button class="feature-button" style="display:none;" id="betterpriest" onclick="betterpriest()" onmouseover="showTooltip(event, 'betterpriesttooltip')" onmouseout="hideTooltip('betterpriesttooltip')">Sacred buns! 650 ice</button>
                                 <span class="tooltip" id="betterpriesttooltip">Increases what High Priests make by 0.2x</span>
                             </div>
-                            <button class="feature-button"   style="display:none;">Staff Training</button>
-                            <button class="feature-button"   style="display:none;">Equipment Upgrades</button>
+                            <div class="tooltip-container" >
+                                <button class="feature-button" style="display:none;" id="betterpatty" onclick="betterpatty()" onmouseover="showTooltip(event, 'betterpattytooltip')" onmouseout="hideTooltip('betterpattytooltip')">Discover the Smoldering Ember Cone! 700 ice</button>
+                                <span class="tooltip" id="betterpattytooltip">Increases what Patty Matriarchs make by 0.2x</span>
+                            </div>
+                            <div class="tooltip-container" >
+                                <button class="feature-button" style="display:none;" id="bettergrill" onclick="bettergrill()" onmouseover="showTooltip(event, 'bettergrilltooltip')" onmouseout="hideTooltip('bettergrilltooltip')">Reassemble the Gilded Dough Whisk! 750 ice</button>
+                                <span class="tooltip" id="bettergrilltooltip">Increases what Grand Grillmasters make by 0.2x</span>
+                            </div>
                             <input type="text" id="ice" value="Ice Creams: 0" readonly>
                             <input type="text" id="icepers" value="Ice Creams per second: 0" readonly>
                         </div>
@@ -446,6 +452,10 @@
                             <button id="upgrade29" onclick="upgrade29()" style="display:none;" onmouseover="showTooltip(event, 'upgrade29tooltip')" onmouseout="hideTooltip('upgrade29tooltip')">Emulsifier boost: $750000000</button>
                             <span class="tooltip" id="upgrade29tooltip">Emulsifier supreme + 0.20x per matriarch
                             </span>
+                        </div>
+                        <div class="tooltip-container">
+                            <button id="upgrade43" onclick="upgrade43()" style="display:none;" onmouseover="showTooltip(event, 'upgrade43tooltip')" onmouseout="hideTooltip('upgrade43tooltip')">Unearth the Scorched Sorbet Scroll: $1B</button>
+                            <span class="tooltip" id="upgrade43tooltip">Unlocks Grand Grillmaster and Patty Matriarch ice cream upgrades</span>
                         </div>
                         <div class="tooltip-container">
                             <button id="upgrade30" onclick="upgrade30()" disabled style="display:none;" onmouseover="showTooltip(event, 'upgrade30tooltip')" onmouseout="hideTooltip('upgrade30tooltip')">Learn from the grand grill master: $???</button>

@@ -124,7 +124,8 @@ if (musicSlider) {
             upg39 = 0,
             upg40 = 0,
             upg41 = 0,
-            upg42 = 0;
+            upg42 = 0,
+            upg43 = 0;
         // Special upgrade costs
         let upgp1 = 150;                 // Coffee upgrade cost
         let upgp2 = 100000;           // Golden burger cost
@@ -167,7 +168,8 @@ if (musicSlider) {
     upgp39 = 600000,
     upgp40 = 1750000,
     upgp41 = 13000000,
-    upgp42 = 175000000;
+    upgp42 = 175000000,
+    upgp43 = 1000000000;
         // Special features
         let golden_burger = 1;          // Golden burger multiplier
         let moneymultiplier = 1;        // Global money multiplier
@@ -195,6 +197,8 @@ if (musicSlider) {
             icost12 = 550,
             icost13 = 600,
             icost14 = 650,
+            icost15 = 700,
+            icost16 = 750,
             iceupg1 = 0,            // whether you have the first ice cream upgrade or not
             iceupg2 = 0,           // whether you have the second ice cream upgrade or not
             iceupg3 = 0,            // whether you have the third ice cream upgrade or not
@@ -208,7 +212,9 @@ if (musicSlider) {
             iceupg11 = 0,
             iceupg12 = 0,
             iceupg13 = 0,
-            iceupg14 = 0;
+            iceupg14 = 0,
+            iceupg15 = 0,
+            iceupg16 = 0;
 
         let purchaseAmount = 1;     // quantity of employees to buy
         const employeeInfo = {
@@ -1429,6 +1435,22 @@ function upgrade29() {
         document.getElementById('EStooltip').textContent = "Earns $" + emulsifier + " per second";
         document.getElementById("upgrade29").remove();
         hideTooltip('upgrade29tooltip');
+        document.getElementById("upgrade43").style.display = 'flex';
+        updateAll();
+    } else {
+        playSound('error', 0.4*sfxVolume);
+        updateAll();
+    }
+}
+function upgrade43() {
+    if (count >= upgp43) {
+        count -= upgp43;
+        upg43 = 1;
+        playSound('purchase', 0.4*sfxVolume);
+        document.getElementById("upgrade43").remove();
+        hideTooltip('upgrade43tooltip');
+        document.getElementById("betterpatty").style.display = 'flex';
+        document.getElementById("bettergrill").style.display = 'flex';
         document.getElementById("upgrade30").style.display = 'flex';
         updateAll();
     } else {
@@ -1436,7 +1458,6 @@ function upgrade29() {
         updateAll();
     }
 }
-
 function upgrade30() {
       playSound('error', 0.4);
     return;
@@ -1763,14 +1784,39 @@ function formatCurrency(num) {
     }
     
     const abbreviations = [
-        { value: 1e24, symbol: "Sp" },
-        { value: 1e21, symbol: "Sx" },
-        { value: 1e18, symbol: "Qn" },
-        { value: 1e15, symbol: "Qd" },
-        { value: 1e12, symbol: "T" },
-        { value: 1e9, symbol: "B" },
-        { value: 1e6, symbol: "M" },
-        { value: 1e3, symbol: "K" }
+        { value: 1e99, symbol: "Dtg" },   // Duotrigintillion
+        { value: 1e96, symbol: "Utg" },   // Untrigintillion
+        { value: 1e93, symbol: "Tg" },    // Trigintillion
+        { value: 1e90, symbol: "Nvg" },   // Novemvigintillion
+        { value: 1e87, symbol: "Ovg" },   // Octovigintillion
+        { value: 1e84, symbol: "Spvg" },  // Septenvigintillion
+        { value: 1e81, symbol: "Sxvg" },  // Sexvigintillion
+        { value: 1e78, symbol: "Qivg" },  // Quinvigintillion
+        { value: 1e75, symbol: "Qavg" },  // Quattuorvigintillion
+        { value: 1e72, symbol: "Tvg" },   // Trevigintillion
+        { value: 1e69, symbol: "Dvg" },   // Duovigintillion
+        { value: 1e66, symbol: "Uvg" },   // Unvigintillion
+        { value: 1e63, symbol: "Vg" },    // Vigintillion
+        { value: 1e60, symbol: "Nmdc" },  // Novemdecillion
+        { value: 1e57, symbol: "Ocdc" },  // Octodecillion
+        { value: 1e54, symbol: "Spdc" },  // Septendecillion
+        { value: 1e51, symbol: "Sxdc" },  // Sexdecillion
+        { value: 1e48, symbol: "Qidc" },  // Quindecillion
+        { value: 1e45, symbol: "Qadc" },  // Quattuordecillion
+        { value: 1e42, symbol: "Tdc" },   // Tredecillion
+        { value: 1e39, symbol: "Ddc" },   // Duodecillion
+        { value: 1e36, symbol: "Udc" },   // Undecillion
+        { value: 1e33, symbol: "Dc" },   // Duodecillion
+        { value: 1e30, symbol: "No" },   // Novemdecillion
+        { value: 1e27, symbol: "Oc" },   // Octodecillion
+        { value: 1e24, symbol: "Sp" },   // Septillion
+        { value: 1e21, symbol: "Sx" },   // Sextrillion
+        { value: 1e18, symbol: "Qn" },   // Quintillion
+        { value: 1e15, symbol: "Qd" },   // Quadrillion
+        { value: 1e12, symbol: "T" },   // Trillion
+        { value: 1e9, symbol: "B" },   // Billion
+        { value: 1e6, symbol: "M" },   // Million
+        { value: 1e3, symbol: "K" }   // Thousand
     ];
     
     for (const { value, symbol } of abbreviations) {
@@ -1926,6 +1972,43 @@ function betterpriest() {
         iceupg14 += 1;
         ice -= icost14;
         icost14 = Math.round(icost14 * 1.25);
+        playSound('purchase', 0.4*sfxVolume);
+        updateAll();
+    } else {
+        playSound('error', 0.4*sfxVolume);
+        updateAll();
+    }
+}
+function betterpatty() {
+    if (ice >= icost15) {
+        const oldVal = matriarch;
+        matriarch += Math.round(matriarch * 0.2);
+        if (M18 >= 1) {
+            const increase = (matriarch - oldVal) * M18;
+            mps += increase;
+        }
+        iceupg15 += 1;
+        ice -= icost15;
+        icost15 = Math.round(icost15 * 1.25);
+        playSound('purchase', 0.4*sfxVolume);
+        updateAll();
+    } else {
+        playSound('error', 0.4*sfxVolume);
+        updateAll();
+    }
+}
+
+function bettergrill() {
+    if (ice >= icost16) {
+        const oldVal = grillmaster;
+        grillmaster += Math.round(grillmaster * 0.2);
+        if (M18 >= 1) {
+            const increase = (grillmaster - oldVal) * M18;
+            mps += increase;
+        }
+        iceupg16 += 1;
+        ice -= icost16;
+        icost16 = Math.round(icost16 * 1.25);
         playSound('purchase', 0.4*sfxVolume);
         updateAll();
     } else {
@@ -2192,8 +2275,11 @@ function updatemps() {
     document.getElementById('betterarchmage').textContent =
         "Arcane tips! " + formatCurrency(icost13) + ' ice';
     document.getElementById('betterpriest').textContent =
-        "Sacred buns! " + formatCurrency(icost14) + ' ice';
-
+        "Sacred buns! " + formatCurrency(icost14) + ' ice'; 
+    document.getElementById('betterpatty').textContent =
+        "Discover the Smoldering Ember Cone! " + formatCurrency(icost15) + ' ice';
+ document.getElementById('bettergrill').textContent =
+        "Reassemble the Gilded Dough Whisk! " + formatCurrency(icost16) + ' ice';
     updateUpgradeButtons();
     updateFranchiseButton();
 if (button.id === 'upgrade30' && buttonElement) {
@@ -2301,7 +2387,9 @@ if (button.id === 'upgrade30' && buttonElement) {
         { id: 'betterchancellor', cost: icost12 },
         { id: 'betterarchmage', cost: icost13 },
         { id: 'betterpriest', cost: icost14 },
-    ];  
+        { id: 'bettergrill', cost: icost15 },
+        { id: 'betterpatty', cost: icost16 },
+    ];
     window.M4 = M4;
     window.M5 = M5;
     window.M7 = M7;
@@ -2426,7 +2514,7 @@ if (upgrade30Btn) {
                     document.getElementById('Franchise6').style.display = 'block';
                     franchiseButton.textContent = 'Max Franchises!';
                     franchiseButton.disabled = true;
-                    fcost = 99999999999999999999999999999999999999999999999999999999999999999999999999999999999;
+                    fcost = 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999;
                 }
                 if (franchises >= 7) { 
 
@@ -2480,7 +2568,7 @@ if (upgrade30Btn) {
                 franchiseTab.classList.remove('highlight');
             }
 
-            const affordableIceUpgrade = [icost1, icost2, icost3, icost4, icost5, icost6, icost7, icost8, icost9, icost10, icost11, icost12, icost13, icost14].some(cost => ice >= cost);
+            const affordableIceUpgrade = [icost1, icost2, icost3, icost4, icost5, icost6, icost7, icost8, icost9, icost10, icost11, icost12, icost13, icost14, icost15, icost16].some(cost => ice >= cost);
             if (affordableIceUpgrade ) {
                 buttonsTab.classList.add('highlight');
             } else {
@@ -3198,6 +3286,8 @@ window.addEventListener('DOMContentLoaded', initImportOverlay);
                 icost12,
                 icost13,
                 icost14,
+                icost15,
+                icost16,
                 iceupg1,
                 iceupg2,
                 iceupg3,
@@ -3212,8 +3302,9 @@ window.addEventListener('DOMContentLoaded', initImportOverlay);
                 iceupg12,
                 iceupg13,
                 iceupg14,
-                
-                
+                iceupg15,
+                iceupg16,
+
                 // Achievement states - Save the unlocked status of each achievement
                 achievements: Object.fromEntries(
                     Object.entries(achievements).map(([id, achievement]) => [
@@ -3396,6 +3487,8 @@ window.addEventListener('DOMContentLoaded', initImportOverlay);
                 icost12 = gameState.icost12;
                 icost13 = gameState.icost13;
                 icost14 = gameState.icost14;
+                icost15 = gameState.icost15;
+                icost16 = gameState.icost16;
                 iceupg1 = gameState.iceupg1;
                 iceupg2 = gameState.iceupg2;
                 iceupg3 = gameState.iceupg3;
@@ -3410,6 +3503,8 @@ window.addEventListener('DOMContentLoaded', initImportOverlay);
                 iceupg12 = gameState.iceupg12;
                 iceupg13 = gameState.iceupg13;
                 iceupg14 = gameState.iceupg14;
+                iceupg15 = gameState.iceupg15;
+                iceupg16 = gameState.iceupg16;
                 bimage = gameState.bimage;
                     if (gameState.musicVolume !== undefined) {
         musicVolume = gameState.musicVolume;
@@ -3466,6 +3561,10 @@ M20 = (typeof gameState.M20 === 'number' && !isNaN(gameState.M20))
             if (upg40 === 1) {
                 document.getElementById("betterfeast").style.display = 'flex';
                 document.getElementById("betterverdant").style.display = 'flex';
+            }
+            if (upg43 === 1) {
+                document.getElementById("betterpatty").style.display = 'flex';
+                document.getElementById("bettergrill").style.display = 'flex';
             }
             if (upg19 === 1) {
                 document.getElementById("FWbutton").style.display = 'flex'; // Show Flame Whisperer
