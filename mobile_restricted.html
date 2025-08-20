@@ -22,8 +22,14 @@
                     <div id="button">
                         <button class="image-button" onclick="addMoney();"></button>
                     </div>
+                    <div id="button">
+                      <p> <button  onclick="GoTo('mobile_upgrades.html');">Go to upgrade and Employee section</button> </p> 
+                    </div>
+                    <div id="button">
+                      <p> <button  onclick="GoTo('mobile_franchise.html');">Go to Franchise, Settings, Etc. Section</button> </p> 
+                    </div>
                 </div>
-
+<div class="hidden">
                 <div class="franchise-section">
                     
                     <div class="franchise-header">
@@ -614,6 +620,8 @@
                     </div>
                     </div>
                     </div>
+                </div>
+                    </div>
                      <script src="script.js"></script>
 <script>
 function detectDevice() {
@@ -623,6 +631,9 @@ function detectDevice() {
     }
 }
 
+function GoTo(page) {
+window.location.href = page;
+}
 
 window.onload = function() { detectDevice(); setInterval(detectDevice, 1000); };
 </script>

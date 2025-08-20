@@ -517,7 +517,9 @@ max-height: none;
    /* Adjust height to account for save controls */
 
         } 
-
+.hidden {
+  display:none;
+}
         .achievement {
             background-color: #f5f5f5;
             border-radius: 8px;

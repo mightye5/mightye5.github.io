@@ -26,6 +26,7 @@ height: auto;
     align-items: center;
     justify-content: center;
     padding: 10px;
+    overflow: hidden;
   }
 
   #moneypers {
@@ -62,7 +63,7 @@ height: auto;
 
   .franchise-section .tab-content {
     flex: 1;
-    overflow-y: auto;
+    overflow-y: scroll;
   }
 
   .restaurant-container {

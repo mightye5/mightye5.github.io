@@ -1,12 +1,15 @@
-       var slider = document.getElementById("myRange");
+var slider = document.getElementById("myRange");
 var output = document.getElementById("sfxVolumeValue");
 
-output.innerHTML = slider.value;
-var sfxVolume = slider.value / 100;
-slider.oninput = function() {
-  output.innerHTML = this.value;
-  sfxVolume = slider.value / 100;
-  console.log("SFX Volume set to: " + sfxVolume);
+if (slider && output) {
+    output.innerHTML = slider.value;
+    var sfxVolume = slider.value / 100;
+
+    slider.oninput = function() {
+        output.innerHTML = this.value;
+        sfxVolume = slider.value / 100;
+        console.log("SFX Volume set to: " + sfxVolume);
+    }
 }
 let musicGainNode;
 var musicVolume = 0.5;
@@ -14,10 +17,10 @@ var musicSlider = document.getElementById("musicRange");
 var musicOutput = document.getElementById("musicVolumeValue");
 
 // Initialize the music volume display
-if (musicOutput) musicOutput.innerHTML = musicSlider.value;
+if (musicSlider && musicOutput) {
+    musicOutput.innerHTML = musicSlider.value;
 
-// Add music volume slider listener
-if (musicSlider) {
+    // Add music volume slider listener
     musicSlider.oninput = function() {
         musicOutput.innerHTML = this.value;
         musicVolume = this.value / 100;
@@ -27,7 +30,6 @@ if (musicSlider) {
         console.log("Music Volume set to: " + musicVolume);
     }
 }
-
        // ================ GAME STATE VARIABLES ================
         // Basic game currency and costs 
         window.count =  0;                  // Player's current money
@@ -1734,7 +1736,13 @@ function betterceo() {
          * Redirects to mobile page if available
          */
         function detectMobile() {
-                        if (window.location.pathname.includes('mobile_restricted.html')) {
+            if (window.location.pathname.includes('mobile_restricted.html')) {
+                return true;
+            }
+            if (window.location.pathname.includes('mobile_upgrades.html')) {
+                return true;
+            }
+            if (window.location.pathname.includes('mobile_franchise.html')) {
                 return true;
             }
             if ((window.innerWidth <= 950)) {
