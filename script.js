@@ -2493,6 +2493,97 @@ if (upgrade30Btn) {
     }
 
         }
+function buyall() {
+    const employeeIds = Object.keys(employeeInfo);
+    let totalPurchased = 0;
+    let purchaseMade = true;
+    
+    // Create a mapping of cost variables to their current values
+    const costMapping = {
+        'cost1': cost1, 'cost2': cost2, 'cost3': cost3, 'cost4': cost4, 'cost5': cost5,
+        'cost6': cost6, 'cost7': cost7, 'cost8': cost8, 'cost9': cost9, 'cost10': cost10,
+        'cost11': cost11, 'cost12': cost12, 'cost13': cost13, 'cost14': cost14, 'cost15': cost15,
+        'cost16': cost16, 'cost17': cost17, 'cost18': cost18, 'cost19': cost19, 'cost20': cost20
+    };
+    
+    // Sort employees by their current cost (cheapest first)
+    const sortedEmployees = employeeIds.sort((a, b) => {
+        const costA = costMapping[employeeInfo[a].costVar] || 0;
+        const costB = costMapping[employeeInfo[b].costVar] || 0;
+        return costA - costB;
+    });
+    
+    // Keep cycling through employees until no more purchases can be made
+    while (purchaseMade) {
+        purchaseMade = false;
+        
+        for (const employeeId of sortedEmployees) {
+            const info = employeeInfo[employeeId];
+            const currentCost = costMapping[info.costVar];
+            
+            // Skip if cost is undefined or invalid
+            if (!currentCost || currentCost <= 0) {
+               // console.log(`Skipping ${employeeId} - invalid cost: ${currentCost}, costVar: ${info.costVar}`);
+                continue;
+            }
+            
+            // If we can afford this employee, buy one
+            if (window.count >= currentCost) {
+               // console.log(`Buying ${employeeId} for $${currentCost}`);
+                // Make the purchase
+                window.count -= currentCost;
+                window[info.countVar] += 1;
+                
+                // Update the cost for next purchase
+                const newCost = Math.round(info.base * Math.pow(info.rate, window[info.countVar]) * 10) / 10;
+                costMapping[info.costVar] = newCost;
+                
+                // Also update the actual cost variable
+                switch(info.costVar) {
+                    case 'cost1': cost1 = newCost; break;
+                    case 'cost2': cost2 = newCost; break;
+                    case 'cost3': cost3 = newCost; break;
+                    case 'cost4': cost4 = newCost; break;
+                    case 'cost5': cost5 = newCost; break;
+                    case 'cost6': cost6 = newCost; break;
+                    case 'cost7': cost7 = newCost; break;
+                    case 'cost8': cost8 = newCost; break;
+                    case 'cost9': cost9 = newCost; break;
+                    case 'cost10': cost10 = newCost; break;
+                    case 'cost11': cost11 = newCost; break;
+                    case 'cost12': cost12 = newCost; break;
+                    case 'cost13': cost13 = newCost; break;
+                    case 'cost14': cost14 = newCost; break;
+                    case 'cost15': cost15 = newCost; break;
+                    case 'cost16': cost16 = newCost; break;
+                    case 'cost17': cost17 = newCost; break;
+                    case 'cost18': cost18 = newCost; break;
+                    case 'cost19': cost19 = newCost; break;
+                    case 'cost20': cost20 = newCost; break;
+                }
+                
+                totalPurchased++;
+                purchaseMade = true;
+            } else {
+               // console.log(`Cannot afford ${employeeId} at cost $${currentCost}. Current money: $${window.count}`);
+            }
+        }
+    }
+    
+    // Recalculate money per second
+    mps = (M * worker) + (M2 * manager) + (M3 * 0) + (M4 * director) + 
+          (M5 * VP) + (M6 * COO) + (M7 * ceo) + (M8 * chairman) + 
+          (M9 * oracle) + (M10 * fryer) + (M11 * feast) + (M12 * verdant) + 
+          (M13 * emulsifier) + (M14 * whisperer) + (M15 * chancellor) + 
+          (M16 * priest) + (M17 * archmage) + (M18 * matriarch) + (M19 * grillmaster);
+    
+    mps = mps * golden_burger * moneymultiplier;
+    
+    updateAll();
+    
+    console.log(`Round-robin complete! Purchased ${totalPurchased} employees total`);
+    return totalPurchased;
+}
 
 
         function openFranchise() {
