@@ -98,7 +98,7 @@ if (musicSlider && musicOutput) {
             M20 = 0;            // Number of Click Multipliers
         // Upgrade status
           let  upg1 = 0,                   // Coffee upgrade status
-            upg3 = 0;                   // Ice cream machine upgrade status
+            upg3 = 0,                   // Ice cream machine upgrade status
             upg8 = 0,
             upg9 = 0,
             upg10 = 0,
@@ -182,6 +182,10 @@ if (musicSlider && musicOutput) {
         let totaltime = 0;
         let bimage = 0;
         let dark_mode = false;          // Dark mode toggle
+        let rebirth_points = 0;        // Rebirth points
+        window.total_money = 0;           // Total money earned
+        let lastRebirthCheck = 0;      // Last rebirth check amount of money
+        let click_multiplier = 0.01;
         //Everything Ice cream related
          let ice = 0,                             // Player's current ice creams
             ips = 0,                             // how many ice creams you get per second
@@ -254,10 +258,13 @@ function ToggleDark() {
         if (typeof amount !== 'number' || amount < 0) {
             console.error("Invalid amount!");
             return;
+
         }
         window.count += amount;
+        window.total_money += amount;
         console.log(`Money updated: ${window.count}`);
         updateAll();
+        checkRebirthPoints();
         };
         function computeEmployeeCost(id, quantity) {
             const info = employeeInfo[id];
@@ -455,8 +462,8 @@ let musicSource;
             let quantity = purchaseAmount === 'max' ? getMaxAffordable('Clickbutton2') : purchaseAmount;
             let bought = 0;
             while (quantity > 0 && count >= cost20) {
-                clicks += clicks*0.01;
-                clickamount += clicks*0.01;
+                clicks += clicks * click_multiplier;
+                clickamount += clicks * click_multiplier;
                 M20 += 1;
                 count -= cost20;
                 cost20 = Math.round(20 * (1.15 ** M20) * 10) / 10;
@@ -2217,11 +2224,24 @@ function updateAllCurrency() {
     Update();
     checkAchievements();
 }
+
+function checkRebirthPoints() {
+    // Calculate how many millions have passed since last check
+    let millionsPassed = Math.floor(total_money / 1_000_000) - Math.floor(lastRebirthCheck / 1_000_000);
+
+    if (millionsPassed > 0) {
+        rebirth_points += millionsPassed;  // give points
+        lastRebirthCheck = total_money;    // update milestone
+        console.log(`+${millionsPassed} Rebirth Point(s)! Total: ${rebirth_points}`);
+    }
+}
         /**
          * Updates money display
          */
 function updateMoney() {
     count = Math.round(count * 10) / 10;
+    total_money = Math.round(total_money * 10) / 10;
+    checkRebirthPoints();
     document.getElementById('money').value = "Money: $" + formatCurrency(count);
     document.getElementById('ice').value = "Ice Creams: " + formatCurrency(ice);
 }
@@ -2242,6 +2262,8 @@ function updatemps() {
          */
         function addMoney() {
             count += parseFloat(((clicks * golden_burger) * moneymultiplier).toFixed(1));
+            total_money += parseFloat(((clicks * golden_burger) * moneymultiplier).toFixed(1));
+            checkRebirthPoints();
             updateAll();
             totalclicks++;
             checkAchievements();
@@ -2471,6 +2493,8 @@ if (upgrade30Btn) {
         function moneyps() {
             detectMobile();
             count += mps*moneymultiplier;
+            total_money += mps*moneymultiplier;
+            checkRebirthPoints();
             updateAll();
             checkTabHighlights();
             totaltime ++;
@@ -2523,16 +2547,27 @@ function buyall() {
             
             // Skip if cost is undefined or invalid
             if (!currentCost || currentCost <= 0) {
-               // console.log(`Skipping ${employeeId} - invalid cost: ${currentCost}, costVar: ${info.costVar}`);
+                console.log(`Skipping ${employeeId} - invalid cost: ${currentCost}, costVar: ${info.costVar}`);
                 continue;
             }
             
             // If we can afford this employee, buy one
             if (window.count >= currentCost) {
-               // console.log(`Buying ${employeeId} for $${currentCost}`);
+                console.log(`Buying ${employeeId} for ${currentCost}`);
+                
                 // Make the purchase
                 window.count -= currentCost;
                 window[info.countVar] += 1;
+                
+                // Handle special effects for click upgrades
+                if (info.costVar === 'cost3') {
+                    // Better clicks upgrade
+                    clicks += parseFloat(clickamount.toFixed(1));
+                } else if (info.costVar === 'cost20') {
+                    // Click multiply upgrade
+                    clicks += clicks * click_multiplier;
+                    clickamount += clicks * click_multiplier;
+                }
                 
                 // Update the cost for next purchase
                 const newCost = Math.round(info.base * Math.pow(info.rate, window[info.countVar]) * 10) / 10;
@@ -2565,7 +2600,7 @@ function buyall() {
                 totalPurchased++;
                 purchaseMade = true;
             } else {
-               // console.log(`Cannot afford ${employeeId} at cost $${currentCost}. Current money: $${window.count}`);
+                console.log(`Cannot afford ${employeeId} at cost $${currentCost}. Current money: $${window.count}`);
             }
         }
     }
@@ -3230,6 +3265,10 @@ window.addEventListener('DOMContentLoaded', initImportOverlay);
                 moneymultiplier,
                 golden_burger,
                 dark_mode,
+                total_money,
+                rebirth_points,
+                lastRebirthCheck,
+                click_multiplier,
                 // Costs
                 cost1,
                 cost2,
@@ -3430,7 +3469,10 @@ window.addEventListener('DOMContentLoaded', initImportOverlay);
                 clicks = gameState.clicks;
                 moneymultiplier = gameState.moneymultiplier;
                 golden_burger = gameState.golden_burger;
-
+                total_money = gameState.total_money;
+                rebirth_points = gameState.rebirth_points;
+                lastRebirthCheck = gameState.lastRebirthCheck;
+                click_multiplier = gameState.click_multiplier;
                 // Restore costs
                 cost1 = gameState.cost1;
                 cost2 = gameState.cost2;
