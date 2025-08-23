@@ -22,12 +22,12 @@
                         <button class="image-button" onclick="addMoney();"></button>
                     </div>
                     <p></p>
-                    <div id="upgrades" class="hidden">
+                    <div id="rebirth" style="display:none;">
 
-                        <input type="text" id="rebirth_ppints" value="Rebirth Points: 0" readonly>
+                        <input type="text" id="rebirth_points" value="Rebirth Points: 0" readonly>
                         <div class="tooltip-container" id="rebirthtooltipcontainer">
-                            <button id="rebirth" onclick="rebirth()" onmouseover="showTooltip(event, 'rebirthtooltip')" onmouseout="hideTooltip('upgrade1tooltip')">Rebirth</button>
-                            <span class="tooltip" id="rebirthtooltip">Resets everything other than achievements then lets you purchase special upgrades with rebirth points.</span>
+                            <button id="rebirth_button" onclick="rebirth()" disabled onmouseover="showTooltip(event, 'rebirthtooltip')" onmouseout="hideTooltip('rebirthtooltip')">Rebirth</button>
+                            <span class="tooltip" id="rebirthtooltip">Resets everything other than achievements then lets you purchase special upgrades with rebirth points. (Coming soon) </span>
                         </div>
                     </div>
                 </div>
@@ -467,8 +467,8 @@
                             <span class="tooltip" id="upgrade43tooltip">Unlocks Grand Grillmaster and Patty Matriarch ice cream upgrades</span>
                         </div>
                         <div class="tooltip-container">
-                            <button id="upgrade30" onclick="upgrade30()" disabled style="display:none;" onmouseover="showTooltip(event, 'upgrade30tooltip')" onmouseout="hideTooltip('upgrade30tooltip')">Learn from the grand grill master: $???</button>
-                            <span class="tooltip" id="upgrade30tooltip">Coming soon </span>
+                            <button id="upgrade30" onclick="upgrade30()"  style="display:none;" onmouseover="showTooltip(event, 'upgrade30tooltip')" onmouseout="hideTooltip('upgrade30tooltip')">Learn from the grand grill master: $1.75B</button>
+                            <span class="tooltip" id="upgrade30tooltip">Unlocks rebirth section</span>
                         </div>
                         <div class="tooltip-container  burger-upgrade" id="upgrade2tooltipcontainer">
                             <button id="upgrade2" onclick="upgrade2()" onmouseover="showTooltip(event, 'upgrade2tooltip')" onmouseout="hideTooltip('upgrade2tooltip')">The Golden burger: $100000</button>

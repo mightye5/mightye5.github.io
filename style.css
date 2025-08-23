@@ -259,25 +259,32 @@ max-height: none;
     border-radius: 6px;
     font-size: 14px;
     white-space: nowrap;
-    z-index: 999999999; /* Even higher z-index */
+    z-index: 999999999;
     opacity: 0;
     transition: opacity 0.3s;
     pointer-events: none;
-    /* Force the tooltip to appear on top */
     transform: translateZ(0);
     will-change: transform;
 }
 
-        .tooltip::before {
-            content: "";
-            position: absolute;
-            right: -10px; /* Move the arrow to the right side */
-            top: 50%;
-            transform: translateY(-50%);
-            border-width: 5px;
-            border-style: solid;
-            border-color: transparent transparent transparent #333; /* Make the arrow point right */
-        }
+/* Default: tooltip is on the left of the element, arrow points right */
+.tooltip::before {
+    content: "";
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent transparent #333;
+}
+
+/* When tooltip is flipped to the right, arrow should point left */
+.tooltip.right::before {
+    left: -10px;
+    right: auto;
+    border-color: transparent #333 transparent transparent;
+}
 
         .tooltip-container:hover .tooltip {
             visibility: visible;

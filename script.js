@@ -1468,20 +1468,19 @@ function upgrade43() {
     }
 }
 function upgrade30() {
-      playSound('error', 0.4);
-    return;
-    /* if (count >= upgp30) {
+     if (count >= upgp30) {
         count -= upgp30;
         upg30 = 1;
         playSound('purchase', 0.4*sfxVolume);
         document.getElementById("upgrade30").remove();
         hideTooltip('upgrade30tooltip');
+        document.getElementById("rebirth").style.display = 'flex';
         updateAll();
     } else {
         playSound('error', 0.4*sfxVolume);
         updateAll();
     }
-        */
+        
 }
 function upgrade31() {
     if (count >= upgp31) {
@@ -2232,7 +2231,7 @@ function checkRebirthPoints() {
     if (millionsPassed > 0) {
         rebirth_points += millionsPassed;  // give points
         lastRebirthCheck = total_money;    // update milestone
-        console.log(`+${millionsPassed} Rebirth Point(s)! Total: ${rebirth_points}`);
+        //console.log(`+${millionsPassed} Rebirth Point(s)! Total: ${rebirth_points}`);
     }
 }
         /**
@@ -2256,6 +2255,7 @@ function updatemps() {
     document.getElementById('moneyperclick').value = "Money per click: $" + formatCurrency(currentClicks);
     document.getElementById('moneymultiplier').value = "Money multiplier: " + parseFloat((moneymultiplier).toFixed(1));
     document.getElementById('icepers').value = "Ice Creams per second: " + formatCurrency(ips);
+    document.getElementById('rebirth_points').value = "Rebirth Points: " + formatCurrency(rebirth_points);
 }
         /**
          * Handles clicking the burger
@@ -2312,10 +2312,7 @@ function updatemps() {
         "Reassemble the Gilded Dough Whisk! " + formatCurrency(icost16) + ' ice';
     updateUpgradeButtons();
     updateFranchiseButton();
-if (button.id === 'upgrade30' && buttonElement) {
-    buttonElement.disabled = true;
-    buttonElement.style.backgroundColor = cannotAffordColor;
-}
+
     document.getElementById('Workertooltip').textContent = "Earns $" + formatCurrency(worker) + " per second";
     document.getElementById('Managertooltip').textContent = "Earns $" + formatCurrency(manager) + " per second";
     document.getElementById('Moreclicktooltip').textContent = "Increases click value by $" + formatCurrency(clickamount);
@@ -2479,12 +2476,12 @@ if (button.id === 'upgrade30' && buttonElement) {
             buttonElement.style.backgroundColor = ice >= button.cost ? canAffordColor : cannotAffordColor;
         }
     });
-    const upgrade30Btn = document.getElementById('upgrade30');
-if (upgrade30Btn) {
-    upgrade30Btn.disabled = true;
-    upgrade30Btn.style.backgroundColor = '#dddddd';
-    upgrade30Btn.textContent = 'Learn from the grand grill master: $???';
-}
+   // const upgrade30Btn = document.getElementById('upgrade30');
+   // if (upgrade30Btn) {
+   //     upgrade30Btn.disabled = true;
+   //     upgrade30Btn.style.backgroundColor = '#dddddd';
+   //     upgrade30Btn.textContent = 'Learn from the grand grill master: $???';
+   // }
 }
         /**
          * Adds money per second
@@ -3069,6 +3066,7 @@ function buyall() {
     const upgrade30Button = document.getElementById("upgrade30");
     if (upg30 === 1) {
         if (upgrade30Button) upgrade30Button.remove();
+        document.getElementById("rebirth").style.display = 'flex';
     } else if (upg29 === 1) {
         if (upgrade30Button) upgrade30Button.style.display = 'flex';
     }
@@ -3794,13 +3792,31 @@ M20 = (typeof gameState.M20 === 'number' && !isNaN(gameState.M20))
             }
         }
 
-        function showTooltip(event, tooltipId) {
+function showTooltip(event, tooltipId) {
     var tooltip = document.getElementById(tooltipId);
     var rect = event.target.getBoundingClientRect();
-    tooltip.style.top = rect.top + window.scrollY + 'px';
-    tooltip.style.left = rect.left - tooltip.offsetWidth - 10 + 'px';
-    tooltip.style.visibility = 'visible';
-    tooltip.style.opacity = '1';
+
+    // Default: left side
+    var top = rect.top + window.scrollY;
+    var left = rect.left - tooltip.offsetWidth - 10;
+    tooltip.classList.remove("right");
+
+    // If off left side → flip to right
+    if (left < 0) {
+        left = rect.right + 10;
+        tooltip.classList.add("right");
+    }
+
+    // If still off right edge → force back left
+    if (left + tooltip.offsetWidth > window.innerWidth) {
+        left = rect.left - tooltip.offsetWidth - 10;
+        tooltip.classList.remove("right");
+    }
+
+    tooltip.style.top = top + "px";
+    tooltip.style.left = left + "px";
+    tooltip.style.visibility = "visible";
+    tooltip.style.opacity = "1";
 }
 
 function hideTooltip(tooltipId) {
@@ -3808,6 +3824,7 @@ function hideTooltip(tooltipId) {
     tooltip.style.visibility = 'hidden';
     tooltip.style.opacity = '0';
 }
+
 
         // Auto-save every 5 minutes
         setInterval(saveGame, 0.5 * 60 * 1000);
