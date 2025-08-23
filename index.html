@@ -21,6 +21,15 @@
                     <div id="button">
                         <button class="image-button" onclick="addMoney();"></button>
                     </div>
+                    <p></p>
+                    <div id="upgrades" class="hidden">
+
+                        <input type="text" id="rebirth_ppints" value="Rebirth Points: 0" readonly>
+                        <div class="tooltip-container" id="rebirthtooltipcontainer">
+                            <button id="rebirth" onclick="rebirth()" onmouseover="showTooltip(event, 'rebirthtooltip')" onmouseout="hideTooltip('upgrade1tooltip')">Rebirth</button>
+                            <span class="tooltip" id="rebirthtooltip">Resets everything other than achievements then lets you purchase special upgrades with rebirth points.</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="franchise-section">

@@ -124,7 +124,7 @@
 
         /* Container and upgrade sections */
         #container,
-        #upgrade {
+        #upgrade, #rebirth {
     display: flex;
     flex-direction: column;
     gap: 15px; /* Add spacing between buttons */
@@ -160,7 +160,7 @@
     max-height: 250px; 
     
 }
-  #upgrade {
+  #upgrade, #rebirth {
     flex: 0 0 auto;    /* don’t shrink or grow—just size to content height */
   overflow: visible; /* disable any scrollbar */
 max-height: none;
@@ -467,6 +467,11 @@ max-height: none;
 
 /* Upgrade section in dark mode */
 .dark-mode #upgrade {
+  background-color: #222;
+  color: #f0f0f0;
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.05);
+}
+.dark-mode #rebirth {
   background-color: #222;
   color: #f0f0f0;
   box-shadow: 0 2px 4px rgba(255, 255, 255, 0.05);
