@@ -11,7 +11,9 @@
     flex-direction: column;
 height: auto;
   }
-
+#hidden {
+  display: none;
+}
   .game-left,
   .franchise-section {
     width: 100%;

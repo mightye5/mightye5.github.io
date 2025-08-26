@@ -21,6 +21,15 @@
                     </div>
                     <div class="hidden">
                         <button class="image-button" onclick="addMoney();"></button>
+                                            <p></p>
+                    <div id="rebirth" style="display:none;">
+
+                        <input type="text" id="rebirth_points" value="Rebirth Points: 0" readonly>
+                        <div class="tooltip-container" id="rebirthtooltipcontainer">
+                            <button id="rebirth_button" onclick="rebirth()" disabled onmouseover="showTooltip(event, 'rebirthtooltip')" onmouseout="hideTooltip('rebirthtooltip')">Rebirth</button>
+                            <span class="tooltip" id="rebirthtooltip">Resets everything other than achievements then lets you purchase special upgrades with rebirth points. (Coming soon) </span>
+                        </div>
+                    </div>
                     </div>
                     <div id="button">
                       <button  onclick="GoTo('mobile_restricted.html');">Back</button> 
@@ -631,6 +640,7 @@ function detectDevice() {
 }
 
 function GoTo(page) {
+    saveGame();
 window.location.href = page;
 }
 

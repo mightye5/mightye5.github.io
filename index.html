@@ -634,6 +634,27 @@
                                     </div>
                                 </div>
                            </div>
-                    </body>
+                    <div id="rebirthOverlay" class="overlay" aria-hidden="true">
+    <div class="overlay-panel">
+        <div class="overlay-title">Rebirth Upgrades</div>
+        <p>You have <span id="rebirthPointsDisplay">0</span> Rebirth Points.</p>
+        <div class="rebirth-upgrades-grid">
+            <div class="tooltip-container">
+                <button id="rebirthUpgrade1" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(1)">Upgrade 1: 1 RP</button>
+                <span class="tooltip">Placeholder upgrade for 1 rebirth point.</span>
+            </div>
+            <div class="tooltip-container">
+                <button id="rebirthUpgrade2" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(2)">Upgrade 2: 2 RP</button>
+                <span class="tooltip">Placeholder upgrade for 2 rebirth points.</span>
+            </div>
+            <div class="tooltip-container">
+                <button id="rebirthUpgrade3" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(3)">Upgrade 3: 3 RP</button>
+                <span class="tooltip">Placeholder upgrade for 3 rebirth points.</span>
+            </div>
+        </div>
+        <button onclick="hideRebirthOverlay()">Return to game</button>
+    </div>
+</div>
+                        </body>
                     </html>
 

@@ -32,6 +32,17 @@ if (musicSlider && musicOutput) {
 }
        // ================ GAME STATE VARIABLES ================
         // Basic game currency and costs 
+        let rebirthUpgradeStates = {
+    rebupg1: false,
+    rebupg2: false,
+    rebupg3: false,
+    rebupg4: false
+};
+let rebupg2levels = 0;
+let rebupgp1 = 1,
+rebupgp2 = 1,
+rebupgp3 = 2,
+rebupgp4 = 3
         window.count =  0;                  // Player's current money
         let cost1 = 10,                 // Worker cost
             cost2 = 25,                 // Manager cost
@@ -186,6 +197,7 @@ if (musicSlider && musicOutput) {
         window.total_money = 0;           // Total money earned
         let lastRebirthCheck = 0;      // Last rebirth check amount of money
         let click_multiplier = 0.01;
+        let hasRebirthed = false;   // Whether the player has rebirthed at least once
         //Everything Ice cream related
          let ice = 0,                             // Player's current ice creams
             ips = 0,                             // how many ice creams you get per second
@@ -1468,19 +1480,21 @@ function upgrade43() {
     }
 }
 function upgrade30() {
-     if (count >= upgp30) {
+    if (count >= upgp30) {
         count -= upgp30;
         upg30 = 1;
+        
+        // Always show the rebirth section after purchasing this upgrade.
+        document.getElementById("rebirth").style.display = 'flex';
+        
         playSound('purchase', 0.4*sfxVolume);
         document.getElementById("upgrade30").remove();
         hideTooltip('upgrade30tooltip');
-        document.getElementById("rebirth").style.display = 'flex';
         updateAll();
     } else {
         playSound('error', 0.4*sfxVolume);
         updateAll();
     }
-        
 }
 function upgrade31() {
     if (count >= upgp31) {
@@ -1625,6 +1639,65 @@ function upgrade38() {
         updateAll();
     }
 }
+function rebupgrade1() {
+    if (rebirth_points >= rebupgp1 && rebupg1 < 1) {
+        rebirth_points -= rebupgp1;
+        rebupg1 = true;
+
+        //show rebirth upgrade5
+        document.getElementById("rebupgrade5").style.display = 'flex';
+        playSound('purchase', 0.4*sfxVolume);
+        updateAll();
+    } else {
+        playSound('error', 0.4*sfxVolume);
+        updateAll();
+    }
+}
+
+
+function rebupgrade2() {
+    if (rebirth_points >= rebupgp2) {
+        rebirth_points -= rebupgp2;
+        rebupg2 = true;
+        rebupg2levels += 1;
+        clicks += 1;
+        rebupgp2 = 1 + (rebupg2levels * 0.5);
+        playSound('purchase', 0.4*sfxVolume);
+        updateAll();
+    } else {
+        playSound('error', 0.4*sfxVolume);
+        updateAll();
+    }
+}
+function rebupgrade3() {
+    if (rebirth_points >= rebupgp3) {
+        rebirth_points -= rebupgp3;
+        rebupg3 = true;
+
+        //show rebirth upgrade6
+        document.getElementById("rebupgrade6").style.display = 'flex';
+        playSound('purchase', 0.4*sfxVolume);
+        updateAll();
+    } else {
+        playSound('error', 0.4*sfxVolume);
+        updateAll();
+    }
+}
+function rebupgrade4() {
+    if (rebirth_points >= rebupgp4) {
+        rebirth_points -= rebupgp4;
+        rebupg4 = true;
+        golden_legacy = 1.25;
+        //show rebirth upgrade6
+        document.getElementById("rebupgrade7").style.display = 'flex';
+        playSound('purchase', 0.4*sfxVolume);
+        updateAll();
+    } else {
+        playSound('error', 0.4*sfxVolume);
+        updateAll();
+    }
+}
+
         function moreicepers() {
             if (ice >= icost1) {
                 ips += 2.5;
@@ -2158,7 +2231,225 @@ function updateUpgradeButtons() {
         }
     }
 }
+function rebirth() {
+    // Check if the player meets the rebirth conditions
+    if (upg30 === 1 && rebirth_points > 0) {
+        if (!confirm('Are you sure you want to Rebirth? This will reset most of your progress but keep your achievements and rebirth upgrades!')) {
+            return;
+        }
 
+        // Set this variable BEFORE resetting the game so `resetGame` can see it.
+        hasRebirthed = true;
+
+        // Store the state we want to preserve
+        const preservedState = {
+            total_money: total_money,
+            rebirth_points: rebirth_points,
+            achievements: Object.fromEntries(
+                Object.entries(achievements).map(([id, achievement]) => [
+                    id,
+                    achievement.unlocked
+                ])
+            ),
+            rebirthUpgradeStates: JSON.parse(JSON.stringify(rebirthUpgradeStates))
+        };
+
+        // Reset all relevant game variables to their starting values
+        resetGame();
+
+        // Restore the preserved state
+        total_money = preservedState.total_money;
+        rebirth_points = preservedState.rebirth_points;
+        Object.entries(preservedState.achievements).forEach(([id, unlocked]) => {
+            if (achievements[id]) {
+                achievements[id].unlocked = unlocked;
+            }
+        });
+        Object.assign(rebirthUpgradeStates, preservedState.rebirthUpgradeStates);
+
+        // Update the rebirth button display to make it disabled
+        document.getElementById('rebirth_button').disabled = true;
+
+        // Show the rebirth overlay and hide the main game
+        showRebirthOverlay();
+        document.querySelector('.game-wrapper').style.display = 'none';
+
+        playSound('achieve', 0.1 * sfxVolume);
+        updateAll();
+        updateUpgradeVisibility();
+        saveGame();
+    } else {
+        playSound('error', 0.4 * sfxVolume);
+    }
+}
+function resetGame() {
+    // Resetting money, production, and multipliers
+    count = 0;
+    mps = 0;
+    clicks = 1;
+    moneymultiplier = 1;
+    golden_burger = 1;
+    franchises = 1;
+const chesburger = document.querySelector('.image-button');
+chesburger.style.backgroundImage = "url('Burger-images/Burger.png')";
+
+    // Resetting upgrade counts
+    M = M2 = M3 = M4 = M5 = M6 = M7 = M8 = M9 = M10 = M11 = M12 = M13 = M14 = M15 = M16 = M17 = M18 = M19 = M20 = 0;
+
+    // Resetting upgrade states
+    upg1 = upg3 = upg8 = upg9 = upg10 = upg11 = upg12 = upg13 = upg14 = upg15 = upg16 = upg17 = upg18 = upg19 = upg20 = upg21 = upg22 = upg23 = upg24 = upg25 = upg26 = upg27 = upg28 = upg29 = upg30 = upg39 = upg40 = upg41 = upg42 = upg43 = 0;
+
+    // Resetting costs (if needed, otherwise they'll be recalculated on next purchase)
+    cost1 = 10;
+    cost2 = 25;
+    cost3 = 15;
+    cost4 = 100;
+    cost5 = 225;
+    cost6 = 500;
+    cost7 = 1250;
+    cost8 = 2275;
+    cost9 = 5000;
+    cost10 = 12500;
+    cost11 = 17500;
+    cost12 = 22500;
+    cost13 = 50000;
+    cost14 = 125000;
+    cost15 = 200000;
+    cost16 = 375000;
+    cost17 = 525000;
+    cost18 = 1000000;
+    cost19 = 5000000;
+    cost20 = 20;
+    
+    // Resetting upgrade costs
+    upgp1 = 150;
+    upgp2 = 100000;
+    upgp3 = 15000;
+    upgp4 = 500000;
+    upgp5 = 800000;
+    upgp6 = 1000000;
+    upgp7 = 1250000;
+    upgp8 = 25000;
+    upgp9 = 75000;
+    upgp10 = 100000;
+    upgp11 = 175000;
+    upgp12 = 225000;
+    upgp13 = 300000;
+    upgp14 = 500000;
+    upgp15 = 750000;
+    upgp16 = 1000000;
+    upgp17 = 1250000;
+    upgp18 = 1550000;
+    upgp19 = 2000000;
+    upgp20 = 3500000;
+    upgp21 = 6250000;
+    upgp22 = 10250000;
+    upgp23 = 15750000;
+    upgp24 = 22500000;
+    upgp25 = 55000000;
+    upgp26 = 125000000;
+    upgp27 = 250000000;
+    upgp28 = 500000000;
+    upgp29 = 750000000;
+    upgp30 = 1750000000;
+    upgp39 = 600000;
+    upgp40 = 1750000;
+    upgp41 = 13000000;
+    upgp42 = 175000000;
+    upgp43 = 1000000000;
+    fcost = 500000;
+
+    // Resetting production values
+    worker = 1.5;
+    manager = 5;
+    clickamount = 2;
+    director = 7.5;
+    VP = 10;
+    COO = 17.5;
+    ceo = 50;
+    chairman = 125;
+    oracle = 250;
+    fryer = 400;
+    feast = 850;
+    verdant = 1250;
+    emulsifier = 1700;
+    whisperer = 2900;
+    chancellor = 5000;
+    priest = 10000;
+    archmage = 25000;
+    matriarch = 55000;
+    grillmaster = 250000;
+
+    // Resetting Ice Cream system
+    ice = 0;
+    ips = 0;
+    icost1 = 50;
+    icost2 = 75;
+    icost3 = 100;
+    icost4 = 150;
+    icost5 = 200;
+    icost6 = 250;
+    icost7 = 300;
+    icost8 = 350;
+    icost9 = 400;
+    icost10 = 450;
+    icost11 = 500;
+    icost12 = 550;
+    icost13 = 600;
+    icost14 = 650;
+    icost15 = 700;
+    icost16 = 750;
+    iceupg1 = iceupg2 = iceupg3 = iceupg4 = iceupg5 = iceupg6 = iceupg7 = iceupg8 = iceupg9 = iceupg10 = iceupg11 = iceupg12 = iceupg13 = iceupg14 = iceupg15 = iceupg16 = 0;
+
+    // Resetting game stats
+    totalclicks = 0;
+    totaltime = 0;
+    bimage = 0;
+    lastRebirthCheck = 0;
+
+    // Call update functions to refresh the UI with new values
+    updateAll();
+    updateUpgradeVisibility();
+}
+function showRebirthOverlay() {
+    document.getElementById('rebirthOverlay').classList.add('visible');
+    document.getElementById('rebirthOverlay').setAttribute('aria-hidden', 'false');
+    document.getElementById('rebirthPointsDisplay').textContent = rebirth_points;
+    document.querySelector('.game-wrapper').style.display = 'none'; // Hide the main game content
+}
+
+function hideRebirthOverlay() {
+    document.getElementById('rebirthOverlay').classList.remove('visible');
+    document.getElementById('rebirthOverlay').setAttribute('aria-hidden', 'true');
+    document.querySelector('.game-wrapper').style.display = 'flex'; // Show the main game content again
+    updateAll(); // Update the UI in case any rebirth upgrades were bought
+    location.reload();
+}
+
+function buyRebirthUpgrade(upgradeNumber) {
+    const upgradeId = `rebirthUpgrade${upgradeNumber}`;
+    const upgradeCost = upgradeNumber; // Cost is the same as the number for these placeholders
+
+    if (rebirth_points >= upgradeCost && !rebirthUpgradeStates[upgradeId]) {
+        rebirth_points -= upgradeCost;
+        rebirthUpgradeStates[upgradeId] = true;
+        document.getElementById(upgradeId).disabled = true; // Disable the button after purchase
+        document.getElementById(upgradeId).textContent = `Upgrade ${upgradeNumber}: BOUGHT`;
+        playSound('purchase', 0.4 * sfxVolume);
+        
+        // This is where you would add the effect of the upgrade.
+        // Example: if (upgradeNumber === 1) { /* add effect here */ }
+
+        updateAll();
+        saveGame();
+    } else if (rebirthUpgradeStates[upgradeId]) {
+        alert('You already own this upgrade!');
+        playSound('error', 0.4 * sfxVolume);
+    } else {
+        alert('Not enough Rebirth Points!');
+        playSound('error', 0.4 * sfxVolume);
+    }
+}
 // Update franchise button with formatted currency
 function updateFranchiseButton() {
     const franchiseButton = document.getElementById('Franchisebutton');
@@ -2225,11 +2516,11 @@ function updateAllCurrency() {
 }
 
 function checkRebirthPoints() {
-    // Calculate how many millions have passed since last check
-    let millionsPassed = Math.floor(total_money / 1_000_000) - Math.floor(lastRebirthCheck / 1_000_000);
+    // Calculate how many billions have passed since last check
+    let billionsPassed = Math.floor(total_money / 1000000000) - Math.floor(lastRebirthCheck / 1000000000);
 
-    if (millionsPassed > 0) {
-        rebirth_points += millionsPassed;  // give points
+    if (billionsPassed > 0) {
+        rebirth_points += billionsPassed;  // give points
         lastRebirthCheck = total_money;    // update milestone
         //console.log(`+${millionsPassed} Rebirth Point(s)! Total: ${rebirth_points}`);
     }
@@ -2261,8 +2552,8 @@ function updatemps() {
          * Handles clicking the burger
          */
         function addMoney() {
-            count += parseFloat(((clicks * golden_burger) * moneymultiplier).toFixed(1));
-            total_money += parseFloat(((clicks * golden_burger) * moneymultiplier).toFixed(1));
+            count += parseFloat(((clicks * (golden_burger * golden_legacy)) * moneymultiplier).toFixed(1));
+            total_money += parseFloat(((clicks * (golden_burger * golden_legacy)) * moneymultiplier).toFixed(1));
             checkRebirthPoints();
             updateAll();
             totalclicks++;
@@ -2427,6 +2718,18 @@ function updatemps() {
     window.M14 = M14;
     window.M17 = M17;
     window.M13 = M13;
+    const rebirthButton = document.getElementById("rebirth_button");
+if (rebirthButton) {
+    if (upg30 === 1 && rebirth_points >= 1) {
+        rebirthButton.disabled = false;
+        rebirthButton.textContent = 'Rebirth!';
+        rebirthButton.style.backgroundColor = '#4CAF50';
+    } else {
+        rebirthButton.disabled = true;
+        rebirthButton.textContent = 'Rebirth';
+        rebirthButton.style.backgroundColor = '#dddddd';
+    }
+}
     buttons.forEach(button => {
         const buttonElement = document.getElementById(button.id);
         if (buttonElement) {
@@ -2503,17 +2806,22 @@ function updatemps() {
         /**
          * Initializes the game
          */
-        function initializeGame() {
-            
+function initializeGame() {
     if (detectMobile()) {
-        updateUpgradeVisibility();
         initAudio();
-        setTimeout(loadGame, 300); // Delay loadGame to ensure other initializations are complete
+        setTimeout(function() {
+            loadGame();
+            if (hasRebirthed) {
+                const rebirthSection = document.getElementById("rebirth");
+                if (rebirthSection) {
+                    rebirthSection.style.display = 'flex';
+                }
+            }
+        }, 300); // Delay loadGame to ensure other initializations are complete
         checkAchievements();
         Update();
     }
-
-        }
+}
 function buyall() {
     const employeeIds = Object.keys(employeeInfo);
     let totalPurchased = 0;
@@ -3257,6 +3565,8 @@ window.addEventListener('DOMContentLoaded', initImportOverlay);
         function saveGame() {
             const gameState = {
                 // Money and multipliers
+                hasRebirthed,
+                rebirthUpgradeStates,
                 count,
                 mps,
                 clicks,
@@ -3267,6 +3577,11 @@ window.addEventListener('DOMContentLoaded', initImportOverlay);
                 rebirth_points,
                 lastRebirthCheck,
                 click_multiplier,
+                rebupgp1,
+                rebupgp2,
+                rebupg2levels,
+                rebupgp3,
+                rebupgp4,
                 // Costs
                 cost1,
                 cost2,
@@ -3323,7 +3638,12 @@ window.addEventListener('DOMContentLoaded', initImportOverlay);
                 upgp41,
                 upgp42,
                 fcost,
-
+achievements: Object.fromEntries(
+    Object.entries(achievements).map(([id, achievement]) => [
+        id,
+        achievement.unlocked
+    ])
+),
                 // Production values
                 worker,
                 manager,
@@ -3456,333 +3776,262 @@ window.addEventListener('DOMContentLoaded', initImportOverlay);
         }
 
         // Load game state
-        function loadGame() {
-            const savedGame = localStorage.getItem('burgerGameSave');
-            if (savedGame) {
-                const gameState = JSON.parse(savedGame);
+        // New loadGame() function
+function loadGame() {
+    const savedGame = localStorage.getItem('burgerGameSave');
+    if (savedGame) {
+        const gameState = JSON.parse(savedGame);
 
-                // Restore money and multipliers
-                count = gameState.count;
-                mps = gameState.mps;
-                clicks = gameState.clicks;
-                moneymultiplier = gameState.moneymultiplier;
-                golden_burger = gameState.golden_burger;
-                total_money = gameState.total_money;
-                rebirth_points = gameState.rebirth_points;
-                lastRebirthCheck = gameState.lastRebirthCheck;
-                click_multiplier = gameState.click_multiplier;
-                // Restore costs
-                cost1 = gameState.cost1;
-                cost2 = gameState.cost2;
-                cost3 = gameState.cost3;
-                cost4 = gameState.cost4;
-                cost5 = gameState.cost5;
-                cost6 = gameState.cost6;
-                cost7 = gameState.cost7;
-                cost8 = gameState.cost8;
-                cost9 = gameState.cost9;
-                cost10 = gameState.cost10;
-                cost11 = gameState.cost11;
-                cost12 = gameState.cost12;
-                cost13 = gameState.cost13;
-                cost14 = gameState.cost14;
-                cost15 = gameState.cost15;
-                cost16 = gameState.cost16;
-                cost17 = gameState.cost17;
-                cost18 = gameState.cost18;
-                cost19 = gameState.cost19;
-                M20 = gameState.M20;
-                   cost20 = gameState.cost20;
-                upgp1 = gameState.upgp1;
-                upgp2 = gameState.upgp2;
-                upgp3 = gameState.upgp3;
-                upgp4 = gameState.upgp4;
-                upgp5 = gameState.upgp5;
-                upgp6 = gameState.upgp6;
-                upgp7 = gameState.upgp7;
-                upgp8 = gameState.upgp8;
-                upgp9 = gameState.upgp9;
-                upgp10 = gameState.upgp10;
-                upgp11 = gameState.upgp11;
-                upgp12 = gameState.upgp12;
-                upgp13 = gameState.upgp13;
-                upgp14 = gameState.upgp14;
-                upgp15 = gameState.upgp15;
-                upgp16 = gameState.upgp16;
-                upgp17 = gameState.upgp17;
-                upgp18 = gameState.upgp18;
-                upgp19 = gameState.upgp19;
-                upgp20 = gameState.upgp20;
-                upgp21 = gameState.upgp21;
-                upgp22 = gameState.upgp22;
-                upgp23 = gameState.upgp23;
-                upgp24 = gameState.upgp24;
-                upgp25 = gameState.upgp25;
-                upgp26 = gameState.upgp26;
-                upgp27 = gameState.upgp27;
-                upgp28 = gameState.upgp28;
-                upgp29 = gameState.upgp29;
-                upgp30 = gameState.upgp30;
-                upgp39 = gameState.upgp39;
-                upgp40 = gameState.upgp40;
-                upgp41 = gameState.upgp41;
-                upgp42 = gameState.upgp42;
-                fcost = gameState.fcost;
-                dark_mode = gameState.dark_mode;
-                // Restore production values
-                worker = gameState.worker;
-                manager = gameState.manager;
-                clickamount = gameState.clickamount;
-                director = gameState.director;
-                VP = gameState.VP;
-                COO = gameState.COO;
-                ceo = gameState.ceo;
-                chairman = gameState.chairman;
-                oracle = gameState.oracle;
-                fryer = gameState.fryer;
-                feast = gameState.feast;
-                verdant = gameState.verdant;
-                emulsifier = gameState.emulsifier;
-                whisperer = gameState.whisperer;
-                chancellor = gameState.chancellor;
-                priest = gameState.priest;
-                archmage = gameState.archmage;
-                matriarch = gameState.matriarch;
-                grillmaster = gameState.grillmaster;
+        // Restore all game variables first
+        count = gameState.count || 0;
+        mps = gameState.mps || 0;
+        clicks = gameState.clicks || 1;
+        moneymultiplier = gameState.moneymultiplier || 1;
+        golden_burger = gameState.golden_burger || 1;
+        total_money = gameState.total_money || 0;
+        rebirth_points = gameState.rebirth_points || 0;
+        lastRebirthCheck = gameState.lastRebirthCheck || 0;
+        click_multiplier = gameState.click_multiplier || 0.01;
+hasRebirthed = gameState.hasRebirthed || false;
+rebupgp1 = gameState.rebupgp1 || 1;
+rebupgp2 = gameState.rebupgp2 || 1;
+rebupg2levels = gameState.rebupg2levels || 0;
+rebupgp3 = gameState.rebupgp3 || 2;
+rebupgp4 = gameState.rebupgp4 || 3;
+        cost1 = gameState.cost1 || 10;
+        cost2 = gameState.cost2 || 25;
+        cost3 = gameState.cost3 || 15;
+        cost4 = gameState.cost4 || 100;
+        cost5 = gameState.cost5 || 225;
+        cost6 = gameState.cost6 || 500;
+        cost7 = gameState.cost7 || 1250;
+        cost8 = gameState.cost8 || 2275;
+        cost9 = gameState.cost9 || 5000;
+        cost10 = gameState.cost10 || 12500;
+        cost11 = gameState.cost11 || 17500;
+        cost12 = gameState.cost12 || 22500;
+        cost13 = gameState.cost13 || 50000;
+        cost14 = gameState.cost14 || 125000;
+        cost15 = gameState.cost15 || 200000;
+        cost16 = gameState.cost16 || 375000;
+        cost17 = gameState.cost17 || 525000;
+        cost18 = gameState.cost18 || 1000000;
+        cost19 = gameState.cost19 || 5000000;
+        cost20 = gameState.cost20 || 20;
 
+        upgp1 = gameState.upgp1 || 150;
+        upgp2 = gameState.upgp2 || 100000;
+        upgp3 = gameState.upgp3 || 15000;
+        upgp4 = gameState.upgp4 || 500000;
+        upgp5 = gameState.upgp5 || 800000;
+        upgp6 = gameState.upgp6 || 1000000;
+        upgp7 = gameState.upgp7 || 1250000;
+        upgp8 = gameState.upgp8 || 25000;
+        upgp9 = gameState.upgp9 || 75000;
+        upgp10 = gameState.upgp10 || 100000;
+        upgp11 = gameState.upgp11 || 175000;
+        upgp12 = gameState.upgp12 || 225000;
+        upgp13 = gameState.upgp13 || 300000;
+        upgp14 = gameState.upgp14 || 500000;
+        upgp15 = gameState.upgp15 || 750000;
+        upgp16 = gameState.upgp16 || 1000000;
+        upgp17 = gameState.upgp17 || 1250000;
+        upgp18 = gameState.upgp18 || 1550000;
+        upgp19 = gameState.upgp19 || 2000000;
+        upgp20 = gameState.upgp20 || 3500000;
+        upgp21 = gameState.upgp21 || 6250000;
+        upgp22 = gameState.upgp22 || 10250000;
+        upgp23 = gameState.upgp23 || 15750000;
+        upgp24 = gameState.upgp24 || 22500000;
+        upgp25 = gameState.upgp25 || 55000000;
+        upgp26 = gameState.upgp26 || 125000000;
+        upgp27 = gameState.upgp27 || 250000000;
+        upgp28 = gameState.upgp28 || 500000000;
+        upgp29 = gameState.upgp29 || 750000000;
+        upgp30 = gameState.upgp30 || 1750000000;
+        upgp39 = gameState.upgp39 || 600000;
+        upgp40 = gameState.upgp40 || 1750000;
+        upgp41 = gameState.upgp41 || 13000000;
+        upgp42 = gameState.upgp42 || 175000000;
+        upgp43 = gameState.upgp43 || 1000000000;
+        fcost = gameState.fcost || 500000;
+        dark_mode = gameState.dark_mode || false;
+        
+        worker = gameState.worker || 1.5;
+        manager = gameState.manager || 5;
+        clickamount = gameState.clickamount || 2;
+        director = gameState.director || 7.5;
+        VP = gameState.VP || 10;
+        COO = gameState.COO || 17.5;
+        ceo = gameState.ceo || 50;
+        chairman = gameState.chairman || 125;
+        oracle = gameState.oracle || 250;
+        fryer = gameState.fryer || 400;
+        feast = gameState.feast || 850;
+        verdant = gameState.verdant || 1250;
+        emulsifier = gameState.emulsifier || 1700;
+        whisperer = gameState.whisperer || 2900;
+        chancellor = gameState.chancellor || 5000;
+        priest = gameState.priest || 10000;
+        archmage = gameState.archmage || 25000;
+        matriarch = gameState.matriarch || 55000;
+        grillmaster = gameState.grillmaster || 250000;
 
-                // Restore counts
-                M = gameState.M;
-                M2 = gameState.M2;
-                M3 = gameState.M3;
-                M4 = gameState.M4;
-                M5 = gameState.M5;
-                M6 = gameState.M6;
-                M7 = gameState.M7;
-                M8 = gameState.M8;
-                M9 = gameState.M9;
-                M10 = gameState.M10;
-                M11 = gameState.M11;
-                M12 = gameState.M12;
-                M13 = gameState.M13;
-                M14 = gameState.M14;
-                M15 = gameState.M15;
-                M16 = gameState.M16;
-                M17 = gameState.M17;
-                M18 = gameState.M18;
-                M19 = gameState.M19;
-                // Restore upgrade states
-                upg1 = gameState.upg1;
-                upg3 = gameState.upg3;
-                upg8 = gameState.upg8;
-                upg9 = gameState.upg9;
-                upg10 = gameState.upg10;
-                upg11 = gameState.upg11;
-                upg12 = gameState.upg12;
-                upg13 = gameState.upg13;
-                upg14 = gameState.upg14;
-                upg15 = gameState.upg15;
-                upg16 = gameState.upg16;
-                upg17 = gameState.upg17;
-                upg18 = gameState.upg18;
-                upg19 = gameState.upg19;
-                upg20 = gameState.upg20;
-                upg21 = gameState.upg21;
-                upg22 = gameState.upg22;
-                upg23 = gameState.upg23;
-                upg24 = gameState.upg24;
-                upg25 = gameState.upg25;
-                upg26 = gameState.upg26;
-                upg27 = gameState.upg27;
-                upg28 = gameState.upg28;
-                upg29 = gameState.upg29;
-                upg30 = gameState.upg30;
-                upg39 = gameState.upg39;
-                upg40 = gameState.upg40;
-                upg41 = gameState.upg41;
-                upg42 = gameState.upg42;
+        M = gameState.M || 0;
+        M2 = gameState.M2 || 0;
+        M3 = gameState.M3 || 0;
+        M4 = gameState.M4 || 0;
+        M5 = gameState.M5 || 0;
+        M6 = gameState.M6 || 0;
+        M7 = gameState.M7 || 0;
+        M8 = gameState.M8 || 0;
+        M9 = gameState.M9 || 0;
+        M10 = gameState.M10 || 0;
+        M11 = gameState.M11 || 0;
+        M12 = gameState.M12 || 0;
+        M13 = gameState.M13 || 0;
+        M14 = gameState.M14 || 0;
+        M15 = gameState.M15 || 0;
+        M16 = gameState.M16 || 0;
+        M17 = gameState.M17 || 0;
+        M18 = gameState.M18 || 0;
+        M19 = gameState.M19 || 0;
+        M20 = gameState.M20 || 0;
 
-                // Restore franchise system
-                franchises = gameState.franchises;
+        upg1 = gameState.upg1 || 0;
+        upg3 = gameState.upg3 || 0;
+        upg8 = gameState.upg8 || 0;
+        upg9 = gameState.upg9 || 0;
+        upg10 = gameState.upg10 || 0;
+        upg11 = gameState.upg11 || 0;
+        upg12 = gameState.upg12 || 0;
+        upg13 = gameState.upg13 || 0;
+        upg14 = gameState.upg14 || 0;
+        upg15 = gameState.upg15 || 0;
+        upg16 = gameState.upg16 || 0;
+        upg17 = gameState.upg17 || 0;
+        upg18 = gameState.upg18 || 0;
+        upg19 = gameState.upg19 || 0;
+        upg20 = gameState.upg20 || 0;
+        upg21 = gameState.upg21 || 0;
+        upg22 = gameState.upg22 || 0;
+        upg23 = gameState.upg23 || 0;
+        upg24 = gameState.upg24 || 0;
+        upg25 = gameState.upg25 || 0;
+        upg26 = gameState.upg26 || 0;
+        upg27 = gameState.upg27 || 0;
+        upg28 = gameState.upg28 || 0;
+        upg29 = gameState.upg29 || 0;
+        upg30 = gameState.upg30 || 0;
+        upg39 = gameState.upg39 || 0;
+        upg40 = gameState.upg40 || 0;
+        upg41 = gameState.upg41 || 0;
+        upg42 = gameState.upg42 || 0;
+        upg43 = gameState.upg43 || 0;
 
-                // Restore statistics
-                totalclicks = gameState.totalclicks;
-                totaltime = gameState.totaltime;
+        franchises = gameState.franchises || 1;
+        totalclicks = gameState.totalclicks || 0;
+        totaltime = gameState.totaltime || 0;
+        bimage = gameState.bimage || 0;
+        ice = gameState.ice || 0;
+        ips = gameState.ips || 0;
+        icost1 = gameState.icost1 || 50;
+        icost2 = gameState.icost2 || 75;
+        icost3 = gameState.icost3 || 100;
+        icost4 = gameState.icost4 || 150;
+        icost5 = gameState.icost5 || 200;
+        icost6 = gameState.icost6 || 250;
+        icost7 = gameState.icost7 || 300;
+        icost8 = gameState.icost8 || 350;
+        icost9 = gameState.icost9 || 400;
+        icost10 = gameState.icost10 || 450;
+        icost11 = gameState.icost11 || 500;
+        icost12 = gameState.icost12 || 550;
+        icost13 = gameState.icost13 || 600;
+        icost14 = gameState.icost14 || 650;
+        icost15 = gameState.icost15 || 700;
+        icost16 = gameState.icost16 || 750;
+        iceupg1 = gameState.iceupg1 || 0;
+        iceupg2 = gameState.iceupg2 || 0;
+        iceupg3 = gameState.iceupg3 || 0;
+        iceupg4 = gameState.iceupg4 || 0;
+        iceupg5 = gameState.iceupg5 || 0;
+        iceupg6 = gameState.iceupg6 || 0;
+        iceupg7 = gameState.iceupg7 || 0;
+        iceupg8 = gameState.iceupg8 || 0;
+        iceupg9 = gameState.iceupg9 || 0;
+        iceupg10 = gameState.iceupg10 || 0;
+        iceupg11 = gameState.iceupg11 || 0;
+        iceupg12 = gameState.iceupg12 || 0;
+        iceupg13 = gameState.iceupg13 || 0;
+        iceupg14 = gameState.iceupg14 || 0;
+        iceupg15 = gameState.iceupg15 || 0;
+        iceupg16 = gameState.iceupg16 || 0;
 
-                // Restore ice cream system
-                ice = gameState.ice;
-                ips = gameState.ips;
-                icost1 = gameState.icost1;
-                icost2 = gameState.icost2;
-                icost3 = gameState.icost3;
-                icost4 = gameState.icost4;
-                icost5 = gameState.icost5;
-                icost6 = gameState.icost6;
-                icost7 = gameState.icost7;
-                icost8 = gameState.icost8;
-                icost9 = gameState.icost9;
-                icost10 = gameState.icost10;
-                icost11 = gameState.icost11;
-                icost12 = gameState.icost12;
-                icost13 = gameState.icost13;
-                icost14 = gameState.icost14;
-                icost15 = gameState.icost15;
-                icost16 = gameState.icost16;
-                iceupg1 = gameState.iceupg1;
-                iceupg2 = gameState.iceupg2;
-                iceupg3 = gameState.iceupg3;
-                iceupg4 = gameState.iceupg4;
-                iceupg5 = gameState.iceupg5;
-                iceupg6 = gameState.iceupg6;
-                iceupg7 = gameState.iceupg7;
-                iceupg8 = gameState.iceupg8;
-                iceupg9 = gameState.iceupg9;
-                iceupg10 = gameState.iceupg10;
-                iceupg11 = gameState.iceupg11;
-                iceupg12 = gameState.iceupg12;
-                iceupg13 = gameState.iceupg13;
-                iceupg14 = gameState.iceupg14;
-                iceupg15 = gameState.iceupg15;
-                iceupg16 = gameState.iceupg16;
-                bimage = gameState.bimage;
-                    if (gameState.musicVolume !== undefined) {
-        musicVolume = gameState.musicVolume;
-        musicSlider.value = musicVolume * 100;
-        musicOutput.innerHTML = musicSlider.value;
-        cost20 = (typeof gameState.cost20 === 'number' && !isNaN(gameState.cost20))
-        ? gameState.cost20
-        : 15;
-M20 = (typeof gameState.M20 === 'number' && !isNaN(gameState.M20))
-    ? gameState.M20
-    : 0;
-        if (musicGainNode) {
-            musicGainNode.gain.value = musicVolume;
+        if (gameState.musicVolume !== undefined) {
+            musicVolume = gameState.musicVolume;
+            musicSlider.value = musicVolume * 100;
+            musicOutput.innerHTML = musicSlider.value;
+            if (musicGainNode) {
+                musicGainNode.gain.value = musicVolume;
+            }
         }
-    }
-    if (gameState.dark_mode === true) {
-        document.documentElement.classList.toggle("dark-mode");
-        dark_mode = true;
-    }
-    if (gameState.sfxVolume !== undefined) {
-        sfxVolume = gameState.sfxVolume;
-        slider.value = sfxVolume * 100;
-        output.innerHTML = slider.value;
-    }
-                // Restore achievements
-                const chesburger = document.querySelector('.image-button');
-                if (bimage == 1) {
-                    chesburger.style.backgroundImage = "url('GoldenBurger.png')";
-                }
-                if (bimage == 2) {
-                    chesburger.style.backgroundImage = "url('Diamondburger.png')";
-                }
-                if (bimage == 3) {
-                    chesburger.style.backgroundImage = "url('Sapphireburger.png')";
-                }
-                if (bimage == 4) {
-                    chesburger.style.backgroundImage = "url('Uraniumburger.png')";
-                }
-                if (bimage == 5) {
-                    chesburger.style.backgroundImage = "url('Obsidianburger.png')";
-                }
-            if (upg11 === 1) {
-                document.getElementById("MObutton").style.display = 'flex'; // Show Milkshake Oracle
-                document.getElementById("SFbutton").style.display = 'flex'; // Show Shadow Fryer
-            }
-            if (upg39 === 1) {
-                document.getElementById("betteroracle").style.display = 'flex';
-                document.getElementById("betterfryer").style.display = 'flex';
-            }
-            if (upg15 === 1) {
-                document.getElementById("feastbutton").style.display = 'flex'; // Show Keeper of the Hidden Feast
-                document.getElementById("verdantbutton").style.display = 'flex'; // Show Verdant Keeper
-            }
-            if (upg40 === 1) {
-                document.getElementById("betterfeast").style.display = 'flex';
-                document.getElementById("betterverdant").style.display = 'flex';
-            }
-            if (upg43 === 1) {
-                document.getElementById("betterpatty").style.display = 'flex';
-                document.getElementById("bettergrill").style.display = 'flex';
-            }
-            if (upg19 === 1) {
-                document.getElementById("FWbutton").style.display = 'flex'; // Show Flame Whisperer
-                document.getElementById("CCbutton").style.display = 'flex'; // Show Cheese Chancellor
-                document.getElementById("ESbutton").style.display = 'flex'; // Show Emulsifier Supreme
-            }
-            if (upg41 === 1) {
-                document.getElementById("betterwhisperer").style.display = 'flex';
-                document.getElementById("betterchancellor").style.display = 'flex';
-            }
-            if (upg23 === 1) {
-                document.getElementById("GAbutton").style.display = 'flex'; // Show Golden Archmage
-                document.getElementById("priestbutton").style.display = 'flex'; // Show High Priest of the Golden Bun
-            }
-            if (upg42 === 1) {
-                document.getElementById("betterarchmage").style.display = 'flex';
-                document.getElementById("betterpriest").style.display = 'flex';
-            }
-            if (upg27 === 1) {
-                document.getElementById("PMbutton").style.display = 'flex'; // Show Patty Matriarch
-                document.getElementById("GGbutton").style.display = 'flex'; // Show Grand Grillmaster
-            }
+        if (gameState.dark_mode === true) {
+            document.documentElement.classList.add("dark-mode");
+            dark_mode = true;
+        } else {
+            document.documentElement.classList.remove("dark-mode");
+            dark_mode = false;
+        }
+        if (gameState.sfxVolume !== undefined) {
+            sfxVolume = gameState.sfxVolume;
+            slider.value = sfxVolume * 100;
+            output.innerHTML = slider.value;
+        }
 
-                
-                if (gameState.achievements) {
-                    Object.entries(gameState.achievements).forEach(([id, unlocked]) => {
-                        if (achievements[id]) {
-                            achievements[id].unlocked = unlocked;
-
-                            // Update achievement visual state
-                            const achievementElement = document.querySelector(`[data-achievement="${id}"]`);
-                            if (achievementElement) {
-                                achievementElement.classList.toggle('locked', !unlocked);
-                            }
-                        }
-                    });
-                }
-                checkAchievements();
-
-                // Update visuals
-                updateAll();
-                   updateUpgradeVisibility(); 
-                // Restore visual states based on upgrades
-                if (upg1 === 1) {
-                    const upgrade1Button = document.getElementById("upgrade1");
-                    if (upgrade1Button) upgrade1Button.remove();
-                    const franchiseImg = document.getElementById('Franchise1');
-                    if (franchiseImg) franchiseImg.src = 'Restaurant-images/Restaurant+coffee.png';
-                }
-
-                if (upg3 === 1) {
-                    const upgrade3Button = document.getElementById("upgrade3");
-                    if (upgrade3Button) upgrade3Button.remove();
-                    const franchiseImg = document.getElementById('Franchise1');
-                    if (franchiseImg) franchiseImg.src = 'Restaurant-images/restaurantcoffee+ice.png';
-                }
-
-                // Restore franchise visuals
-                for (let i = 2; i <= franchises && i <= 6; i++) {
-                    const franchiseElement = document.getElementById(`Franchise${i}`);
-                    if (franchiseElement) franchiseElement.style.display = 'block';
-                }
-
-                // Update franchise button if max reached
-                if (franchises >= 6) {
-                    const franchiseButton = document.querySelector('.franchise-button');
-                    if (franchiseButton) {
-                        franchiseButton.textContent = 'Max Franchises!';
-                        franchiseButton.disabled = true;
+        // Restore rebirth upgrades and update their button states
+        if (gameState.rebirthUpgradeStates) {
+            Object.assign(rebirthUpgradeStates, gameState.rebirthUpgradeStates);
+            for (const [key, value] of Object.entries(rebirthUpgradeStates)) {
+                if (value) {
+                    const btn = document.getElementById(key);
+                    if (btn) {
+                        btn.textContent = `Upgrade ${key.slice(-1)}: BOUGHT`;
+                        btn.disabled = true;
                     }
                 }
-
-                playSound('purchase', 0.4*sfxVolume);
-                alert('Game loaded successfully!');
-            } else {
-                playSound('error', 0.4*sfxVolume);
-                alert('No saved game found!');
             }
         }
+if (hasRebirthed) {
+    const rebirthSection = document.getElementById("rebirth");
+    if (rebirthSection) {
+        rebirthSection.style.display = 'flex';
+    }
+}
+        // Restore achievements
+        if (gameState.achievements) {
+            Object.entries(gameState.achievements).forEach(([id, unlocked]) => {
+                if (achievements[id]) {
+                    achievements[id].unlocked = unlocked;
+                    const achievementElement = document.querySelector(`[data-achievement="${id}"]`);
+                    if (achievementElement) {
+                        achievementElement.classList.toggle('locked', !unlocked);
+                    }
+                }
+            });
+        }
+        
+        // Finalize UI updates
+        updateAll();
+        updateUpgradeVisibility();
+        
+        playSound('save', 0.03 * sfxVolume);
+        alert('Game loaded successfully!');
+    } else {
+        playSound('error', 0.4 * sfxVolume);
+        alert('No saved game found!');
+    }
+}
 
         // Delete save
         function deleteSave() {

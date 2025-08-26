@@ -833,3 +833,26 @@ max-height: none;
   background-color: #c66a2b; /* darker orange for dark-mode */
   color: #fff;
 }
+.rebirth-upgrades-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.rebirth-upgrade-button {
+    background-color: #555;
+    color: white;
+}
+
+.rebirth-upgrade-button:hover {
+    background-color: #777;
+}
+
+.dark-mode .rebirth-upgrade-button {
+    background-color: #444;
+}
+
+.dark-mode .rebirth-upgrade-button:hover {
+    background-color: #666;
+}
