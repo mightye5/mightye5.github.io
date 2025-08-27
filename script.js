@@ -42,7 +42,8 @@ let rebupg2levels = 0;
 let rebupgp1 = 1,
 rebupgp2 = 1,
 rebupgp3 = 2,
-rebupgp4 = 3
+rebupgp4 = 3,
+golden_legacy = 1
         window.count =  0;                  // Player's current money
         let cost1 = 10,                 // Worker cost
             cost2 = 25,                 // Manager cost
@@ -1688,7 +1689,7 @@ function rebupgrade4() {
         rebirth_points -= rebupgp4;
         rebupg4 = true;
         golden_legacy = 1.25;
-        //show rebirth upgrade6
+        //show rebirth upgrade7
         document.getElementById("rebupgrade7").style.display = 'flex';
         playSound('purchase', 0.4*sfxVolume);
         updateAll();
@@ -2266,6 +2267,17 @@ function rebirth() {
             }
         });
         Object.assign(rebirthUpgradeStates, preservedState.rebirthUpgradeStates);
+if(rebupg1 == true){
+    upg1 = 1;
+            const oldworkerAmount = parseFloat((worker).toFixed(1));
+        worker = parseFloat((worker * 2.5).toFixed(1));
+        if (M >= 1) {
+            const workerincrease = (worker - oldworkerAmount) * M;
+            mps += parseFloat((workerincrease).toFixed(1));
+        }
+    document.getElementById("upgrade1").style.display = 'none';
+    document.getElementById("upgrade3").style.display = 'flex';
+}
 
         // Update the rebirth button display to make it disabled
         document.getElementById('rebirth_button').disabled = true;
@@ -2439,7 +2451,10 @@ function buyRebirthUpgrade(upgradeNumber) {
         
         // This is where you would add the effect of the upgrade.
         // Example: if (upgradeNumber === 1) { /* add effect here */ }
-
+/* if (upgradeNumber === 1) {
+    rebupgrade1();
+ }
+    */
         updateAll();
         saveGame();
     } else if (rebirthUpgradeStates[upgradeId]) {
@@ -2852,13 +2867,13 @@ function buyall() {
             
             // Skip if cost is undefined or invalid
             if (!currentCost || currentCost <= 0) {
-                console.log(`Skipping ${employeeId} - invalid cost: ${currentCost}, costVar: ${info.costVar}`);
+              //  console.log(`Skipping ${employeeId} - invalid cost: ${currentCost}, costVar: ${info.costVar}`);
                 continue;
             }
             
             // If we can afford this employee, buy one
             if (window.count >= currentCost) {
-                console.log(`Buying ${employeeId} for ${currentCost}`);
+              //  console.log(`Buying ${employeeId} for ${currentCost}`);
                 
                 // Make the purchase
                 window.count -= currentCost;
@@ -2905,7 +2920,7 @@ function buyall() {
                 totalPurchased++;
                 purchaseMade = true;
             } else {
-                console.log(`Cannot afford ${employeeId} at cost $${currentCost}. Current money: $${window.count}`);
+               // console.log(`Cannot afford ${employeeId} at cost $${currentCost}. Current money: $${window.count}`);
             }
         }
     }
@@ -3435,7 +3450,7 @@ function exportSave(saveObj, filename) {
 
         const info = document.createElement('div');
         info.className = 'overlay-title';
-        info.textContent = 'Copy the obfuscated save text below (paste into Import).';
+        info.textContent = 'Copy the save text below (paste into Import).';
 
         const textarea = document.createElement('textarea');
         textarea.id = 'exportOverlayTextarea';
@@ -3582,6 +3597,7 @@ window.addEventListener('DOMContentLoaded', initImportOverlay);
                 rebupg2levels,
                 rebupgp3,
                 rebupgp4,
+                golden_legacy,
                 // Costs
                 cost1,
                 cost2,
@@ -3792,12 +3808,13 @@ function loadGame() {
         rebirth_points = gameState.rebirth_points || 0;
         lastRebirthCheck = gameState.lastRebirthCheck || 0;
         click_multiplier = gameState.click_multiplier || 0.01;
-hasRebirthed = gameState.hasRebirthed || false;
-rebupgp1 = gameState.rebupgp1 || 1;
-rebupgp2 = gameState.rebupgp2 || 1;
-rebupg2levels = gameState.rebupg2levels || 0;
-rebupgp3 = gameState.rebupgp3 || 2;
-rebupgp4 = gameState.rebupgp4 || 3;
+        hasRebirthed = gameState.hasRebirthed || false;
+        rebupgp1 = gameState.rebupgp1 || 1;
+        rebupgp2 = gameState.rebupgp2 || 1;
+        rebupg2levels = gameState.rebupg2levels || 0;
+        rebupgp3 = gameState.rebupgp3 || 2;
+        rebupgp4 = gameState.rebupgp4 || 3;
+        golden_legacy = gameState.golden_legacy || 1;
         cost1 = gameState.cost1 || 10;
         cost2 = gameState.cost2 || 25;
         cost3 = gameState.cost3 || 15;
