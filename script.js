@@ -32,18 +32,44 @@ if (musicSlider && musicOutput) {
 }
        // ================ GAME STATE VARIABLES ================
         // Basic game currency and costs 
-        let rebirthUpgradeStates = {
-    rebupg1: false,
-    rebupg2: false,
-    rebupg3: false,
-    rebupg4: false
+let rebirthUpgradeStates = {
+    rebirthUpg1: false, // Permanent Coffee Boost
+    rebirthUpg3: false, // Faster Hiring
+    rebirthUpg4: false, // Golden Legacy
+    rebirthUpg7: false, // Diamond Legacy
+    rebirthUpg8: false, // Offline Production
+    rebirthUpg9: false, // Automated Ice Cream
+    rebirthUpg10: false, // Automated Clicking
+    rebirthUpg11: false, // Sapphire Legacy
+    rebirthUpg13: false, // Better Offline Production
+    rebirthUpg15: false, // Uranium Legacy
+    rebirthUpg17: false, // Offline Profits Multiplier
+    rebirthUpg20: false, // Obsidian Legacy
+    rebirthUpg18: false, // Prism Legacy
+    rebirthUpg19: false, // Chairman's Favor
+    rebirthUpg21: false, // Transcendent Burger
+    rebirthUpg23: false  // Singularity Engine
 };
-let rebupg2levels = 0;
-let rebupgp1 = 1,
-rebupgp2 = 1,
-rebupgp3 = 2,
-rebupgp4 = 3,
-golden_legacy = 1
+
+// New Rebirth Repeatable Upgrades
+let rebirthUpg2Levels = 0; // Increased Base Clicks
+let rebirthUpg5Levels = 0; // Ice Cream Machine Efficiency
+let rebirthUpg6Levels = 0; // Bulk Purchase Discount
+let rebirthUpg12Levels = 0; // Rebirth Multiplier
+let rebirthUpg14Levels = 0; // Clicker Overdrive
+let rebirthUpg22Levels = 0; // Cosmic Rebirth Multiplier
+
+var rebupgp1 = 1, rebupgp2 = 1, rebupgp3 = 2, rebupgp4 = 3;
+var rebupgp5 = 5, rebupgp6 = 4, rebupgp7 = 5, rebupgp8 = 10;
+var rebupgp9 = 15, rebupgp10 = 20, rebupgp11 = 10, rebupgp12 = 25, rebupgp13 = 30;
+var rebupgp14 = 30, rebupgp15 = 20, rebupgp16 = 40, rebupgp17 = 50, rebupgp20 = 100;
+var rebupgp18 = 60, rebupgp19 = 75;
+var rebupgp21 = 1000, rebupgp22 = 1250, rebupgp23 = 5000;
+
+let lastSeenTime = Date.now();
+let golden_legacy = 1;
+let rebirthClickBonus = 0;
+let rebirthedTimes = 0;
         window.count =  0;                  // Player's current money
         let cost1 = 10,                 // Worker cost
             cost2 = 25,                 // Manager cost
@@ -1640,62 +1666,63 @@ function upgrade38() {
         updateAll();
     }
 }
+
 function rebupgrade1() {
-    if (rebirth_points >= rebupgp1 && rebupg1 < 1) {
-        rebirth_points -= rebupgp1;
-        rebupg1 = true;
+    rebirthUpgradeStates.rebirthUpg1 = true;
+    
+    // Apply the effect immediately
+    upg1 = 1;
+    const oldWorkerAmount = worker;
+    worker *= 2.5;
+    if (M >= 1) {
+        const workerIncrease = (worker - oldWorkerAmount) * M;
+        mps += workerIncrease;
+    }
 
-        //show rebirth upgrade5
-        document.getElementById("rebupgrade5").style.display = 'flex';
-        playSound('purchase', 0.4*sfxVolume);
-        updateAll();
-    } else {
-        playSound('error', 0.4*sfxVolume);
-        updateAll();
+    // Hide the original upgrade button and show the next one
+    const upgrade1Button = document.getElementById("upgrade1");
+    if (upgrade1Button) {
+        upgrade1Button.style.display = 'none';
+    }
+    const rebupg5 = document.getElementById("rebirthUpgrade5");
+    if (rebupg5) {
+        rebupg5.style.display = 'flex';
     }
 }
 
-
+// 2. Increased Base Clicks (Repeatable)
 function rebupgrade2() {
-    if (rebirth_points >= rebupgp2) {
-        rebirth_points -= rebupgp2;
-        rebupg2 = true;
-        rebupg2levels += 1;
-        clicks += 1;
-        rebupgp2 = 1 + (rebupg2levels * 0.5);
-        playSound('purchase', 0.4*sfxVolume);
-        updateAll();
-    } else {
-        playSound('error', 0.4*sfxVolume);
-        updateAll();
-    }
+    rebirthUpg2Levels += 1;
+    // The cost will be recalculated automatically by updateRebirthUI()
+    
+    // Apply the effect immediately
+    rebirthClickBonus += 1;
 }
+// 3. Faster Hiring
 function rebupgrade3() {
-    if (rebirth_points >= rebupgp3) {
-        rebirth_points -= rebupgp3;
-        rebupg3 = true;
-
-        //show rebirth upgrade6
-        document.getElementById("rebupgrade6").style.display = 'flex';
-        playSound('purchase', 0.4*sfxVolume);
-        updateAll();
-    } else {
-        playSound('error', 0.4*sfxVolume);
-        updateAll();
+    rebirthUpgradeStates.rebirthUpg3 = true;
+    
+    const rebupg6 = document.getElementById("rebirthUpgrade6");
+    if (rebupg6) {
+        rebupg6.style.display = 'flex';
     }
 }
 function rebupgrade4() {
-    if (rebirth_points >= rebupgp4) {
+    if (rebirth_points >= rebupgp4 && !rebirthUpgradeStates.rebirthUpg4) {
         rebirth_points -= rebupgp4;
-        rebupg4 = true;
-        golden_legacy = 1.25;
-        //show rebirth upgrade7
-        document.getElementById("rebupgrade7").style.display = 'flex';
-        playSound('purchase', 0.4*sfxVolume);
+        rebirthUpgradeStates.rebirthUpg4 = true;
+        document.getElementById("rebirthUpgrade4").disabled = true;
+        document.getElementById("rebirthUpgrade4").textContent = `Upgrade 4: BOUGHT`;
+        const rebupg7 = document.getElementById("rebirthUpgrade7");
+        if (rebupg7) {
+            rebupg7.style.display = 'flex';
+        }
+        playSound('purchase', 0.4 * sfxVolume);
+      //  applyRebirthUpgrades();
         updateAll();
+        saveGame();
     } else {
-        playSound('error', 0.4*sfxVolume);
-        updateAll();
+        playSound('error', 0.4 * sfxVolume);
     }
 }
 
@@ -2110,7 +2137,23 @@ function updateButtons(buttons) {
     buttons.forEach(button => {
         const element = document.getElementById(button.id);
         if (element) {
-            let countText = '';
+            let cost = button.cost;
+
+            // Apply cost reductions from rebirth upgrades
+            if (rebirthUpgradeStates.rebirthUpg3) {
+                cost *= 0.95;
+            }
+            cost *= Math.pow(0.99, rebirthUpg6Levels);
+
+            let quantity = purchaseAmount === 'max' ? getMaxAffordable(button.id) : purchaseAmount;
+            let displayCost = computeEmployeeCost(button.id, quantity);
+            
+            // Apply the same cost reductions to the displayed cost for "Max" or multiple purchases
+            if (rebirthUpgradeStates.rebirthUpg3) {
+                displayCost *= 0.95;
+            }
+            displayCost *= Math.pow(0.99, rebirthUpg6Levels);
+
             const countMap = {
                 'extraButton': M,
                 'Button2': M2,
@@ -2134,19 +2177,10 @@ function updateButtons(buttons) {
                 'GGbutton': M19
             };
 
-            if (countMap.hasOwnProperty(button.id)) {
-                countText = ` (${countMap[button.id]})`;
-            }
-
-            let quantity = purchaseAmount === 'max' ? getMaxAffordable(button.id) : purchaseAmount;
-            if (quantity < 1) quantity = 1;
-            let cost = button.cost;
-            if (employeeInfo.hasOwnProperty(button.id)) {
-                cost = computeEmployeeCost(button.id, quantity);
-            }
-
+            const countText = countMap.hasOwnProperty(button.id) ? ` (${countMap[button.id]})` : '';
             const qtyText = quantity > 1 ? ` x${quantity}` : '';
-            element.textContent = `${button.label}${qtyText}: $${formatCurrency(cost)}${countText}`;
+
+            element.textContent = `${button.label}${qtyText}: $${formatCurrency(displayCost)}${countText}`;
         }
     });
 }
@@ -2232,68 +2266,136 @@ function updateUpgradeButtons() {
         }
     }
 }
+function applyRebirthUpgrades() {
+    // Reset all temporary bonuses before applying permanent ones
+   /* golden_legacy = 1;
+    rebirthClickBonus = 0;
+    
+    // Tier 1 Upgrades
+    if (rebirthUpgradeStates.rebirthUpg1) {
+        upg1 = 1; // Flag that the upgrade is owned
+        worker *= 2.5;
+        const upgrade1Button = document.getElementById("upgrade1");
+        if (upgrade1Button) {
+            upgrade1Button.style.display = 'none';
+        }
+    }
+
+    if (rebirthUpg2Levels > 0) {
+        rebirthClickBonus += rebirthUpg2Levels * 1;
+    }
+    
+    // Tier 2 Upgrades
+    if (rebirthUpgradeStates.rebirthUpg4) {
+        golden_legacy *= 1.25;
+    }
+    if (rebirthUpgradeStates.rebirthUpg7) {
+        golden_legacy *= 1.5;
+    }
+
+    // You would add more rebirth upgrade logic here...
+    */
+    updateUpgradeVisibility();
+    updateAll();
+}
+function updateRebirthUI() {
+    // --- Update Repeatable Upgrades ---
+
+    // Upgrade 2: Increased Base Clicks
+    const upg2Btn = document.getElementById("rebirthUpgrade2");
+    if (upg2Btn) {
+        // Recalculate cost based on current level to ensure it's always correct
+        rebupgp2 = 1 + (rebirthUpg2Levels * 0.5);
+        upg2Btn.textContent = `Upgrade 2: ${formatCurrency(rebupgp2)} RP (${rebirthUpg2Levels})`;
+    }
+
+    // You can add similar logic here for your other repeatable upgrades (5, 6, 12, etc.)
+    // as you create them.
+
+    const rebirthPointsDisplay = document.getElementById("rebirthPointsDisplay");
+    if (rebirthPointsDisplay) {
+        rebirthPointsDisplay.textContent = formatCurrency(rebirth_points);
+    }
+    // --- Update One-Time Upgrades ---
+    // This ensures one-time purchases correctly show as "BOUGHT" when the game loads.
+    const upg1Btn = document.getElementById("rebirthUpgrade1");
+    if (upg1Btn && rebirthUpgradeStates.rebirthUpg1) {
+        upg1Btn.textContent = 'Upgrade 1: BOUGHT';
+        upg1Btn.disabled = true;
+    }
+
+    const upg3Btn = document.getElementById("rebirthUpgrade3");
+    if (upg3Btn && rebirthUpgradeStates.rebirthUpg3) {
+        upg3Btn.textContent = 'Upgrade 3: BOUGHT';
+        upg3Btn.disabled = true;
+    }
+
+    const upg4Btn = document.getElementById("rebirthUpgrade4");
+    if (upg4Btn && rebirthUpgradeStates.rebirthUpg4) {
+        upg4Btn.textContent = 'Upgrade 4: BOUGHT';
+        upg4Btn.disabled = true;
+    }
+
+    // Add checks for your other one-time rebirth upgrades here.
+}
 function rebirth() {
-    // Check if the player meets the rebirth conditions
     if (upg30 === 1 && rebirth_points > 0) {
         if (!confirm('Are you sure you want to Rebirth? This will reset most of your progress but keep your achievements and rebirth upgrades!')) {
             return;
         }
 
-        // Set this variable BEFORE resetting the game so `resetGame` can see it.
         hasRebirthed = true;
+        rebirthedTimes++;
 
-        // Store the state we want to preserve
         const preservedState = {
             total_money: total_money,
             rebirth_points: rebirth_points,
+            rebirthUpgradeStates: JSON.parse(JSON.stringify(rebirthUpgradeStates)),
+            rebirthUpg2Levels: rebirthUpg2Levels,
+            rebirthUpg5Levels: rebirthUpg5Levels,
+            rebirthUpg6Levels: rebirthUpg6Levels,
+            rebirthUpg12Levels: rebirthUpg12Levels,
+            rebirthUpg14Levels: rebirthUpg14Levels,
+            rebirthUpg22Levels: rebirthUpg22Levels,
+            rebirthedTimes: rebirthedTimes,
             achievements: Object.fromEntries(
-                Object.entries(achievements).map(([id, achievement]) => [
-                    id,
-                    achievement.unlocked
-                ])
-            ),
-            rebirthUpgradeStates: JSON.parse(JSON.stringify(rebirthUpgradeStates))
+                Object.entries(achievements).map(([id, achievement]) => [id, achievement.unlocked])
+            )
         };
 
-        // Reset all relevant game variables to their starting values
         resetGame();
 
-        // Restore the preserved state
         total_money = preservedState.total_money;
         rebirth_points = preservedState.rebirth_points;
+        Object.assign(rebirthUpgradeStates, preservedState.rebirthUpgradeStates);
+        rebirthUpg2Levels = preservedState.rebirthUpg2Levels;
+        rebirthUpg5Levels = preservedState.rebirthUpg5Levels;
+        rebirthUpg6Levels = preservedState.rebirthUpg6Levels;
+        rebirthUpg12Levels = preservedState.rebirthUpg12Levels;
+        rebirthUpg14Levels = preservedState.rebirthUpg14Levels;
+        rebirthUpg22Levels = preservedState.rebirthUpg22Levels;
+        rebirthedTimes = preservedState.rebirthedTimes;
         Object.entries(preservedState.achievements).forEach(([id, unlocked]) => {
             if (achievements[id]) {
                 achievements[id].unlocked = unlocked;
             }
         });
-        Object.assign(rebirthUpgradeStates, preservedState.rebirthUpgradeStates);
-if(rebupg1 == true){
-    upg1 = 1;
-            const oldworkerAmount = parseFloat((worker).toFixed(1));
-        worker = parseFloat((worker * 2.5).toFixed(1));
-        if (M >= 1) {
-            const workerincrease = (worker - oldworkerAmount) * M;
-            mps += parseFloat((workerincrease).toFixed(1));
-        }
-    document.getElementById("upgrade1").style.display = 'none';
-    document.getElementById("upgrade3").style.display = 'flex';
-}
+        
+        applyRebirthUpgrades();
 
-        // Update the rebirth button display to make it disabled
         document.getElementById('rebirth_button').disabled = true;
-
-        // Show the rebirth overlay and hide the main game
         showRebirthOverlay();
         document.querySelector('.game-wrapper').style.display = 'none';
 
         playSound('achieve', 0.1 * sfxVolume);
-        updateAll();
-        updateUpgradeVisibility();
         saveGame();
     } else {
         playSound('error', 0.4 * sfxVolume);
     }
 }
+
+
+
 function resetGame() {
     // Resetting money, production, and multipliers
     count = 0;
@@ -2438,30 +2540,77 @@ function hideRebirthOverlay() {
     location.reload();
 }
 
-function buyRebirthUpgrade(upgradeNumber) {
-    const upgradeId = `rebirthUpgrade${upgradeNumber}`;
-    const upgradeCost = upgradeNumber; // Cost is the same as the number for these placeholders
+function getRebirthUpgradeInfo(upgradeNumber) {
+    const infoMap = {
+        1: { id: 'rebirthUpgrade1', isRepeatable: false },
+        2: { id: 'rebirthUpgrade2', isRepeatable: true, levelVariable: 'rebirthUpg2Levels' },
+        3: { id: 'rebirthUpgrade3', isRepeatable: false },
+        4: { id: 'rebirthUpgrade4', isRepeatable: false },
+        5: { id: 'rebirthUpgrade5', isRepeatable: true, levelVariable: 'rebirthUpg5Levels' },
+        6: { id: 'rebirthUpgrade6', isRepeatable: false },
+        7: { id: 'rebirthUpgrade7', isRepeatable: false },
+        8: { id: 'rebirthUpgrade8', isRepeatable: false },
+        9: { id: 'rebirthUpgrade9', isRepeatable: false },
+        10: { id: 'rebirthUpgrade10', isRepeatable: false },
+        11: { id: 'rebirthUpgrade11', isRepeatable: false },
+        12: { id: 'rebirthUpgrade12', isRepeatable: true, levelVariable: 'rebirthUpg12Levels' },
+        13: { id: 'rebirthUpgrade13', isRepeatable: false },
+        14: { id: 'rebirthUpgrade14', isRepeatable: true, levelVariable: 'rebirthUpg14Levels' },
+        15: { id: 'rebirthUpgrade15', isRepeatable: false },
+        16: { id: 'rebirthUpgrade16', isRepeatable: true, levelVariable: 'rebirthUpg16Levels' },
+        17: { id: 'rebirthUpgrade17', isRepeatable: false },
+        18: { id: 'rebirthUpgrade18', isRepeatable: false },
+        19: { id: 'rebirthUpgrade19', isRepeatable: false },
+        20: { id: 'rebirthUpgrade20', isRepeatable: false },
+        21: { id: 'rebirthUpgrade21', isRepeatable: false },
+        22: { id: 'rebirthUpgrade22', isRepeatable: true, levelVariable: 'rebirthUpg22Levels' },
+        23: { id: 'rebirthUpgrade23', isRepeatable: false },
+    };
 
-    if (rebirth_points >= upgradeCost && !rebirthUpgradeStates[upgradeId]) {
-        rebirth_points -= upgradeCost;
-        rebirthUpgradeStates[upgradeId] = true;
-        document.getElementById(upgradeId).disabled = true; // Disable the button after purchase
-        document.getElementById(upgradeId).textContent = `Upgrade ${upgradeNumber}: BOUGHT`;
-        playSound('purchase', 0.4 * sfxVolume);
-        
-        // This is where you would add the effect of the upgrade.
-        // Example: if (upgradeNumber === 1) { /* add effect here */ }
-/* if (upgradeNumber === 1) {
-    rebupgrade1();
- }
-    */
-        updateAll();
-        saveGame();
-    } else if (rebirthUpgradeStates[upgradeId]) {
-        alert('You already own this upgrade!');
+    const info = infoMap[upgradeNumber];
+    if (info) {
+        // Set the cost by dynamically looking up the cost variable
+        info.cost = window[`rebupgp${upgradeNumber}`];
+    }
+    return info;
+}
+
+function buyRebirthUpgrade(upgradeNumber) {
+    const upgradeInfo = getRebirthUpgradeInfo(upgradeNumber);
+    if (!upgradeInfo) {
+        console.error("Invalid upgrade number:", upgradeNumber);
+        return;
+    }
+
+    // Get the current, correct cost for the upgrade from the global variable
+    let currentCost = window['rebupgp' + upgradeNumber];
+
+    // Check for an undefined cost right away
+    if (currentCost === undefined) {
+        console.error(`Cost for upgrade #${upgradeNumber} (rebupgp${upgradeNumber}) is undefined. Make sure it's defined at the top of the script.`);
         playSound('error', 0.4 * sfxVolume);
+        return;
+    }
+
+    // Check if the player has enough points
+    if (rebirth_points >= currentCost) {
+        // --- Purchase Successful ---
+        rebirth_points -= currentCost; // Subtract the points ONCE
+        playSound('purchase', 0.4 * sfxVolume);
+
+        // Call the specific function to apply the upgrade's effect
+        const upgradeFunction = window[`rebupgrade${upgradeNumber}`];
+        if (typeof upgradeFunction === 'function') {
+            upgradeFunction();
+        }
+
+        updateAll(); // Refreshes the UI
+        saveGame();
+
     } else {
+        // --- Purchase Failed ---
         alert('Not enough Rebirth Points!');
+        console.log(`Current Rebirth Points: ${rebirth_points}, Required: ${currentCost}`);
         playSound('error', 0.4 * sfxVolume);
     }
 }
@@ -2503,6 +2652,7 @@ function updateAllCurrency() {
          function updateAll() {
     updateMoney();
     updatemps();
+    updateRebirthUI();
     updateButtons([
         { id: 'extraButton', label: 'Worker' },
         { id: 'Button2', label: 'Manager' },
@@ -2555,7 +2705,7 @@ function updateMoney() {
          */
 function updatemps() {
     const currentMps = parseFloat((mps * moneymultiplier).toFixed(1));
-    const currentClicks = parseFloat(((clicks * golden_burger) * moneymultiplier).toFixed(1));
+    const currentClicks = parseFloat((((clicks + rebirthUpg2Levels) * (golden_burger * golden_legacy)) * moneymultiplier).toFixed(1));
     
     document.getElementById('moneypersecond').value = "Money per second: $" + formatCurrency(currentMps);
     document.getElementById('moneyperclick').value = "Money per click: $" + formatCurrency(currentClicks);
@@ -2567,8 +2717,8 @@ function updatemps() {
          * Handles clicking the burger
          */
         function addMoney() {
-            count += parseFloat(((clicks * (golden_burger * golden_legacy)) * moneymultiplier).toFixed(1));
-            total_money += parseFloat(((clicks * (golden_burger * golden_legacy)) * moneymultiplier).toFixed(1));
+            count += parseFloat((((clicks + rebirthUpg2Levels) * (golden_burger * golden_legacy)) * moneymultiplier).toFixed(1));
+            total_money += parseFloat(((clicks + rebirthUpg2Levels) * (golden_burger * rebirthUpg2Levels) * moneymultiplier).toFixed(1));
             checkRebirthPoints();
             updateAll();
             totalclicks++;
@@ -3578,218 +3728,84 @@ function initImportOverlay() {
 // wire up after DOM ready
 window.addEventListener('DOMContentLoaded', initImportOverlay);
         function saveGame() {
-            const gameState = {
-                // Money and multipliers
-                hasRebirthed,
-                rebirthUpgradeStates,
-                count,
-                mps,
-                clicks,
-                moneymultiplier,
-                golden_burger,
-                dark_mode,
-                total_money,
-                rebirth_points,
-                lastRebirthCheck,
-                click_multiplier,
-                rebupgp1,
-                rebupgp2,
-                rebupg2levels,
-                rebupgp3,
-                rebupgp4,
-                golden_legacy,
-                // Costs
-                cost1,
-                cost2,
-                cost3,
-                cost4,
-                cost5,
-                cost6,
-                cost7,
-                cost8,
-                cost9,
-                cost10,
-                cost11,
-                cost12,
-                cost13,
-                cost14,
-                cost15,
-                cost16,
-                cost17,
-                cost18,
-                cost19,
-                cost20,
-                upgp1,
-                upgp2,
-                upgp3,
-                upgp4,
-                upgp5,
-                upgp6,
-                upgp7,
-                upgp8,
-                upgp9,
-                upgp10,
-                upgp11,
-                upgp12,
-                upgp13,
-                upgp14,
-                upgp15,
-                upgp16,
-                upgp17,
-                upgp18,
-                upgp19,
-                upgp20,
-                upgp21,
-                upgp22,
-                upgp23,
-                upgp24,
-                upgp25,
-                upgp26,
-                upgp27,
-                upgp28,
-                upgp29,
-                upgp30,
-                upgp39,
-                upgp40,
-                upgp41,
-                upgp42,
-                fcost,
-achievements: Object.fromEntries(
-    Object.entries(achievements).map(([id, achievement]) => [
-        id,
-        achievement.unlocked
-    ])
-),
-                // Production values
-                worker,
-                manager,
-                clickamount,
-                director,
-                VP,
-                COO,
-                ceo,
-                chairman,
-                oracle,
-                fryer,
-                feast,
-                verdant,
-                emulsifier,
-                whisperer,
-                chancellor,
-                priest,
-                archmage,
-                matriarch,
-                grillmaster,
+    const gameState = {
+        // Core game variables
+        count,
+        mps,
+        clicks,
+        moneymultiplier,
+        golden_burger,
+        dark_mode,
+        total_money,
+        rebirth_points,
+        lastRebirthCheck,
+        click_multiplier,
+        rebirthedTimes,
+        hasRebirthed,
+        
+        // Costs
+        cost1, cost2, cost3, cost4, cost5, cost6, cost7, cost8, cost9, cost10,
+        cost11, cost12, cost13, cost14, cost15, cost16, cost17, cost18, cost19, cost20,
+        upgp1, upgp2, upgp3, upgp4, upgp5, upgp6, upgp7, upgp8, upgp9, upgp10,
+        upgp11, upgp12, upgp13, upgp14, upgp15, upgp16, upgp17, upgp18, upgp19, upgp20,
+        upgp21, upgp22, upgp23, upgp24, upgp25, upgp26, upgp27, upgp28, upgp29, upgp30,
+        upgp39, upgp40, upgp41, upgp42, upgp43, fcost,
 
+        // Production values
+        worker, manager, clickamount, director, VP, COO, ceo, chairman, oracle, fryer,
+        feast, verdant, emulsifier, whisperer, chancellor, priest, archmage, matriarch, grillmaster,
 
-                // Counts
-                M,
-                M2,
-                M3,
-                M4,
-                M5,
-                M6,
-                M7,
-                M8,
-                M9,
-                M10,
-                M11,
-                M12,
-                M13,
-                M14,
-                M15,
-                M16,  
-                M17,
-                M18,
-                M19,
-                M20,
-                // Upgrade states
-                upg1,
-                upg3,
-                upg8,
-                upg9,
-                upg10,
-                upg11,
-                upg12,
-                upg13,
-                upg14,
-                upg15,
-                upg16,
-                upg17,
-                upg18,
-                upg19,
-                upg20,
-                upg21,
-                upg22,
-                upg23,
-                upg24,
-                upg25,
-                upg26,
-                upg27,
-                upg28,
-                upg29,
-                upg30,
-                upg39,
-                upg40,
-                upg41,
-                upg42,
-                bimage,
-                // Franchise system
-                franchises,
+        // Employee counts
+        M, M2, M3, M4, M5, M6, M7, M8, M9, M10,
+        M11, M12, M13, M14, M15, M16, M17, M18, M19, M20,
 
-                // Statistics
-                totalclicks,
-                totaltime,
+        // Upgrade states
+        upg1, upg3, upg8, upg9, upg10, upg11, upg12, upg13, upg14, upg15,
+        upg16, upg17, upg18, upg19, upg20, upg21, upg22, upg23, upg24, upg25,
+        upg26, upg27, upg28, upg29, upg30, upg31, upg39, upg40, upg41, upg42, upg43,
 
-                // Ice cream system
-                ice,
-                ips,
-                icost1,
-                icost2,
-                icost3,
-                icost4,
-                icost5,
-                icost6,
-                icost7,
-                icost8,
-                icost9,
-                icost10,
-                icost11,
-                icost12,
-                icost13,
-                icost14,
-                icost15,
-                icost16,
-                iceupg1,
-                iceupg2,
-                iceupg3,
-                iceupg4,
-                iceupg5,
-                iceupg6,
-                iceupg7,
-                iceupg8,
-                iceupg9,
-                iceupg10,
-                iceupg11,
-                iceupg12,
-                iceupg13,
-                iceupg14,
-                iceupg15,
-                iceupg16,
+        // Franchise, stats, and ice cream system
+        franchises, totalclicks, totaltime, bimage, ice, ips,
+        icost1, icost2, icost3, icost4, icost5, icost6, icost7, icost8, icost9, icost10,
+        icost11, icost12, icost13, icost14, icost15, icost16,
+        iceupg1, iceupg2, iceupg3, iceupg4, iceupg5, iceupg6, iceupg7, iceupg8, iceupg9, iceupg10,
+        iceupg11, iceupg12, iceupg13, iceupg14, iceupg15, iceupg16,
 
-                // Achievement states - Save the unlocked status of each achievement
-                achievements: Object.fromEntries(
-                    Object.entries(achievements).map(([id, achievement]) => [
-                        id,
-                        achievement.unlocked
-                    ])
-                )
-                };
-                    gameState.musicVolume = musicVolume;
+        // Rebirth Upgrade States and Levels
+        rebirthUpgradeStates,
+        rebirthUpg2Levels,
+        rebirthUpg5Levels,
+        rebirthUpg6Levels,
+        rebirthUpg12Levels,
+        rebirthUpg14Levels,
+        rebirthUpg22Levels,
+        
+        // Rebirth Upgrade Costs
+        rebupgp1, rebupgp2, rebupgp3, rebupgp4, rebupgp5, rebupgp6, rebupgp7, rebupgp8,
+        rebupgp9, rebupgp10, rebupgp11, rebupgp12, rebupgp13, rebupgp14, rebupgp15, rebupgp16,
+        rebupgp17, rebupgp18, rebupgp19, rebupgp20, rebupgp21, rebupgp22, rebupgp23,
+
+        // Rebirth Multiplier and Bonus Variables
+        golden_legacy, rebirthClickBonus,
+
+        // Achievement states
+        achievements: Object.fromEntries(
+            Object.entries(achievements).map(([id, achievement]) => [id, achievement.unlocked])
+        )
+    };
+    
+    gameState.musicVolume = musicVolume;
     gameState.sfxVolume = sfxVolume;
-            localStorage.setItem('burgerGameSave', JSON.stringify(gameState));
-            playSound('save', 0.03*sfxVolume);
-        }
+    localStorage.setItem('burgerGameSave', JSON.stringify(gameState));
+    playSound('save', 0.03 * sfxVolume);
+}
+
+
+
+
+
+
+
 
         // Load game state
         // New loadGame() function
@@ -3798,7 +3814,7 @@ function loadGame() {
     if (savedGame) {
         const gameState = JSON.parse(savedGame);
 
-        // Restore all game variables first
+        // Restore all game variables
         count = gameState.count || 0;
         mps = gameState.mps || 0;
         clicks = gameState.clicks || 1;
@@ -3808,13 +3824,10 @@ function loadGame() {
         rebirth_points = gameState.rebirth_points || 0;
         lastRebirthCheck = gameState.lastRebirthCheck || 0;
         click_multiplier = gameState.click_multiplier || 0.01;
+        rebirthedTimes = gameState.rebirthedTimes || 0;
         hasRebirthed = gameState.hasRebirthed || false;
-        rebupgp1 = gameState.rebupgp1 || 1;
-        rebupgp2 = gameState.rebupgp2 || 1;
-        rebupg2levels = gameState.rebupg2levels || 0;
-        rebupgp3 = gameState.rebupgp3 || 2;
-        rebupgp4 = gameState.rebupgp4 || 3;
-        golden_legacy = gameState.golden_legacy || 1;
+        
+        // Restore all other variables...
         cost1 = gameState.cost1 || 10;
         cost2 = gameState.cost2 || 25;
         cost3 = gameState.cost3 || 15;
@@ -3872,9 +3885,9 @@ function loadGame() {
         upgp42 = gameState.upgp42 || 175000000;
         upgp43 = gameState.upgp43 || 1000000000;
         fcost = gameState.fcost || 500000;
-        dark_mode = gameState.dark_mode || false;
-        
+
         worker = gameState.worker || 1.5;
+        clicks = gameState.clicks || 1;
         manager = gameState.manager || 5;
         clickamount = gameState.clickamount || 2;
         director = gameState.director || 7.5;
@@ -3940,6 +3953,7 @@ function loadGame() {
         upg28 = gameState.upg28 || 0;
         upg29 = gameState.upg29 || 0;
         upg30 = gameState.upg30 || 0;
+        upg31 = gameState.upg31 || 0;
         upg39 = gameState.upg39 || 0;
         upg40 = gameState.upg40 || 0;
         upg41 = gameState.upg41 || 0;
@@ -3985,46 +3999,46 @@ function loadGame() {
         iceupg15 = gameState.iceupg15 || 0;
         iceupg16 = gameState.iceupg16 || 0;
 
-        if (gameState.musicVolume !== undefined) {
-            musicVolume = gameState.musicVolume;
-            musicSlider.value = musicVolume * 100;
-            musicOutput.innerHTML = musicSlider.value;
-            if (musicGainNode) {
-                musicGainNode.gain.value = musicVolume;
-            }
-        }
-        if (gameState.dark_mode === true) {
-            document.documentElement.classList.add("dark-mode");
-            dark_mode = true;
-        } else {
-            document.documentElement.classList.remove("dark-mode");
-            dark_mode = false;
-        }
-        if (gameState.sfxVolume !== undefined) {
-            sfxVolume = gameState.sfxVolume;
-            slider.value = sfxVolume * 100;
-            output.innerHTML = slider.value;
-        }
-
-        // Restore rebirth upgrades and update their button states
+        // Restore rebirth upgrades states
         if (gameState.rebirthUpgradeStates) {
             Object.assign(rebirthUpgradeStates, gameState.rebirthUpgradeStates);
-            for (const [key, value] of Object.entries(rebirthUpgradeStates)) {
-                if (value) {
-                    const btn = document.getElementById(key);
-                    if (btn) {
-                        btn.textContent = `Upgrade ${key.slice(-1)}: BOUGHT`;
-                        btn.disabled = true;
-                    }
-                }
-            }
         }
-if (hasRebirthed) {
-    const rebirthSection = document.getElementById("rebirth");
-    if (rebirthSection) {
-        rebirthSection.style.display = 'flex';
-    }
-}
+        
+        // Restore repeatable rebirth upgrade levels
+        rebirthUpg2Levels = gameState.rebirthUpg2Levels || 0;
+        rebirthUpg5Levels = gameState.rebirthUpg5Levels || 0;
+        rebirthUpg6Levels = gameState.rebirthUpg6Levels || 0;
+        rebirthUpg12Levels = gameState.rebirthUpg12Levels || 0;
+        rebirthUpg14Levels = gameState.rebirthUpg14Levels || 0;
+        rebirthUpg22Levels = gameState.rebirthUpg22Levels || 0;
+        
+        // Restore rebirth upgrade costs and multipliers
+        rebupgp1 = gameState.rebupgp1 || 1;
+        rebupgp2 = gameState.rebupgp2 || 1;
+        rebupgp3 = gameState.rebupgp3 || 2;
+        rebupgp4 = gameState.rebupgp4 || 3;
+        rebupgp5 = gameState.rebupgp5 || 5;
+        rebupgp6 = gameState.rebupgp6 || 4;
+        rebupgp7 = gameState.rebupgp7 || 5;
+        rebupgp8 = gameState.rebupgp8 || 10;
+        rebupgp9 = gameState.rebupgp9 || 15;
+        rebupgp10 = gameState.rebupgp10 || 20;
+        rebupgp11 = gameState.rebupgp11 || 10;
+        rebupgp12 = gameState.rebupgp12 || 25;
+        rebupgp13 = gameState.rebupgp13 || 30;
+        rebupgp14 = gameState.rebupgp14 || 30;
+        rebupgp15 = gameState.rebupgp15 || 20;
+        rebupgp16 = gameState.rebupgp16 || 40;
+        rebupgp17 = gameState.rebupgp17 || 50;
+        rebupgp20 = gameState.rebupgp20 || 100;
+        rebupgp18 = gameState.rebupgp18 || 60;
+        rebupgp19 = gameState.rebupgp19 || 75;
+        rebupgp21 = gameState.rebupgp21 || 1000;
+        rebupgp22 = gameState.rebupgp22 || 1250;
+        rebupgp23 = gameState.rebupgp23 || 5000;
+        golden_legacy = gameState.golden_legacy || 1;
+        rebirthClickBonus = gameState.rebirthClickBonus || 0;
+
         // Restore achievements
         if (gameState.achievements) {
             Object.entries(gameState.achievements).forEach(([id, unlocked]) => {
@@ -4038,10 +4052,10 @@ if (hasRebirthed) {
             });
         }
         
-        // Finalize UI updates
-        updateAll();
+        // Apply rebirth upgrades and update UI
+        applyRebirthUpgrades();
         updateUpgradeVisibility();
-        
+        updateRebirthUI();
         playSound('save', 0.03 * sfxVolume);
         alert('Game loaded successfully!');
     } else {
@@ -4049,6 +4063,7 @@ if (hasRebirthed) {
         alert('No saved game found!');
     }
 }
+    
 
         // Delete save
         function deleteSave() {
@@ -4093,4 +4108,4 @@ function hideTooltip(tooltipId) {
 
 
         // Auto-save every 5 minutes
-        setInterval(saveGame, 0.5 * 60 * 1000);
+        setInterval(saveGame, 0.5 * 60 * 1000); 
