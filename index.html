@@ -491,7 +491,7 @@
                             <span class="tooltip" id="upgrade7tooltip">Increases how much money you make per click by 4x</span>
                         </div>
                         <div class="tooltip-container  burger-upgrade">
-                            <button id="upgrade31" onclick="upgrade31()" style="display:none;" onmouseover="showTooltip(event, 'upgrade31tooltip')" onmouseout="hideTooltip('upgrade31tooltip')">Prism Burger: $2000000000</button>
+                            <button id="upgrade31" onclick="upgrade31()" style="display:none;" onmouseover="showTooltip(event, 'upgrade31tooltip')" onmouseout="hideTooltip('upgrade31tooltip')">Prism Burger: $2B</button>
                             <span class="tooltip" id="upgrade31tooltip">Increases how much money you make per click by 5.5x</span>
                         </div>
                         <div class="tooltip-container  burger-upgrade">
@@ -643,13 +643,22 @@
                 <button id="rebirthUpgrade1" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(1)">Permanent Coffee Boost: 1 RP</button>
                 <span class="tooltip">Permanently applies the effect of the "Coffee" upgrade after a rebirth.</span>
             </div>
+
             <div class="tooltip-container">
-                <button id="rebirthUpgrade2" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(2)">Upgrade 2: 2 RP</button>
-                <span class="tooltip">Placeholder upgrade for 2 rebirth points.</span>
+                <button id="rebirthUpgrade2" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(2)">Increased Base Clicks (Repeatable): 2 RP</button>
+                <span class="tooltip">Increases the base money you get per click by $1.</span>
             </div>
             <div class="tooltip-container">
-                <button id="rebirthUpgrade3" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(3)">Upgrade 3: 3 RP</button>
-                <span class="tooltip">Placeholder upgrade for 3 rebirth points.</span>
+                <button id="rebirthUpgrade3" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(3)">Cheaper Hiring: 2 RP</button>
+                <span class="tooltip">All employee costs are permanently reduced by 5%.</span>
+            </div>
+            <div class="tooltip-container">
+                <button id="rebirthUpgrade4" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(4)">Golden Legacy: 3 RP</button>
+                <span class="tooltip">Gives a permanent 1.25x multiplier to money per click from all burger upgrades.</span>
+            </div>
+            <div class="tooltip-container"  id="rebirthUpgrade5Container">
+                <button id="rebirthUpgrade5" class="rebirth-upgrade-button"  onclick="buyRebirthUpgrade(5)">Ice Cream Machine Efficiency (Repeatable) 5 RP</button>
+                <span class="tooltip">Permanently applies the effect of the "Coffee" upgrade after a rebirth.</span>
             </div>
         </div>
         <button onclick="hideRebirthOverlay()">Return to game</button>

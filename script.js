@@ -36,18 +36,24 @@ let rebirthUpgradeStates = {
     rebirthUpg1: false, // Permanent Coffee Boost
     rebirthUpg3: false, // Faster Hiring
     rebirthUpg4: false, // Golden Legacy
+    rebirthUpg5: false, // 7
+    rebirthUpg6: false, // Golden Legacy
     rebirthUpg7: false, // Diamond Legacy
     rebirthUpg8: false, // Offline Production
     rebirthUpg9: false, // Automated Ice Cream
     rebirthUpg10: false, // Automated Clicking
     rebirthUpg11: false, // Sapphire Legacy
+     rebirthUpg12: false, // Sapphire Legacy
     rebirthUpg13: false, // Better Offline Production
+     rebirthUpg14: false, // Sapphire Legacy
     rebirthUpg15: false, // Uranium Legacy
+     rebirthUpg16: false, // Sapphire Legacy
     rebirthUpg17: false, // Offline Profits Multiplier
+     rebirthUpg18: false, // Sapphire Legacy
+      rebirthUpg19: false, // Sapphire Legacy
     rebirthUpg20: false, // Obsidian Legacy
-    rebirthUpg18: false, // Prism Legacy
-    rebirthUpg19: false, // Chairman's Favor
     rebirthUpg21: false, // Transcendent Burger
+     rebirthUpg22: false, // Transcendent Burger
     rebirthUpg23: false  // Singularity Engine
 };
 
@@ -1708,24 +1714,39 @@ function rebupgrade3() {
     }
 }
 function rebupgrade4() {
-    if (rebirth_points >= rebupgp4 && !rebirthUpgradeStates.rebirthUpg4) {
-        rebirth_points -= rebupgp4;
-        rebirthUpgradeStates.rebirthUpg4 = true;
-        document.getElementById("rebirthUpgrade4").disabled = true;
-        document.getElementById("rebirthUpgrade4").textContent = `Upgrade 4: BOUGHT`;
-        const rebupg7 = document.getElementById("rebirthUpgrade7");
-        if (rebupg7) {
-            rebupg7.style.display = 'flex';
-        }
-        playSound('purchase', 0.4 * sfxVolume);
-      //  applyRebirthUpgrades();
-        updateAll();
-        saveGame();
-    } else {
-        playSound('error', 0.4 * sfxVolume);
+    rebirthUpgradeStates.rebirthUpg4 = true;
+    golden_legacy = 1.25;
+    const rebupg7 = document.getElementById("rebirthUpgrade7");
+    if (rebupg7) {
+        rebupg7.style.display = 'flex';
     }
 }
+function rebupgrade5() {
+    if (rebirth_points >= rebupgp5) {
+        rebirth_points -= rebupgp5; // Deduct the current cost
+        rebirthUpgradeStates.rebirthUpg5 = true;
+        rebirthUpg5Levels += 1; // Increment the level of the upgrade
 
+        // Recalculate the cost for the next level
+        rebupgp5 = Math.round(5 * Math.pow(1.2, rebirthUpg5Levels)); // Cost increases by 1.2x per level
+
+        // Show the next rebirth upgrade if applicable
+        const rebupg9 = document.getElementById("rebirthUpgrade9");
+        if (rebupg9) {
+            rebupg9.style.display = 'flex';
+        }
+
+        // Recalculate IPS (Ice Creams Per Second) to apply the upgrade effect
+        recalculateIps();
+
+        // Update the UI
+        updateRebirthUI();
+        playSound('purchase', 0.4 * sfxVolume);
+    } else {
+        playSound('error', 0.4 * sfxVolume);
+        alert('Not enough Rebirth Points!');
+    }
+}
         function moreicepers() {
             if (ice >= icost1) {
                 ips += 2.5;
@@ -2335,7 +2356,10 @@ function updateRebirthUI() {
         upg4Btn.textContent = 'Upgrade 4: BOUGHT';
         upg4Btn.disabled = true;
     }
-
+    const upg5Btn = document.getElementById("rebirthUpgrade5");
+    if (upg5Btn) {
+        upg5Btn.textContent = `Upgrade 5: ${formatCurrency(rebupgp5)} RP (${rebirthUpg5Levels})`;
+    }
     // Add checks for your other one-time rebirth upgrades here.
 }
 function rebirth() {
@@ -2706,7 +2730,7 @@ function updateMoney() {
 function updatemps() {
     const currentMps = parseFloat((mps * moneymultiplier).toFixed(1));
     const currentClicks = parseFloat((((clicks + rebirthUpg2Levels) * (golden_burger * golden_legacy)) * moneymultiplier).toFixed(1));
-    
+    //const currentips = ips * rebirthUpg5Levels;
     document.getElementById('moneypersecond').value = "Money per second: $" + formatCurrency(currentMps);
     document.getElementById('moneyperclick').value = "Money per click: $" + formatCurrency(currentClicks);
     document.getElementById('moneymultiplier').value = "Money multiplier: " + parseFloat((moneymultiplier).toFixed(1));
@@ -2718,7 +2742,7 @@ function updatemps() {
          */
         function addMoney() {
             count += parseFloat((((clicks + rebirthUpg2Levels) * (golden_burger * golden_legacy)) * moneymultiplier).toFixed(1));
-            total_money += parseFloat(((clicks + rebirthUpg2Levels) * (golden_burger * rebirthUpg2Levels) * moneymultiplier).toFixed(1));
+            total_money += parseFloat(((clicks + rebirthUpg2Levels) * (golden_burger * golden_legacy) * moneymultiplier).toFixed(1));
             checkRebirthPoints();
             updateAll();
             totalclicks++;
@@ -2954,7 +2978,14 @@ if (rebirthButton) {
         /**
          * Adds money per second
          */
-        
+        function recalculateIps() {
+    ips = 1; // Base IPS is 1 from upgrade3
+    
+    // Apply the bonus from rebirth upgrade 5
+    if (rebirthUpg5Levels > 0) {
+        ips += (ips * 0.25 * rebirthUpg5Levels); // 25% bonus per level
+    }
+}
         function moneyps() {
             detectMobile();
             count += mps*moneymultiplier;
@@ -3360,6 +3391,14 @@ function buyall() {
     } else if (upg3 === 1) {
         if (upgrade8Button) upgrade8Button.style.display = 'flex';
     }
+    const rebirthUpgrade5Container = document.getElementById("rebirthUpgrade5Container");
+    if (rebirthUpgrade5Container) { // Check if the container exists
+        if (rebirthUpgradeStates.rebirthUpg1 === true) {
+            rebirthUpgrade5Container.style.display = 'block'; // Use 'block' or 'flex'
+        } else {
+            rebirthUpgrade5Container.style.display = 'none';
+        }
+    }
 
     const upgrade9Button = document.getElementById("upgrade9");
     if (upg9 === 1) {
@@ -3673,7 +3712,7 @@ function importSaveObject(saveObj) {
     if (!confirm('Importing a save will overwrite your current progress. Continue?')) return;
     localStorage.setItem('burgerGameSave', JSON.stringify(saveObj));
     playSound && playSound('save', 0.03 * (typeof sfxVolume !== 'undefined' ? sfxVolume : 0.5));
-    loadGame();
+   location.reload();
     alert('Save imported successfully.');
 }
 
@@ -4051,7 +4090,7 @@ function loadGame() {
                 }
             });
         }
-        
+        recalculateIps();
         // Apply rebirth upgrades and update UI
         applyRebirthUpgrades();
         updateUpgradeVisibility();
@@ -4075,25 +4114,43 @@ function loadGame() {
 
 function showTooltip(event, tooltipId) {
     var tooltip = document.getElementById(tooltipId);
+    if (!tooltip) return; // Exit if tooltip isn't found
     var rect = event.target.getBoundingClientRect();
 
-    // Default: left side
-    var top = rect.top + window.scrollY;
-    var left = rect.left - tooltip.offsetWidth - 10;
-    tooltip.classList.remove("right");
+    // --- NEW FIX: Force browser to calculate dimensions if they are 0 ---
+    // This can happen when the tooltip is inside a container that was set to display: none
+    if (tooltip.offsetHeight === 0) {
+        tooltip.style.visibility = 'hidden'; // Keep it hidden
+        tooltip.style.display = 'block';     // Temporarily display it to calculate size
+    }
 
-    // If off left side → flip to right
+    // Now we can safely get the dimensions
+    const tooltipHeight = tooltip.offsetHeight;
+    const tooltipWidth = tooltip.offsetWidth;
+
+    // We can now revert the display property so it doesn't interfere with CSS rules
+    tooltip.style.display = '';
+
+    // --- Positioning Logic (same as before) ---
+    var top = rect.top + window.scrollY + (rect.height / 2) - (tooltipHeight / 2);
+    var left = rect.right + 10;
+
+    if (left + tooltipWidth > window.innerWidth) {
+        left = rect.left - tooltipWidth - 10;
+    }
+    
+    if (top + tooltipHeight > window.innerHeight + window.scrollY) {
+        top = rect.top + window.scrollY - tooltipHeight - 10;
+    }
+    
+    if (top < window.scrollY) {
+        top = window.scrollY;
+    }
     if (left < 0) {
-        left = rect.right + 10;
-        tooltip.classList.add("right");
+        left = 10;
     }
 
-    // If still off right edge → force back left
-    if (left + tooltip.offsetWidth > window.innerWidth) {
-        left = rect.left - tooltip.offsetWidth - 10;
-        tooltip.classList.remove("right");
-    }
-
+    // Apply the final position and make the tooltip visible
     tooltip.style.top = top + "px";
     tooltip.style.left = left + "px";
     tooltip.style.visibility = "visible";
