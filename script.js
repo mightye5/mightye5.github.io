@@ -232,7 +232,7 @@ let rebirthedTimes = 0;
         let click_multiplier = 0.01;
         let hasRebirthed = false;   // Whether the player has rebirthed at least once
         //Everything Ice cream related
-         let ice = 0,                             // Player's current ice creams
+         var ice = 0,                             // Player's current ice creams
             ips = 0,                             // how many ice creams you get per second
             icost1 = 50,                          // The first Ice cream upgrade cost     
             icost2 = 75,                         // The second Ice cream upgrade cost 
@@ -514,7 +514,7 @@ let musicSource;
                 cost20 = Math.round(20 * (1.15 ** M20) * 10) / 10;
                 quantity--;
                 bought++;
-                console.log(cost20)
+                //console.log(cost20)
             }
             if (bought > 0) {
                 playSound('purchase', 0.4*sfxVolume);
@@ -885,7 +885,12 @@ function upgrade2() {
     if (count >= upgp2) {
         count -= upgp2;
         bimage += 1;
-        golden_burger += 2;  // Double click value
+        if (rebirthUpgradeStates.rebirthUpg7 == true) {
+            golden_burger += 2*1.5; 
+        } else {
+            golden_burger += 2; 
+        }
+         // Double click value
         chesburger.style.backgroundImage = "url('Burger-images/GoldenBurger.png')";
         const upgrade4Button = document.getElementById("upgrade4");
         if (upgrade4Button) {
@@ -1684,7 +1689,7 @@ function rebupgrade1() {
         const workerIncrease = (worker - oldWorkerAmount) * M;
         mps += workerIncrease;
     }
-
+  //  updateButtons();
     // Hide the original upgrade button and show the next one
     const upgrade1Button = document.getElementById("upgrade1");
     if (upgrade1Button) {
@@ -1700,22 +1705,24 @@ function rebupgrade1() {
 function rebupgrade2() {
     rebirthUpg2Levels += 1;
     // The cost will be recalculated automatically by updateRebirthUI()
-    
+      //  updateButtons();
     // Apply the effect immediately
     rebirthClickBonus += 1;
 }
 // 3. Faster Hiring
 function rebupgrade3() {
     rebirthUpgradeStates.rebirthUpg3 = true;
-    
+    //    updateButtons();
     const rebupg6 = document.getElementById("rebirthUpgrade6");
     if (rebupg6) {
         rebupg6.style.display = 'flex';
     }
 }
+
 function rebupgrade4() {
     rebirthUpgradeStates.rebirthUpg4 = true;
     golden_legacy = 1.25;
+  updateRebirthUI();
     const rebupg7 = document.getElementById("rebirthUpgrade7");
     if (rebupg7) {
         rebupg7.style.display = 'flex';
@@ -1738,13 +1745,44 @@ function rebupgrade5() {
 
         // Recalculate IPS (Ice Creams Per Second) to apply the upgrade effect
         recalculateIps();
-
+    //updateButtons();
         // Update the UI
         updateRebirthUI();
         playSound('purchase', 0.4 * sfxVolume);
     } else {
         playSound('error', 0.4 * sfxVolume);
         alert('Not enough Rebirth Points!');
+    }
+}
+function rebupgrade6() {
+    rebirthUpg6Levels += 1;
+    // The cost will be recalculated automatically by updateRebirthUI()
+    rebupgp6 = Math.round(4 * Math.pow(1.15, rebirthUpg6Levels));
+    // Apply the effect immediately
+  updateRebirthUI();
+}
+function rebupgrade7() {
+    rebirthUpgradeStates.rebirthUpg7 = true;
+    updateRebirthUI();
+    const rebupg11 = document.getElementById("rebirthUpgrade11");
+    if (rebupg11) {
+        rebupg11.style.display = 'flex';
+    }
+}
+function rebupgrade8() {
+    rebirthUpgradeStates.rebirthUpg8 = true;
+    updateRebirthUI();
+    const rebupg13 = document.getElementById("rebirthUpgrade13");
+    if (rebupg13) {
+        rebupg13.style.display = 'flex';
+    }
+}
+function rebupgrade9() {
+    rebirthUpgradeStates.rebirthUpg9 = true;
+    updateRebirthUI();
+    const rebupg12 = document.getElementById("rebirthUpgrade12");
+    if (rebupg12) {
+        rebupg12.style.display = 'flex';
     }
 }
         function moreicepers() {
@@ -2138,7 +2176,7 @@ function bettergrill() {
     if (ice >= icost16) {
         const oldVal = grillmaster;
         grillmaster += Math.round(grillmaster * 0.2);
-        if (M18 >= 1) {
+        if (M19 >= 1) {
             const increase = (grillmaster - oldVal) * M18;
             mps += increase;
         }
@@ -2327,12 +2365,37 @@ function updateRebirthUI() {
     if (upg2Btn) {
         // Recalculate cost based on current level to ensure it's always correct
         rebupgp2 = 1 + (rebirthUpg2Levels * 0.5);
-        upg2Btn.textContent = `Upgrade 2: ${formatCurrency(rebupgp2)} RP (${rebirthUpg2Levels})`;
+        upg2Btn.textContent = `Increased Base Clicks: ${formatCurrency(rebupgp2)} RP (${rebirthUpg2Levels})`;
     }
 
     // You can add similar logic here for your other repeatable upgrades (5, 6, 12, etc.)
     // as you create them.
+    const rebirthUpgrade5Container = document.getElementById("rebirthUpgrade5Container");
+    if (rebirthUpgradeStates.rebirthUpg1) {
+        rebirthUpgrade5Container.style.display = 'flex';
+    } else {
+        rebirthUpgrade5Container.style.display = 'none';
+    }
 
+    // Check and show Rebirth Upgrade 6
+    const rebirthUpgrade6Container = document.getElementById("rebirthUpgrade6Container");
+    if (rebirthUpgradeStates.rebirthUpg3) {
+        rebirthUpgrade6Container.style.display = 'flex';
+    } else {
+        rebirthUpgrade6Container.style.display = 'none';
+    }
+        const rebirthUpgrade7Container = document.getElementById("rebirthUpgrade7Container");
+    if (rebirthUpgradeStates.rebirthUpg4) {
+        rebirthUpgrade7Container.style.display = 'flex';
+    } else {
+        rebirthUpgrade7Container.style.display = 'none';
+    }
+            const rebirthUpgrade9Container = document.getElementById("rebirthUpgrade9Container");
+    if (rebirthUpgradeStates.rebirthUpg5) {
+        rebirthUpgrade9Container.style.display = 'flex';
+    } else {
+        rebirthUpgrade9Container.style.display = 'none';
+    }
     const rebirthPointsDisplay = document.getElementById("rebirthPointsDisplay");
     if (rebirthPointsDisplay) {
         rebirthPointsDisplay.textContent = formatCurrency(rebirth_points);
@@ -2341,24 +2404,46 @@ function updateRebirthUI() {
     // This ensures one-time purchases correctly show as "BOUGHT" when the game loads.
     const upg1Btn = document.getElementById("rebirthUpgrade1");
     if (upg1Btn && rebirthUpgradeStates.rebirthUpg1) {
-        upg1Btn.textContent = 'Upgrade 1: BOUGHT';
+        upg1Btn.textContent = 'Permanent Coffee Boost: BOUGHT';
         upg1Btn.disabled = true;
     }
 
     const upg3Btn = document.getElementById("rebirthUpgrade3");
     if (upg3Btn && rebirthUpgradeStates.rebirthUpg3) {
-        upg3Btn.textContent = 'Upgrade 3: BOUGHT';
+        upg3Btn.textContent = 'Faster Hiring: BOUGHT';
         upg3Btn.disabled = true;
     }
 
     const upg4Btn = document.getElementById("rebirthUpgrade4");
     if (upg4Btn && rebirthUpgradeStates.rebirthUpg4) {
-        upg4Btn.textContent = 'Upgrade 4: BOUGHT';
+        upg4Btn.textContent = 'Golden Legacy: BOUGHT';
         upg4Btn.disabled = true;
     }
     const upg5Btn = document.getElementById("rebirthUpgrade5");
     if (upg5Btn) {
-        upg5Btn.textContent = `Upgrade 5: ${formatCurrency(rebupgp5)} RP (${rebirthUpg5Levels})`;
+        upg5Btn.textContent = `Ice Cream Machine Efficiency: ${formatCurrency(rebupgp5)} RP (${rebirthUpg5Levels})`;
+    }
+        const upg6Btn = document.getElementById("rebirthUpgrade6");
+    if (upg6Btn) {
+        // Recalculate cost based on current level to ensure it's always correct
+        rebupgp6 = 1 + (rebirthUpg6Levels * 0.5);
+        upg6Btn.textContent = `Bulk Purchase Discount: ${formatCurrency(rebupgp6)} RP (${rebirthUpg6Levels})`;
+    }
+
+    const upg7Btn = document.getElementById("rebirthUpgrade7");
+    if (upg7Btn && rebirthUpgradeStates.rebirthUpg7) {
+        upg7Btn.textContent = 'Diamond Legacy: BOUGHT';
+        upg7Btn.disabled = true;
+    }
+        const upg8Btn = document.getElementById("rebirthUpgrade8");
+    if (upg8Btn && rebirthUpgradeStates.rebirthUpg8) {
+        upg8Btn.textContent = 'Offline Production: BOUGHT';
+        upg8Btn.disabled = true;
+    }
+            const upg9Btn = document.getElementById("rebirthUpgrade9");
+    if (upg9Btn && rebirthUpgradeStates.rebirthUpg9) {
+        upg9Btn.textContent = 'Offline Production: BOUGHT';
+        upg9Btn.disabled = true;
     }
     // Add checks for your other one-time rebirth upgrades here.
 }
@@ -2571,7 +2656,7 @@ function getRebirthUpgradeInfo(upgradeNumber) {
         3: { id: 'rebirthUpgrade3', isRepeatable: false },
         4: { id: 'rebirthUpgrade4', isRepeatable: false },
         5: { id: 'rebirthUpgrade5', isRepeatable: true, levelVariable: 'rebirthUpg5Levels' },
-        6: { id: 'rebirthUpgrade6', isRepeatable: false },
+        6: { id: 'rebirthUpgrade6', isRepeatable: true, levelVariable: 'rebirthUpg6Levels' },
         7: { id: 'rebirthUpgrade7', isRepeatable: false },
         8: { id: 'rebirthUpgrade8', isRepeatable: false },
         9: { id: 'rebirthUpgrade9', isRepeatable: false },
@@ -2702,6 +2787,7 @@ function updateAllCurrency() {
     ]);
     Update();
     checkAchievements();
+
 }
 
 function checkRebirthPoints() {
@@ -2997,6 +3083,9 @@ if (rebirthButton) {
             if (upg3 == 1) {
                 ice += ips; //if you have upgrade 3, add 1 to the ice, per second
             }
+                if(rebirthUpgradeStates.rebirthUpg9 == true) {
+        buyAllIceUpgrades();
+    }
         }
 
         /**
@@ -3119,6 +3208,86 @@ function buyall() {
     
     console.log(`Round-robin complete! Purchased ${totalPurchased} employees total`);
     return totalPurchased;
+}
+
+function buyAllIceUpgrades() {
+    // Defines the properties for each ice upgrade, including an unlock condition.
+    const iceUpgrades = [
+        // These are unlocked when the ice cream machine is built (upg3)
+        { costVar: 'icost1', upgCountVar: 'iceupg1', costMultiplier: 1.5, isUnlocked: () => upg3 === 1, applyEffect: () => { ips += 2.5; } },
+        { costVar: 'icost2', upgCountVar: 'iceupg2', costMultiplier: 1.25, isUnlocked: () => upg3 === 1, applyEffect: () => { const oldVal = worker; worker += parseFloat((worker * 0.2).toFixed(1)); if (M >= 1) { mps += (worker - oldVal) * M; } } },
+        { costVar: 'icost3', upgCountVar: 'iceupg3', costMultiplier: 1.25, isUnlocked: () => upg3 === 1, applyEffect: () => { const oldVal = manager; manager += Math.round(manager * 0.2); if (M2 >= 1) { mps += (manager - oldVal) * M2; } } },
+        { costVar: 'icost4', upgCountVar: 'iceupg4', costMultiplier: 1.25, isUnlocked: () => upg3 === 1, applyEffect: () => { const oldVal = clickamount; clickamount += parseFloat((clickamount * 0.2).toFixed(1)); if (M3 >= 1) { clicks += (clickamount - oldVal) * M3; } } },
+        { costVar: 'icost5', upgCountVar: 'iceupg5', costMultiplier: 1.25, isUnlocked: () => upg3 === 1, applyEffect: () => { const oldVal = director; director += Math.round(director * 0.2); if (M4 >= 1) { mps += (director - oldVal) * M4; } } },
+        { costVar: 'icost6', upgCountVar: 'iceupg6', costMultiplier: 1.25, isUnlocked: () => upg3 === 1, applyEffect: () => { const oldVal = ceo; ceo += Math.round(ceo * 0.2); if (M7 >= 1) { mps += (ceo - oldVal) * M7; } } },
+        
+        // These are unlocked by upg39 ("Advanced Schematics")
+        { costVar: 'icost7', upgCountVar: 'iceupg7', costMultiplier: 1.25, isUnlocked: () => upg39 === 1, applyEffect: () => { const oldVal = oracle; oracle += Math.round(oracle * 0.2); if (M9 >= 1) { mps += (oracle - oldVal) * M9; } } },
+        { costVar: 'icost8', upgCountVar: 'iceupg8', costMultiplier: 1.25, isUnlocked: () => upg39 === 1, applyEffect: () => { const oldVal = fryer; fryer += Math.round(fryer * 0.2); if (M10 >= 1) { mps += (fryer - oldVal) * M10; } } },
+        
+        // These are unlocked by upg40 ("Cryo-Piping")
+        { costVar: 'icost9', upgCountVar: 'iceupg9', costMultiplier: 1.25, isUnlocked: () => upg40 === 1, applyEffect: () => { const oldVal = feast; feast += Math.round(feast * 0.2); if (M11 >= 1) { mps += (feast - oldVal) * M11; } } },
+        { costVar: 'icost10', upgCountVar: 'iceupg10', costMultiplier: 1.25, isUnlocked: () => upg40 === 1, applyEffect: () => { const oldVal = verdant; verdant += Math.round(verdant * 0.2); if (M12 >= 1) { mps += (verdant - oldVal) * M12; } } },
+        
+        // These are unlocked by upg41 ("Flavor Synthesis")
+        { costVar: 'icost11', upgCountVar: 'iceupg11', costMultiplier: 1.25, isUnlocked: () => upg41 === 1, applyEffect: () => { const oldVal = whisperer; whisperer += Math.round(whisperer * 0.2); if (M14 >= 1) { mps += (whisperer - oldVal) * M14; } } },
+        { costVar: 'icost12', upgCountVar: 'iceupg12', costMultiplier: 1.25, isUnlocked: () => upg41 === 1, applyEffect: () => { const oldVal = chancellor; chancellor += Math.round(chancellor * 0.2); if (M15 >= 1) { mps += (chancellor - oldVal) * M15; } } },
+        
+        // These are unlocked by upg42 ("Sugar Sublimation")
+        { costVar: 'icost13', upgCountVar: 'iceupg13', costMultiplier: 1.25, isUnlocked: () => upg42 === 1, applyEffect: () => { const oldVal = archmage; archmage += Math.round(archmage * 0.2); if (M17 >= 1) { mps += (archmage - oldVal) * M17; } } },
+        { costVar: 'icost14', upgCountVar: 'iceupg14', costMultiplier: 1.25, isUnlocked: () => upg42 === 1, applyEffect: () => { const oldVal = priest; priest += Math.round(priest * 0.2); if (M16 >= 1) { mps += (priest - oldVal) * M16; } } },
+        
+        // These are unlocked by upg43 ("Celestial Sprinkles")
+        { costVar: 'icost15', upgCountVar: 'iceupg15', costMultiplier: 1.25, isUnlocked: () => upg43 === 1, applyEffect: () => { const oldVal = matriarch; matriarch += Math.round(matriarch * 0.2); if (M18 >= 1) { mps += (matriarch - oldVal) * M18; } } },
+        { costVar: 'icost16', upgCountVar: 'iceupg16', costMultiplier: 1.25, isUnlocked: () => upg43 === 1, applyEffect: () => { const oldVal = grillmaster; grillmaster += Math.round(grillmaster * 0.2); if (M19 >= 1) { mps += (grillmaster - oldVal) * M19; } } }
+    ];
+
+    let anyPurchaseMade = false;
+
+    while (true) {
+        let cheapestAffordable = null;
+        let minCost = Infinity;
+
+        for (const upgrade of iceUpgrades) {
+            // *** THE FIX IS HERE ***
+            // First, check if the upgrade is unlocked before checking its cost.
+            if (upgrade.isUnlocked()) {
+                const currentCost = window[upgrade.costVar];
+                if (ice >= currentCost && currentCost < minCost) {
+                    minCost = currentCost;
+                    cheapestAffordable = upgrade;
+                } else {
+                  //  console.log(`Cannot afford ${upgrade.upgCountVar} at cost ${currentCost}. Current ice: ${ice}`); // Debug log
+                }
+            } else {
+               // console.log(`Upgrade ${upgrade.upgCountVar} is locked.`); // Debug log for locked upgrades
+            } 
+        }
+
+        // If no affordable and unlocked upgrade was found, exit the loop.
+        if (!cheapestAffordable) {
+            break;
+        } else {
+          //  console.log(`Cheapest affordable upgrade: ${cheapestAffordable.upgCountVar} at cost ${minCost}`); // Debug log
+        }
+
+        // Buy the cheapest one and update its state.
+        const cost = window[cheapestAffordable.costVar];
+        ice -= cost;
+        window[cheapestAffordable.upgCountVar]++;
+        window[cheapestAffordable.costVar] = Math.round(cost * cheapestAffordable.costMultiplier);
+        cheapestAffordable.applyEffect();
+        
+        anyPurchaseMade = true;
+    }
+
+    if (anyPurchaseMade) {
+        playSound('purchase', 0.4 * sfxVolume);
+    } else {
+        playSound('error', 0.4 * sfxVolume);
+    }
+
+    updateAll(); // Update the UI once after all purchases are completed.
 }
 
 
@@ -3399,7 +3568,14 @@ function buyall() {
             rebirthUpgrade5Container.style.display = 'none';
         }
     }
-
+    const rebirthUpgrade6Container = document.getElementById("rebirthUpgrade6Container");
+    if (rebirthUpgrade6Container) { // Check if the container exists
+        if (rebirthUpgradeStates.rebirthUpg3 === true) {
+            rebirthUpgrade6Container.style.display = 'block'; // Use 'block' or 'flex'
+        } else {
+            rebirthUpgrade6Container.style.display = 'none';
+        }
+    }
     const upgrade9Button = document.getElementById("upgrade9");
     if (upg9 === 1) {
         if (upgrade9Button) upgrade9Button.remove();
@@ -3767,6 +3943,7 @@ function initImportOverlay() {
 // wire up after DOM ready
 window.addEventListener('DOMContentLoaded', initImportOverlay);
         function saveGame() {
+            lastSeenTime = Date.now();
     const gameState = {
         // Core game variables
         count,
@@ -3818,7 +3995,7 @@ window.addEventListener('DOMContentLoaded', initImportOverlay);
         rebirthUpg12Levels,
         rebirthUpg14Levels,
         rebirthUpg22Levels,
-        
+        lastSeenTime,
         // Rebirth Upgrade Costs
         rebupgp1, rebupgp2, rebupgp3, rebupgp4, rebupgp5, rebupgp6, rebupgp7, rebupgp8,
         rebupgp9, rebupgp10, rebupgp11, rebupgp12, rebupgp13, rebupgp14, rebupgp15, rebupgp16,
@@ -4077,7 +4254,7 @@ function loadGame() {
         rebupgp23 = gameState.rebupgp23 || 5000;
         golden_legacy = gameState.golden_legacy || 1;
         rebirthClickBonus = gameState.rebirthClickBonus || 0;
-
+        lastSeenTime = gameState.lastSeenTime || 0;
         // Restore achievements
         if (gameState.achievements) {
             Object.entries(gameState.achievements).forEach(([id, unlocked]) => {
@@ -4090,6 +4267,41 @@ function loadGame() {
                 }
             });
         }
+const now = Date.now();
+const offlineDurationInSeconds = Math.floor((now - lastSeenTime) / 1000);
+
+
+if (rebirthUpgradeStates.rebirthUpg8 === true && offlineDurationInSeconds > 0) {
+    let offlineEarnings = (mps * moneymultiplier) * (offlineDurationInSeconds * 0.01); // 1% of MPS per second
+
+  
+    if (rebirthUpgradeStates.rebirthUpg13 === true) {
+        offlineEarnings *= 2;
+    }
+
+    
+    if (rebirthUpgradeStates.rebirthUpg17 === true) {
+        // This bonus can grow based on your total money.
+        const dynamicBonus = 1 + Math.log10(total_money + 1);
+        offlineEarnings *= dynamicBonus;
+    }
+    
+    
+    
+    if (rebirthUpgradeStates.rebirthUpg23 === true) {
+        offlineEarnings *= 10;
+    }
+    
+
+    count += offlineEarnings;
+    total_money += offlineEarnings;
+
+    alert(`Welcome back! You earned $${formatCurrency(offlineEarnings)} while you were away.`);
+} else if (offlineDurationInSeconds > 0) {
+    // This log helps confirm if the check is failing correctly when the upgrade isn't owned.
+    console.log("Offline earnings upgrade not purchased or time was zero. Upgrade state:", rebirthUpgradeStates.rebirthUpg8);
+}
+
         recalculateIps();
         // Apply rebirth upgrades and update UI
         applyRebirthUpgrades();

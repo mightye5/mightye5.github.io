@@ -634,31 +634,51 @@
                                     </div>
                                 </div>
                            </div>
-                    <div id="rebirthOverlay" class="overlay" aria-hidden="true">
+      
+<div id="rebirthOverlay" class="overlay" aria-hidden="true">
     <div class="overlay-panel">
         <div class="overlay-title">Rebirth Upgrades</div>
         <p>You have <span id="rebirthPointsDisplay">0</span> Rebirth Points.</p>
         <div class="rebirth-upgrades-grid">
             <div class="tooltip-container">
-                <button id="rebirthUpgrade1" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(1)">Permanent Coffee Boost: 1 RP</button>
-                <span class="tooltip">Permanently applies the effect of the "Coffee" upgrade after a rebirth.</span>
+                <button id="rebirthUpgrade1" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(1)" onmouseover="showTooltip(event, 'rebirthTooltip1')" onmouseout="hideTooltip('rebirthTooltip1')">Permanent Coffee Boost: 1 RP</button>
+                <span id="rebirthTooltip1" class="tooltip">Permanently applies the effect of the "Coffee" upgrade after a rebirth.</span>
             </div>
 
             <div class="tooltip-container">
-                <button id="rebirthUpgrade2" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(2)">Increased Base Clicks (Repeatable): 2 RP</button>
-                <span class="tooltip">Increases the base money you get per click by $1.</span>
+                <button id="rebirthUpgrade2" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(2)" onmouseover="showTooltip(event, 'rebirthTooltip2')" onmouseout="hideTooltip('rebirthTooltip2')">Increased Base Clicks (Repeatable): 2 RP</button>
+                <span id="rebirthTooltip2" class="tooltip">Increases the base money you get per click by $1.</span>
             </div>
+
             <div class="tooltip-container">
-                <button id="rebirthUpgrade3" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(3)">Cheaper Hiring: 2 RP</button>
-                <span class="tooltip">All employee costs are permanently reduced by 5%.</span>
+                <button id="rebirthUpgrade3" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(3)" onmouseover="showTooltip(event, 'rebirthTooltip3')" onmouseout="hideTooltip('rebirthTooltip3')">Cheaper Hiring: 2 RP</button>
+                <span id="rebirthTooltip3" class="tooltip">All employee costs are permanently reduced by 5%.</span>
             </div>
+
             <div class="tooltip-container">
-                <button id="rebirthUpgrade4" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(4)">Golden Legacy: 3 RP</button>
-                <span class="tooltip">Gives a permanent 1.25x multiplier to money per click from all burger upgrades.</span>
+                <button id="rebirthUpgrade4" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(4)" onmouseover="showTooltip(event, 'rebirthTooltip4')" onmouseout="hideTooltip('rebirthTooltip4')">Golden Legacy: 3 RP</button>
+                <span id="rebirthTooltip4" class="tooltip">Gives a permanent 1.25x multiplier to money per click from all burger upgrades.</span>
             </div>
-            <div class="tooltip-container"  id="rebirthUpgrade5Container">
-                <button id="rebirthUpgrade5" class="rebirth-upgrade-button"  onclick="buyRebirthUpgrade(5)">Ice Cream Machine Efficiency (Repeatable) 5 RP</button>
-                <span class="tooltip">Permanently applies the effect of the "Coffee" upgrade after a rebirth.</span>
+             <div class="tooltip-container" id="rebirthUpgrade8Container">
+                <button id="rebirthUpgrade8" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(8)" onmouseover="showTooltip(event, 'rebirthTooltip8')" onmouseout="hideTooltip('rebirthTooltip8')">Offline Production: 10 RP</button>
+                <span id="rebirthTooltip8" class="tooltip">Earns 1% of your current money per second while the game is closed.</span>
+            </div>
+            <div class="tooltip-container" id="rebirthUpgrade5Container">
+                <button id="rebirthUpgrade5" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(5)" onmouseover="showTooltip(event, 'rebirthTooltip5')" onmouseout="hideTooltip('rebirthTooltip5')">Ice Cream Machine Efficiency (Repeatable) 5 RP</button>
+                <span id="rebirthTooltip5" class="tooltip">Increases ice cream production by 25%.</span>
+            </div>
+            <div class="tooltip-container" id="rebirthUpgrade9Container">
+                <button id="rebirthUpgrade9" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(9)" onmouseover="showTooltip(event, 'rebirthTooltip9')" onmouseout="hideTooltip('rebirthTooltip9')">Automated Ice Cream purchases 15 RP</button>
+                <span id="rebirthTooltip9" class="tooltip">The Ice Cream Machine upgrades tab is automatically checked every second, and affordable upgrades are purchased instantly.</span>
+            </div>
+            <div class="tooltip-container" id="rebirthUpgrade6Container">
+                <button id="rebirthUpgrade6" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(6)" onmouseover="showTooltip(event, 'rebirthTooltip6')" onmouseout="hideTooltip('rebirthTooltip6')">Bulk Purchase Discount (Repeatable) 4 RP</button>
+                <span id="rebirthTooltip6" class="tooltip">Further reduces the cost of all employees by 1%.</span>
+            </div>
+            
+             <div class="tooltip-container" id="rebirthUpgrade7Container">
+                <button id="rebirthUpgrade7" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(7)" onmouseover="showTooltip(event, 'rebirthTooltip7')" onmouseout="hideTooltip('rebirthTooltip7')">Diamond Legacy 5 RP</button>
+                <span id="rebirthTooltip7" class="tooltip">Increases the effect of your "Golden Burger" by 1.5x.</span>
             </div>
         </div>
         <button onclick="hideRebirthOverlay()">Return to game</button>

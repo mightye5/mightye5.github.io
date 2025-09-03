@@ -155,6 +155,7 @@
   max-height: none;       /* remove your old max-height */
   overflow-y: auto;       /* scroll if its content is too tall */
 }
+
         .upgrade {
     min-height: fit-content;
     max-height: 250px; 
@@ -180,6 +181,9 @@ max-height: none;
  flex: 1 1 auto;  /* take up all leftover vertical space */
   min-height: 0;   /* super-important so flexbox allows it to shrink */
   overflow-y: auto;
+}
+.rebirth-upgrades-grid .tooltip-container {
+    width: 100%;
 }
         /* Center the main burger button */
         #button {
