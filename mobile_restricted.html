@@ -12,33 +12,33 @@
             <div class="game-wrapper">
 
                 <div class="game-left">
-                    <!-- Money display section -->
                     <div id="moneypers">
                         <input type="text" id="moneypersecond" value="Money per second: $0" readonly>
                         <input type="text" id="moneyperclick" value="Money per click: $1" readonly>
                         <input type="text" id="moneymultiplier" value="Money Multiplier: 1" readonly>
                         <input type="text" id="money" value="Money: $0" readonly>
+                        <input type="text" id="ice" value="Ice Creams: 0" readonly>
+                        <input type="text" id="icepers" value="Ice Creams per second: 0" readonly>
+                         <input type="text" id="rebirth_points" value="Rebirth Points: 0" readonly>
                     </div>
                     <div class="button">
-                        <button class="image-button" onclick="addMoney();"></button>
-                        <div id="rebirth" style="display:none;">
-
-                        <input type="text" id="rebirth_points" value="Rebirth Points: 0" readonly>
-                        <div class="tooltip-container" id="rebirthtooltipcontainer">
-                            <button id="rebirth_button" onclick="rebirth()" disabled onmouseover="showTooltip(event, 'rebirthtooltip')" onmouseout="hideTooltip('rebirthtooltip')">Rebirth</button>
-                            <span class="tooltip" id="rebirthtooltip">Resets everything other than achievements then lets you purchase special upgrades with rebirth points. (Coming soon) </span>
+                        <button class="image-button" id="burger-button" onclick="addMoney();"></button> <div id="rebirth" style="display:flex;"> <div class="tooltip-container" id="rebirthtooltipcontainer">
+                                <button id="rebirth_button" onclick="rebirth()" onmouseover="showTooltip(event, 'rebirthtooltip')" onmouseout="hideTooltip('rebirthtooltip')">Rebirth</button>
+                                <span class="tooltip" id="rebirthtooltip">Resets everything other than achievements then lets you purchase special upgrades with rebirth points. (You must Learn from the grand grill master first) </span>
+                            </div>
                         </div>
                     </div>
                     <div id="button">
-                      <p> <button  onclick="GoTo('mobile_upgrades.html');">Go to upgrade and Employee section</button> </p> 
+                      <p> <button  onclick="GoTo('mobile_upgrades.html');">Go to upgrade and Employee section</button> </p>
                     </div>
+
                     <div id="button">
-                      <p> <button  onclick="GoTo('mobile_franchise.html');">Go to Franchise, Settings, Etc. Section</button> </p> 
+                      <p> <button  onclick="GoTo('mobile_franchise.html');">Go to Franchise, Settings, Etc. Section</button> </p>
                     </div>
                 </div>
 <div class="hidden">
                 <div class="franchise-section">
-                    
+
                     <div class="franchise-header">
                         <h2>Restaurant Empire</h2>
                         <div class="tabs">
@@ -50,15 +50,13 @@
                         </div>
                     </div>
 
-                    <!-- Franchises Tab (Original Content) -->
                     <div id="franchiseTab" class="tab-content active">
-                        
+
                         <div class="tooltip-container">
                             <button class="franchise-button" id ="Franchisebutton" onclick = "openFranchise()" onmouseover="showTooltip(event, 'Franchisetooltip')" onmouseout="hideTooltip('Franchisetooltip')">Open a new Franchise ($500K)</button>
                             <span class="tooltip" id="Franchisetooltip">Increases the money multiplier by 1x.</span>
                         </div>
                         <div class="restaurant-container">
-                            <!-- Your existing restaurant divs here -->
                             <div class="restaurant">
                                 <div class="restaurant-label">Main Restaurant</div>
                                 <img src="Restaurant-images/restaurant.png" alt="Main Restaurant" class="restaurant-image" id="Franchise1">
@@ -152,12 +150,9 @@
                                 <button class="feature-button" style="display:none;" id="bettergrill" onclick="bettergrill()" onmouseover="showTooltip(event, 'bettergrilltooltip')" onmouseout="hideTooltip('bettergrilltooltip')">Reassemble the Gilded Dough Whisk! 750 ice</button>
                                 <span class="tooltip" id="bettergrilltooltip">Increases what Grand Grillmasters make by 0.2x</span>
                             </div>
-                            <input type="text" id="ice" value="Ice Creams: 0" readonly>
-                            <input type="text" id="icepers" value="Ice Creams per second: 0" readonly>
-                        </div>
+                           </div>
                     </div>
 
-                    <!-- Achievements Tab -->
                     <div id="achievementsTab" class="tab-content">
                         <div class="achievements-grid">
                             <div class="achievement locked" data-achievement="firstSteps">
@@ -331,13 +326,13 @@
 
                         </div>
                     </div>
-                <div id="settingsTab" class="tab-content active">                          
+                <div id="settingsTab" class="tab-content active">
                       <div class="slidecontainer">
                                 <p>Sfx volume value: <span id="sfxVolumeValue">50</span>%</p>
                                 <input type="range" min="0" max="100" value="50"  id="myRange">
                               <p>Music volume value: <span id="musicVolumeValue">50</span>%</p>
                                 <input type="range" min="0" max="100" value="50"  id="musicRange">
-                             <p>  <button onclick="ToggleDark()" style="max-width: fit-content;">Toggle dark mode</button></p> 
+                             <p>  <button onclick="ToggleDark()" style="max-width: fit-content;">Toggle dark mode</button></p>
 <p>                    <button onclick="saveGame()" class ="save-button" >Save Game</button>
                     <button onclick="loadGame()" class ="load-button" >Load Game</button>
                     <button onclick="deleteSave()" class ="delete-button">Delete Save</button></p>
@@ -346,307 +341,129 @@
 
                         </div>
 
-</div>
+                </div>
 
                 </div>
-                <div class="game-right">
-                    <!-- Upgrades section -->
-                    <div id="upgrade">
-                        <div class="section-title">Upgrades</div>
-                        <!-- Upgrades tooltips -->
-                        <div class="tooltip-container" id="upgrade1tooltipcontainer">
-                            <button id="upgrade1" onclick="upgrade1()" onmouseover="showTooltip(event, 'upgrade1tooltip')" onmouseout="hideTooltip('upgrade1tooltip')">Coffee: $150</button>
-                            <span class="tooltip" id="upgrade1tooltip">Increases the money made from all workers by 2.5x</span>
-                        </div>
-                        <div class="tooltip-container" id="upgrade3tooltipcontainer">
-                            <button id="upgrade3" onclick="upgrade3()" style="display:none;" onmouseover="showTooltip(event, 'upgrade3tooltip')" onmouseout="hideTooltip('upgrade3tooltip')">The Ice cream machine: $15000</button>
-                            <span class="tooltip" id="upgrade3tooltip">Doubles the money made from all managers, and adds in a secret currency</span>
-                        </div>
-                        <div class="tooltip-container" id="upgrade8tooltipcontainer">
-                            <button id="upgrade8" onclick="upgrade8()" style="display:none;" onmouseover="showTooltip(event, 'upgrade8tooltip')" onmouseout="hideTooltip('upgrade8tooltip')">Manager Boost: $25000</button>
-                            <span class="tooltip" id="upgrade8tooltip">Gives Manager +0.5x per worker you have</span>
-                        </div>
-                        <div class="tooltip-container" id="upgrade9tooltipcontainer">
-                            <button id="upgrade9" onclick="upgrade9()" style="display:none;" onmouseover="showTooltip(event, 'upgrade9tooltip')" onmouseout="hideTooltip('upgrade9tooltip')">Overall Boost: $75000</button>
-                            <span class="tooltip" id="upgrade9tooltip">Overall 1.5x production</span>
-                        </div>
-                        <div class="tooltip-container" id="upgrade10tooltipcontainer">
-                            <button id="upgrade10" onclick="upgrade10()" style="display:none;" onmouseover="showTooltip(event, 'upgrade10tooltip')" onmouseout="hideTooltip('upgrade10tooltip')">Executive Boost: $100000</button>
-                            <span class="tooltip" id="upgrade10tooltip">VP, COO and CEO get 1.5x more money</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="upgrade11" onclick="upgrade11()" style="display:none;" onmouseover="showTooltip(event, 'upgrade11tooltip')" onmouseout="hideTooltip('upgrade11tooltip')">Unlock the secret society tier one: $175000, 50 Directors, and 50 VPs </button>
-                            <span class="tooltip" id="upgrade11tooltip">unlocks Milkshake Oracle and shadow fryer</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="upgrade12" onclick="upgrade12()" style="display:none;" onmouseover="showTooltip(event, 'upgrade12tooltip')" onmouseout="hideTooltip('upgrade12tooltip')">Ice Cream Boost: $225000</button>
-                            <span class="tooltip" id="upgrade12tooltip">Increases ice cream production by 1.25x and Oracle by 1.5x</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="upgrade13" onclick="upgrade13()" style="display:none;" onmouseover="showTooltip(event, 'upgrade13tooltip')" onmouseout="hideTooltip('upgrade13tooltip')">COO Boost: $300000</button>
-                            <span class="tooltip" id="upgrade13tooltip">COO + 0.05x per Oracle</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="upgrade14" onclick="upgrade14()" style="display:none;" onmouseover="showTooltip(event, 'upgrade14tooltip')" onmouseout="hideTooltip('upgrade14tooltip')">Production Boost: $500000</button>
-                            <span class="tooltip" id="upgrade14tooltip">All production increase by 1.25x</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="upgrade39" onclick="upgrade39()" style="display:none;" onmouseover="showTooltip(event, 'upgrade39tooltip')" onmouseout="hideTooltip('upgrade39tooltip')">Oracle's Frozen Manual: $600000</button>
-                            <span class="tooltip" id="upgrade39tooltip">Unlocks Oracle and Fryer ice cream upgrades</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="upgrade15" onclick="upgrade15()" style="display:none;" onmouseover="showTooltip(event, 'upgrade15tooltip')" onmouseout="hideTooltip('upgrade15tooltip')">Unlock the secret society tier two: $750000, 50 CEOs, and 50 Oracles</button>
-                            <span class="tooltip" id="upgrade15tooltip">unlocks The Keeper of the Hidden Feast, and verdant keeper</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="upgrade16" onclick="upgrade16()" style="display:none;" onmouseover="showTooltip(event, 'upgrade16tooltip')" onmouseout="hideTooltip('upgrade16tooltip')">Verdant Boost: $1000000</button>
-                            <span class="tooltip" id="upgrade16tooltip">1.5x to Verdant Keeper</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="upgrade17" onclick="upgrade17()" style="display:none;" onmouseover="showTooltip(event, 'upgrade17tooltip')" onmouseout="hideTooltip('upgrade17tooltip')">Fryer Boost: $1250000</button>
-                            <span class="tooltip" id="upgrade17tooltip">Shadow Fryer +0.05x per Verdant Keeper</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="upgrade18" onclick="upgrade18()" style="display:none;" onmouseover="showTooltip(event, 'upgrade18tooltip')" onmouseout="hideTooltip('upgrade18tooltip')">Expand the secret menu: $1550000</button>
-                            <span class="tooltip" id="upgrade18tooltip">1.25x buff to Keeper of Hidden Feast, and unlocks new burger upgrades</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="upgrade40" onclick="upgrade40()" style="display:none;" onmouseover="showTooltip(event, 'upgrade40tooltip')" onmouseout="hideTooltip('upgrade40tooltip')">Feastkeeper's Ice Guide: $1.75M</button>
-                            <span class="tooltip" id="upgrade40tooltip">Unlocks Feast and Verdant ice cream upgrades</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="upgrade19" onclick="upgrade19()" style="display:none;" onmouseover="showTooltip(event, 'upgrade19tooltip')" onmouseout="hideTooltip('upgrade19tooltip')">Unlock the secret society tier three: $2000000, 50 Verdant Keepers, and 50 Shadow Fryers</button>
-                            <span class="tooltip" id="upgrade19tooltip">unlocks flame whisperer, cheese chancellor, and emulsifier supreme</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="upgrade20" onclick="upgrade20()" style="display:none;" onmouseover="showTooltip(event, 'upgrade20tooltip')" onmouseout="hideTooltip('upgrade20tooltip')">Whisperer Boost: $3500000</button>
-                            <span class="tooltip" id="upgrade20tooltip">1.5x to Flame Whisperer</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="upgrade21" onclick="upgrade21()" style="display:none;" onmouseover="showTooltip(event, 'upgrade21tooltip')" onmouseout="hideTooltip('upgrade21tooltip')">VP Boost: $6250000</button>
-                            <span class="tooltip" id="upgrade21tooltip">VP + 0.10x per Flame Whisperer</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="upgrade22" onclick="upgrade22()" style="display:none;" onmouseover="showTooltip(event, 'upgrade22tooltip')" onmouseout="hideTooltip('upgrade22tooltip')">Make a new sauce: $10250000</button>
-                            <span class="tooltip" id="upgrade22tooltip">1.5x to emulsifier supreme</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="upgrade41" onclick="upgrade41()" style="display:none;" onmouseover="showTooltip(event, 'upgrade41tooltip')" onmouseout="hideTooltip('upgrade41tooltip')">Whisperer's Chilling Scroll: $13M</button>
-                            <span class="tooltip" id="upgrade41tooltip">Unlocks Whisperer and Chancellor ice cream upgrades</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="upgrade23" onclick="upgrade23()" style="display:none;" onmouseover="showTooltip(event, 'upgrade23tooltip')" onmouseout="hideTooltip('upgrade23tooltip')">Unlock the secret society tier four: $15750000, 50 Cheese Chancellors, and 50 Flame Whisperers</button>
-                            <span class="tooltip" id="upgrade23tooltip">unlocks Golden Archmage, and high priest of the Golden bun</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="upgrade24" onclick="upgrade24()" style="display:none;" onmouseover="showTooltip(event, 'upgrade24tooltip')" onmouseout="hideTooltip('upgrade24tooltip')">New strategy: $22500000</button>
-                            <span class="tooltip" id="upgrade24tooltip">1.5x to golden archmage</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="upgrade25" onclick="upgrade25()" style="display:none;" onmouseover="showTooltip(event, 'upgrade25tooltip')" onmouseout="hideTooltip('upgrade25tooltip')">Worker boost: $55000000</button>
-                            <span class="tooltip" id="upgrade25tooltip">Worker + 0.15x per archmage </span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="upgrade26" onclick="upgrade26()" style="display:none;" onmouseover="showTooltip(event, 'upgrade26tooltip')" onmouseout="hideTooltip('upgrade26tooltip')">David goggins: $125000000</button>
-                            <span class="tooltip" id="upgrade26tooltip">1.35x all</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="upgrade42" onclick="upgrade42()" style="display:none;" onmouseover="showTooltip(event, 'upgrade42tooltip')" onmouseout="hideTooltip('upgrade42tooltip')">Archmage's Frozen Codex: $175M</button>
-                            <span class="tooltip" id="upgrade42tooltip">Unlocks Archmage and Priest ice cream upgrades</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="upgrade27" onclick="upgrade27()" style="display:none;" onmouseover="showTooltip(event, 'upgrade27tooltip')" onmouseout="hideTooltip('upgrade27tooltip')">Unlock the secret society tier five: $250000000, 50 Golden Archmages, and 50 Emulsifier Supremes</button>
-                            <span class="tooltip" id="upgrade27tooltip">unlocks grand grill master and patty matriarch</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="upgrade28" onclick="upgrade28()" style="display:none;" onmouseover="showTooltip(event, 'upgrade28tooltip')" onmouseout="hideTooltip('upgrade28tooltip')">Learn an ancient tradition: $500000000</button>
-                            <span class="tooltip" id="upgrade28tooltip">1.5x Patty Matriarch</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="upgrade29" onclick="upgrade29()" style="display:none;" onmouseover="showTooltip(event, 'upgrade29tooltip')" onmouseout="hideTooltip('upgrade29tooltip')">Emulsifier boost: $750000000</button>
-                            <span class="tooltip" id="upgrade29tooltip">Emulsifier supreme + 0.20x per matriarch
-                            </span>
-                        </div>
-                                                <div class="tooltip-container">
-                            <button id="upgrade43" onclick="upgrade43()" style="display:none;" onmouseover="showTooltip(event, 'upgrade43tooltip')" onmouseout="hideTooltip('upgrade43tooltip')">Unearth the Scorched Sorbet Scroll: $1B</button>
-                            <span class="tooltip" id="upgrade43tooltip">Unlocks Grand Grillmaster and Patty Matriarch ice cream upgrades</span>
-                        </div>
-                        <div class="tooltip-container">
-                            <button id="upgrade30" onclick="upgrade30()" disabled style="display:none;" onmouseover="showTooltip(event, 'upgrade30tooltip')" onmouseout="hideTooltip('upgrade30tooltip')">Learn from the grand grill master: $???</button>
-                            <span class="tooltip" id="upgrade30tooltip">Coming soon </span>
-                        </div>
-                        <div class="tooltip-container  burger-upgrade" id="upgrade2tooltipcontainer">
-                            <button id="upgrade2" onclick="upgrade2()" onmouseover="showTooltip(event, 'upgrade2tooltip')" onmouseout="hideTooltip('upgrade2tooltip')">The Golden burger: $100000</button>
-                            <span class="tooltip" id="upgrade2tooltip">Increases how much money you make per click by 2x</span>
-                        </div>
-                        <div class="tooltip-container  burger-upgrade" id="upgrade4tooltipcontainer">
-                            <button id="upgrade4" onclick="upgrade4()" style="display:none;" onmouseover="showTooltip(event, 'upgrade4tooltip')" onmouseout="hideTooltip('upgrade4tooltip')">The Diamond burger: $500000</button>
-                            <span class="tooltip" id="upgrade4tooltip">Increases how much money you make per click by 2.5x</span>
-                        </div>
-                        <div class="tooltip-container  burger-upgrade">
-                            <button id="upgrade5" onclick="upgrade5()" style="display:none;" onmouseover="showTooltip(event, 'upgrade5tooltip')" onmouseout="hideTooltip('upgrade5tooltip')">The Sapphire burger: $800000</button>
-                            <span class="tooltip" id="upgrade5tooltip">Increases how much money you make per click by 3x</span>
-                        </div>
-                        <div class="tooltip-container  burger-upgrade">
-                            <button id="upgrade6" onclick="upgrade6()" style="display:none;" onmouseover="showTooltip(event, 'upgrade6tooltip')" onmouseout="hideTooltip('upgrade6tooltip')">The Uranium burger: $1000000</button>
-                            <span class="tooltip" id="upgrade6tooltip">Increases how much money you make per click by 3.5x</span>
-                        </div>
-                        <div class="tooltip-container  burger-upgrade">
-                            <button id="upgrade7" onclick="upgrade7()" style="display:none;" onmouseover="showTooltip(event, 'upgrade7tooltip')" onmouseout="hideTooltip('upgrade7tooltip')">The Obsidian burger: $1250000</button>
-                            <span class="tooltip" id="upgrade7tooltip">Increases how much money you make per click by 4x</span>
-                        </div>
-                        <div class="tooltip-container  burger-upgrade">
-                            <button id="upgrade31" onclick="upgrade31()" style="display:none;" onmouseover="showTooltip(event, 'upgrade31tooltip')" onmouseout="hideTooltip('upgrade31tooltip')">Prism Burger: $2000000000</button>
-                            <span class="tooltip" id="upgrade31tooltip">Increases how much money you make per click by 5.5x</span>
-                        </div>
-                        <div class="tooltip-container  burger-upgrade">
-                            <button id="upgrade32" onclick="upgrade32()" style="display:none;" onmouseover="showTooltip(event, 'upgrade32tooltip')" onmouseout="hideTooltip('upgrade32tooltip')">Inferno Slider Trio: $2500000000</button>
-                            <span class="tooltip" id="upgrade32tooltip">Increases how much money you make per click by 6.5x</span>
-                        </div>
-                        <div class="tooltip-container  burger-upgrade">
-                            <button id="upgrade33" onclick="upgrade33()" style="display:none;" onmouseover="showTooltip(event, 'upgrade33tooltip')" onmouseout="hideTooltip('upgrade33tooltip')">Aurora Royale: $3000000000</button>
-                            <span class="tooltip" id="upgrade33tooltip">Increases how much money you make per click by 7.5x</span>
-                        </div>
-                        <div class="tooltip-container  burger-upgrade">
-                            <button id="upgrade34" onclick="upgrade34()" style="display:none;" onmouseover="showTooltip(event, 'upgrade34tooltip')" onmouseout="hideTooltip('upgrade34tooltip')">Phoenix Feast: $3500000000</button>
-                            <span class="tooltip" id="upgrade34tooltip">Increases how much money you make per click by 9x</span>
-                        </div>
-                        <div class="tooltip-container  burger-upgrade">
-                            <button id="upgrade35" onclick="upgrade35()" style="display:none;" onmouseover="showTooltip(event, 'upgrade35tooltip')" onmouseout="hideTooltip('upgrade35tooltip')">Galactic Burger: $4000000000</button>
-                            <span class="tooltip" id="upgrade35tooltip">Increases how much money you make per click by 10x</span>
-                        </div>
-                        <div class="tooltip-container  burger-upgrade">
-                            <button id="upgrade36" onclick="upgrade36()" style="display:none;" onmouseover="showTooltip(event, 'upgrade36tooltip')" onmouseout="hideTooltip('upgrade36tooltip')">Eldritch Stack: $4500000000</button>
-                            <span class="tooltip" id="upgrade36tooltip">Increases how much money you make per click by 12x</span>
-                        </div>
-                        <div class="tooltip-container  burger-upgrade">
-                            <button id="upgrade37" onclick="upgrade37()" style="display:none;" onmouseover="showTooltip(event, 'upgrade37tooltip')" onmouseout="hideTooltip('upgrade37tooltip')">Heavenly Bite: $5000000000</button>
-                            <span class="tooltip" id="upgrade37tooltip">Increases how much money you make per click by 14x</span>
-                        </div>
-                        <div class="tooltip-container  burger-upgrade">
-                            <button id="upgrade38" onclick="upgrade38()" style="display:none;" onmouseover="showTooltip(event, 'upgrade38tooltip')" onmouseout="hideTooltip('upgrade38tooltip')">Infinite Feast: $5500000000</button>
-                            <span class="tooltip" id="upgrade38tooltip">Increases how much money you make per click by 16.5x</span>
-                        </div>
-                    </div>
-                        <div id="upgrade"><div class="section-title">Clicker Upgrades</div>
-                            <div class="tooltip-container">
-                                <button id="Clickbutton" onclick="clickadd()" onmouseover="showTooltip(event, 'Moreclicktooltip')" onmouseout="hideTooltip('Moreclicktooltip')">Better clicks: $15 (0)</button>
-                                <span class="tooltip" id="Moreclicktooltip">Increases click value by $2</span>
-                            </div>
-                            <div class="tooltip-container">
-                                <button id="Clickbutton2" onclick="clickmultiply()" onmouseover="showTooltip(event, 'Multiplyclicktooltip')" onmouseout="hideTooltip('Multiplyclicktooltip')">Multiplicative clicks: $20 (0)</button>
-                                <span class="tooltip" id="Multiplyclicktooltip">Increases click value by 0.1x</span>
-                            </div>
-                        </div>
-                        <!-- Upgrades section -->
-                        <div id="container">
-                            <div class="section-title">Employees</div>
-                            <div class="purchase-options">
-                                <button onclick="setPurchaseAmount(1)">1x</button>
-                                <button onclick="setPurchaseAmount(5)">5x</button>
-                                <button onclick="setPurchaseAmount(10)">10x</button>
-                                <button onclick="setPurchaseAmount(25)">25x</button>
-                                <button onclick="setPurchaseAmount(50)">50x</button>
-                                <button onclick="setPurchaseAmount('max')">Max</button>
-                            </div>
-                            <div class="tooltip-container">
-                                <button id="extraButton" onclick="extraAction();" onmouseover="showTooltip(event, 'Workertooltip')" onmouseout="hideTooltip('Workertooltip')">Worker: $10 (0)</button>
-                                <span class="tooltip" id="Workertooltip">Earns $1.5 per second</span>
-                            </div>
-                            <div class="tooltip-container">
-                                <button id="Button2" onclick="Action2()" onmouseover="showTooltip(event, 'Managertooltip')" onmouseout="hideTooltip('Managertooltip')">Manager: $25 (0)</button>
-                                <span class="tooltip" id="Managertooltip">Earns $3.5 per second</span>
-                            </div>
-
-                            <div class="tooltip-container">
-                                <button id="directorbutton" onclick="baction()" onmouseover="showTooltip(event, 'directortooltip')" onmouseout="hideTooltip('directortooltip')">Director: $100 (0)</button>
-                                <span class="tooltip" id="directortooltip">Earns $5.5 per second</span>
-                            </div>
-                            <div class="tooltip-container">
-                                <button id="VPbutton" onclick="vaction()" onmouseover="showTooltip(event, 'VPtooltip')" onmouseout="hideTooltip('VPtooltip')">Vice President: $225 (0)</button>
-                                <span class="tooltip" id="VPtooltip">Earns $12 per second</span>
-                            </div>
-                            <div class="tooltip-container">
-                                <button id="COObutton" onclick="COOaction()" onmouseover="showTooltip(event, 'COOtooltip')" onmouseout="hideTooltip('COOtooltip')">COO: $500 (0)</button>
-                                <span class="tooltip" id="COOtooltip">Earns $___ per second</span>
-                            </div>
-                            <div class="tooltip-container">
-                                <button id="ceobutton" onclick="caction()" onmouseover="showTooltip(event, 'Ceotooltip')" onmouseout="hideTooltip('Ceotooltip')">CEO: $1250 (0)</button>
-                                <span class="tooltip" id="Ceotooltip">Earns $200 per second</span>
-                            </div>
-                            <div class="tooltip-container">
-                                <button id="chairbutton" onclick="chairaction()" onmouseover="showTooltip(event, 'Chairmantooltip')" onmouseout="hideTooltip('Chairmantooltip')">Chairman: $2275 (0)</button>
-                                <span class="tooltip" id="Chairmantooltip">Earns $___ per second</span>
-                            </div>
-                            <div class="tooltip-container">
-                                <button id="MObutton" onclick="MOaction()" style="display: none;" onmouseover="showTooltip(event, 'MOtooltip')" onmouseout="hideTooltip('MOtooltip')">Milkshake Oracle: $5000 (0)</button>
-                                <span class="tooltip" id="MOtooltip">Earns $___ per second</span>
-                            </div>
-                            <div class="tooltip-container">
-                                <button id="SFbutton" onclick="SFaction()" style="display: none;" onmouseover="showTooltip(event, 'SFtooltip')" onmouseout="hideTooltip('SFtooltip')">Shadow Fryer: $12500 (0)</button>
-                                <span class="tooltip" id="SFtooltip">Earns $___ per second</span>
-                            </div>
-                            <div class="tooltip-container">
-                                <button id="feastbutton" onclick="feastaction()" style="display: none;" onmouseover="showTooltip(event, 'Feasttooltip')" onmouseout="hideTooltip('Feasttooltip')">The Keeper of the Hidden Feast: $17500 (0)</button>
-                                <span class="tooltip" id="Feasttooltip">Earns $___ per second</span>
-                            </div>
-                            <div class="tooltip-container">
-                                <button id="verdantbutton" onclick="verdantaction()" style="display: none;" onmouseover="showTooltip(event, 'Verdanttooltip')" onmouseout="hideTooltip('Verdanttooltip')">Verdant Keeper: $22500 (0)</button>
-                                <span class="tooltip" id="Verdanttooltip">Earns $___ per second</span>
-                            </div>
-                            <div class="tooltip-container">
-                                <button id="ESbutton" onclick="ESaction()" style="display: none;" onmouseover="showTooltip(event, 'EStooltip')" onmouseout="hideTooltip('EStooltip')">Emulsifier Supreme: $50000 (0)</button>
-                                <span class="tooltip" id="EStooltip">Earns $___ per second</span>
-                            </div>
-                            <div class="tooltip-container">
-                                <button id="FWbutton" onclick="FWaction()" style="display: none;" onmouseover="showTooltip(event, 'FWtooltip')" onmouseout="hideTooltip('FWtooltip')">Flame Whisperer: $125000 (0)</button>
-                                <span class="tooltip" id="FWtooltip">Earns $___ per second</span>
-                            </div>
-                            <div class="tooltip-container">
-                                <button id="CCbutton" onclick="CCaction()" style="display: none;" onmouseover="showTooltip(event, 'CCtooltip')" onmouseout="hideTooltip('CCtooltip')">Cheese Chancellor: $200000 (0)</button>
-                                <span class="tooltip" id="CCtooltip">Earns $___ per second</span>
-                            </div>
-                            <div class="tooltip-container">
-                                <button id="priestbutton" onclick="priestaction()" style="display: none;" onmouseover="showTooltip(event, 'Priesttooltip')" onmouseout="hideTooltip('Priesttooltip')">High Priest of the Golden Bun: $375000 (0)</button>
-                                <span class="tooltip" id="Priesttooltip">Earns $___ per second</span>
-                            </div>
-                            <div class="tooltip-container">
-                                <button id="GAbutton" onclick="GAaction()" style="display: none;" onmouseover="showTooltip(event, 'GAtooltip')" onmouseout="hideTooltip('GAtooltip')">Golden Archmage: $525000 (0)</button>
-                                <span class="tooltip" id="GAtooltip">Earns $___ per second</span>
-                            </div>
-                            <div class="tooltip-container">
-                                <button id="PMbutton" onclick="PMaction()" style="display: none;" onmouseover="showTooltip(event, 'PMtooltip')" onmouseout="hideTooltip('PMtooltip')">Patty Matriarch: $1000000 (0)</button>
-                                <span class="tooltip" id="PMtooltip">Earns $___ per second</span>
-                            </div>
-                            <div class="tooltip-container">
-                                <button id="GGbutton" onclick="GGaction()" style="display: none;" onmouseover="showTooltip(event, 'GGtooltip')" onmouseout="hideTooltip('GGtooltip')">Grand Grillmaster: $??? (0)</button>
-                                <span class="tooltip" id="GGtooltip">Earns $500k per second</span>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                    </div>
-                    </div>
-                </div>
-                    </div>
-                     <script src="script.js"></script>
+                </div> </div> <script src="script.js"></script>
 <script>
 function detectDevice() {
     if (window.innerWidth > 950) {
-  
         window.location.href = "index.html";
     }
 }
 
 function GoTo(page) {
-    saveGame();
-window.location.href = page;
+    // Defensive: don't call saveGame() if script hasn't initialized properly
+    if (typeof saveGame === 'function') {
+        try { saveGame(); } catch (e) { console.warn('saveGame failed on GoTo:', e); }
+    }
+    window.location.href = page;
 }
 
 window.onload = function() { detectDevice(); setInterval(detectDevice, 1000); };
 </script>
-</html>
-                                                 <div id="importOverlay" class="overlay" aria-hidden="true">
+
+<div id="rebirthOverlay" class="overlay" aria-hidden="true">
+    <div class="overlay-panel">
+        <div class="overlay-title">Rebirth Upgrades</div>
+        <p>You have <span id="rebirthPointsDisplay">0</span> Rebirth Points.</p>
+        <div class="rebirth-upgrades-grid">
+            <div class="tooltip-container">
+                <button id="rebirthUpgrade1" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(1)" onmouseover="showTooltip(event, 'rebirthTooltip1')" onmouseout="hideTooltip('rebirthTooltip1')">Permanent Coffee Boost: 1 RP</button>
+                <span id="rebirthTooltip1" class="tooltip">Permanently applies the effect of the "Coffee" upgrade after a rebirth. Unlocks Ice Cream Machine Efficiency (Repeatable)</span>
+            </div>
+
+            <div class="tooltip-container">
+                <button id="rebirthUpgrade2" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(2)" onmouseover="showTooltip(event, 'rebirthTooltip2')" onmouseout="hideTooltip('rebirthTooltip2')">Increased Base Clicks (Repeatable): 2 RP</button>
+                <span id="rebirthTooltip2" class="tooltip">Increases the base money you get per click by $1. Unlocks: None</span>
+            </div>
+
+            <div class="tooltip-container">
+                <button id="rebirthUpgrade3" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(3)" onmouseover="showTooltip(event, 'rebirthTooltip3')" onmouseout="hideTooltip('rebirthTooltip3')">Cheaper Hiring: 2 RP</button>
+                <span id="rebirthTooltip3" class="tooltip">All employee costs are permanently reduced by 5%. Unlocks: Bulk Purchase Discount</span>
+            </div>
+
+            <div class="tooltip-container">
+                <button id="rebirthUpgrade4" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(4)" onmouseover="showTooltip(event, 'rebirthTooltip4')" onmouseout="hideTooltip('rebirthTooltip4')">Golden Legacy: 3 RP</button>
+                <span id="rebirthTooltip4" class="tooltip">Gives a permanent 1.25x multiplier to money per click from all burger upgrades. Unlocks: Diamond Legacy</span>
+            </div>
+             <div class="tooltip-container" id="rebirthUpgrade8Container">
+                <button id="rebirthUpgrade8" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(8)" onmouseover="showTooltip(event, 'rebirthTooltip8')" onmouseout="hideTooltip('rebirthTooltip8')">Offline Production: 10 RP</button>
+                <span id="rebirthTooltip8" class="tooltip">Earns 1% of your current money per second while the game is closed. Unlocks: Better Offline Production</span>
+            </div>
+            <div class="tooltip-container" id="rebirthUpgrade5Container">
+                <button id="rebirthUpgrade5" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(5)" onmouseover="showTooltip(event, 'rebirthTooltip5')" onmouseout="hideTooltip('rebirthTooltip5')">Ice Cream Machine Efficiency (Repeatable) 5 RP</button>
+                <span id="rebirthTooltip5" class="tooltip">Increases ice cream production by 25%. Unlocks: Automated Ice Cream</span>
+            </div>
+            <div class="tooltip-container" id="rebirthUpgrade9Container">
+                <button id="rebirthUpgrade9" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(9)" onmouseover="showTooltip(event, 'rebirthTooltip9')" onmouseout="hideTooltip('rebirthTooltip9')">Automated Ice Cream purchases 15 RP</button>
+                <span id="rebirthTooltip9" class="tooltip">The Ice Cream Machine upgrades tab is automatically checked every second, and affordable upgrades are purchased instantly. Unlocks: Rebirth Multiplier</span>
+            </div>
+            <div class="tooltip-container" id="rebirthUpgrade13Container">
+                <button id="rebirthUpgrade13" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(13)" onmouseover="showTooltip(event, 'rebirthTooltip13')" onmouseout="hideTooltip('rebirthTooltip13')">Better Offline Production 30 RP</button>
+                <span id="rebirthTooltip13" class="tooltip">Doubles your offline production rate. Unlocks: Offline Profits Multiplier</span>
+            </div>
+                      <div class="tooltip-container" id="rebirthUpgrade17Container">
+                <button id="rebirthUpgrade17" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(17)" onmouseover="showTooltip(event, 'rebirthTooltip17')" onmouseout="hideTooltip('rebirthTooltip17')"> Offline Profits Multiplier 50 RP</button>
+                <span id="rebirthTooltip17" class="tooltip">Your offline production rate is now also based on your total money earned, giving a larger boost the more you play. Unlocks: Better Offline Production</span>
+            </div>
+            <div class="tooltip-container" id="rebirthUpgrade12Container">
+                <button id="rebirthUpgrade12" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(12)" onmouseover="showTooltip(event, 'rebirthTooltip12')" onmouseout="hideTooltip('rebirthTooltip12')">Rebirth Multiplier 25 RP</button>
+                <span id="rebirthTooltip12" class="tooltip">Gives a 1.05x multiplier to all money production for each rebirth you've completed. Unlocks: Franchise Mastery</span>
+            </div>
+            <div class="tooltip-container" id="rebirthUpgrade16Container">
+                <button id="rebirthUpgrade16" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(16)" onmouseover="showTooltip(event, 'rebirthTooltip16')" onmouseout="hideTooltip('rebirthTooltip16')">Franchise Mastery 40 RP</button>
+                <span id="rebirthTooltip16" class="tooltip">Each franchise you purchase gives an extra 0.1x boost to all production. Unlocks: Chairman's Favor</span>
+            </div>
+                      <div class="tooltip-container" id="rebirthUpgrade20Container">
+                <button id="rebirthUpgrade20" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(20)" onmouseover="showTooltip(event, 'rebirthTooltip20')" onmouseout="hideTooltip('rebirthTooltip20')">Chairmans Favor 75 RP</button>
+                <span id="rebirthTooltip20" class="tooltip"> The effect of the "Chairman" employee is permanently boosted by 1.5x. Unlocks: None</span>
+            </div>
+            <div class="tooltip-container" id="rebirthUpgrade6Container">
+                <button id="rebirthUpgrade6" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(6)" onmouseover="showTooltip(event, 'rebirthTooltip6')" onmouseout="hideTooltip('rebirthTooltip6')">Bulk Purchase Discount (Repeatable) 4 RP</button>
+                <span id="rebirthTooltip6" class="tooltip">Further reduces the cost of all employees by 1%. Unlocks: Automated Clicking</span>
+            </div>
+            <div class="tooltip-container" id="rebirthUpgrade10Container">
+                <button id="rebirthUpgrade10" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(10)" onmouseover="showTooltip(event, 'rebirthTooltip10')" onmouseout="hideTooltip('rebirthTooltip10')">Automated Clicking: 20 RP</button>
+                <span id="rebirthTooltip10" class="tooltip">The main burger button is automatically clicked once per second. Unlocks: Clicker Overdrive</span>
+            </div>
+            <div class="tooltip-container" id="rebirthUpgrade14Container">
+                <button id="rebirthUpgrade14" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(14)" onmouseover="showTooltip(event, 'rebirthTooltip14')" onmouseout="hideTooltip('rebirthTooltip14')">Clicker Overdrive (Repeatable): 20 RP</button>
+                <span id="rebirthTooltip14" class="tooltip">Doubles the speed of all automatic clicks. Unlocks: None</span>
+            </div>
+             <div class="tooltip-container" id="rebirthUpgrade7Container">
+                <button id="rebirthUpgrade7" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(7)" onmouseover="showTooltip(event, 'rebirthTooltip7')" onmouseout="hideTooltip('rebirthTooltip7')">Diamond Legacy 5 RP</button>
+                <span id="rebirthTooltip7" class="tooltip">Increases the effect of your "Golden Burger" by 1.5x. Unlocks: Sapphire Legacy</span>
+            </div>
+            <div class="tooltip-container" id="rebirthUpgrade11Container">
+                <button id="rebirthUpgrade11" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(11)" onmouseover="showTooltip(event, 'rebirthTooltip11')" onmouseout="hideTooltip('rebirthTooltip11')">Sapphire Legacy 10 RP</button>
+                <span id="rebirthTooltip11" class="tooltip">Increases the effect of your "Sapphire Burger" by 1.5x.Unlocks: Uranium Legacy</span>
+            </div>
+                      <div class="tooltip-container" id="rebirthUpgrade15Container">
+                <button id="rebirthUpgrade15" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(15)" onmouseover="showTooltip(event, 'rebirthTooltip15')" onmouseout="hideTooltip('rebirthTooltip15')">Uranium Legacy 20 RP</button>
+                <span id="rebirthTooltip15" class="tooltip">All burger upgrades are permanently 50% cheaper. Unlocks: Obsidian Legacy</span>
+            </div>
+             <div class="tooltip-container" id="rebirthUpgrade18Container">
+                <button id="rebirthUpgrade18" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(18)" onmouseover="showTooltip(event, 'rebirthTooltip18')" onmouseout="hideTooltip('rebirthTooltip18')">Obsidian Legacy 60 RP</button>
+                <span id="rebirthTooltip18" class="tooltip"> Gives a permanent 2x multiplier to all income. Unlocks: Prism Legacy</span>
+            </div>
+            <div class="tooltip-container" id="rebirthUpgrade19Container">
+                <button id="rebirthUpgrade19" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(19)" onmouseover="showTooltip(event, 'rebirthTooltip19')" onmouseout="hideTooltip('rebirthTooltip19')">Prism Legacy 100 RP</button>
+                <span id="rebirthTooltip19" class="tooltip"> Unlocks a new final achievement. Unlocks: Transcendent Burger</span>
+            </div>
+            <div class="tooltip-container" id="rebirthUpgrade21Container">
+                <button id="rebirthUpgrade21" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(21)" onmouseover="showTooltip(event, 'rebirthTooltip21')" onmouseout="hideTooltip('rebirthTooltip21')">Transcendent Burger 1000 RP</button>
+                <span id="rebirthTooltip21" class="tooltip">The ultimate burger. Permanently increases your money per click by 50x. Unlocks: None</span>
+            </div>
+            <div class="tooltip-container" id="rebirthUpgrade23Container">
+                <button id="rebirthUpgrade23" class="rebirth-upgrade-button" onclick="buyRebirthUpgrade(23)" onmouseover="showTooltip(event, 'rebirthTooltip23')" onmouseout="hideTooltip('rebirthTooltip23')">Singularity Engine 5000 RP</button>
+                <span id="rebirthTooltip23" class="tooltip">Multiplies all offline production by 10x. Unlocks: None</span>
+            </div>
+        </div>
+        <button onclick="hideRebirthOverlay()">Return to game</button>
+    </div>
+</div>
+<div id="importOverlay" class="overlay" aria-hidden="true">
                                     <div class="overlay-panel">
                                     <div class="overlay-title">Import save (paste export text or JSON)</div>
                                     <textarea id="importOverlayTextarea" placeholder="Paste export text (base64) or raw JSON here"></textarea>

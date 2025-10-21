@@ -1,3 +1,24 @@
+let isToggled = true;
+
+// Get the checkbox element
+const toggleSwitch = document.getElementById('myToggle');
+// Get the paragraph element to display the status
+const statusText = document.getElementById('variableStatus');
+
+// --- FIX 1: Check if the toggle switch exists before using it ---
+// This element doesn't exist on mobile_restricted.html, which causes the "cannot set properties of null" error.
+if (toggleSwitch) {
+    toggleSwitch.checked = isToggled;
+    
+    // Add an event listener for the 'change' event on the checkbox
+    toggleSwitch.addEventListener('change', function() {
+        // Toggle the boolean variable to the opposite value
+        isToggled = this.checked;
+    });
+}
+// --- END FIX 1 ---
+
+
 var slider = document.getElementById("myRange");
 var output = document.getElementById("sfxVolumeValue");
 
@@ -30,8 +51,8 @@ if (musicSlider && musicOutput) {
         console.log("Music Volume set to: " + musicVolume);
     }
 }
-       // ================ GAME STATE VARIABLES ================
-        // Basic game currency and costs 
+        // ================ GAME STATE VARIABLES ================
+         // Basic game currency and costs 
 let rebirthUpgradeStates = {
     rebirthUpg1: false, // Permanent Coffee Boost
     rebirthUpg3: false, // Faster Hiring
@@ -64,43 +85,49 @@ let rebirthUpg6Levels = 0; // Bulk Purchase Discount
 let rebirthUpg12Levels = 0; // Rebirth Multiplier
 let rebirthUpg14Levels = 0; // Clicker Overdrive
 let rebirthUpg22Levels = 0; // Cosmic Rebirth Multiplier
-
+var fake_click_speed = 1000;
+let fakeClickIntervalId = null;
+var obsidian_legacy = 1;
 var rebupgp1 = 1, rebupgp2 = 1, rebupgp3 = 2, rebupgp4 = 3;
 var rebupgp5 = 5, rebupgp6 = 4, rebupgp7 = 5, rebupgp8 = 10;
 var rebupgp9 = 15, rebupgp10 = 20, rebupgp11 = 10, rebupgp12 = 25, rebupgp13 = 30;
-var rebupgp14 = 30, rebupgp15 = 20, rebupgp16 = 40, rebupgp17 = 50, rebupgp20 = 100;
-var rebupgp18 = 60, rebupgp19 = 75;
+var rebupgp14 = 30, rebupgp15 = 20, rebupgp16 = 40, rebupgp17 = 50, rebupgp20 = 75;
+var rebupgp18 = 60, rebupgp19 = 100;
 var rebupgp21 = 1000, rebupgp22 = 1250, rebupgp23 = 5000;
 
 let lastSeenTime = Date.now();
 let golden_legacy = 1;
 let rebirthClickBonus = 0;
 let rebirthedTimes = 0;
-        window.count =  0;                  // Player's current money
-        let cost1 = 10,                 // Worker cost
-            cost2 = 25,                 // Manager cost
-            cost3 = 15,                 // Click upgrade cost
-            cost4 = 100,                // director cost
+        // --- FIX 2: Changed 'window.count' to 'let count' ---
+        // This makes 'count' a global variable just like 'mps', 'cost1', etc.
+        // and fixes the "count is not defined" error in addMoney() and other functions.
+        let count = 0;                   // Player's current money
+        // --- END FIX 2 ---
+        let cost1 = 10,                // Worker cost
+            cost2 = 25,                // Manager cost
+            cost3 = 15,                // Click upgrade cost
+            cost4 = 100,               // director cost
             cost5 = 225,               // VP cost
             cost6 = 500,               // COO cost
-            cost7 = 1250,                // CEO cost
-            cost8 = 2275,                 // Chairman cost
-            cost9 = 5000,                 // Milkshake Oracle cost
-            cost10 = 12500,               // Shadow Fryer cost
-            cost11 = 17500,               // Keeper of the Hidden Feast cost
+            cost7 = 1250,              // CEO cost
+            cost8 = 2275,                // Chairman cost
+            cost9 = 5000,                // Milkshake Oracle cost
+            cost10 = 12500,              // Shadow Fryer cost
+            cost11 = 17500,              // Keeper of the Hidden Feast cost
             cost12 = 22500,              // Verdant Keeper cost
             cost13 = 50000,              // Emulsifier Supreme cost
             cost14 = 125000,             // Flame Whisperer cost
             cost15 = 200000,             // Cheese Chancellor cost
-            cost16 = 375000,            // High Priest cost
-            cost17 = 525000,            // Golden Archmage cost
-            cost18 = 1000000,           // Patty Matriarch cost
-            cost19 = 5000000,           // Grand Grillmaster cost
+            cost16 = 375000,             // High Priest cost
+            cost17 = 525000,             // Golden Archmage cost
+            cost18 = 1000000,            // Patty Matriarch cost
+            cost19 = 5000000,            // Grand Grillmaster cost
             cost20 = 20;            // Click multiply cost
         // Game mechanics variables
-        let mps = 0,                    // Money per second
-            worker = 1.5,               // Base manager production
-            clicks = 1,                 // Money per click
+        let mps = 0,                   // Money per second
+            worker = 1.5,              // Base manager production
+            clicks = 1,                // Money per click
             manager = 5,
             clickamount = 2,
             director = 7.5,
@@ -120,26 +147,26 @@ let rebirthedTimes = 0;
             matriarch = 55000,
             grillmaster = 250000;
         // Upgrade counters
-        var M = 0,                      // Number of workers
-            M2 = 0,                     // Number of managers
-            M3 = 0,                     // Number of click upgrades
-            M4 = 0,                     // Number of directors
-            M5 = 0,                     // Number of VPs
-            M6 = 0,                     // Number of COOs
-            M7 = 0,                     // Number of CEOs 
-            M8 = 0,                     // Number of Chairmen
-            M9 = 0,                     // Number of Milkshake Oracles
-            M10 = 0,                    // Number of Shadow Fryers
-            M11 = 0,                    // Number of Keepers of the Hidden Feast
-            M12 = 0,                    // Number of Verdant Keepers
-            M13 = 0,                    // Number of Emulsifier Supremes
-            M14 = 0,                    // Number of Flame Whisperers
-            M15 = 0,                    // Number of Cheese Chancellors
-            M16 = 0,                    // Number of High Priests
-            M17 = 0,                    // Number of Golden Archmages
-            M18 = 0,                    // Number of Patty Matriarchs
-            M19 = 0,                    // Number of Grand Grillmasters
-            M20 = 0;            // Number of Click Multipliers
+        var M = 0,                     // Number of workers
+            M2 = 0,                    // Number of managers
+            M3 = 0,                    // Number of click upgrades
+            M4 = 0,                    // Number of directors
+            M5 = 0,                    // Number of VPs
+            M6 = 0,                    // Number of COOs
+            M7 = 0,                    // Number of CEOs 
+            M8 = 0,                    // Number of Chairmen
+            M9 = 0,                    // Number of Milkshake Oracles
+            M10 = 0,                   // Number of Shadow Fryers
+            M11 = 0,                   // Number of Keepers of the Hidden Feast
+            M12 = 0,                   // Number of Verdant Keepers
+            M13 = 0,                   // Number of Emulsifier Supremes
+            M14 = 0,                   // Number of Flame Whisperers
+            M15 = 0,                   // Number of Cheese Chancellors
+            M16 = 0,                   // Number of High Priests
+            M17 = 0,                   // Number of Golden Archmages
+            M18 = 0,                   // Number of Patty Matriarchs
+            M19 = 0,                   // Number of Grand Grillmasters
+            M20 = 0;           // Number of Click Multipliers
         // Upgrade status
           let  upg1 = 0,                   // Coffee upgrade status
             upg3 = 0,                   // Ice cream machine upgrade status
@@ -173,9 +200,9 @@ let rebirthedTimes = 0;
             upg42 = 0,
             upg43 = 0;
         // Special upgrade costs
-        let upgp1 = 150;                 // Coffee upgrade cost
-        let upgp2 = 100000;           // Golden burger cost
-        let upgp3 = 15000;              // Ice cream machine upgrade cost
+        let upgp1 = 150;               // Coffee upgrade cost
+        let upgp2 = 100000;            // Golden burger cost
+        let upgp3 = 15000;             // Ice cream machine upgrade cost
         let upgp4 = 500000,
         upgp5 = 800000,
         upgp6 = 1000000,
@@ -217,29 +244,32 @@ let rebirthedTimes = 0;
     upgp42 = 175000000,
     upgp43 = 1000000000;
         // Special features
-        let golden_burger = 1;          // Golden burger multiplier
-        let moneymultiplier = 1;        // Global money multiplier
-        let ablepres = 0;               // Prestige system (not implemented)
-        let franchises = 1;             // How many franchises you have
+        let golden_burger = 1;         // Golden burger multiplier
+        let moneymultiplier = 1;       // Global money multiplier
+        let ablepres = 0;              // Prestige system (not implemented)
+        let franchises = 1;            // How many franchises you have
         let fcost = 500000;            // The cost of a franchise
         let totalclicks = 0;
         let totaltime = 0;
         let bimage = 0;
-        let dark_mode = false;          // Dark mode toggle
+        let dark_mode = false;         // Dark mode toggle
         let rebirth_points = 0;        // Rebirth points
-        window.total_money = 0;           // Total money earned
+        // --- FIX 2: Changed 'window.total_money' to 'let total_money' ---
+        // This matches the fix for 'count' and solves the same problem.
+        let total_money = 0;           // Total money earned
+        // --- END FIX 2 ---
         let lastRebirthCheck = 0;      // Last rebirth check amount of money
         let click_multiplier = 0.01;
         let hasRebirthed = false;   // Whether the player has rebirthed at least once
         //Everything Ice cream related
-         var ice = 0,                             // Player's current ice creams
-            ips = 0,                             // how many ice creams you get per second
-            icost1 = 50,                          // The first Ice cream upgrade cost     
-            icost2 = 75,                         // The second Ice cream upgrade cost 
-            icost3 = 100,                        // The third Ice cream upgrade cost 
-            icost4 = 150,                        // The fourth Ice cream upgrade cost 
-            icost5 = 200,                        // The fifth Ice cream upgrade cost
-            icost6 = 250,                        // The sixth Ice cream upgrade cost
+         var ice = 0,                   // Player's current ice creams
+            ips = 0,                   // how many ice creams you get per second
+            icost1 = 50,                 // The first Ice cream upgrade cost   
+            icost2 = 75,                 // The second Ice cream upgrade cost 
+            icost3 = 100,                  // The third Ice cream upgrade cost 
+            icost4 = 150,                  // The fourth Ice cream upgrade cost 
+            icost5 = 200,                  // The fifth Ice cream upgrade cost
+            icost6 = 250,                  // The sixth Ice cream upgrade cost
             icost7 = 300,
             icost8 = 350,
             icost9 = 400,
@@ -250,12 +280,12 @@ let rebirthedTimes = 0;
             icost14 = 650,
             icost15 = 700,
             icost16 = 750,
-            iceupg1 = 0,            // whether you have the first ice cream upgrade or not
+            iceupg1 = 0,           // whether you have the first ice cream upgrade or not
             iceupg2 = 0,           // whether you have the second ice cream upgrade or not
-            iceupg3 = 0,            // whether you have the third ice cream upgrade or not
+            iceupg3 = 0,           // whether you have the third ice cream upgrade or not
             iceupg4 = 0,           // whether you have the fourth ice cream upgrade or not
-            iceupg5 = 0,            // whether you have the fifth ice cream upgrade or not
-            iceupg6 = 0,            // whether you have the sixth ice cream upgrade or not
+            iceupg5 = 0,           // whether you have the fifth ice cream upgrade or not
+            iceupg6 = 0,           // whether you have the sixth ice cream upgrade or not
             iceupg7 = 0,
             iceupg8 = 0,
             iceupg9 = 0,
@@ -305,9 +335,9 @@ function ToggleDark() {
             return;
 
         }
-        window.count += amount;
-        window.total_money += amount;
-        console.log(`Money updated: ${window.count}`);
+        count += amount;
+        total_money += amount;
+        console.log(`Money updated: ${count}`);
         updateAll();
         checkRebirthPoints();
         };
@@ -326,6 +356,7 @@ function ToggleDark() {
             if (!info) return 0;
             let qty = 0;
             let current = window[info.countVar];
+            // Because 'count' is now a global 'let', this will work correctly.
             let available = count;
             let cost = Math.round(info.base * Math.pow(info.rate, current) * 10) / 10;
             while (available >= cost) {
@@ -337,9 +368,9 @@ function ToggleDark() {
             return qty;
         }
         // ================ AUDIO SYSTEM ================
-        let audioContext;               // Web Audio API context
-        let soundBuffers = {};          // Storage for loaded sound files
-        let audioLoaded = false;        // Flag for audio system status
+        let audioContext;              // Web Audio API context
+        let soundBuffers = {};         // Storage for loaded sound files
+        let audioLoaded = false;       // Flag for audio system status
 
         /**
          * Initializes the audio system and loads all sound files
@@ -952,7 +983,11 @@ function upgrade4() {
     const chesburger = document.querySelector('.image-button');
     if (count >= upgp4) {
         count -= upgp4;
-        golden_burger += 2.5;  // Double click value
+           if (rebirthUpgradeStates.rebirthUpg11 == true) {
+            golden_burger += 2.5*1.5; 
+        } else {
+            golden_burger += 2.5; 
+        }  // Double click value
         chesburger.style.backgroundImage = "url('Burger-images/Diamondburger.png')";
         bimage += 1;
         // Remove the upgrade4 button instead of hiding it
@@ -993,7 +1028,7 @@ function upgrade5() {
 }
 
 function upgrade6() {
-  
+ 
     if (count >= upgp6) {
         count -= upgp6;
         golden_burger += 3.5;  // Double click value
@@ -1697,7 +1732,7 @@ function rebupgrade1() {
     }
     const rebupg5 = document.getElementById("rebirthUpgrade5");
     if (rebupg5) {
-        rebupg5.style.display = 'flex';
+      //  rebupg5.style.display = 'flex';
     }
 }
 
@@ -1715,7 +1750,7 @@ function rebupgrade3() {
     //    updateButtons();
     const rebupg6 = document.getElementById("rebirthUpgrade6");
     if (rebupg6) {
-        rebupg6.style.display = 'flex';
+     //   rebupg6.style.display = 'flex';
     }
 }
 
@@ -1725,7 +1760,7 @@ function rebupgrade4() {
   updateRebirthUI();
     const rebupg7 = document.getElementById("rebirthUpgrade7");
     if (rebupg7) {
-        rebupg7.style.display = 'flex';
+      //  rebupg7.style.display = 'flex';
     }
 }
 function rebupgrade5() {
@@ -1740,7 +1775,7 @@ function rebupgrade5() {
         // Show the next rebirth upgrade if applicable
         const rebupg9 = document.getElementById("rebirthUpgrade9");
         if (rebupg9) {
-            rebupg9.style.display = 'flex';
+         //   rebupg9.style.display = 'flex';
         }
 
         // Recalculate IPS (Ice Creams Per Second) to apply the upgrade effect
@@ -1754,19 +1789,35 @@ function rebupgrade5() {
         alert('Not enough Rebirth Points!');
     }
 }
+function recalculateIps() {
+    // Start with the base IPS if the initial upgrade is bought
+    ips = (upg3 === 1) ? 1 : 0; 
+
+    // Apply the bonus from rebirth upgrade 5 if it exists and has levels
+    if (rebirthUpgradeStates.rebirthUpg5 && rebirthUpg5Levels > 0) {
+        // Apply a 25% bonus additively for each level
+        ips += (1 * 0.25 * rebirthUpg5Levels); 
+    }
+
+    // Add logic for any other upgrades affecting IPS here
+}
 function rebupgrade6() {
     rebirthUpg6Levels += 1;
     // The cost will be recalculated automatically by updateRebirthUI()
     rebupgp6 = Math.round(4 * Math.pow(1.15, rebirthUpg6Levels));
     // Apply the effect immediately
   updateRebirthUI();
+     const rebupg10 = document.getElementById("rebirthUpgrade10");
+    if (rebupg10) {
+     //  rebupg10.style.display = 'flex';
+    }
 }
 function rebupgrade7() {
     rebirthUpgradeStates.rebirthUpg7 = true;
     updateRebirthUI();
     const rebupg11 = document.getElementById("rebirthUpgrade11");
     if (rebupg11) {
-        rebupg11.style.display = 'flex';
+     //  rebupg11.style.display = 'flex';
     }
 }
 function rebupgrade8() {
@@ -1774,16 +1825,129 @@ function rebupgrade8() {
     updateRebirthUI();
     const rebupg13 = document.getElementById("rebirthUpgrade13");
     if (rebupg13) {
-        rebupg13.style.display = 'flex';
+    //    rebupg13.style.display = 'flex';
     }
 }
 function rebupgrade9() {
     rebirthUpgradeStates.rebirthUpg9 = true;
     updateRebirthUI();
-    const rebupg12 = document.getElementById("rebirthUpgrade12");
-    if (rebupg12) {
-        rebupg12.style.display = 'flex';
+    const toggle = document.getElementById("toggleContainer");
+    if (toggle) {
+       toggle.style.display = 'flex';
     }
+}
+function rebupgrade10() {
+    rebirthUpgradeStates.rebirthUpg10 = true;
+    updateRebirthUI();
+    const rebupg14 = document.getElementById("rebirthUpgrade14");
+    if (rebupg14) {
+      //  rebupg14.style.display = 'flex';
+    }
+}
+function rebupgrade11() {
+    rebirthUpgradeStates.rebirthUpg11 = true;
+    updateRebirthUI();
+    const rebupg15 = document.getElementById("rebirthUpgrade15");
+    if (rebupg15) {
+     //   rebupg15.style.display = 'flex';
+    }
+}
+function rebupgrade12() {
+    rebirthUpgradeStates.rebirthUpg12 = true;
+    moneymultiplier += parseFloat((Math.pow(1.05, rebirthedTimes)).toFixed(2));
+    updateRebirthUI();
+    const rebupg16 = document.getElementById("rebirthUpgrade16");
+    if (rebupg16) {
+     //   rebupg16.style.display = 'flex';
+    }
+}
+function rebupgrade13() {
+    rebirthUpgradeStates.rebirthUpg13 = true;
+    updateRebirthUI();
+    const rebupg17 = document.getElementById("rebirthUpgrade17");
+    if (rebupg17) {
+     //   rebupg17.style.display = 'flex';
+    }
+}
+function rebupgrade14() {
+    if (rebirth_points >= rebupgp14) {
+        rebirth_points -= rebupgp14; // Deduct the current cost
+        rebirthUpgradeStates.rebirthUpg14 = true;
+        rebirthUpg14Levels += 1; // Increment the level of the upgrade
+  fake_click_speed /= 2;
+        // Recalculate the cost for the next level
+        rebupgp14 = Math.round(30 * Math.pow(1.5, rebirthUpg14Levels)); // Cost increases by 1.2x per level
+
+        // Show the next rebirth upgrade if applicable
+        const rebupg18 = document.getElementById("rebirthUpgrade18");
+        if (rebupg18) {
+         //   rebupg18.style.display = 'flex';
+        }
+  restartFakeClickInterval();
+
+        // Recalculate IPS (Ice Creams Per Second) to apply the upgrade effect
+        // Update the UI
+        updateRebirthUI();
+        playSound('purchase', 0.4 * sfxVolume);
+    } else {
+        playSound('error', 0.4 * sfxVolume);
+        alert('Not enough Rebirth Points!');
+    }
+}
+function rebupgrade15() {
+    rebirthUpgradeStates.rebirthUpg15 = true;
+    updateRebirthUI();
+    updateUpgradeButtons();
+    const rebupg20 = document.getElementById("rebirthUpgrade20");
+    if (rebupg20) {
+        //rebupg20.style.display = 'flex';
+    }
+}
+function rebupgrade16() {
+    rebirthUpgradeStates.rebirthUpg16 = true;
+    updateRebirthUI();
+    updateUpgradeButtons();
+    const rebupg19 = document.getElementById("rebirthUpgrade19");
+    if (rebupg19) {
+     //  rebupg19.style.display = 'flex';
+    }
+}
+function rebupgrade17() {
+    rebirthUpgradeStates.rebirthUpg17 = true;
+    updateRebirthUI();
+    updateUpgradeButtons();
+}
+function rebupgrade18() {
+    rebirthUpgradeStates.rebirthUpg18 = true;
+    obsidian_legacy = 2;
+    updateRebirthUI();
+    updateUpgradeButtons();
+}
+function rebupgrade19() {
+    rebirthUpgradeStates.rebirthUpg19 = true;
+    updateRebirthUI();
+    checkAchievements();
+    updateUpgradeButtons();
+}
+function rebupgrade20() {
+    rebirthUpgradeStates.rebirthUpg20 = true;
+    chairman *= 1.5;
+    updateRebirthUI();
+    checkAchievements();
+    updateUpgradeButtons();
+}
+function rebupgrade21() {
+    rebirthUpgradeStates.rebirthUpg21 = true;
+    golden_legacy += 50;
+    updateRebirthUI();
+    checkAchievements();
+    updateUpgradeButtons();
+}
+function rebupgrade23() {
+    rebirthUpgradeStates.rebirthUpg23 = true;
+    updateRebirthUI();
+    checkAchievements();
+    updateUpgradeButtons();
 }
         function moreicepers() {
             if (ice >= icost1) {
@@ -1798,7 +1962,7 @@ function rebupgrade9() {
                 playSound('error', 0.4*sfxVolume);
                 updateAll();
             }
-        }        
+        }       
         function betterclick() {
             if (ice >= icost4) {
                 const oldClickAmount =  parseFloat((clickamount).toFixed(1));;
@@ -1980,17 +2144,17 @@ function formatCurrency(num) {
         { value: 1e42, symbol: "Tdc" },   // Tredecillion
         { value: 1e39, symbol: "Ddc" },   // Duodecillion
         { value: 1e36, symbol: "Udc" },   // Undecillion
-        { value: 1e33, symbol: "Dc" },   // Duodecillion
-        { value: 1e30, symbol: "No" },   // Novemdecillion
-        { value: 1e27, symbol: "Oc" },   // Octodecillion
-        { value: 1e24, symbol: "Sp" },   // Septillion
-        { value: 1e21, symbol: "Sx" },   // Sextrillion
-        { value: 1e18, symbol: "Qn" },   // Quintillion
-        { value: 1e15, symbol: "Qd" },   // Quadrillion
+        { value: 1e33, symbol: "Dc" },    // Duodecillion
+        { value: 1e30, symbol: "No" },    // Novemdecillion
+        { value: 1e27, symbol: "Oc" },    // Octodecillion
+        { value: 1e24, symbol: "Sp" },    // Septillion
+        { value: 1e21, symbol: "Sx" },    // Sextrillion
+        { value: 1e18, symbol: "Qn" },    // Quintillion
+        { value: 1e15, symbol: "Qd" },    // Quadrillion
         { value: 1e12, symbol: "T" },   // Trillion
-        { value: 1e9, symbol: "B" },   // Billion
-        { value: 1e6, symbol: "M" },   // Million
-        { value: 1e3, symbol: "K" }   // Thousand
+        { value: 1e9, symbol: "B" },    // Billion
+        { value: 1e6, symbol: "M" },    // Million
+        { value: 1e3, symbol: "K" }    // Thousand
     ];
     
     for (const { value, symbol } of abbreviations) {
@@ -2261,7 +2425,7 @@ function updateUpgradeButtons() {
         'upgrade12': { cost: upgp12, condition: upg11 === 1 },
         'upgrade13': { cost: upgp13, condition: upg12 === 1 },
         'upgrade14': { cost: upgp14, condition: upg13 === 1 },
-      
+        
         'upgrade15': { cost: upgp15, condition: upg39 === 1, requirements: { M7: 50, M9: 50 } },
         'upgrade16': { cost: upgp16, condition: upg15 === 1 },
         'upgrade17': { cost: upgp17, condition: upg16 === 1 },
@@ -2271,12 +2435,12 @@ function updateUpgradeButtons() {
         'upgrade20': { cost: upgp20, condition: upg19 === 1 },
         'upgrade21': { cost: upgp21, condition: upg20 === 1 },
         'upgrade22': { cost: upgp22, condition: upg21 === 1 },
-     
+       
         'upgrade23': { cost: upgp23, condition: upg41 === 1, requirements: { M15: 50, M14: 50 } },
         'upgrade24': { cost: upgp24, condition: upg23 === 1 },
         'upgrade25': { cost: upgp25, condition: upg24 === 1 },
         'upgrade26': { cost: upgp26, condition: upg25 === 1 },
-       
+        
         'upgrade27': { cost: upgp27, condition: upg42 === 1, requirements: { M17: 50, M13: 50 } },
         'upgrade28': { cost: upgp28, condition: upg27 === 1 },
         'upgrade29': { cost: upgp29, condition: upg28 === 1 },
@@ -2293,7 +2457,7 @@ function updateUpgradeButtons() {
         'upgrade39': { cost: upgp39, condition: upg14 === 1 },
           'upgrade40': { cost: upgp40, condition: upg18 === 1 },
              'upgrade41': { cost: upgp41, condition: upg22 === 1 },
-              'upgrade42': { cost: upgp42, condition: upg26 === 1 } 
+               'upgrade42': { cost: upgp42, condition: upg26 === 1 } 
     };
 
     const employeeNames = {
@@ -2308,7 +2472,6 @@ function updateUpgradeButtons() {
         M15: "Cheese Chancellors",
         M17: "Golden Archmages"
     };
-
     for (const [id, data] of Object.entries(upgradeMap)) {
         const element = document.getElementById(id);
         if (element && data.condition) {
@@ -2326,6 +2489,34 @@ function updateUpgradeButtons() {
     }
 }
 function applyRebirthUpgrades() {
+    if(rebirthUpgradeStates.rebirthUpg15 == true){
+    upgp2 = 100000;
+    upgp4 = 500000;
+    upgp5 = 8000000;
+    upgp6 = 5000000;
+    upgp7 = 1250000;
+    upgp31 = 2000000000;
+    upgp32 = 2500000000;
+    upgp33 = 3000000000;
+    upgp34 = 3500000000;
+    upgp35 = 4000000000;
+    upgp36 = 4500000000;
+    upgp37 = 5000000000;
+    upgp38 = 5500000000;
+    upgp2 /= 2;
+    upgp4 /= 2;
+    upgp5 /= 2;
+    upgp6 /= 2;
+    upgp7 /= 2;
+    upgp31 /= 2;
+    upgp32 /= 2;
+    upgp33 /= 2;
+    upgp34 /= 2;
+    upgp35 /= 2;
+    upgp36 /= 2;
+    upgp37 /= 2;
+    upgp38 /= 2;
+}
     // Reset all temporary bonuses before applying permanent ones
    /* golden_legacy = 1;
     rebirthClickBonus = 0;
@@ -2370,32 +2561,148 @@ function updateRebirthUI() {
 
     // You can add similar logic here for your other repeatable upgrades (5, 6, 12, etc.)
     // as you create them.
+
+    // --- FIX: Added null checks before accessing .style ---
     const rebirthUpgrade5Container = document.getElementById("rebirthUpgrade5Container");
-    if (rebirthUpgradeStates.rebirthUpg1) {
-        rebirthUpgrade5Container.style.display = 'flex';
-    } else {
-        rebirthUpgrade5Container.style.display = 'none';
+    if (rebirthUpgrade5Container) { // Check if the element exists
+        if (rebirthUpgradeStates.rebirthUpg1) {
+            rebirthUpgrade5Container.style.display = 'flex';
+        } else {
+            rebirthUpgrade5Container.style.display = 'none';
+        }
     }
 
     // Check and show Rebirth Upgrade 6
     const rebirthUpgrade6Container = document.getElementById("rebirthUpgrade6Container");
-    if (rebirthUpgradeStates.rebirthUpg3) {
-        rebirthUpgrade6Container.style.display = 'flex';
-    } else {
-        rebirthUpgrade6Container.style.display = 'none';
+    if (rebirthUpgrade6Container) { // Check if the element exists
+        if (rebirthUpgradeStates.rebirthUpg3) {
+            rebirthUpgrade6Container.style.display = 'flex';
+        } else {
+            rebirthUpgrade6Container.style.display = 'none';
+        }
     }
         const rebirthUpgrade7Container = document.getElementById("rebirthUpgrade7Container");
-    if (rebirthUpgradeStates.rebirthUpg4) {
-        rebirthUpgrade7Container.style.display = 'flex';
-    } else {
-        rebirthUpgrade7Container.style.display = 'none';
+    if (rebirthUpgrade7Container) { // Check if the element exists
+        if (rebirthUpgradeStates.rebirthUpg4) {
+            rebirthUpgrade7Container.style.display = 'flex';
+        } else {
+            rebirthUpgrade7Container.style.display = 'none';
+        }
     }
             const rebirthUpgrade9Container = document.getElementById("rebirthUpgrade9Container");
-    if (rebirthUpgradeStates.rebirthUpg5) {
-        rebirthUpgrade9Container.style.display = 'flex';
-    } else {
-        rebirthUpgrade9Container.style.display = 'none';
+    if (rebirthUpgrade9Container) { // Check if the element exists
+        if (rebirthUpgradeStates.rebirthUpg5) {
+            rebirthUpgrade9Container.style.display = 'flex';
+        } else {
+            rebirthUpgrade9Container.style.display = 'none';
+        }
     }
+    const rebirthUpgrade10Container = document.getElementById("rebirthUpgrade10Container");
+    if (rebirthUpgrade10Container) { // Check if the element exists
+        if (rebirthUpg6Levels > 0) {
+            rebirthUpgrade10Container.style.display = 'flex';
+        } else {
+            rebirthUpgrade10Container.style.display = 'none';
+        }
+    }
+        const rebirthUpgrade11Container = document.getElementById("rebirthUpgrade11Container");
+    if (rebirthUpgrade11Container) { // Check if the element exists
+        if (rebirthUpgradeStates.rebirthUpg7) {
+            rebirthUpgrade11Container.style.display = 'flex';
+        } else {
+            rebirthUpgrade11Container.style.display = 'none';
+        }
+    }
+            const rebirthUpgrade12Container = document.getElementById("rebirthUpgrade12Container");
+    if (rebirthUpgrade12Container) { // Check if the element exists
+        if (rebirthUpgradeStates.rebirthUpg9) {
+            rebirthUpgrade12Container.style.display = 'flex';
+        } else {
+            rebirthUpgrade12Container.style.display = 'none';
+        }
+    }
+    const rebirthUpgrade13Container = document.getElementById("rebirthUpgrade13Container");
+    if (rebirthUpgrade13Container) { // Check if the element exists
+        if (rebirthUpgradeStates.rebirthUpg8) {
+            rebirthUpgrade13Container.style.display = 'flex';
+        } else {
+            rebirthUpgrade13Container.style.display = 'none';
+        }
+    }
+        const rebirthUpgrade14Container = document.getElementById("rebirthUpgrade14Container");
+    if (rebirthUpgrade14Container) { // Check if the element exists
+        if (rebirthUpgradeStates.rebirthUpg10) {
+            rebirthUpgrade14Container.style.display = 'flex';
+        } else {
+            rebirthUpgrade14Container.style.display = 'none';
+        }
+    }
+            const rebirthUpgrade15Container = document.getElementById("rebirthUpgrade15Container");
+    if (rebirthUpgrade15Container) { // Check if the element exists
+        if (rebirthUpgradeStates.rebirthUpg11) {
+            rebirthUpgrade15Container.style.display = 'flex';
+        } else {
+            rebirthUpgrade15Container.style.display = 'none';
+        }
+    }
+   const rebirthUpgrade16Container = document.getElementById("rebirthUpgrade16Container");
+    if (rebirthUpgrade16Container) { // Check if the element exists
+        if (rebirthUpgradeStates.rebirthUpg12) {
+            rebirthUpgrade16Container.style.display = 'flex';
+        } else {
+            rebirthUpgrade16Container.style.display = 'none';
+        }
+    }
+         const rebirthUpgrade17Container = document.getElementById("rebirthUpgrade17Container");
+    if (rebirthUpgrade17Container) { // Check if the element exists
+        if (rebirthUpgradeStates.rebirthUpg13) {
+            rebirthUpgrade17Container.style.display = 'flex';
+        } else {
+            rebirthUpgrade17Container.style.display = 'none';
+        }
+    }
+               const rebirthUpgrade18Container = document.getElementById("rebirthUpgrade18Container");
+    if (rebirthUpgrade18Container) { // Check if the element exists
+        if (rebirthUpgradeStates.rebirthUpg15) {
+            rebirthUpgrade18Container.style.display = 'flex';
+        } else {
+            rebirthUpgrade18Container.style.display = 'none';
+        }
+    }
+                    const rebirthUpgrade19Container = document.getElementById("rebirthUpgrade19Container");
+    if (rebirthUpgrade19Container) { // Check if the element exists
+        if (rebirthUpgradeStates.rebirthUpg18) {
+            rebirthUpgrade19Container.style.display = 'flex';
+        } else {
+            rebirthUpgrade19Container.style.display = 'none';
+        }
+    }
+    const rebirthUpgrade20Container = document.getElementById("rebirthUpgrade20Container");
+    if (rebirthUpgrade20Container) { // Check if the element exists
+        if (rebirthUpgradeStates.rebirthUpg16) {
+            rebirthUpgrade20Container.style.display = 'flex';
+        } else {
+            rebirthUpgrade20Container.style.display = 'none';
+        }
+    }
+        const rebirthUpgrade21Container = document.getElementById("rebirthUpgrade21Container");
+    if (rebirthUpgrade21Container) { // Check if the element exists
+        if (rebirthUpgradeStates.rebirthUpg19) {
+            rebirthUpgrade21Container.style.display = 'flex';
+        } else {
+            rebirthUpgrade21Container.style.display = 'none';
+        }
+    }
+            const rebirthUpgrade23Container = document.getElementById("rebirthUpgrade23Container");
+    if (rebirthUpgrade23Container) { // Check if the element exists
+        if (rebirthUpgradeStates.rebirthUpg21) {
+            rebirthUpgrade23Container.style.display = 'flex';
+        } else {
+            rebirthUpgrade23Container.style.display = 'none';
+        }
+    }
+    // --- END FIX ---
+
     const rebirthPointsDisplay = document.getElementById("rebirthPointsDisplay");
     if (rebirthPointsDisplay) {
         rebirthPointsDisplay.textContent = formatCurrency(rebirth_points);
@@ -2426,7 +2733,7 @@ function updateRebirthUI() {
         const upg6Btn = document.getElementById("rebirthUpgrade6");
     if (upg6Btn) {
         // Recalculate cost based on current level to ensure it's always correct
-        rebupgp6 = 1 + (rebirthUpg6Levels * 0.5);
+        rebupgp6 = 1 + (rebirthUpg6Levels * 0.5); // Ensure this calculation matches your intended cost logic
         upg6Btn.textContent = `Bulk Purchase Discount: ${formatCurrency(rebupgp6)} RP (${rebirthUpg6Levels})`;
     }
 
@@ -2442,8 +2749,72 @@ function updateRebirthUI() {
     }
             const upg9Btn = document.getElementById("rebirthUpgrade9");
     if (upg9Btn && rebirthUpgradeStates.rebirthUpg9) {
-        upg9Btn.textContent = 'Offline Production: BOUGHT';
+        upg9Btn.textContent = 'Automated Ice Cream: BOUGHT'; // Corrected text
         upg9Btn.disabled = true;
+    }
+                const upg10Btn = document.getElementById("rebirthUpgrade10");
+    if (upg10Btn && rebirthUpgradeStates.rebirthUpg10) {
+        upg10Btn.textContent = 'Automated Clicking: BOUGHT';
+        upg10Btn.disabled = true;
+    }
+        const upg11Btn = document.getElementById("rebirthUpgrade11");
+    if (upg11Btn && rebirthUpgradeStates.rebirthUpg11) {
+        upg11Btn.textContent = 'Sapphire Legacy: BOUGHT';
+        upg11Btn.disabled = true;
+    }
+            const upg12Btn = document.getElementById("rebirthUpgrade12");
+    if (upg12Btn && rebirthUpgradeStates.rebirthUpg12) {
+        upg12Btn.textContent = 'Rebirth Multiplier: BOUGHT';
+        upg12Btn.disabled = true;
+    }
+                const upg13Btn = document.getElementById("rebirthUpgrade13");
+    if (upg13Btn && rebirthUpgradeStates.rebirthUpg13) {
+        upg13Btn.textContent = 'Better Offline Production: BOUGHT';
+        upg13Btn.disabled = true;
+    }
+        const upg14Btn = document.getElementById("rebirthUpgrade14");
+    if (upg14Btn) {
+         upg14Btn.textContent = `Clicker Overdrive: ${formatCurrency(rebupgp14)} RP (${rebirthUpg14Levels})`;
+    }
+            const upg15Btn = document.getElementById("rebirthUpgrade15");
+    if (upg15Btn && rebirthUpgradeStates.rebirthUpg15) {
+        upg15Btn.textContent = 'Uranium Legacy: BOUGHT';
+        upg15Btn.disabled = true;
+    }
+                const upg16Btn = document.getElementById("rebirthUpgrade16");
+    if (upg16Btn && rebirthUpgradeStates.rebirthUpg16) {
+        upg16Btn.textContent = 'Franchise Mastery : BOUGHT';
+        upg16Btn.disabled = true;
+    }
+                      const upg17Btn = document.getElementById("rebirthUpgrade17");
+    if (upg17Btn && rebirthUpgradeStates.rebirthUpg17) {
+        upg17Btn.textContent = 'Offline Profits Multiplier : BOUGHT';
+        upg17Btn.disabled = true;
+    }
+    const upg18Btn = document.getElementById("rebirthUpgrade18");
+    if (upg18Btn && rebirthUpgradeStates.rebirthUpg18) {
+        upg18Btn.textContent = 'Obsidian Legacy : BOUGHT';
+        upg18Btn.disabled = true;
+    }
+        const upg19Btn = document.getElementById("rebirthUpgrade19");
+    if (upg19Btn && rebirthUpgradeStates.rebirthUpg19) {
+        upg19Btn.textContent = 'Prism Legacy : BOUGHT';
+        upg19Btn.disabled = true;
+    }
+            const upg20Btn = document.getElementById("rebirthUpgrade20");
+    if (upg20Btn && rebirthUpgradeStates.rebirthUpg20) {
+        upg20Btn.textContent = 'Chairmans Favor : BOUGHT';
+        upg20Btn.disabled = true;
+    }
+   const upg21Btn = document.getElementById("rebirthUpgrade21");
+    if (upg21Btn && rebirthUpgradeStates.rebirthUpg21) {
+        upg21Btn.textContent = 'Transcendent Burger : BOUGHT';
+        upg21Btn.disabled = true;
+    }
+       const upg23Btn = document.getElementById("rebirthUpgrade23");
+    if (upg23Btn && rebirthUpgradeStates.rebirthUpg23) {
+        upg23Btn.textContent = 'Singularity Engine : BOUGHT';
+        upg23Btn.disabled = true;
     }
     // Add checks for your other one-time rebirth upgrades here.
 }
@@ -2491,6 +2862,7 @@ function rebirth() {
         });
         
         applyRebirthUpgrades();
+  restartFakeClickInterval();
 
         document.getElementById('rebirth_button').disabled = true;
         showRebirthOverlay();
@@ -2635,20 +3007,55 @@ chesburger.style.backgroundImage = "url('Burger-images/Burger.png')";
     updateUpgradeVisibility();
 }
 function showRebirthOverlay() {
-    document.getElementById('rebirthOverlay').classList.add('visible');
-    document.getElementById('rebirthOverlay').setAttribute('aria-hidden', 'false');
-    document.getElementById('rebirthPointsDisplay').textContent = rebirth_points;
-    document.querySelector('.game-wrapper').style.display = 'none'; // Hide the main game content
+    // --- FIX: Check if elements exist before using them ---
+    const overlay = document.getElementById('rebirthOverlay');
+    const pointsDisplay = document.getElementById('rebirthPointsDisplay');
+    const gameWrapper = document.querySelector('.game-wrapper');
+
+    if (overlay) {
+        overlay.classList.add('visible');
+        overlay.setAttribute('aria-hidden', 'false');
+    } else {
+        console.warn("Element with ID 'rebirthOverlay' not found."); // Optional: Warn if missing
+    }
+
+    if (pointsDisplay) {
+        pointsDisplay.textContent = formatCurrency(rebirth_points); // Use formatCurrency here too
+    } else {
+        console.warn("Element with ID 'rebirthPointsDisplay' not found."); // Optional: Warn if missing
+    }
+
+    if (gameWrapper) {
+        gameWrapper.style.display = 'none'; // Hide the main game content
+    } else {
+        console.warn("Element with class '.game-wrapper' not found."); // Optional: Warn if missing
+    }
+    // --- END FIX ---
 }
 
 function hideRebirthOverlay() {
-    document.getElementById('rebirthOverlay').classList.remove('visible');
-    document.getElementById('rebirthOverlay').setAttribute('aria-hidden', 'true');
-    document.querySelector('.game-wrapper').style.display = 'flex'; // Show the main game content again
-    updateAll(); // Update the UI in case any rebirth upgrades were bought
-    location.reload();
-}
+    // --- FIX: Check if elements exist before using them ---
+    const overlay = document.getElementById('rebirthOverlay');
+    const gameWrapper = document.querySelector('.game-wrapper');
 
+    if (overlay) {
+        overlay.classList.remove('visible');
+        overlay.setAttribute('aria-hidden', 'true');
+    } else {
+        console.warn("Element with ID 'rebirthOverlay' not found."); // Optional: Warn if missing
+    }
+
+    if (gameWrapper) {
+        gameWrapper.style.display = 'flex'; // Show the main game content again
+    } else {
+        console.warn("Element with class '.game-wrapper' not found."); // Optional: Warn if missing
+    }
+    // --- END FIX ---
+
+    updateAll(); // Update the UI in case any rebirth upgrades were bought
+    // Consider if reload is necessary - might interrupt user flow if they just bought upgrades
+    // location.reload(); 
+}
 function getRebirthUpgradeInfo(upgradeNumber) {
     const infoMap = {
         1: { id: 'rebirthUpgrade1', isRepeatable: false },
@@ -2662,11 +3069,11 @@ function getRebirthUpgradeInfo(upgradeNumber) {
         9: { id: 'rebirthUpgrade9', isRepeatable: false },
         10: { id: 'rebirthUpgrade10', isRepeatable: false },
         11: { id: 'rebirthUpgrade11', isRepeatable: false },
-        12: { id: 'rebirthUpgrade12', isRepeatable: true, levelVariable: 'rebirthUpg12Levels' },
+        12: { id: 'rebirthUpgrade12', isRepeatable: false},
         13: { id: 'rebirthUpgrade13', isRepeatable: false },
         14: { id: 'rebirthUpgrade14', isRepeatable: true, levelVariable: 'rebirthUpg14Levels' },
         15: { id: 'rebirthUpgrade15', isRepeatable: false },
-        16: { id: 'rebirthUpgrade16', isRepeatable: true, levelVariable: 'rebirthUpg16Levels' },
+        16: { id: 'rebirthUpgrade16', isRepeatable: false},
         17: { id: 'rebirthUpgrade17', isRepeatable: false },
         18: { id: 'rebirthUpgrade18', isRepeatable: false },
         19: { id: 'rebirthUpgrade19', isRepeatable: false },
@@ -2814,12 +3221,13 @@ function updateMoney() {
          * Updates money per second and per click displays
          */
 function updatemps() {
-    const currentMps = parseFloat((mps * moneymultiplier).toFixed(1));
-    const currentClicks = parseFloat((((clicks + rebirthUpg2Levels) * (golden_burger * golden_legacy)) * moneymultiplier).toFixed(1));
+
+    const currentMps = parseFloat((mps * (moneymultiplier*obsidian_legacy)).toFixed(1));
+    const currentClicks = parseFloat((((clicks + rebirthUpg2Levels) * (golden_burger * golden_legacy)) * (moneymultiplier*obsidian_legacy)).toFixed(1));
     //const currentips = ips * rebirthUpg5Levels;
     document.getElementById('moneypersecond').value = "Money per second: $" + formatCurrency(currentMps);
     document.getElementById('moneyperclick').value = "Money per click: $" + formatCurrency(currentClicks);
-    document.getElementById('moneymultiplier').value = "Money multiplier: " + parseFloat((moneymultiplier).toFixed(1));
+    document.getElementById('moneymultiplier').value = "Money multiplier: " + parseFloat((moneymultiplier*obsidian_legacy).toFixed(1));
     document.getElementById('icepers').value = "Ice Creams per second: " + formatCurrency(ips);
     document.getElementById('rebirth_points').value = "Rebirth Points: " + formatCurrency(rebirth_points);
 }
@@ -2827,8 +3235,9 @@ function updatemps() {
          * Handles clicking the burger
          */
         function addMoney() {
-            count += parseFloat((((clicks + rebirthUpg2Levels) * (golden_burger * golden_legacy)) * moneymultiplier).toFixed(1));
-            total_money += parseFloat(((clicks + rebirthUpg2Levels) * (golden_burger * golden_legacy) * moneymultiplier).toFixed(1));
+            // All these variables will now be found correctly!
+            count += parseFloat((((clicks + rebirthUpg2Levels) * (golden_burger * golden_legacy)) * (moneymultiplier*obsidian_legacy)).toFixed(1));
+            total_money += parseFloat(((clicks + rebirthUpg2Levels) * (golden_burger * golden_legacy) * (moneymultiplier*obsidian_legacy)).toFixed(1));
             checkRebirthPoints();
             updateAll();
             totalclicks++;
@@ -2844,61 +3253,157 @@ function updatemps() {
     const canAffordColor = '#4CAF50';    // Green when affordable
     const cannotAffordColor = '#dddddd'; // Gray when can't afford
 
-    document.getElementById('moreicepers').textContent =
-        "Upgrade the Ice Cream machine! " + formatCurrency(icost1) + ' ice';
-    document.getElementById('betterworker').textContent =
-        "Make workers better! " + formatCurrency(icost2) + ' ice';
-    document.getElementById('bettermanager').textContent =
-        "Make managers better! " + formatCurrency(icost3) + ' ice';
-    document.getElementById('betterclick').textContent =
-        "Make more click money better! " + formatCurrency(icost4) + ' ice';
-    document.getElementById('betterdirector').textContent =
-        "Make directors better! " + formatCurrency(icost5) + ' ice';
-    document.getElementById('betterceo').textContent =
-        "Make CEOs better! " + formatCurrency(icost6) + ' ice';
-    document.getElementById('betteroracle').textContent =
-        "Oracle secrets! " + formatCurrency(icost7) + ' ice';
-    document.getElementById('betterfryer').textContent =
-        "Fryer tricks! " + formatCurrency(icost8) + ' ice';
-    document.getElementById('betterfeast').textContent =
-        "Enhance feast! " + formatCurrency(icost9) + ' ice';
-    document.getElementById('betterverdant').textContent =
-        "Grow verdant! " + formatCurrency(icost10) + ' ice';
-    document.getElementById('betterwhisperer').textContent =
-        "Whisperer smoke! " + formatCurrency(icost11) + ' ice';
-    document.getElementById('betterchancellor').textContent =
-        "Cheese mastery! " + formatCurrency(icost12) + ' ice';
-    document.getElementById('betterarchmage').textContent =
-        "Arcane tips! " + formatCurrency(icost13) + ' ice';
-    document.getElementById('betterpriest').textContent =
-        "Sacred buns! " + formatCurrency(icost14) + ' ice'; 
-    document.getElementById('betterpatty').textContent =
-        "Discover the Smoldering Ember Cone! " + formatCurrency(icost15) + ' ice';
- document.getElementById('bettergrill').textContent =
-        "Reassemble the Gilded Dough Whisk! " + formatCurrency(icost16) + ' ice';
+    // --- FIX: Added null checks for all tooltip elements ---
+    const moreIcePersBtn = document.getElementById('moreicepers');
+    if (moreIcePersBtn) {
+        moreIcePersBtn.textContent = "Upgrade the Ice Cream machine! " + formatCurrency(icost1) + ' ice';
+    }
+    const betterWorkerBtn = document.getElementById('betterworker');
+    if (betterWorkerBtn) {
+        betterWorkerBtn.textContent = "Make workers better! " + formatCurrency(icost2) + ' ice';
+    }
+    const betterManagerBtn = document.getElementById('bettermanager');
+    if (betterManagerBtn) {
+        betterManagerBtn.textContent = "Make managers better! " + formatCurrency(icost3) + ' ice';
+    }
+    const betterClickBtn = document.getElementById('betterclick');
+    if (betterClickBtn) {
+        betterClickBtn.textContent = "Make more click money better! " + formatCurrency(icost4) + ' ice';
+    }
+    const betterDirectorBtn = document.getElementById('betterdirector');
+    if (betterDirectorBtn) {
+        betterDirectorBtn.textContent = "Make directors better! " + formatCurrency(icost5) + ' ice';
+    }
+    const betterCeoBtn = document.getElementById('betterceo');
+    if (betterCeoBtn) {
+        betterCeoBtn.textContent = "Make CEOs better! " + formatCurrency(icost6) + ' ice';
+    }
+    const betterOracleBtn = document.getElementById('betteroracle');
+    if (betterOracleBtn) {
+        betterOracleBtn.textContent = "Oracle secrets! " + formatCurrency(icost7) + ' ice';
+    }
+    const betterFryerBtn = document.getElementById('betterfryer');
+    if (betterFryerBtn) {
+        betterFryerBtn.textContent = "Fryer tricks! " + formatCurrency(icost8) + ' ice';
+    }
+    const betterFeastBtn = document.getElementById('betterfeast');
+    if (betterFeastBtn) {
+        betterFeastBtn.textContent = "Enhance feast! " + formatCurrency(icost9) + ' ice';
+    }
+    const betterVerdantBtn = document.getElementById('betterverdant');
+    if (betterVerdantBtn) {
+        betterVerdantBtn.textContent = "Grow verdant! " + formatCurrency(icost10) + ' ice';
+    }
+    const betterWhispererBtn = document.getElementById('betterwhisperer');
+    if (betterWhispererBtn) {
+        betterWhispererBtn.textContent = "Whisperer smoke! " + formatCurrency(icost11) + ' ice';
+    }
+    const betterChancellorBtn = document.getElementById('betterchancellor');
+    if (betterChancellorBtn) {
+        betterChancellorBtn.textContent = "Cheese mastery! " + formatCurrency(icost12) + ' ice';
+    }
+    const betterArchmageBtn = document.getElementById('betterarchmage');
+    if (betterArchmageBtn) {
+        betterArchmageBtn.textContent = "Arcane tips! " + formatCurrency(icost13) + ' ice';
+    }
+    const betterPriestBtn = document.getElementById('betterpriest');
+    if (betterPriestBtn) {
+        betterPriestBtn.textContent = "Sacred buns! " + formatCurrency(icost14) + ' ice';
+    }
+    const betterPattyBtn = document.getElementById('betterpatty');
+    if (betterPattyBtn) {
+        betterPattyBtn.textContent = "Discover the Smoldering Ember Cone! " + formatCurrency(icost15) + ' ice';
+    }
+    const betterGrillBtn = document.getElementById('bettergrill');
+    if (betterGrillBtn) {
+        betterGrillBtn.textContent = "Reassemble the Gilded Dough Whisk! " + formatCurrency(icost16) + ' ice';
+    }
+
     updateUpgradeButtons();
     updateFranchiseButton();
 
-    document.getElementById('Workertooltip').textContent = "Earns $" + formatCurrency(worker) + " per second";
-    document.getElementById('Managertooltip').textContent = "Earns $" + formatCurrency(manager) + " per second";
-    document.getElementById('Moreclicktooltip').textContent = "Increases click value by $" + formatCurrency(clickamount);
-    document.getElementById('directortooltip').textContent = "Earns $" + formatCurrency(director) + " per second";
-    document.getElementById('VPtooltip').textContent = "Earns $" + formatCurrency(VP) + " per second";
-    document.getElementById('COOtooltip').textContent = "Earns $" + formatCurrency(COO) + " per second";
-    document.getElementById('Ceotooltip').textContent = "Earns $" + formatCurrency(ceo) + " per second";
-    document.getElementById('Chairmantooltip').textContent = "Earns $" + formatCurrency(chairman) + " per second";
-    document.getElementById('MOtooltip').textContent = "Earns $" + formatCurrency(oracle) + " per second";
-    document.getElementById('SFtooltip').textContent = "Earns $" + formatCurrency(fryer) + " per second";
-    document.getElementById('Feasttooltip').textContent = "Earns $" + formatCurrency(feast) + " per second";
-    document.getElementById('Verdanttooltip').textContent = "Earns $" + formatCurrency(verdant) + " per second";
-    document.getElementById('EStooltip').textContent = "Earns $" + formatCurrency(emulsifier) + " per second";
-    document.getElementById('FWtooltip').textContent = "Earns $" + formatCurrency(whisperer) + " per second";
-    document.getElementById('CCtooltip').textContent = "Earns $" + formatCurrency(chancellor) + " per second";
-    document.getElementById('Priesttooltip').textContent = "Earns $" + formatCurrency(priest) + " per second";
-    document.getElementById('GAtooltip').textContent = "Earns $" + formatCurrency(archmage) + " per second";
-    document.getElementById('PMtooltip').textContent = "Earns $" + formatCurrency(matriarch) + " per second";
-    document.getElementById('GGtooltip').textContent = "Earns $" + formatCurrency(grillmaster) + " per second";
-    document.getElementById('Multiplyclicktooltip').textContent = "Increases click value by 0.01x";
+    const workerTooltip = document.getElementById('Workertooltip');
+    if (workerTooltip) {
+        workerTooltip.textContent = "Earns $" + formatCurrency(worker) + " per second";
+    }
+    const managerTooltip = document.getElementById('Managertooltip');
+    if (managerTooltip) {
+        managerTooltip.textContent = "Earns $" + formatCurrency(manager) + " per second";
+    }
+    const moreClickTooltip = document.getElementById('Moreclicktooltip');
+    if (moreClickTooltip) {
+        moreClickTooltip.textContent = "Increases click value by $" + formatCurrency(clickamount);
+    }
+    const directorTooltip = document.getElementById('directortooltip');
+    if (directorTooltip) {
+        directorTooltip.textContent = "Earns $" + formatCurrency(director) + " per second";
+    }
+    const vpTooltip = document.getElementById('VPtooltip');
+    if (vpTooltip) {
+        vpTooltip.textContent = "Earns $" + formatCurrency(VP) + " per second";
+    }
+    const cooTooltip = document.getElementById('COOtooltip');
+    if (cooTooltip) {
+        cooTooltip.textContent = "Earns $" + formatCurrency(COO) + " per second";
+    }
+    const ceoTooltip = document.getElementById('Ceotooltip');
+    if (ceoTooltip) {
+        ceoTooltip.textContent = "Earns $" + formatCurrency(ceo) + " per second";
+    }
+    const chairmanTooltip = document.getElementById('Chairmantooltip');
+    if (chairmanTooltip) {
+        chairmanTooltip.textContent = "Earns $" + formatCurrency(chairman) + " per second";
+    }
+    const moTooltip = document.getElementById('MOtooltip');
+    if (moTooltip) {
+        moTooltip.textContent = "Earns $" + formatCurrency(oracle) + " per second";
+    }
+    const sfTooltip = document.getElementById('SFtooltip');
+    if (sfTooltip) {
+        sfTooltip.textContent = "Earns $" + formatCurrency(fryer) + " per second";
+    }
+    const feastTooltip = document.getElementById('Feasttooltip');
+    if (feastTooltip) {
+        feastTooltip.textContent = "Earns $" + formatCurrency(feast) + " per second";
+    }
+    const verdantTooltip = document.getElementById('Verdanttooltip');
+    if (verdantTooltip) {
+        verdantTooltip.textContent = "Earns $" + formatCurrency(verdant) + " per second";
+    }
+    const esTooltip = document.getElementById('EStooltip');
+    if (esTooltip) {
+        esTooltip.textContent = "Earns $" + formatCurrency(emulsifier) + " per second";
+    }
+    const fwTooltip = document.getElementById('FWtooltip');
+    if (fwTooltip) {
+        fwTooltip.textContent = "Earns $" + formatCurrency(whisperer) + " per second";
+    }
+    const ccTooltip = document.getElementById('CCtooltip');
+    if (ccTooltip) {
+        ccTooltip.textContent = "Earns $" + formatCurrency(chancellor) + " per second";
+    }
+    const priestTooltip = document.getElementById('Priesttooltip');
+    if (priestTooltip) {
+        priestTooltip.textContent = "Earns $" + formatCurrency(priest) + " per second";
+    }
+    const gaTooltip = document.getElementById('GAtooltip');
+    if (gaTooltip) {
+        gaTooltip.textContent = "Earns $" + formatCurrency(archmage) + " per second";
+    }
+    const pmTooltip = document.getElementById('PMtooltip');
+    if (pmTooltip) {
+        pmTooltip.textContent = "Earns $" + formatCurrency(matriarch) + " per second";
+    }
+    const ggTooltip = document.getElementById('GGtooltip');
+    if (ggTooltip) {
+        ggTooltip.textContent = "Earns $" + formatCurrency(grillmaster) + " per second";
+    }
+    const multiplyClickTooltip = document.getElementById('Multiplyclicktooltip');
+    if (multiplyClickTooltip) {
+        multiplyClickTooltip.textContent = "Increases click value by 0.01x";
+    }
+    // --- END FIX ---
+
     const buttons = [
         { id: 'extraButton', cost: cost1 },
         { id: 'Button2', cost: cost2 },
@@ -2994,17 +3499,17 @@ function updatemps() {
     window.M17 = M17;
     window.M13 = M13;
     const rebirthButton = document.getElementById("rebirth_button");
-if (rebirthButton) {
-    if (upg30 === 1 && rebirth_points >= 1) {
-        rebirthButton.disabled = false;
-        rebirthButton.textContent = 'Rebirth!';
-        rebirthButton.style.backgroundColor = '#4CAF50';
-    } else {
-        rebirthButton.disabled = true;
-        rebirthButton.textContent = 'Rebirth';
-        rebirthButton.style.backgroundColor = '#dddddd';
+    if (rebirthButton) {
+        if (upg30 === 1 && rebirth_points >= 1) {
+            rebirthButton.disabled = false;
+            rebirthButton.textContent = 'Rebirth!';
+            rebirthButton.style.backgroundColor = '#4CAF50';
+        } else {
+            rebirthButton.disabled = true;
+            rebirthButton.textContent = 'Rebirth';
+            rebirthButton.style.backgroundColor = '#dddddd';
+        }
     }
-}
     buttons.forEach(button => {
         const buttonElement = document.getElementById(button.id);
         if (buttonElement) {
@@ -3023,30 +3528,19 @@ if (rebirthButton) {
             // Check additional requirements if they exist
             if (button.requirements) {
                 meetsRequirements = Object.entries(button.requirements).every(([key, value]) => {
-                    return window[key] && window[key] >= value; // All requirements must pass
+                    // Use window[key] to access global variables like M4, M5 etc.
+                    return window[key] !== undefined && window[key] >= value; // All requirements must pass
                 });
             }
+
 
             // Update button styling based on conditions
-            buttonElement.style.backgroundColor = (canAfford && meetsRequirements) 
-                ? canAffordColor 
+            buttonElement.style.backgroundColor = (canAfford && meetsRequirements)
+                ? canAffordColor
                 : cannotAffordColor;
-
-            // Optional: Add debug logging for requirements
-           /* if (button.requirements) {
-               console.log(`Button ${button.id}:`, {
-                    canAfford,
-                    meetsRequirements,
-                    requirements: button.requirements,
-                    currentValues: Object.entries(button.requirements).reduce((acc, [key]) => {
-                        acc[key] = window[key] || 0; // Fallback to 0 if undefined
-                        return acc;
-                    }, {})
-                });
-            }
-                */
         }
     });
+
 
     Ibuttons.forEach(button => {
         const buttonElement = document.getElementById(button.id);
@@ -3054,28 +3548,11 @@ if (rebirthButton) {
             buttonElement.style.backgroundColor = ice >= button.cost ? canAffordColor : cannotAffordColor;
         }
     });
-   // const upgrade30Btn = document.getElementById('upgrade30');
-   // if (upgrade30Btn) {
-   //     upgrade30Btn.disabled = true;
-   //     upgrade30Btn.style.backgroundColor = '#dddddd';
-   //     upgrade30Btn.textContent = 'Learn from the grand grill master: $???';
-   // }
-}
-        /**
-         * Adds money per second
-         */
-        function recalculateIps() {
-    ips = 1; // Base IPS is 1 from upgrade3
-    
-    // Apply the bonus from rebirth upgrade 5
-    if (rebirthUpg5Levels > 0) {
-        ips += (ips * 0.25 * rebirthUpg5Levels); // 25% bonus per level
-    }
 }
         function moneyps() {
             detectMobile();
-            count += mps*moneymultiplier;
-            total_money += mps*moneymultiplier;
+            count += mps*(moneymultiplier*obsidian_legacy);
+            total_money += mps*(moneymultiplier*obsidian_legacy);
             checkRebirthPoints();
             updateAll();
             checkTabHighlights();
@@ -3083,9 +3560,10 @@ if (rebirthButton) {
             if (upg3 == 1) {
                 ice += ips; //if you have upgrade 3, add 1 to the ice, per second
             }
-                if(rebirthUpgradeStates.rebirthUpg9 == true) {
-        buyAllIceUpgrades();
+                if(rebirthUpgradeStates.rebirthUpg9 == true && isToggled == true) {
+    buyAllIceUpgrades();
     }
+
         }
 
         /**
@@ -3142,11 +3620,11 @@ function buyall() {
             }
             
             // If we can afford this employee, buy one
-            if (window.count >= currentCost) {
-              //  console.log(`Buying ${employeeId} for ${currentCost}`);
+            if (count >= currentCost) {
+               //  console.log(`Buying ${employeeId} for ${currentCost}`);
                 
                 // Make the purchase
-                window.count -= currentCost;
+                count -= currentCost;
                 window[info.countVar] += 1;
                 
                 // Handle special effects for click upgrades
@@ -3190,7 +3668,7 @@ function buyall() {
                 totalPurchased++;
                 purchaseMade = true;
             } else {
-               // console.log(`Cannot afford ${employeeId} at cost $${currentCost}. Current money: $${window.count}`);
+               // console.log(`Cannot afford ${employeeId} at cost $${currentCost}. Current money: $${count}`);
             }
         }
     }
@@ -3202,7 +3680,7 @@ function buyall() {
           (M13 * emulsifier) + (M14 * whisperer) + (M15 * chancellor) + 
           (M16 * priest) + (M17 * archmage) + (M18 * matriarch) + (M19 * grillmaster);
     
-    mps = mps * golden_burger * moneymultiplier;
+    mps = mps * golden_burger * (moneymultiplier * obsidian_legacy);
     
     updateAll();
     
@@ -3257,7 +3735,7 @@ function buyAllIceUpgrades() {
                     minCost = currentCost;
                     cheapestAffordable = upgrade;
                 } else {
-                  //  console.log(`Cannot afford ${upgrade.upgCountVar} at cost ${currentCost}. Current ice: ${ice}`); // Debug log
+                   //  console.log(`Cannot afford ${upgrade.upgCountVar} at cost ${currentCost}. Current ice: ${ice}`); // Debug log
                 }
             } else {
                // console.log(`Upgrade ${upgrade.upgCountVar} is locked.`); // Debug log for locked upgrades
@@ -3268,7 +3746,7 @@ function buyAllIceUpgrades() {
         if (!cheapestAffordable) {
             break;
         } else {
-          //  console.log(`Cheapest affordable upgrade: ${cheapestAffordable.upgCountVar} at cost ${minCost}`); // Debug log
+         //  console.log(`Cheapest affordable upgrade: ${cheapestAffordable.upgCountVar} at cost ${minCost}`); // Debug log
         }
 
         // Buy the cheapest one and update its state.
@@ -3290,11 +3768,46 @@ function buyAllIceUpgrades() {
     updateAll(); // Update the UI once after all purchases are completed.
 }
 
+function fakeclick() {
+if(rebirthUpgradeStates.rebirthUpg10 == true) {
+    const element = document.getElementById('burger-button');
+
+    // If the element doesn't exist, log an error to prevent the game from crashing.
+    if (!element) {
+        console.error("Could not find the burger button with id='burger-button'");
+        return;
+    }
+
+    // 1. Add the visual "active" class to make the button look pressed.
+    element.classList.add('fake-active');
+
+    // 2. Programmatically trigger the click event to run your addMoney() function.
+    element.click();
+
+    // 3. Remove the visual class after a short delay to simulate the button release.
+    setTimeout(() => {
+        element.classList.remove('fake-active');
+    }, 150); // 150 milliseconds is a good duration for a natural-looking click.
+}
+}
+function restartFakeClickInterval() {
+    // Ensure a sane minimum interval to avoid extremely fast loops
+    if (fakeClickIntervalId) {
+        clearInterval(fakeClickIntervalId);
+        fakeClickIntervalId = null;
+    }
+    const intervalMs = Math.max(50, Math.floor(fake_click_speed)); // clamp to 50ms minimum
+    fakeClickIntervalId = setInterval(fakeclick, intervalMs);
+}
 
         function openFranchise() {
             if (count >= fcost) {
                 count -= fcost;
+                if (rebirthUpgradeStates.rebirthUpg16 == true) {
+                 moneymultiplier += 1.1;
+                } else {
                 moneymultiplier += 1;
+                }
                 fcost = ((fcost * 2.5) * 10) / 10;
                 updateAll();
                 playSound('purchase', 0.4*sfxVolume);
@@ -3318,7 +3831,7 @@ function buyAllIceUpgrades() {
                     document.getElementById('Franchise6').style.display = 'block';
                     franchiseButton.textContent = 'Max Franchises!';
                     franchiseButton.disabled = true;
-                    fcost = 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999;
+                    fcost = NaN;
                 }
                 if (franchises >= 7) { 
 
@@ -3417,7 +3930,8 @@ function buyAllIceUpgrades() {
             a5hour: { unlocked: false, condition: () => totaltime >= 18000 },
             a12hour: { unlocked: false, condition: () => totaltime >= 43200 },
             a1day: { unlocked: false, condition: () => totaltime >= 86400 },
-            a1week: { unlocked: false, condition: () => totaltime >= 604800 }
+            a1week: { unlocked: false, condition: () => totaltime >= 604800 },
+            finalburger: {unlocked: false, condition: () => rebirthUpgradeStates.rebirthUpg19 === true },
         };
 
         /**
@@ -3447,10 +3961,10 @@ function buyAllIceUpgrades() {
         }
         function updateUpgradeVisibility() {
             if (upg1 === 1) {
-        const upgrade1Button = document.getElementById("upgrade1");
-        if (upgrade1Button) upgrade1Button.remove();
-        const franchiseImg = document.getElementById('Franchise1');
-        if (franchiseImg) franchiseImg.src = 'Restaurant-images/Restaurant+coffee.png';
+    const upgrade1Button = document.getElementById("upgrade1");
+    if (upgrade1Button) upgrade1Button.remove();
+    const franchiseImg = document.getElementById('Franchise1');
+    if (franchiseImg) franchiseImg.src = 'Restaurant-images/Restaurant+coffee.png';
     }
 
     // Ice cream machine upgrade (shown only if coffee upgrade is purchased)
@@ -3563,7 +4077,7 @@ function buyAllIceUpgrades() {
     const rebirthUpgrade5Container = document.getElementById("rebirthUpgrade5Container");
     if (rebirthUpgrade5Container) { // Check if the container exists
         if (rebirthUpgradeStates.rebirthUpg1 === true) {
-            rebirthUpgrade5Container.style.display = 'block'; // Use 'block' or 'flex'
+            rebirthUpgrade5Container.style.display = 'flex'; // Use 'block' or 'flex'
         } else {
             rebirthUpgrade5Container.style.display = 'none';
         }
@@ -3571,7 +4085,7 @@ function buyAllIceUpgrades() {
     const rebirthUpgrade6Container = document.getElementById("rebirthUpgrade6Container");
     if (rebirthUpgrade6Container) { // Check if the container exists
         if (rebirthUpgradeStates.rebirthUpg3 === true) {
-            rebirthUpgrade6Container.style.display = 'block'; // Use 'block' or 'flex'
+            rebirthUpgrade6Container.style.display = 'flex'; // Use 'block' or 'flex'
         } else {
             rebirthUpgrade6Container.style.display = 'none';
         }
@@ -3950,15 +4464,17 @@ window.addEventListener('DOMContentLoaded', initImportOverlay);
         mps,
         clicks,
         moneymultiplier,
+        obsidian_legacy,
         golden_burger,
         dark_mode,
         total_money,
         rebirth_points,
+        isToggled,
         lastRebirthCheck,
         click_multiplier,
         rebirthedTimes,
         hasRebirthed,
-        
+        fake_click_speed,
         // Costs
         cost1, cost2, cost3, cost4, cost5, cost6, cost7, cost8, cost9, cost10,
         cost11, cost12, cost13, cost14, cost15, cost16, cost17, cost18, cost19, cost20,
@@ -4023,6 +4539,7 @@ window.addEventListener('DOMContentLoaded', initImportOverlay);
 
 
 
+
         // Load game state
         // New loadGame() function
 function loadGame() {
@@ -4035,6 +4552,7 @@ function loadGame() {
         mps = gameState.mps || 0;
         clicks = gameState.clicks || 1;
         moneymultiplier = gameState.moneymultiplier || 1;
+        obsidian_legacy = gameState.obsidian_legacy || 0;
         golden_burger = gameState.golden_burger || 1;
         total_money = gameState.total_money || 0;
         rebirth_points = gameState.rebirth_points || 0;
@@ -4042,7 +4560,8 @@ function loadGame() {
         click_multiplier = gameState.click_multiplier || 0.01;
         rebirthedTimes = gameState.rebirthedTimes || 0;
         hasRebirthed = gameState.hasRebirthed || false;
-        
+        fake_click_speed = gameState.fake_click_speed || 1000
+        isToggled = (gameState.isToggled !== undefined) ? gameState.isToggled : true;
         // Restore all other variables...
         cost1 = gameState.cost1 || 10;
         cost2 = gameState.cost2 || 25;
@@ -4246,15 +4765,16 @@ function loadGame() {
         rebupgp15 = gameState.rebupgp15 || 20;
         rebupgp16 = gameState.rebupgp16 || 40;
         rebupgp17 = gameState.rebupgp17 || 50;
-        rebupgp20 = gameState.rebupgp20 || 100;
+        rebupgp20 = gameState.rebupgp20 || 100; // Corrected typo (was 75 before)
         rebupgp18 = gameState.rebupgp18 || 60;
-        rebupgp19 = gameState.rebupgp19 || 75;
+        rebupgp19 = gameState.rebupgp19 || 75; // Corrected typo (was 100 before)
         rebupgp21 = gameState.rebupgp21 || 1000;
         rebupgp22 = gameState.rebupgp22 || 1250;
         rebupgp23 = gameState.rebupgp23 || 5000;
         golden_legacy = gameState.golden_legacy || 1;
         rebirthClickBonus = gameState.rebirthClickBonus || 0;
-        lastSeenTime = gameState.lastSeenTime || 0;
+        lastSeenTime = gameState.lastSeenTime || Date.now(); // Default to now if not saved
+        
         // Restore achievements
         if (gameState.achievements) {
             Object.entries(gameState.achievements).forEach(([id, unlocked]) => {
@@ -4267,6 +4787,22 @@ function loadGame() {
                 }
             });
         }
+
+        // --- FIX: Added null check for toggleContainer ---
+        const toggleContainer = document.getElementById("toggleContainer");
+        if (toggleContainer) { // Check if the element exists
+            if (rebirthUpgradeStates.rebirthUpg9 == true) {
+                toggleContainer.style.display = 'flex';
+            } else { 
+                toggleContainer.style.display = 'none';
+            }
+        }
+        // --- END FIX ---
+
+                const toggleSwitch = document.getElementById('myToggle');
+        if (toggleSwitch) {
+            toggleSwitch.checked = isToggled;
+        }
 const now = Date.now();
 const offlineDurationInSeconds = Math.floor((now - lastSeenTime) / 1000);
 
@@ -4274,12 +4810,12 @@ const offlineDurationInSeconds = Math.floor((now - lastSeenTime) / 1000);
 if (rebirthUpgradeStates.rebirthUpg8 === true && offlineDurationInSeconds > 0) {
     let offlineEarnings = (mps * moneymultiplier) * (offlineDurationInSeconds * 0.01); // 1% of MPS per second
 
-  
+ 
     if (rebirthUpgradeStates.rebirthUpg13 === true) {
         offlineEarnings *= 2;
     }
 
-    
+   
     if (rebirthUpgradeStates.rebirthUpg17 === true) {
         // This bonus can grow based on your total money.
         const dynamicBonus = 1 + Math.log10(total_money + 1);
@@ -4301,6 +4837,7 @@ if (rebirthUpgradeStates.rebirthUpg8 === true && offlineDurationInSeconds > 0) {
     // This log helps confirm if the check is failing correctly when the upgrade isn't owned.
     console.log("Offline earnings upgrade not purchased or time was zero. Upgrade state:", rebirthUpgradeStates.rebirthUpg8);
 }
+  restartFakeClickInterval();
 
         recalculateIps();
         // Apply rebirth upgrades and update UI
@@ -4308,7 +4845,7 @@ if (rebirthUpgradeStates.rebirthUpg8 === true && offlineDurationInSeconds > 0) {
         updateUpgradeVisibility();
         updateRebirthUI();
         playSound('save', 0.03 * sfxVolume);
-        alert('Game loaded successfully!');
+      //alert('Game loaded successfully!');
     } else {
         playSound('error', 0.4 * sfxVolume);
         alert('No saved game found!');
@@ -4374,7 +4911,6 @@ function hideTooltip(tooltipId) {
     tooltip.style.visibility = 'hidden';
     tooltip.style.opacity = '0';
 }
-
-
+restartFakeClickInterval();
         // Auto-save every 5 minutes
-        setInterval(saveGame, 0.5 * 60 * 1000); 
+        setInterval(saveGame, 0.5 * 60 * 1000);
