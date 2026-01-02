@@ -77,7 +77,90 @@ let rebirthUpgradeStates = {
      rebirthUpg22: false, // Transcendent Burger
     rebirthUpg23: false  // Singularity Engine
 };
+const buttonsConfig = [
+    { id: 'extraButton', costVar: 'cost1' },
+    { id: 'Button2', costVar: 'cost2' },
+    { id: 'Clickbutton', costVar: 'cost3' },
+    { id: 'Clickbutton2', costVar: 'cost20' },
+    { id: 'directorbutton', costVar: 'cost4' },
+    { id: 'VPbutton', costVar: 'cost5' },
+    { id: 'COObutton', costVar: 'cost6' },
+    { id: 'ceobutton', costVar: 'cost7' },
+    { id: 'chairbutton', costVar: 'cost8' },
+    { id: 'MObutton', costVar: 'cost9' },
+    { id: 'SFbutton', costVar: 'cost10' },
+    { id: 'feastbutton', costVar: 'cost11' },
+    { id: 'verdantbutton', costVar: 'cost12' },
+    { id: 'ESbutton', costVar: 'cost13' },
+    { id: 'FWbutton', costVar: 'cost14' },
+    { id: 'CCbutton', costVar: 'cost15' },
+    { id: 'priestbutton', costVar: 'cost16' },
+    { id: 'GAbutton', costVar: 'cost17' },
+    { id: 'PMbutton', costVar: 'cost18' },
+    { id: 'GGbutton', costVar: 'cost19' },
+    { id: 'upgrade1', costVar: 'upgp1' },
+    { id: 'upgrade2', costVar: 'upgp2' },
+    { id: 'Franchisebutton', costVar: 'fcost' },
+    { id: 'upgrade3', costVar: 'upgp3' },
+    { id: 'upgrade4', costVar: 'upgp4' },
+    { id: 'upgrade5', costVar: 'upgp5' },
+    { id: 'upgrade6', costVar: 'upgp6' },
+    { id: 'upgrade7', costVar: 'upgp7' },
+    { id: 'upgrade8', costVar: 'upgp8' },
+    { id: 'upgrade9', costVar: 'upgp9' },
+    { id: 'upgrade10', costVar: 'upgp10' },
+    { id: 'upgrade11', costVar: 'upgp11', requirements: { M4: 50, M5: 50 } },
+    { id: 'upgrade12', costVar: 'upgp12' },
+    { id: 'upgrade13', costVar: 'upgp13' },
+    { id: 'upgrade14', costVar: 'upgp14' },
+    { id: 'upgrade39', costVar: 'upgp39' },
+    { id: 'upgrade15', costVar: 'upgp15', requirements: { M7: 50, M9: 50 } },
+    { id: 'upgrade16', costVar: 'upgp16' },
+    { id: 'upgrade17', costVar: 'upgp17' },
+    { id: 'upgrade18', costVar: 'upgp18' },
+    { id: 'upgrade40', costVar: 'upgp40' },
+    { id: 'upgrade19', costVar: 'upgp19', requirements: { M12: 50, M10: 50 } },
+    { id: 'upgrade20', costVar: 'upgp20' },
+    { id: 'upgrade21', costVar: 'upgp21' },
+    { id: 'upgrade22', costVar: 'upgp22' },
+    { id: 'upgrade41', costVar: 'upgp41' },
+    { id: 'upgrade23', costVar: 'upgp23', requirements: { M15: 50, M14: 50 } },
+    { id: 'upgrade24', costVar: 'upgp24' },
+    { id: 'upgrade25', costVar: 'upgp25' },
+    { id: 'upgrade26', costVar: 'upgp26' },
+    { id: 'upgrade42', costVar: 'upgp42' },
+    { id: 'upgrade27', costVar: 'upgp27', requirements: { M17: 50, M13: 50 } },
+    { id: 'upgrade28', costVar: 'upgp28' },
+    { id: 'upgrade29', costVar: 'upgp29' },
+    { id: 'upgrade30', costVar: 'upgp30' },
+    { id: 'upgrade31', costVar: 'upgp31' },
+    { id: 'upgrade32', costVar: 'upgp32' },
+    { id: 'upgrade33', costVar: 'upgp33' },
+    { id: 'upgrade34', costVar: 'upgp34' },
+    { id: 'upgrade35', costVar: 'upgp35' },
+    { id: 'upgrade36', costVar: 'upgp36' },
+    { id: 'upgrade37', costVar: 'upgp37' },
+    { id: 'upgrade38', costVar: 'upgp38' }
+];
 
+const iceButtonsConfig = [
+    { id: 'moreicepers', costVar: 'icost1' },
+    { id: 'betterworker', costVar: 'icost2' },
+    { id: 'bettermanager', costVar: 'icost3' },
+    { id: 'betterclick', costVar: 'icost4' },
+    { id: 'betterdirector', costVar: 'icost5' },
+    { id: 'betterceo', costVar: 'icost6' },
+    { id: 'betteroracle', costVar: 'icost7' },
+    { id: 'betterfryer', costVar: 'icost8' },
+    { id: 'betterfeast', costVar: 'icost9' },
+    { id: 'betterverdant', costVar: 'icost10' },
+    { id: 'betterwhisperer', costVar: 'icost11' },
+    { id: 'betterchancellor', costVar: 'icost12' },
+    { id: 'betterarchmage', costVar: 'icost13' },
+    { id: 'betterpriest', costVar: 'icost14' },
+    { id: 'bettergrill', costVar: 'icost15' },
+    { id: 'betterpatty', costVar: 'icost16' },
+];
 // New Rebirth Repeatable Upgrades
 let rebirthUpg2Levels = 0; // Increased Base Clicks
 let rebirthUpg5Levels = 0; // Ice Cream Machine Efficiency
@@ -378,43 +461,73 @@ function ToggleDark() {
          */
         
         async function initAudio() {
-            try {
-                // Create audio context
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    try {
+        // Create audio context
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioContext = new AudioContext();
 
-                // Define sound files to load
-                const sounds = {
-                    music: 'Sound-effects/busy-restaurant-dining-room-ambience-128466.mp3',
-                    click: 'Sound-effects/mixkit-hard-typewriter-click-1119.mp3',
-                    purchase: 'Sound-effects/purchase-successful-ingame-230550.mp3',
-                    coffee: 'Sound-effects/cash-register-purchase-87313.mp3',
-                    error: 'Sound-effects/error-sound-fx.wav',
-                    golden: 'Sound-effects/you-win-sequence-2-183949.mp3',
-                    achieve: 'Sound-effects/game-level-complete-143022.mp3',
-                    save: 'Sound-effects/Gamesaved.mp3'
-                };
+        // Define sound files to load
+        const sounds = {
+            music: 'Sound-effects/Chill.mp3',
+            click: 'Sound-effects/mixkit-hard-typewriter-click-1119.mp3',
+            purchase: 'Sound-effects/purchase-successful-ingame-230550.mp3',
+            coffee: 'Sound-effects/cash-register-purchase-87313.mp3',
+            error: 'Sound-effects/error.mp3',
+            golden: 'Sound-effects/you-win-sequence-2-183949.mp3',
+            achieve: 'Sound-effects/game-level-complete-143022.mp3',
+            save: 'Sound-effects/Gamesaved.mp3'
+        };
 
-                // Load all sounds in parallel
-                const loadPromises = Object.entries(sounds).map(([key, path]) => 
-                    fetch(path)
-                        .then(response => response.arrayBuffer())
-                        .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
-                        .then(audioBuffer => {
-                            soundBuffers[key] = audioBuffer;
-                        })
-                        .catch(e => console.warn(`Failed to load sound ${key}:`, e))
-                );
-                audioLoaded = true;
-                await Promise.all(loadPromises);
-                audioLoaded = true;
+        // Load all sounds in parallel
+        const loadPromises = Object.entries(sounds).map(([key, path]) => 
+            fetch(path)
+                .then(response => response.arrayBuffer())
+                .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+                .then(audioBuffer => {
+                    soundBuffers[key] = audioBuffer;
+                })
+                .catch(e => console.warn(`Failed to load sound ${key}:`, e))
+        );
 
-                // Start background music loop
-musicSource = playSound('music', musicVolume);
-            } catch (e) {
-                console.warn('Web Audio API initialization failed:', e);
-                audioLoaded = false;
+        await Promise.all(loadPromises);
+        audioLoaded = true;
+
+        // --- FIX: Add interaction listener to unlock audio ---
+        // Browsers block audio until the user clicks. This waits for that first click.
+        const unlockAudio = function() {
+            // Resume the context if it's suspended (which it usually is on load)
+            if (audioContext.state === 'suspended') {
+                audioContext.resume().then(() => {
+                    console.log('Audio Context unlocked!');
+                });
             }
+            
+            // Start music if it hasn't started yet
+            if (!musicSource) {
+                musicSource = playSound('music', musicVolume);
+            }
+
+            // Remove these listeners so they don't run on every single click
+            document.removeEventListener('click', unlockAudio);
+            document.removeEventListener('touchstart', unlockAudio);
+            document.removeEventListener('keydown', unlockAudio);
+        };
+
+        // Listen for any interaction anywhere on the page
+        document.addEventListener('click', unlockAudio);
+        document.addEventListener('touchstart', unlockAudio);
+        document.addEventListener('keydown', unlockAudio);
+
+        // Try to play immediately (in case the browser allows it, e.g., previously allowed)
+        if (audioContext.state === 'running') {
+             musicSource = playSound('music', musicVolume);
         }
+
+    } catch (e) {
+        console.warn('Web Audio API initialization failed:', e);
+        audioLoaded = false;
+    }
+}
 
         /**
          * Plays a sound effect with specified volume
@@ -2369,40 +2482,36 @@ function updateButtons(buttons) {
             cost *= Math.pow(0.99, rebirthUpg6Levels);
 
             let quantity = purchaseAmount === 'max' ? getMaxAffordable(button.id) : purchaseAmount;
-            let displayCost = computeEmployeeCost(button.id, quantity);
             
-            // Apply the same cost reductions to the displayed cost for "Max" or multiple purchases
+            // --- FIX: If Max buy is selected but user can't afford any (0), show cost for 1 ---
+            let quantityForDisplay = quantity;
+            if (purchaseAmount === 'max' && quantity === 0) {
+                quantityForDisplay = 1;
+            }
+            // ---------------------------------------------------------------------------------
+
+            let displayCost = computeEmployeeCost(button.id, quantityForDisplay);
+            
+            // Apply the same cost reductions to the displayed cost
             if (rebirthUpgradeStates.rebirthUpg3) {
                 displayCost *= 0.95;
             }
             displayCost *= Math.pow(0.99, rebirthUpg6Levels);
 
             const countMap = {
-                'extraButton': M,
-                'Button2': M2,
-                'Clickbutton': M3,
-                'Clickbutton2': M20,
-                'directorbutton': M4,
-                'VPbutton': M5,
-                'COObutton': M6,
-                'ceobutton': M7,
-                'chairbutton': M8,
-                'MObutton': M9,
-                'SFbutton': M10,
-                'feastbutton': M11,
-                'verdantbutton': M12,
-                'ESbutton': M13,
-                'FWbutton': M14,
-                'CCbutton': M15,
-                'priestbutton': M16,
-                'GAbutton': M17,
-                'PMbutton': M18,
-                'GGbutton': M19
+                'extraButton': M, 'Button2': M2, 'Clickbutton': M3, 'Clickbutton2': M20,
+                'directorbutton': M4, 'VPbutton': M5, 'COObutton': M6, 'ceobutton': M7,
+                'chairbutton': M8, 'MObutton': M9, 'SFbutton': M10, 'feastbutton': M11,
+                'verdantbutton': M12, 'ESbutton': M13, 'FWbutton': M14, 'CCbutton': M15,
+                'priestbutton': M16, 'GAbutton': M17, 'PMbutton': M18, 'GGbutton': M19
             };
 
             const countText = countMap.hasOwnProperty(button.id) ? ` (${countMap[button.id]})` : '';
             const qtyText = quantity > 1 ? ` x${quantity}` : '';
 
+            // Use 'quantityForDisplay' if you want to show price of 1 when afford is 0, 
+            // OR strict 'quantity' if you want it to show cost of specific amount.
+            // Standard clicker behavior: Show cost of 1 if you can't afford 1.
             element.textContent = `${button.label}${qtyText}: $${formatCurrency(displayCost)}${countText}`;
         }
     });
@@ -2869,6 +2978,7 @@ function rebirth() {
         document.querySelector('.game-wrapper').style.display = 'none';
 
         playSound('achieve', 0.1 * sfxVolume);
+        updateUpgradeVisibility();
         saveGame();
     } else {
         playSound('error', 0.4 * sfxVolume);
@@ -3248,12 +3358,10 @@ function updatemps() {
         /**
          * Updates button colors based on affordability
          */
-         function Update() {
+ function Update() {
     checkAchievements();
-    const canAffordColor = '#4CAF50';    // Green when affordable
-    const cannotAffordColor = '#dddddd'; // Gray when can't afford
 
-    // --- FIX: Added null checks for all tooltip elements ---
+    // 1. Tooltip Updates (Keep existing text updates)
     const moreIcePersBtn = document.getElementById('moreicepers');
     if (moreIcePersBtn) {
         moreIcePersBtn.textContent = "Upgrade the Ice Cream machine! " + formatCurrency(icost1) + ' ice';
@@ -3322,88 +3430,68 @@ function updatemps() {
     updateUpgradeButtons();
     updateFranchiseButton();
 
+    // Tooltip text updates for employees
     const workerTooltip = document.getElementById('Workertooltip');
-    if (workerTooltip) {
-        workerTooltip.textContent = "Earns $" + formatCurrency(worker) + " per second";
-    }
+    if (workerTooltip) workerTooltip.textContent = "Earns $" + formatCurrency(worker) + " per second";
+    
     const managerTooltip = document.getElementById('Managertooltip');
-    if (managerTooltip) {
-        managerTooltip.textContent = "Earns $" + formatCurrency(manager) + " per second";
-    }
+    if (managerTooltip) managerTooltip.textContent = "Earns $" + formatCurrency(manager) + " per second";
+    
     const moreClickTooltip = document.getElementById('Moreclicktooltip');
-    if (moreClickTooltip) {
-        moreClickTooltip.textContent = "Increases click value by $" + formatCurrency(clickamount);
-    }
+    if (moreClickTooltip) moreClickTooltip.textContent = "Increases click value by $" + formatCurrency(clickamount);
+    
     const directorTooltip = document.getElementById('directortooltip');
-    if (directorTooltip) {
-        directorTooltip.textContent = "Earns $" + formatCurrency(director) + " per second";
-    }
+    if (directorTooltip) directorTooltip.textContent = "Earns $" + formatCurrency(director) + " per second";
+    
     const vpTooltip = document.getElementById('VPtooltip');
-    if (vpTooltip) {
-        vpTooltip.textContent = "Earns $" + formatCurrency(VP) + " per second";
-    }
+    if (vpTooltip) vpTooltip.textContent = "Earns $" + formatCurrency(VP) + " per second";
+    
     const cooTooltip = document.getElementById('COOtooltip');
-    if (cooTooltip) {
-        cooTooltip.textContent = "Earns $" + formatCurrency(COO) + " per second";
-    }
+    if (cooTooltip) cooTooltip.textContent = "Earns $" + formatCurrency(COO) + " per second";
+    
     const ceoTooltip = document.getElementById('Ceotooltip');
-    if (ceoTooltip) {
-        ceoTooltip.textContent = "Earns $" + formatCurrency(ceo) + " per second";
-    }
+    if (ceoTooltip) ceoTooltip.textContent = "Earns $" + formatCurrency(ceo) + " per second";
+    
     const chairmanTooltip = document.getElementById('Chairmantooltip');
-    if (chairmanTooltip) {
-        chairmanTooltip.textContent = "Earns $" + formatCurrency(chairman) + " per second";
-    }
+    if (chairmanTooltip) chairmanTooltip.textContent = "Earns $" + formatCurrency(chairman) + " per second";
+    
     const moTooltip = document.getElementById('MOtooltip');
-    if (moTooltip) {
-        moTooltip.textContent = "Earns $" + formatCurrency(oracle) + " per second";
-    }
+    if (moTooltip) moTooltip.textContent = "Earns $" + formatCurrency(oracle) + " per second";
+    
     const sfTooltip = document.getElementById('SFtooltip');
-    if (sfTooltip) {
-        sfTooltip.textContent = "Earns $" + formatCurrency(fryer) + " per second";
-    }
+    if (sfTooltip) sfTooltip.textContent = "Earns $" + formatCurrency(fryer) + " per second";
+    
     const feastTooltip = document.getElementById('Feasttooltip');
-    if (feastTooltip) {
-        feastTooltip.textContent = "Earns $" + formatCurrency(feast) + " per second";
-    }
+    if (feastTooltip) feastTooltip.textContent = "Earns $" + formatCurrency(feast) + " per second";
+    
     const verdantTooltip = document.getElementById('Verdanttooltip');
-    if (verdantTooltip) {
-        verdantTooltip.textContent = "Earns $" + formatCurrency(verdant) + " per second";
-    }
+    if (verdantTooltip) verdantTooltip.textContent = "Earns $" + formatCurrency(verdant) + " per second";
+    
     const esTooltip = document.getElementById('EStooltip');
-    if (esTooltip) {
-        esTooltip.textContent = "Earns $" + formatCurrency(emulsifier) + " per second";
-    }
+    if (esTooltip) esTooltip.textContent = "Earns $" + formatCurrency(emulsifier) + " per second";
+    
     const fwTooltip = document.getElementById('FWtooltip');
-    if (fwTooltip) {
-        fwTooltip.textContent = "Earns $" + formatCurrency(whisperer) + " per second";
-    }
+    if (fwTooltip) fwTooltip.textContent = "Earns $" + formatCurrency(whisperer) + " per second";
+    
     const ccTooltip = document.getElementById('CCtooltip');
-    if (ccTooltip) {
-        ccTooltip.textContent = "Earns $" + formatCurrency(chancellor) + " per second";
-    }
+    if (ccTooltip) ccTooltip.textContent = "Earns $" + formatCurrency(chancellor) + " per second";
+    
     const priestTooltip = document.getElementById('Priesttooltip');
-    if (priestTooltip) {
-        priestTooltip.textContent = "Earns $" + formatCurrency(priest) + " per second";
-    }
+    if (priestTooltip) priestTooltip.textContent = "Earns $" + formatCurrency(priest) + " per second";
+    
     const gaTooltip = document.getElementById('GAtooltip');
-    if (gaTooltip) {
-        gaTooltip.textContent = "Earns $" + formatCurrency(archmage) + " per second";
-    }
+    if (gaTooltip) gaTooltip.textContent = "Earns $" + formatCurrency(archmage) + " per second";
+    
     const pmTooltip = document.getElementById('PMtooltip');
-    if (pmTooltip) {
-        pmTooltip.textContent = "Earns $" + formatCurrency(matriarch) + " per second";
-    }
+    if (pmTooltip) pmTooltip.textContent = "Earns $" + formatCurrency(matriarch) + " per second";
+    
     const ggTooltip = document.getElementById('GGtooltip');
-    if (ggTooltip) {
-        ggTooltip.textContent = "Earns $" + formatCurrency(grillmaster) + " per second";
-    }
+    if (ggTooltip) ggTooltip.textContent = "Earns $" + formatCurrency(grillmaster) + " per second";
+    
     const multiplyClickTooltip = document.getElementById('Multiplyclicktooltip');
-    if (multiplyClickTooltip) {
-        multiplyClickTooltip.textContent = "Increases click value by 0.01x";
-    }
-    // --- END FIX ---
+    if (multiplyClickTooltip) multiplyClickTooltip.textContent = "Increases click value by 0.01x";
 
+    // 2. Define Arrays INSIDE function to catch correct 'let' variable values
     const buttons = [
         { id: 'extraButton', cost: cost1 },
         { id: 'Button2', cost: cost2 },
@@ -3488,28 +3576,33 @@ function updatemps() {
         { id: 'bettergrill', cost: icost15 },
         { id: 'betterpatty', cost: icost16 },
     ];
-    window.M4 = M4;
-    window.M5 = M5;
-    window.M7 = M7;
-    window.M9 = M9;
-    window.M12 = M12;
-    window.M10 = M10;
-    window.M15 = M15;
-    window.M14 = M14;
-    window.M17 = M17;
-    window.M13 = M13;
+
+    window.M4 = M4; window.M5 = M5; window.M7 = M7; window.M9 = M9;
+    window.M12 = M12; window.M10 = M10; window.M15 = M15; window.M14 = M14;
+    window.M17 = M17; window.M13 = M13;
+
+    // --- REBIRTH BUTTON (Optimized to prevent lag) ---
     const rebirthButton = document.getElementById("rebirth_button");
     if (rebirthButton) {
-        if (upg30 === 1 && rebirth_points >= 1) {
-            rebirthButton.disabled = false;
-            rebirthButton.textContent = 'Rebirth!';
-            rebirthButton.style.backgroundColor = '#4CAF50';
+        const canAffordRebirth = (upg30 === 1 && rebirth_points >= 1);
+        if (canAffordRebirth) {
+            if (rebirthButton.disabled === true) {
+                rebirthButton.disabled = false;
+                rebirthButton.textContent = 'Rebirth!';
+                rebirthButton.classList.add('can-afford');
+                rebirthButton.classList.remove('cannot-afford');
+            }
         } else {
-            rebirthButton.disabled = true;
-            rebirthButton.textContent = 'Rebirth';
-            rebirthButton.style.backgroundColor = '#dddddd';
+            if (rebirthButton.disabled === false) {
+                rebirthButton.disabled = true;
+                rebirthButton.textContent = 'Rebirth';
+                rebirthButton.classList.add('cannot-afford');
+                rebirthButton.classList.remove('can-afford');
+            }
         }
     }
+
+    // --- BUTTON LOOPS (Restored to work with 'let' variables + Optimized to prevent lag) ---
     buttons.forEach(button => {
         const buttonElement = document.getElementById(button.id);
         if (buttonElement) {
@@ -3517,7 +3610,7 @@ function updatemps() {
             if (employeeInfo.hasOwnProperty(button.id)) {
                 if (quantity < 1) quantity = 1;
             } else {
-                quantity = 1; // upgrades always purchased once
+                quantity = 1; 
             }
             const costToCheck = employeeInfo.hasOwnProperty(button.id)
                 ? computeEmployeeCost(button.id, quantity)
@@ -3525,27 +3618,41 @@ function updatemps() {
             const canAfford = count >= costToCheck;
             let meetsRequirements = true;
 
-            // Check additional requirements if they exist
             if (button.requirements) {
                 meetsRequirements = Object.entries(button.requirements).every(([key, value]) => {
-                    // Use window[key] to access global variables like M4, M5 etc.
-                    return window[key] !== undefined && window[key] >= value; // All requirements must pass
+                    return window[key] !== undefined && window[key] >= value;
                 });
             }
 
-
-            // Update button styling based on conditions
-            buttonElement.style.backgroundColor = (canAfford && meetsRequirements)
-                ? canAffordColor
-                : cannotAffordColor;
+            // Only update DOM if class needs changing
+            if (canAfford && meetsRequirements) {
+                if (!buttonElement.classList.contains('can-afford')) {
+                    buttonElement.classList.add('can-afford');
+                    buttonElement.classList.remove('cannot-afford');
+                }
+            } else {
+                if (!buttonElement.classList.contains('cannot-afford')) {
+                    buttonElement.classList.add('cannot-afford');
+                    buttonElement.classList.remove('can-afford');
+                }
+            }
         }
     });
-
 
     Ibuttons.forEach(button => {
         const buttonElement = document.getElementById(button.id);
         if (buttonElement) {
-            buttonElement.style.backgroundColor = ice >= button.cost ? canAffordColor : cannotAffordColor;
+            if (ice >= button.cost) {
+                if (!buttonElement.classList.contains('can-afford')) {
+                    buttonElement.classList.add('can-afford');
+                    buttonElement.classList.remove('cannot-afford');
+                }
+            } else {
+                if (!buttonElement.classList.contains('cannot-afford')) {
+                    buttonElement.classList.add('cannot-afford');
+                    buttonElement.classList.remove('can-afford');
+                }
+            }
         }
     });
 }
@@ -4286,7 +4393,7 @@ function restartFakeClickInterval() {
 
         // Event listeners and intervals
         window.addEventListener('load', initializeGame);
-        setInterval(updateAll, 1);
+        setInterval(updateAll, 33);
         setInterval(moneyps, 1000);  // Add money every second
         // Save game state
 function exportSave(saveObj, filename) {
@@ -4547,12 +4654,48 @@ function loadGame() {
     if (savedGame) {
         const gameState = JSON.parse(savedGame);
 
+        // 1. Restore Dark Mode Setting
+        dark_mode = (gameState.dark_mode !== undefined) ? gameState.dark_mode : false;
+        
+        if (dark_mode) {
+            document.documentElement.classList.add("dark-mode");
+        } else {
+            document.documentElement.classList.remove("dark-mode");
+        }
+
+        // 2. Restore Music Volume
+        if (gameState.musicVolume !== undefined) {
+            musicVolume = gameState.musicVolume;
+            const musicSlider = document.getElementById("musicRange");
+            const musicOutput = document.getElementById("musicVolumeValue");
+            
+            // Update the slider position and the text number
+            if (musicSlider) musicSlider.value = Math.round(musicVolume * 100);
+            if (musicOutput) musicOutput.innerHTML = Math.round(musicVolume * 100);
+            
+            // Apply volume to audio engine immediately if it exists
+            if (musicGainNode) {
+                musicGainNode.gain.value = musicVolume;
+            }
+        }
+
+        // 3. Restore SFX Volume
+        if (gameState.sfxVolume !== undefined) {
+            sfxVolume = gameState.sfxVolume;
+            const sfxSlider = document.getElementById("myRange");
+            const sfxOutput = document.getElementById("sfxVolumeValue");
+            
+            // Update the slider position and the text number
+            if (sfxSlider) sfxSlider.value = Math.round(sfxVolume * 100);
+            if (sfxOutput) sfxOutput.innerHTML = Math.round(sfxVolume * 100);
+        }
+
         // Restore all game variables
         count = gameState.count || 0;
         mps = gameState.mps || 0;
         clicks = gameState.clicks || 1;
         moneymultiplier = gameState.moneymultiplier || 1;
-        obsidian_legacy = gameState.obsidian_legacy || 0;
+        obsidian_legacy = gameState.obsidian_legacy || 1;
         golden_burger = gameState.golden_burger || 1;
         total_money = gameState.total_money || 0;
         rebirth_points = gameState.rebirth_points || 0;

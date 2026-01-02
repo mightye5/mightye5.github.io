@@ -355,7 +355,15 @@ input:checked + .slider:before {
             visibility: visible;
             opacity: 1;
         }
+.tooltip-container:hover {
+    z-index: 10000; /* Brings the container to the front when you mouse over it */
+}
 
+/* Ensure your existing tooltip class stays high */
+.tooltip {
+    /* ... your existing styles ... */
+    z-index: 10001; /* Must be higher than the container hover z-index */
+}
         .franchise-section {
             z-index: 90;
            width: 100%;
@@ -920,4 +928,121 @@ input:checked + .slider:before {
 
 .dark-mode .rebirth-upgrade-button:hover {
     background-color: #666;
+}
+.tooltip-container:hover {
+    z-index: 100000;
+}
+.can-afford {
+    background-color: #4CAF50 !important; /* Green */
+    color: white !important;
+    cursor: pointer;
+    opacity: 1;
+}
+
+.cannot-afford {
+    background-color: #e0e0e0 !important; /* Light Gray */
+    color: #888 !important;
+    /* cursor: not-allowed; */
+    opacity: 0.8;
+}
+
+/* DARK MODE COLORS */
+/* This makes unaffordable buttons a sleek dark grey/red instead of bright white */
+.dark-mode .cannot-afford {
+    background-color: #2c2c2c !important; /* Dark Slate Gray */
+    color: #666 !important; /* Dimmed Text */
+    border: 1px solid #444; /* Subtle Border */
+}
+
+/* Optional: Make affordable buttons slightly less neon in dark mode */
+.dark-mode .can-afford {
+    background-color: #388E3C !important; /* Slightly darker Green */
+    color: white !important;
+    border: 1px solid #2e7d32;
+}
+#rebirth_points {
+    background-color: white;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+/* Style for the Rebirth Points text box in Dark Mode */
+.dark-mode #rebirth_points {
+    background-color: #2b2b2b; /* Matches your other dark inputs */
+    color: #eaeaea;            /* Light text */
+    border: 1px solid #444;    /* Subtle border */
+}
+
+/* Ensure the Rebirth Button generally follows the button shape */
+#rebirth_button {
+    width: 100%;
+    padding: 10px 20px;
+    border-radius: 12px;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+.credits-section {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    text-align: center;
+}
+
+.credits-section h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+    text-transform: uppercase;
+    font-size: 16px;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #4CAF50; /* Matches your green theme */
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.credit-group {
+    margin-bottom: 15px;
+}
+
+.credits-section p {
+    margin: 5px 0;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.credits-section strong {
+    color: #333;
+    font-weight: 700;
+}
+
+.version-number {
+    margin-top: 20px !important;
+    font-size: 12px !important;
+    color: #999 !important;
+    font-style: italic;
+}
+
+/* --- DARK MODE CREDITS --- */
+.dark-mode .credits-section {
+    background-color: #1f1f1f;
+    border: 1px solid #333;
+}
+
+.dark-mode .credits-section h3 {
+    color: #fff;
+}
+
+.dark-mode .credits-section p {
+    color: #aaa;
+}
+
+.dark-mode .credits-section strong {
+    color: #eee;
+}
+
+.dark-mode .version-number {
+    color: #666 !important;
 }
