@@ -1,3 +1,7 @@
+.tab-content {
+    display: none;
+}
+
 /* Basic styling for the page layout */
         body {
             background-color: #f0f0f0;
@@ -253,7 +257,7 @@ max-height: none;
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 99999999;
+    z-index: 1; /* FIX: Base buttons need a low z-index */
 }
 .toggle-container {
     display: flex;
@@ -315,6 +319,18 @@ input:checked + .slider:before {
             width: 100%;
         }
 
+.tooltip-container {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1; /* FIX: Base buttons need a low z-index */
+}
+
+.tooltip-container:hover {
+    z-index: 100000; /* FIX: Hovering now actually brings it to the front! */
+}
+
 .tooltip {
     visibility: hidden;
     position: fixed;
@@ -332,8 +348,20 @@ input:checked + .slider:before {
     will-change: transform;
 }
 
-/* Default: tooltip is on the left of the element, arrow points right */
-.tooltip::before {
+/* Tooltip is on the RIGHT side of the button (Arrow points LEFT) */
+.tooltip.right-side::before {
+    content: "";
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent #333 transparent transparent;
+}
+
+/* Tooltip is on the LEFT side of the button (Arrow points RIGHT) */
+.tooltip.left-side::before {
     content: "";
     position: absolute;
     right: -10px;
@@ -343,31 +371,10 @@ input:checked + .slider:before {
     border-style: solid;
     border-color: transparent transparent transparent #333;
 }
-
-/* When tooltip is flipped to the right, arrow should point left */
-.tooltip.right::before {
-    left: -10px;
-    right: auto;
-    border-color: transparent #333 transparent transparent;
-}
-
-        .tooltip-container:hover .tooltip {
-            visibility: visible;
-            opacity: 1;
-        }
-.tooltip-container:hover {
-    z-index: 10000; /* Brings the container to the front when you mouse over it */
-}
-
-/* Ensure your existing tooltip class stays high */
-.tooltip {
-    /* ... your existing styles ... */
-    z-index: 10001; /* Must be higher than the container hover z-index */
-}
         .franchise-section {
             z-index: 90;
            width: 100%;
-            max-width: fit-screen;
+            max-width: 100%;
            
             margin: 0 auto;
             padding: 20px;
@@ -929,9 +936,7 @@ input:checked + .slider:before {
 .dark-mode .rebirth-upgrade-button:hover {
     background-color: #666;
 }
-.tooltip-container:hover {
-    z-index: 100000;
-}
+
 .can-afford {
     background-color: #4CAF50 !important; /* Green */
     color: white !important;
@@ -1045,4 +1050,12 @@ input:checked + .slider:before {
 
 .dark-mode .version-number {
     color: #666 !important;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
 }

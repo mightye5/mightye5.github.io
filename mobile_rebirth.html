@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes, minimum-scale=0.5">
+    <meta charset="UTF-8">
+    <title>Burger Clicker</title>
+    
+    <script>
+      (function() {
+        try {
+          const savedGame = localStorage.getItem('burgerGameSave');
+          if (savedGame && JSON.parse(savedGame).dark_mode) {
+            document.documentElement.classList.add('dark-mode');
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link rel="icon" type="image/x-icon" href="Burger-images\favicon.ico">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mobile.css">
+</head>
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes, minimum-scale=0.5">
 <meta charset="UTF-8">
 <title>Rebirth Upgrades - Mobile</title>
@@ -115,41 +134,45 @@
 
 <script src="script.js"></script>
 <script>
-// Only allow access when sessionStorage flag is set by the rebirth() flow
+// 1. Rebirth Access Logic
 (function () {
     try {
-        const allowed = sessionStorage.getItem('rebirthAccess') === '1';
-        if (!allowed) {
-            // Not allowed: go back to mobile_restricted
+        // Check if we were in the middle of a rebirth when the user refreshed
+        const hasAccess = sessionStorage.getItem('rebirthAccess') === '1';
+        
+        // If we don't have access, go back to the main mobile screen
+        if (!hasAccess && !window.location.pathname.includes('mobile_restricted.html')) {
             window.location.href = 'mobile_restricted.html';
             return;
         }
-        // clear the flag so direct refresh won't re-open without clicking again
-        sessionStorage.removeItem('rebirthAccess');
-    } catch (e) { /* ignore sessionStorage errors */ }
+    } catch (e) { console.warn("SessionStorage not available"); }
+})();
 
-    // Update UI values once script.js has loaded
-    function initMobileRebirthUI() {
-        const ptsEl = document.getElementById('rebirthPointsDisplayMobile');
-        if (ptsEl) ptsEl.textContent = formatCurrency(rebirth_points || 0);
-        // Also ensure the rebirth page reflects current upgrade costs & text
+// 2. UI Synchronization
+window.addEventListener('load', function() {
+    // If the script.js has loaded, force the UI to match the current game state
+    if (typeof updateRebirthUI === 'function') {
         updateRebirthUI();
     }
-
-    // Wait for script to be ready
-    if (typeof updateRebirthUI === 'function') {
-        initMobileRebirthUI();
-    } else {
-        // script may not be parsed yet; attempt after small delay
-        setTimeout(() => { if (typeof updateRebirthUI === 'function') initMobileRebirthUI(); }, 200);
+    
+    // Auto-open if we are in a rebirth session
+    if (sessionStorage.getItem('rebirthAccess') === '1') {
+        const overlay = document.getElementById('rebirthOverlay');
+        if (overlay) {
+            overlay.classList.add('visible');
+            overlay.setAttribute('aria-hidden', 'false');
+        }
     }
+});
 
-    document.getElementById('returnMobileBtn').addEventListener('click', function () {
-        // persist and go back
-        if (typeof saveGame === 'function') saveGame();
-        window.location.href = 'mobile_restricted.html';
-    });
-})();
+// 3. Navigation
+document.getElementById('returnMobileBtn').addEventListener('click', function () {
+    // Clear the access flag so it doesn't trigger on future page loads
+    sessionStorage.removeItem('rebirthAccess');
+    
+    if (typeof saveGame === 'function') saveGame();
+    window.location.href = 'mobile_restricted.html';
+});
 </script>
 </body>
 </html>

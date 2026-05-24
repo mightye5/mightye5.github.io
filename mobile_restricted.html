@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes, minimum-scale=0.5">
+    <meta charset="UTF-8">
+    <title>Burger Clicker</title>
+    
+    <script>
+      (function() {
+        try {
+          const savedGame = localStorage.getItem('burgerGameSave');
+          if (savedGame && JSON.parse(savedGame).dark_mode) {
+            document.documentElement.classList.add('dark-mode');
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link rel="icon" type="image/x-icon" href="Burger-images\favicon.ico">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mobile.css">
+</head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta charset="UTF-8">
     <title>Burger Clicker</title>

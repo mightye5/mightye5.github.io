@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes, minimum-scale=0.5">
+    <meta charset="UTF-8">
+    <title>Burger Clicker</title>
+    
+    <script>
+      (function() {
+        try {
+          const savedGame = localStorage.getItem('burgerGameSave');
+          if (savedGame && JSON.parse(savedGame).dark_mode) {
+            document.documentElement.classList.add('dark-mode');
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link rel="icon" type="image/x-icon" href="Burger-images\favicon.ico">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mobile.css">
+</head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
     <title>Burger Clicker</title>
@@ -86,7 +105,7 @@
                         </div>
                     </div>
 
-                    <div id="buttonsTab" class="tab-content">
+                    <div id="buttonsTab" class="tab-content" style="display:none;">
                         <div class="buttons-grid">
                             <div class="tooltip-container">
                                 <button class="feature-button" id="moreicepers" onclick="moreicepers()" onmouseover="showTooltip(event, 'moreiceperstooltip')" onmouseout="hideTooltip('moreiceperstooltip')">Upgrade the Ice Cream machine! 50 ice</button>
@@ -158,7 +177,7 @@
                     </div>
 
                     <!-- Achievements Tab -->
-                    <div id="achievementsTab" class="tab-content">
+                    <div id="achievementsTab" class="tab-content" style="display:none;">
                         <div class="achievements-grid">
                             <div class="achievement locked" data-achievement="firstSteps">
                                 <div class="achievement-icon">🏆</div>
@@ -364,7 +383,7 @@
         <h3>Credits</h3>
         
         <div class="credit-group">
-            <p><strong>Game Design & Programming</strong><br>Your Name</p>
+            <p><strong>Game Design & Programming</strong><br>Mightye5</p>
         </div>
 
         <div class="credit-group">

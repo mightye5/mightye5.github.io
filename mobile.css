@@ -1,61 +1,112 @@
 @media (max-width: 950px) {
   html, body {
-    height: 100%; /* Changed from auto to 100% for better container handling */
+    height: 100%;
     width: 100%;
     margin: 0;
-    overflow-x: hidden; /* Prevent side scrolling */
+    overflow-x: hidden; 
   }
 
   .game-wrapper {
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Use full viewport height */
+    height: 100dvh; 
     width: 100vw;
   }
 
-  #hidden {
-    display: none;
+  .hidden {
+    display: none !important;
   }
 
   .game-left {
-    flex: 0 0 auto; /* Don't grow, size to content */
+    flex: 0 0 auto; 
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 10px;
+    padding: 10px 10px 0px 10px; 
     box-sizing: border-box;
+  }
+
+  #moneypers {
+    width: 100%;
+    margin-bottom: 5px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #moneypers input {
+    width: 95%;
+    margin: 2px auto;
+    font-size: 14px; 
+    padding: 6px 10px;
   }
 
   .franchise-section {
-    flex: 1 1 auto; /* Allow this to grow and take remaining space */
+    flex: 1 1 auto; 
     width: 100%;
-    overflow-y: auto; /* Scroll ONLY the upgrades section */
+    max-width: 100%;
+    margin: 0; 
     padding: 10px;
     box-sizing: border-box;
+    overflow-y: auto;
+    /* FIX FOR THE LINE: Removes the harsh box border on mobile */
+    box-shadow: none; 
+    background-color: transparent; 
   }
 
-  /* Responsive Inputs */
-  #moneypers input {
-    width: 90%;
-    margin: 5px auto;
-    font-size: 16px; /* Prevents zooming on iOS inputs */
+  .game-right {
+    width: 100%; 
+    padding-left: 0;
+    padding: 10px;
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    overflow-y: auto;
+    /* FIX FOR THE LINE: Removes the harsh box border on mobile */
+    box-shadow: none; 
+    background-color: transparent; 
   }
 
-  /* Responsive Burger Button */
+  .tabs {
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+  }
+
+  .tab-button {
+    flex: 1 1 45%; 
+    padding: 8px 10px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .restaurant-container {
+    gap: 15px;
+    padding: 10px 0;
+  }
+
+  .restaurant {
+    width: 100%;
+    max-width: 300px;
+  }
+
   .image-button {
     width: 50vw;
     height: 50vw;
     max-width: 200px;
     max-height: 200px;
-    background-size: contain; /* Ensures burger fits */
+    background-size: contain; 
   }
 
-  /* Better Grid for Upgrades */
   .buttons-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Responsive grid */
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
     gap: 10px;
-    padding-bottom: 50px; /* Space for scrolling */
+    padding-bottom: 50px; 
+  }
+  
+  button {
+    word-wrap: break-word;
+    white-space: normal;
   }
 }

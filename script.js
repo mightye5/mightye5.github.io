@@ -22,9 +22,11 @@ if (toggleSwitch) {
 var slider = document.getElementById("myRange");
 var output = document.getElementById("sfxVolumeValue");
 
+// Default SFX volume (fallback if slider is missing)
+var sfxVolume = 0.5;
 if (slider && output) {
     output.innerHTML = slider.value;
-    var sfxVolume = slider.value / 100;
+    sfxVolume = slider.value / 100;
 
     slider.oninput = function() {
         output.innerHTML = this.value;
@@ -534,7 +536,12 @@ function ToggleDark() {
          * @param {string} soundType - The type of sound to play (from soundBuffers)
          * @param {number} volume - Volume level from 0 to 1
          */
-function playSound(soundType = 'click', volume = 0.5) {
+function playSound(soundType = 'click', volume = 0.5, isManual = true) {
+    // If it's an error sound and it wasn't a manual action, don't play it.
+    if (soundType === 'error' && !isManual) {
+        return; 
+    }
+
     if (!audioContext || !audioLoaded || !soundBuffers[soundType]) {
         return;
     }
@@ -542,24 +549,22 @@ function playSound(soundType = 'click', volume = 0.5) {
     try {
         const source = audioContext.createBufferSource();
         source.buffer = soundBuffers[soundType];
-
         const gainNode = audioContext.createGain();
         
-        // Use different volume for music vs sound effects
         if (soundType === 'music') {
             musicGainNode = gainNode;
             gainNode.gain.value = musicVolume;
             source.loop = true;
         } else {
-            gainNode.gain.value = volume * sfxVolume;
+            // The caller already scales by the UI sfxVolume in most places.
+            // Treat the `volume` argument as the absolute gain to use.
+            gainNode.gain.value = (typeof volume === 'number' && !isNaN(volume)) ? volume : 0.4;
         }
 
         source.connect(gainNode);
         gainNode.connect(audioContext.destination);
-
         source.start(0);
-        
-        return source; // Return the source for potential future reference
+        return source;
     } catch (e) {
         console.warn('Error playing sound:', e);
     }
@@ -2072,7 +2077,7 @@ function rebupgrade23() {
                 updateAll();
 
             } else {
-                playSound('error', 0.4*sfxVolume);
+                playSound('error', 0.4*sfxVolume, true);
                 updateAll();
             }
         }       
@@ -2091,7 +2096,7 @@ function rebupgrade23() {
                 updateAll();
 
             } else {
-                playSound('error', 0.4*sfxVolume);
+                playSound('error', 0.4*sfxVolume, true);
                 updateAll();
             }
         }
@@ -2110,7 +2115,7 @@ function rebupgrade23() {
                 playSound('purchase', 0.4*sfxVolume);
                 updateAll();
             } else {
-                playSound('error', 0.4*sfxVolume);
+                playSound('error', 0.4*sfxVolume, true);
                 updateAll();
             }
         }
@@ -2130,7 +2135,7 @@ function rebupgrade23() {
                 playSound('purchase', 0.4*sfxVolume);
                 updateAll();
             } else {
-                playSound('error', 0.4*sfxVolume);
+                playSound('error', 0.4*sfxVolume, true);
                 updateAll();
             }
         }
@@ -2150,7 +2155,7 @@ function rebupgrade23() {
                 playSound('purchase', 0.4*sfxVolume);
                 updateAll();
             } else {
-                playSound('error', 0.4*sfxVolume);
+                playSound('error', 0.4*sfxVolume, true);
                 updateAll();
             }
         }
@@ -2170,7 +2175,7 @@ function betterceo() {
                 playSound('purchase', 0.4*sfxVolume);
                 updateAll();
             } else {
-                playSound('error', 0.4*sfxVolume);
+                playSound('error', 0.4*sfxVolume, true);
                 updateAll();
             }
         }
@@ -2293,7 +2298,7 @@ function betteroracle() {
         playSound('purchase', 0.4*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4*sfxVolume);
+        playSound('error', 0.4*sfxVolume, true);
         updateAll();
     }
 }
@@ -2312,7 +2317,7 @@ function betterfryer() {
         playSound('purchase', 0.4*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4*sfxVolume);
+        playSound('error', 0.4*sfxVolume, true);
         updateAll();
     }
 }
@@ -2331,7 +2336,7 @@ function betterfeast() {
         playSound('purchase', 0.4*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4*sfxVolume);
+        playSound('error', 0.4*sfxVolume, true);
         updateAll();
     }
 }
@@ -2350,7 +2355,7 @@ function betterverdant() {
         playSound('purchase', 0.4*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4*sfxVolume);
+        playSound('error', 0.4*sfxVolume, true);
         updateAll();
     }
 }
@@ -2369,7 +2374,7 @@ function betterwhisperer() {
         playSound('purchase', 0.4*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4*sfxVolume);
+        playSound('error', 0.4*sfxVolume, true);
         updateAll();
     }
 }
@@ -2388,7 +2393,7 @@ function betterchancellor() {
         playSound('purchase', 0.4*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4*sfxVolume);
+        playSound('error', 0.4*sfxVolume, true);
         updateAll();
     }
 }
@@ -2407,7 +2412,7 @@ function betterarchmage() {
         playSound('purchase', 0.4*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4*sfxVolume);
+        playSound('error', 0.4*sfxVolume, true);
         updateAll();
     }
 }
@@ -2426,7 +2431,7 @@ function betterpriest() {
         playSound('purchase', 0.4*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4*sfxVolume);
+        playSound('error', 0.4*sfxVolume, true);
         updateAll();
     }
 }
@@ -2444,7 +2449,7 @@ function betterpatty() {
         playSound('purchase', 0.4*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4*sfxVolume);
+        playSound('error', 0.4*sfxVolume, true);
         updateAll();
     }
 }
@@ -2463,7 +2468,7 @@ function bettergrill() {
         playSound('purchase', 0.4*sfxVolume);
         updateAll();
     } else {
-        playSound('error', 0.4*sfxVolume);
+        playSound('error', 0.4*sfxVolume, true);
         updateAll();
     }
 }
@@ -2935,7 +2940,9 @@ function rebirth() {
 
         hasRebirthed = true;
         rebirthedTimes++;
+        sessionStorage.setItem('rebirthAccess', '1');
 
+        // Preserve your stats
         const preservedState = {
             total_money: total_money,
             rebirth_points: rebirth_points,
@@ -2952,8 +2959,10 @@ function rebirth() {
             )
         };
 
+        // 1. Wipe the game state
         resetGame();
 
+        // 2. Re-apply preserved data
         total_money = preservedState.total_money;
         rebirth_points = preservedState.rebirth_points;
         Object.assign(rebirthUpgradeStates, preservedState.rebirthUpgradeStates);
@@ -2964,21 +2973,27 @@ function rebirth() {
         rebirthUpg14Levels = preservedState.rebirthUpg14Levels;
         rebirthUpg22Levels = preservedState.rebirthUpg22Levels;
         rebirthedTimes = preservedState.rebirthedTimes;
+        
         Object.entries(preservedState.achievements).forEach(([id, unlocked]) => {
-            if (achievements[id]) {
-                achievements[id].unlocked = unlocked;
-            }
+            if (achievements[id]) achievements[id].unlocked = unlocked;
         });
         
+        // 3. Apply persistent upgrades
         applyRebirthUpgrades();
-  restartFakeClickInterval();
+        restartFakeClickInterval();
 
+        // 4. FIX: Force UI to re-sync immediately after the state changes
+        updateUpgradeVisibility(); 
+        Update(); 
+        updateAll();
+
+        // 5. Hide game, show overlay
         document.getElementById('rebirth_button').disabled = true;
         showRebirthOverlay();
-        document.querySelector('.game-wrapper').style.display = 'none';
-
+        const gameWrapper = document.querySelector('.game-wrapper');
+        if (gameWrapper) gameWrapper.style.display = 'none';
+        
         playSound('achieve', 0.1 * sfxVolume);
-        updateUpgradeVisibility();
         saveGame();
     } else {
         playSound('error', 0.4 * sfxVolume);
@@ -3144,27 +3159,33 @@ function showRebirthOverlay() {
 }
 
 function hideRebirthOverlay() {
-    // --- FIX: Check if elements exist before using them ---
-    const overlay = document.getElementById('rebirthOverlay');
-    const gameWrapper = document.querySelector('.game-wrapper');
+    // 1. Remove the security flag so the overlay doesn't re-appear on normal refreshes
+    try {
+        sessionStorage.removeItem('rebirthAccess');
+    } catch (e) { console.warn("Could not clear session access"); }
 
+    // 2. Hide the overlay UI
+    const overlay = document.getElementById('rebirthOverlay');
     if (overlay) {
         overlay.classList.remove('visible');
         overlay.setAttribute('aria-hidden', 'true');
-    } else {
-        console.warn("Element with ID 'rebirthOverlay' not found."); // Optional: Warn if missing
     }
 
+    // 3. Bring the main game back
+    const gameWrapper = document.querySelector('.game-wrapper');
     if (gameWrapper) {
-        gameWrapper.style.display = 'flex'; // Show the main game content again
-    } else {
-        console.warn("Element with class '.game-wrapper' not found."); // Optional: Warn if missing
+        gameWrapper.style.display = 'flex';
     }
-    // --- END FIX ---
 
-    updateAll(); // Update the UI in case any rebirth upgrades were bought
-    // Consider if reload is necessary - might interrupt user flow if they just bought upgrades
-    // location.reload(); 
+    // 4. Update stats to reflect any changes made in the menu
+    updateAll();
+    
+    // 5. If we are on a specific mobile page, redirect back to the main mobile hub
+    // This is optional—remove the 'if' block if you prefer to stay on the same page.
+    if (window.location.pathname.includes('mobile_rebirth.html')) {
+        window.location.href = 'mobile_restricted.html';
+    }
+    location.reload();
 }
 function getRebirthUpgradeInfo(upgradeNumber) {
     const infoMap = {
@@ -3208,36 +3229,37 @@ function buyRebirthUpgrade(upgradeNumber) {
         return;
     }
 
-    // Get the current, correct cost for the upgrade from the global variable
+    // Get the current cost
     let currentCost = window['rebupgp' + upgradeNumber];
 
-    // Check for an undefined cost right away
-    if (currentCost === undefined) {
-        console.error(`Cost for upgrade #${upgradeNumber} (rebupgp${upgradeNumber}) is undefined. Make sure it's defined at the top of the script.`);
-        playSound('error', 0.4 * sfxVolume);
-        return;
-    }
-
     // Check if the player has enough points
-    if (rebirth_points >= currentCost) {
-        // --- Purchase Successful ---
-        rebirth_points -= currentCost; // Subtract the points ONCE
+if (rebirth_points >= currentCost) {
+        rebirth_points -= currentCost;
         playSound('purchase', 0.4 * sfxVolume);
 
-        // Call the specific function to apply the upgrade's effect
         const upgradeFunction = window[`rebupgrade${upgradeNumber}`];
         if (typeof upgradeFunction === 'function') {
             upgradeFunction();
         }
 
-        updateAll(); // Refreshes the UI
+        // --- NEW: FORCE IMMEDIATE UI SYNC ---
+        updateAll();           // Updates numbers
+        updateRebirthUI();      // Updates button text/labels
+        Update();              // <--- THIS IS THE KEY: forces the CSS classes to recalculate now
         saveGame();
-
     } else {
         // --- Purchase Failed ---
-        alert('Not enough Rebirth Points!');
-        console.log(`Current Rebirth Points: ${rebirth_points}, Required: ${currentCost}`);
-        playSound('error', 0.4 * sfxVolume);
+        // FIX: Ensure we only play the error sound once per click
+        playSound('error', 0.2 * sfxVolume); // Lower volume so it's less jarring
+        console.log(`Not enough points. Have: ${rebirth_points}, Need: ${currentCost}`);
+        
+        // Optional: add a visual feedback for the user
+        const btn = document.getElementById(upgradeInfo.id);
+        if (btn) {
+            btn.style.animation = "none";
+            void btn.offsetWidth; // Trigger reflow to restart animation
+            btn.style.animation = "shake 0.3s";
+        }
     }
 }
 // Update franchise button with formatted currency
@@ -3344,16 +3366,20 @@ function updatemps() {
         /**
          * Handles clicking the burger
          */
-        function addMoney() {
-            // All these variables will now be found correctly!
-            count += parseFloat((((clicks + rebirthUpg2Levels) * (golden_burger * golden_legacy)) * (moneymultiplier*obsidian_legacy)).toFixed(1));
-            total_money += parseFloat(((clicks + rebirthUpg2Levels) * (golden_burger * golden_legacy) * (moneymultiplier*obsidian_legacy)).toFixed(1));
-            checkRebirthPoints();
-            updateAll();
-            totalclicks++;
-            checkAchievements();
-            playSound('click', 0.4*sfxVolume);
-        }
+function addMoney(isManual = true) { // Default to true
+    count += parseFloat((((clicks + rebirthUpg2Levels) * (golden_burger * golden_legacy)) * (moneymultiplier*obsidian_legacy)).toFixed(1));
+    total_money += parseFloat(((clicks + rebirthUpg2Levels) * (golden_burger * golden_legacy) * (moneymultiplier*obsidian_legacy)).toFixed(1));
+    
+    checkRebirthPoints();
+    updateAll();
+    totalclicks++;
+    checkAchievements();
+    
+    // Only play sound if it was a real click
+    if (isManual) {
+        playSound('click', 0.4 * sfxVolume);
+    }
+}
 
         /**
          * Updates button colors based on affordability
@@ -3679,7 +3705,7 @@ function updatemps() {
 function initializeGame() {
     if (detectMobile()) {
         initAudio();
-        setTimeout(function() {
+       // setTimeout(function() {
             loadGame();
             if (hasRebirthed) {
                 const rebirthSection = document.getElementById("rebirth");
@@ -3687,7 +3713,7 @@ function initializeGame() {
                     rebirthSection.style.display = 'flex';
                 }
             }
-        }, 300); // Delay loadGame to ensure other initializations are complete
+       // }, 300); // Delay loadGame to ensure other initializations are complete
         checkAchievements();
         Update();
     }
@@ -3868,35 +3894,27 @@ function buyAllIceUpgrades() {
 
     if (anyPurchaseMade) {
         playSound('purchase', 0.4 * sfxVolume);
-    } else {
-        playSound('error', 0.4 * sfxVolume);
-    }
+    } 
 
     updateAll(); // Update the UI once after all purchases are completed.
 }
 
 function fakeclick() {
-if(rebirthUpgradeStates.rebirthUpg10 == true) {
-    const element = document.getElementById('burger-button');
+    if(rebirthUpgradeStates.rebirthUpg10 == true) {
+        const element = document.getElementById('burger-button');
+        if (!element) return;
 
-    // If the element doesn't exist, log an error to prevent the game from crashing.
-    if (!element) {
-        console.error("Could not find the burger button with id='burger-button'");
-        return;
+        element.classList.add('fake-active');
+        
+        // Pass 'false' so addMoney doesn't play the click sound
+        addMoney(false); 
+
+        setTimeout(() => {
+            element.classList.remove('fake-active');
+        }, 150);
     }
-
-    // 1. Add the visual "active" class to make the button look pressed.
-    element.classList.add('fake-active');
-
-    // 2. Programmatically trigger the click event to run your addMoney() function.
-    element.click();
-
-    // 3. Remove the visual class after a short delay to simulate the button release.
-    setTimeout(() => {
-        element.classList.remove('fake-active');
-    }, 150); // 150 milliseconds is a good duration for a natural-looking click.
 }
-}
+
 function restartFakeClickInterval() {
     // Ensure a sane minimum interval to avoid extremely fast loops
     if (fakeClickIntervalId) {
@@ -4392,9 +4410,13 @@ function restartFakeClickInterval() {
         // Show franchise section from the start
 
         // Event listeners and intervals
-        window.addEventListener('load', initializeGame);
-        setInterval(updateAll, 33);
-        setInterval(moneyps, 1000);  // Add money every second
+
+
+        // 2. Start the game loops NOW that the correct money is loaded
+
+
+        // 3. Initialize audio and other non-urgent items after the page finishes loading
+
         // Save game state
 function exportSave(saveObj, filename) {
     try {
@@ -4639,16 +4661,6 @@ window.addEventListener('DOMContentLoaded', initImportOverlay);
     playSound('save', 0.03 * sfxVolume);
 }
 
-
-
-
-
-
-
-
-
-        // Load game state
-        // New loadGame() function
 function loadGame() {
     const savedGame = localStorage.getItem('burgerGameSave');
     if (savedGame) {
@@ -4980,21 +4992,27 @@ if (rebirthUpgradeStates.rebirthUpg8 === true && offlineDurationInSeconds > 0) {
     // This log helps confirm if the check is failing correctly when the upgrade isn't owned.
     console.log("Offline earnings upgrade not purchased or time was zero. Upgrade state:", rebirthUpgradeStates.rebirthUpg8);
 }
-  restartFakeClickInterval();
-
+if (sessionStorage.getItem('rebirthAccess') === '1') {
+            // Use a tiny timeout to ensure the DOM is ready
+            setTimeout(() => {
+                showRebirthOverlay();
+                const gameWrapper = document.querySelector('.game-wrapper');
+                if (gameWrapper) gameWrapper.style.display = 'none';
+            }, 50); 
+        }
+        
+        restartFakeClickInterval();
         recalculateIps();
-        // Apply rebirth upgrades and update UI
         applyRebirthUpgrades();
         updateUpgradeVisibility();
         updateRebirthUI();
         playSound('save', 0.03 * sfxVolume);
-      //alert('Game loaded successfully!');
     } else {
         playSound('error', 0.4 * sfxVolume);
         alert('No saved game found!');
     }
 }
-    
+//end loadgame function
 
         // Delete save
         function deleteSave() {
@@ -5006,43 +5024,54 @@ if (rebirthUpgradeStates.rebirthUpg8 === true && offlineDurationInSeconds > 0) {
 
 function showTooltip(event, tooltipId) {
     var tooltip = document.getElementById(tooltipId);
-    if (!tooltip) return; // Exit if tooltip isn't found
+    if (!tooltip) return; 
     var rect = event.target.getBoundingClientRect();
 
-    // --- NEW FIX: Force browser to calculate dimensions if they are 0 ---
-    // This can happen when the tooltip is inside a container that was set to display: none
     if (tooltip.offsetHeight === 0) {
-        tooltip.style.visibility = 'hidden'; // Keep it hidden
-        tooltip.style.display = 'block';     // Temporarily display it to calculate size
+        tooltip.style.visibility = 'hidden'; 
+        tooltip.style.display = 'block';     
     }
 
-    // Now we can safely get the dimensions
     const tooltipHeight = tooltip.offsetHeight;
     const tooltipWidth = tooltip.offsetWidth;
-
-    // We can now revert the display property so it doesn't interfere with CSS rules
     tooltip.style.display = '';
 
-    // --- Positioning Logic (same as before) ---
-    var top = rect.top + window.scrollY + (rect.height / 2) - (tooltipHeight / 2);
+    // FIX: Removed window.scrollY because position:fixed anchors to the viewport, not the document.
+    var top = rect.top + (rect.height / 2) - (tooltipHeight / 2);
+    
+    // Default position is to the RIGHT of the button
     var left = rect.right + 10;
+    var isFlipped = false;
 
+    // Flip to the LEFT side if it hits the right edge of the screen
     if (left + tooltipWidth > window.innerWidth) {
         left = rect.left - tooltipWidth - 10;
+        isFlipped = true;
     }
     
-    if (top + tooltipHeight > window.innerHeight + window.scrollY) {
-        top = rect.top + window.scrollY - tooltipHeight - 10;
+    // Keep tooltips from clipping off the top/bottom of the screen
+    if (top + tooltipHeight > window.innerHeight) {
+        top = window.innerHeight - tooltipHeight - 10;
+    }
+    if (top < 0) {
+        top = 10;
     }
     
-    if (top < window.scrollY) {
-        top = window.scrollY;
-    }
     if (left < 0) {
         left = 10;
     }
 
-    // Apply the final position and make the tooltip visible
+    // Tell the CSS which way the arrow should point!
+    if (isFlipped) {
+        // Tooltip is on the left side, arrow points right
+        tooltip.classList.remove('right-side');
+        tooltip.classList.add('left-side');
+    } else {
+        // Tooltip is on the right side, arrow points left
+        tooltip.classList.remove('left-side');
+        tooltip.classList.add('right-side');
+    }
+
     tooltip.style.top = top + "px";
     tooltip.style.left = left + "px";
     tooltip.style.visibility = "visible";
@@ -5057,3 +5086,46 @@ function hideTooltip(tooltipId) {
 restartFakeClickInterval();
         // Auto-save every 5 minutes
         setInterval(saveGame, 0.5 * 60 * 1000);
+
+// ================ INITIALIZATION ================
+window.addEventListener('load', function() {
+    // 1. Mobile Check
+    detectMobile();
+
+    // 2. Load the data
+    loadGame();
+
+    // 3. Sync Logic (Run these once immediately after load)
+    recalculateIps();
+    applyRebirthUpgrades();
+    updateUpgradeVisibility();
+    checkAchievements();
+    
+    // 4. Setup UI State
+    switchTab('franchiseTab');
+    
+    // 5. Start the game loops
+    setInterval(updateAll, 33);
+    setInterval(moneyps, 1000);
+    setInterval(checkTabHighlights, 1000);
+    
+    // 6. Handle Rebirth Overlay
+    if (sessionStorage.getItem('rebirthAccess') === '1') {
+        showRebirthOverlay();
+        const gameWrapper = document.querySelector('.game-wrapper');
+        if (gameWrapper) gameWrapper.style.display = 'none';
+    }
+    
+    // 7. Auto-save interval
+    setInterval(saveGame, 0.5 * 60 * 1000);
+    
+    // 8. Start fake clicker
+    restartFakeClickInterval();
+});
+
+// Start the game loops ONLY after initialization is complete
+setInterval(updateAll, 33);
+setInterval(moneyps, 1000);
+
+// Ensure game initialization (includes audio setup) runs on page load
+window.addEventListener('load', initializeGame);
