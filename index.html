@@ -105,7 +105,7 @@
                         </div>
                     </div>
 
-                    <div id="buttonsTab" class="tab-content" >
+                    <div id="buttonsTab" class="tab-content" style="display: none;">
                         <div class="buttons-grid">
                             <div class="tooltip-container">
                                 <button class="feature-button" id="moreicepers" onclick="moreicepers()" onmouseover="showTooltip(event, 'moreiceperstooltip')" onmouseout="hideTooltip('moreiceperstooltip')">Upgrade the Ice Cream machine! 50 ice</button>
@@ -177,7 +177,7 @@
                     </div>
 
                     <!-- Achievements Tab -->
-                    <div id="achievementsTab" class="tab-content" >
+                    <div id="achievementsTab" class="tab-content" style="display: none;">
                         <div class="achievements-grid">
                             <div class="achievement locked" data-achievement="firstSteps">
                                 <div class="achievement-icon">🏆</div>
@@ -360,8 +360,22 @@
                       <div class="slidecontainer">
                                 <p>Sfx volume value: <span id="sfxVolumeValue">50</span>%</p>
                                 <input type="range" min="0" max="100" value="50"  id="myRange">
+                                <div class="toggle-container" style="margin: 10px 0 16px;">
+                                    <label class="switch" for="muteSfxSwitch">
+                                        <input type="checkbox" id="muteSfxSwitch" onchange="toggleSfxMute()">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <p style="margin: 0;">Mute SFX</p>
+                                </div>
                               <p>Music volume value: <span id="musicVolumeValue">50</span>%</p>
                                 <input type="range" min="0" max="100" value="50"  id="musicRange">
+                                <div class="toggle-container" style="margin: 10px 0 16px;">
+                                    <label class="switch" for="muteMusicSwitch">
+                                        <input type="checkbox" id="muteMusicSwitch" onchange="toggleMusicMute()">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <p style="margin: 0;">Mute Music</p>
+                                </div>
                              <p>  <button onclick="ToggleDark()" style="max-width: fit-content;">Toggle dark mode</button></p> 
 <p>                    <button onclick="saveGame()" class ="save-button" >Save Game</button>
                     <button onclick="loadGame()" class ="load-button" >Load Game</button>

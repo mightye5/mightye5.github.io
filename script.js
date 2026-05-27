@@ -10,7 +10,8 @@ const statusText = document.getElementById('variableStatus');
 if (toggleSwitch) {
     toggleSwitch.checked = isToggled;
     
-    // Add an event listener for the 'change' event on the checkbox
+    // Add an event listener
+    // for the 'change' event on the checkbox
     toggleSwitch.addEventListener('change', function() {
         // Toggle the boolean variable to the opposite value
         isToggled = this.checked;
@@ -21,16 +22,21 @@ if (toggleSwitch) {
 
 var slider = document.getElementById("myRange");
 var output = document.getElementById("sfxVolumeValue");
+var sfxMuteSwitch = document.getElementById("muteSfxSwitch");
 
 // Default SFX volume (fallback if slider is missing)
 var sfxVolume = 0.5;
+var sfxMuted = false;
+var previousSfxVolume = slider ? slider.value : 50;
 if (slider && output) {
     output.innerHTML = slider.value;
     sfxVolume = slider.value / 100;
+    previousSfxVolume = slider.value;
 
     slider.oninput = function() {
         output.innerHTML = this.value;
-        sfxVolume = slider.value / 100;
+        previousSfxVolume = this.value;
+        sfxVolume = sfxMuted ? 0 : slider.value / 100;
         console.log("SFX Volume set to: " + sfxVolume);
     }
 }
@@ -38,19 +44,77 @@ let musicGainNode;
 var musicVolume = 0.5;
 var musicSlider = document.getElementById("musicRange");
 var musicOutput = document.getElementById("musicVolumeValue");
+var musicMuteSwitch = document.getElementById("muteMusicSwitch");
+var musicMuted = false;
+var previousMusicVolume = musicSlider ? musicSlider.value : 50;
 
 // Initialize the music volume display
 if (musicSlider && musicOutput) {
     musicOutput.innerHTML = musicSlider.value;
+    previousMusicVolume = musicSlider.value;
 
     // Add music volume slider listener
     musicSlider.oninput = function() {
         musicOutput.innerHTML = this.value;
-        musicVolume = this.value / 100;
+        previousMusicVolume = this.value;
+        musicVolume = musicMuted ? 0 : this.value / 100;
         if (musicGainNode) {
             musicGainNode.gain.value = musicVolume;
         }
         console.log("Music Volume set to: " + musicVolume);
+    }
+}
+
+function toggleSfxMute() {
+    sfxMuted = sfxMuteSwitch ? sfxMuteSwitch.checked : !sfxMuted;
+    if (sfxMuted) {
+        if (slider) {
+            previousSfxVolume = slider.value;
+            slider.value = 0;
+        }
+        if (output) {
+            output.innerHTML = 0;
+        }
+        sfxVolume = 0;
+    } else {
+        if (slider) {
+            slider.value = previousSfxVolume;
+        }
+        if (output) {
+            output.innerHTML = previousSfxVolume;
+        }
+        sfxVolume = previousSfxVolume / 100;
+    }
+    if (sfxMuteSwitch) {
+        sfxMuteSwitch.checked = sfxMuted;
+    }
+}
+
+function toggleMusicMute() {
+    musicMuted = musicMuteSwitch ? musicMuteSwitch.checked : !musicMuted;
+    if (musicMuted) {
+        if (musicSlider) {
+            previousMusicVolume = musicSlider.value;
+            musicSlider.value = 0;
+        }
+        if (musicOutput) {
+            musicOutput.innerHTML = 0;
+        }
+        musicVolume = 0;
+    } else {
+        if (musicSlider) {
+            musicSlider.value = previousMusicVolume;
+        }
+        if (musicOutput) {
+            musicOutput.innerHTML = previousMusicVolume;
+        }
+        musicVolume = previousMusicVolume / 100;
+    }
+    if (musicGainNode) {
+        musicGainNode.gain.value = musicVolume;
+    }
+    if (musicMuteSwitch) {
+        musicMuteSwitch.checked = musicMuted;
     }
 }
         // ================ GAME STATE VARIABLES ================
@@ -3723,38 +3787,68 @@ function buyall() {
     let totalPurchased = 0;
     let purchaseMade = true;
     
-    // Create a mapping of cost variables to their current values
-    const costMapping = {
-        'cost1': cost1, 'cost2': cost2, 'cost3': cost3, 'cost4': cost4, 'cost5': cost5,
-        'cost6': cost6, 'cost7': cost7, 'cost8': cost8, 'cost9': cost9, 'cost10': cost10,
-        'cost11': cost11, 'cost12': cost12, 'cost13': cost13, 'cost14': cost14, 'cost15': cost15,
-        'cost16': cost16, 'cost17': cost17, 'cost18': cost18, 'cost19': cost19, 'cost20': cost20
-    };
-    
-    // Sort employees by their current cost (cheapest first)
-    const sortedEmployees = employeeIds.sort((a, b) => {
-        const costA = costMapping[employeeInfo[a].costVar] || 0;
-        const costB = costMapping[employeeInfo[b].costVar] || 0;
-        return costA - costB;
-    });
-    
     // Keep cycling through employees until no more purchases can be made
     while (purchaseMade) {
         purchaseMade = false;
         
+        // 1. Create a mapping of cost variables to their current values
+        const costMapping = {
+            'cost1': cost1, 'cost2': cost2, 'cost3': cost3, 'cost4': cost4, 'cost5': cost5,
+            'cost6': cost6, 'cost7': cost7, 'cost8': cost8, 'cost9': cost9, 'cost10': cost10,
+            'cost11': cost11, 'cost12': cost12, 'cost13': cost13, 'cost14': cost14, 'cost15': cost15,
+            'cost16': cost16, 'cost17': cost17, 'cost18': cost18, 'cost19': cost19, 'cost20': cost20
+        };
+
+        // 2. Create a mapping of the current MPS contribution for each employee type
+        const mpsMapping = {
+            'extraButton': worker,
+            'Button2': manager,
+            'Clickbutton': 0, // Click upgrades don't give direct MPS
+            'directorbutton': director,
+            'VPbutton': VP,
+            'COObutton': COO,
+            'ceobutton': ceo,
+            'chairbutton': chairman,
+            'MObutton': oracle,
+            'SFbutton': fryer,
+            'feastbutton': feast,
+            'verdantbutton': verdant,
+            'ESbutton': emulsifier,
+            'FWbutton': whisperer,
+            'CCbutton': chancellor,
+            'priestbutton': priest,
+            'GAbutton': archmage,
+            'PMbutton': matriarch,
+            'GGbutton': grillmaster,
+            'Clickbutton2': 0
+        };
+        
+        // 3. Sort employees by Efficiency (MPS per dollar) descending
+        const sortedEmployees = employeeIds.sort((a, b) => {
+            const costA = costMapping[employeeInfo[a].costVar] || Infinity;
+            const costB = costMapping[employeeInfo[b].costVar] || Infinity;
+            
+            const efficiencyA = (mpsMapping[a] || 0) / costA;
+            const efficiencyB = (mpsMapping[b] || 0) / costB;
+            
+            // If efficiency isn't tied, sort by highest efficiency first
+            if (efficiencyA !== efficiencyB) {
+                return efficiencyB - efficiencyA; 
+            }
+            // Fallback: if efficiency is tied (or both are 0), buy the cheapest one
+            return costA - costB; 
+        });
+        
+        // 4. Try to buy the most efficient affordable employee
         for (const employeeId of sortedEmployees) {
             const info = employeeInfo[employeeId];
             const currentCost = costMapping[info.costVar];
             
             // Skip if cost is undefined or invalid
-            if (!currentCost || currentCost <= 0) {
-              //  console.log(`Skipping ${employeeId} - invalid cost: ${currentCost}, costVar: ${info.costVar}`);
-                continue;
-            }
+            if (!currentCost || currentCost <= 0) continue;
             
-            // If we can afford this employee, buy one
+            // If we can afford this employee, buy ONE and break to recalculate efficiency
             if (count >= currentCost) {
-               //  console.log(`Buying ${employeeId} for ${currentCost}`);
                 
                 // Make the purchase
                 count -= currentCost;
@@ -3762,19 +3856,16 @@ function buyall() {
                 
                 // Handle special effects for click upgrades
                 if (info.costVar === 'cost3') {
-                    // Better clicks upgrade
                     clicks += parseFloat(clickamount.toFixed(1));
                 } else if (info.costVar === 'cost20') {
-                    // Click multiply upgrade
                     clicks += clicks * click_multiplier;
                     clickamount += clicks * click_multiplier;
                 }
                 
                 // Update the cost for next purchase
                 const newCost = Math.round(info.base * Math.pow(info.rate, window[info.countVar]) * 10) / 10;
-                costMapping[info.costVar] = newCost;
                 
-                // Also update the actual cost variable
+                // Also update the actual global cost variable
                 switch(info.costVar) {
                     case 'cost1': cost1 = newCost; break;
                     case 'cost2': cost2 = newCost; break;
@@ -3800,13 +3891,14 @@ function buyall() {
                 
                 totalPurchased++;
                 purchaseMade = true;
-            } else {
-               // console.log(`Cannot afford ${employeeId} at cost $${currentCost}. Current money: $${count}`);
+                
+                // Break the for-loop to re-evaluate the most efficient upgrade with the new prices
+                break; 
             }
         }
     }
     
-    // Recalculate money per second
+    // Recalculate global money per second
     mps = (M * worker) + (M2 * manager) + (M3 * 0) + (M4 * director) + 
           (M5 * VP) + (M6 * COO) + (M7 * ceo) + (M8 * chairman) + 
           (M9 * oracle) + (M10 * fryer) + (M11 * feast) + (M12 * verdant) + 
@@ -3817,7 +3909,7 @@ function buyall() {
     
     updateAll();
     
-    console.log(`Round-robin complete! Purchased ${totalPurchased} employees total`);
+    console.log(`Round-robin complete! Purchased ${totalPurchased} optimal employees total`);
     return totalPurchased;
 }
 
@@ -5124,8 +5216,8 @@ window.addEventListener('load', function() {
 });
 
 // Start the game loops ONLY after initialization is complete
-setInterval(updateAll, 33);
-setInterval(moneyps, 1000);
+//setInterval(updateAll, 33);
+//setInterval(moneyps, 1000);
 
 // Ensure game initialization (includes audio setup) runs on page load
-window.addEventListener('load', initializeGame);
+//window.addEventListener('load', initializeGame);
