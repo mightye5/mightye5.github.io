@@ -1,31 +1,38 @@
+<!DOCTYPE html>
+<!-- 1. Add dark-mode class by default -->
+<html lang="en" class="dark-mode">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes, minimum-scale=0.5">
     <title>Burger Clicker</title>
 
+    <!-- 2. INLINE STYLES: Default is now dark mode -->
     <style>
-        /* Default light mode background */
+        /* Base background is now dark */
         html, body { 
-            background-color: #f0f0f0; 
-            margin: 0; /* Prevents white margins */
-        }
-        /* Dark mode background override */
-        html.dark-mode, html.dark-mode body { 
             background-color: rgba(17, 15, 15, 0.808); 
+            margin: 0; 
+        }
+        /* Light mode override (applied when dark-mode class is removed) */
+        html:not(.dark-mode), html:not(.dark-mode) body { 
+            background-color: #f0f0f0; 
         }
     </style>
 
+    <!-- 3. INLINE SCRIPT: Removes dark mode ONLY if the user explicitly saved it as false -->
     <script>
         (function() {
             try {
                 const savedGame = localStorage.getItem('burgerGameSave');
-                if (savedGame && JSON.parse(savedGame).dark_mode) {
-                    document.documentElement.classList.add('dark-mode');
+                if (savedGame) {
+                    const parsedSave = JSON.parse(savedGame);
+                    if (parsedSave.dark_mode === false) {
+                        document.documentElement.classList.remove('dark-mode');
+                    }
                 }
             } catch (e) {}
         })();
     </script>
-
         
 
     <link rel="icon" type="image/x-icon" href="/burger-images/favicon.ico">

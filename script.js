@@ -401,7 +401,7 @@ let rebirthedTimes = 0;
         let totalclicks = 0;
         let totaltime = 0;
         let bimage = 0;
-        let dark_mode = false;         // Dark mode toggle
+        let dark_mode = true;         // Dark mode toggle
         let rebirth_points = 0;        // Rebirth points
         // --- FIX 2: Changed 'window.total_money' to 'let total_money' ---
         // This matches the fix for 'count' and solves the same problem.
@@ -4768,7 +4768,7 @@ function loadGame() {
         const gameState = JSON.parse(savedGame);
 
         // 1. Restore Dark Mode Setting
-        dark_mode = (gameState.dark_mode !== undefined) ? gameState.dark_mode : false;
+        dark_mode = (gameState.dark_mode !== undefined) ? gameState.dark_mode : true;
         
         if (dark_mode) {
             document.documentElement.classList.add("dark-mode");
