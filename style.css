@@ -1,11 +1,3 @@
-.game-left, 
-.game-right, 
-#upgrade, 
-#container, 
-.franchise-section, 
-.achievements-grid {
-    contain: content; /* Isolates layout, style, and paint calculations */
-}
 
 /* Add containment to the fast-updating text inputs */
 #moneypers input {
