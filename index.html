@@ -1,29 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes, minimum-scale=0.5">
     <title>Burger Clicker</title>
 
+    <style>
+        /* Default light mode background */
+        html, body { 
+            background-color: #f0f0f0; 
+            margin: 0; /* Prevents white margins */
+        }
+        /* Dark mode background override */
+        html.dark-mode, html.dark-mode body { 
+            background-color: rgba(17, 15, 15, 0.808); 
+        }
+    </style>
+
+    <script>
+        (function() {
+            try {
+                const savedGame = localStorage.getItem('burgerGameSave');
+                if (savedGame && JSON.parse(savedGame).dark_mode) {
+                    document.documentElement.classList.add('dark-mode');
+                }
+            } catch (e) {}
+        })();
+    </script>
+
+        
+
     <link rel="icon" type="image/x-icon" href="/burger-images/favicon.ico">
     <link rel="icon" type="image/png" href="/burger-images/favicon-96x96.png" sizes="96x96">
     <link rel="icon" type="image/svg+xml" href="/burger-images/favicon.svg">
     <link rel="apple-touch-icon" sizes="180x180" href="/burger-images/apple-touch-icon.png">
-    <link rel="manifest" href="/burger-images/site.webmanifest">
-
+    <!-- <link rel="manifest" href="/burger-images/site.webmanifest"> -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="mobile.css">
-
-    <script>
-      (function() {
-        try {
-          const savedGame = localStorage.getItem('burgerGameSave');
-          if (savedGame && JSON.parse(savedGame).dark_mode) {
-            document.documentElement.classList.add('dark-mode');
-          }
-        } catch (e) {}
-      })();
-    </script>
 </head>
 <body>
             <div class="game-wrapper">
@@ -33,7 +44,7 @@
                     <div id="moneypers">
                         <input type="text" id="moneypersecond" value="Money per second: $0" readonly>
                         <input type="text" id="moneyperclick" value="Money per click: $1" readonly>
-                        <input type="text" id="moneymultiplier" value="Money Multiplier: 1" readonly>
+                        <input type="text" id="moneymultiplier" value="Money multiplier: 1" readonly>
                         <input type="text" id="money" value="Money: $0" readonly>
                     </div>
                     <div id="button">
@@ -100,7 +111,7 @@
                         </div>
                     </div>
 
-                    <div id="buttonsTab" class="tab-content" style="display: none;">
+                    <div id="buttonsTab" class="tab-content">
                         <div class="buttons-grid">
                             <div class="tooltip-container">
                                 <button class="feature-button" id="moreicepers" onclick="moreicepers()" onmouseover="showTooltip(event, 'moreiceperstooltip')" onmouseout="hideTooltip('moreiceperstooltip')">Upgrade the Ice Cream machine! 50 ice</button>
@@ -172,7 +183,7 @@
                     </div>
 
                     <!-- Achievements Tab -->
-                    <div id="achievementsTab" class="tab-content" style="display: none;">
+                    <div id="achievementsTab" class="tab-content">
                         <div class="achievements-grid">
                             <div class="achievement locked" data-achievement="firstSteps">
                                 <div class="achievement-icon">🏆</div>
@@ -351,7 +362,7 @@
                             </div>
                         </div>
                     </div>
-                <div id="settingsTab" class="tab-content active">                          
+                <div id="settingsTab" class="tab-content">                          
                       <div class="slidecontainer">
                                 <p>Sfx volume value: <span id="sfxVolumeValue">50</span>%</p>
                                 <input type="range" min="0" max="100" value="50"  id="myRange">
@@ -419,7 +430,7 @@
                         <div class="section-title">Upgrades</div>
                         <!-- Upgrades tooltips -->
                         <div class="tooltip-container" id="upgrade1tooltipcontainer">
-                            <button id="upgrade1" onclick="upgrade1()" onmouseover="showTooltip(event, 'upgrade1tooltip')" onmouseout="hideTooltip('upgrade1tooltip')">Coffee: $150</button>
+                            <button id="upgrade1" style="display:none;" onclick="upgrade1()" onmouseover="showTooltip(event, 'upgrade1tooltip')" onmouseout="hideTooltip('upgrade1tooltip')">Coffee: $150</button>
                             <span class="tooltip" id="upgrade1tooltip">Increases the money made from all workers by 2.5x</span>
                         </div>
                         <div class="tooltip-container" id="upgrade3tooltipcontainer">
@@ -540,7 +551,7 @@
                             <span class="tooltip" id="upgrade30tooltip">Unlocks rebirth section</span>
                         </div>
                         <div class="tooltip-container  burger-upgrade" id="upgrade2tooltipcontainer">
-                            <button id="upgrade2" onclick="upgrade2()" onmouseover="showTooltip(event, 'upgrade2tooltip')" onmouseout="hideTooltip('upgrade2tooltip')">The Golden burger: $100000</button>
+                            <button id="upgrade2" style="display:none;" onclick="upgrade2()" onmouseover="showTooltip(event, 'upgrade2tooltip')" onmouseout="hideTooltip('upgrade2tooltip')">The Golden burger: $100000</button>
                             <span class="tooltip" id="upgrade2tooltip">Increases how much money you make per click by 2x</span>
                         </div>
                         <div class="tooltip-container  burger-upgrade" id="upgrade4tooltipcontainer">

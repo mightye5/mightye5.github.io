@@ -4177,8 +4177,18 @@ function restartFakeClickInterval() {
             }
         }
         function updateUpgradeVisibility() {
+            const upgrade1Button = document.getElementById("upgrade1");
+            const upgrade2Button = document.getElementById("upgrade2");
+
+            if (upgrade1Button) {
+                upgrade1Button.style.display = upg1 === 1 ? 'none' : 'flex';
+            }
+
+            if (upgrade2Button) {
+                upgrade2Button.style.display = bimage >= 1 ? 'none' : 'flex';
+            }
+
             if (upg1 === 1) {
-    const upgrade1Button = document.getElementById("upgrade1");
     if (upgrade1Button) upgrade1Button.remove();
     const franchiseImg = document.getElementById('Franchise1');
     if (franchiseImg) franchiseImg.src = 'Restaurant-images/Restaurant+coffee.png';
@@ -4197,7 +4207,6 @@ function restartFakeClickInterval() {
 
     // Burger upgrades
     const burgerImage = document.querySelector('.image-button');
-    const upgrade2Button = document.getElementById("upgrade2"); // Golden
     const upgrade4Button = document.getElementById("upgrade4"); // Diamond
     const upgrade5Button = document.getElementById("upgrade5"); // Sapphire
     const upgrade6Button = document.getElementById("upgrade6"); // Uranium

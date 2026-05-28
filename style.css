@@ -535,6 +535,12 @@ input:checked + .slider:before {
             cursor: not-allowed;
         }
 /* Dark mode base */
+
+html.dark-mode {
+  background-color: #110f0f; /* Prevents the unstyled flash */
+  color: #f0f0f0;
+}
+
 .dark-mode {
   background-color: rgba(17, 15, 15, 0.808);
   color: #f0f0f0;
