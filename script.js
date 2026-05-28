@@ -392,6 +392,9 @@ let rebirthedTimes = 0;
     upgp41 = 13000000,
     upgp42 = 175000000,
     upgp43 = 1000000000;
+const franchiseTabEl = document.querySelector('[data-tab="franchiseTab"]');
+const buttonsTabEl = document.querySelector('[data-tab="buttonsTab"]');
+const achievementsTabEl = document.querySelector('[data-tab="achievementsTab"]');
         // Special features
         let golden_burger = 1;         // Golden burger multiplier
         let moneymultiplier = 1;       // Global money multiplier
@@ -3747,7 +3750,7 @@ function addMoney(isManual = true) { // Default to true
     });
 }
         function moneyps() {
-            detectMobile();
+            //detectMobile();
             count += mps*(moneymultiplier*obsidian_legacy);
             total_money += mps*(moneymultiplier*obsidian_legacy);
             checkRebirthPoints();
@@ -4091,29 +4094,26 @@ function restartFakeClickInterval() {
          * Highlights tabs based on affordability of upgrades or unlocked achievements
          */
         function checkTabHighlights() {
-            const franchiseTab = document.querySelector('[data-tab="franchiseTab"]');
-            const buttonsTab = document.querySelector('[data-tab="buttonsTab"]');
-            const achievementsTab = document.querySelector('[data-tab="achievementsTab"]');
+            // We removed the querySelectors from here!
 
-            // Example checks for highlighting based on affordability or achievement unlock
             if (count >= fcost) {
-                franchiseTab.classList.add('highlight');
+                if (franchiseTabEl) franchiseTabEl.classList.add('highlight');
             } else {
-                franchiseTab.classList.remove('highlight');
+                if (franchiseTabEl) franchiseTabEl.classList.remove('highlight');
             }
 
             const affordableIceUpgrade = [icost1, icost2, icost3, icost4, icost5, icost6, icost7, icost8, icost9, icost10, icost11, icost12, icost13, icost14, icost15, icost16].some(cost => ice >= cost);
-            if (affordableIceUpgrade ) {
-                buttonsTab.classList.add('highlight');
+            if (affordableIceUpgrade) {
+                if (buttonsTabEl) buttonsTabEl.classList.add('highlight');
             } else {
-                buttonsTab.classList.remove('highlight');
+                if (buttonsTabEl) buttonsTabEl.classList.remove('highlight');
             }
 
             const unlockedAchievements = Object.values(achievements).some(achievement => achievement.unlocked);
             if (unlockedAchievements && !viewedTabs.achievementsTab) {
-                achievementsTab.classList.add('highlight');
+                if (achievementsTabEl) achievementsTabEl.classList.add('highlight');
             } else {
-                achievementsTab.classList.remove('highlight');
+                if (achievementsTabEl) achievementsTabEl.classList.remove('highlight');
             }
         }
 
@@ -5195,7 +5195,7 @@ window.addEventListener('load', function() {
 
     // 2. Load the data
     loadGame();
-
+    initAudio();
     // 3. Sync Logic (Run these once immediately after load)
     recalculateIps();
     applyRebirthUpgrades();
@@ -5206,7 +5206,7 @@ window.addEventListener('load', function() {
     switchTab('franchiseTab');
     
     // 5. Start the game loops
-    setInterval(updateAll, 33);
+    setInterval(updateAll, 100);
     setInterval(moneyps, 1000);
     setInterval(checkTabHighlights, 1000);
     
