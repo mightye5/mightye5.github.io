@@ -1107,7 +1107,7 @@ function upgrade2() {
             golden_burger += 2; 
         }
          // Double click value
-        chesburger.style.backgroundImage = "url('Burger-images/GoldenBurger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Goldenburger.webp')";
         const upgrade4Button = document.getElementById("upgrade4");
         if (upgrade4Button) {
             upgrade4Button.style.display = 'flex';
@@ -1173,7 +1173,7 @@ function upgrade4() {
         } else {
             golden_burger += 2.5; 
         }  // Double click value
-        chesburger.style.backgroundImage = "url('Burger-images/Diamondburger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Diamondburger.webp')";
         bimage += 1;
         // Remove the upgrade4 button instead of hiding it
         document.getElementById("upgrade4").remove();
@@ -1195,7 +1195,7 @@ function upgrade5() {
     if (count >= upgp5) {
         count -= upgp5;
         golden_burger += 3;  // Double click value
-        chesburger.style.backgroundImage = "url('Burger-images/Sapphireburger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Sapphireburger.webp')";
         bimage += 1;
         // Remove the upgrade5 button instead of hiding it
         document.getElementById("upgrade5").remove();
@@ -1218,7 +1218,7 @@ function upgrade6() {
         count -= upgp6;
         golden_burger += 3.5;  // Double click value
         const chesburger = document.querySelector('.image-button');
-        chesburger.style.backgroundImage = "url('Burger-images/Uraniumburger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Uraniumburger.webp')";
         bimage += 1;
         // Remove the upgrade6 button instead of hiding it
         document.getElementById("upgrade6").remove();
@@ -1240,7 +1240,7 @@ function upgrade7() {
     if (count >= upgp7) {
         count -= upgp7;
         golden_burger += 4;  // Double click value
-        chesburger.style.backgroundImage = "url('Burger-images/Obsidianburger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Obsidianburger.webp')";
         bimage += 1;
         if (upg18 == 1) {
             document.getElementById("upgrade31").style.display = 'flex'; // Show the first secret menu item upgrade
@@ -1761,7 +1761,7 @@ function upgrade31() {
         golden_burger += 5.5;
         bimage += 1;
         const chesburger = document.querySelector('.image-button');
-        chesburger.style.backgroundImage = "url('Burger-images/Prismburger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Prismburger.webp')";
         document.getElementById("upgrade31").remove();
         hideTooltip('upgrade31tooltip');
         document.getElementById("upgrade32").style.display = 'flex';
@@ -1779,7 +1779,7 @@ function upgrade32() {
         golden_burger += 6.5;
         bimage += 1;
         const chesburger = document.querySelector('.image-button');
-        chesburger.style.backgroundImage = "url('Burger-images/Infernoburger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Infernoburger.webp')";
         document.getElementById("upgrade32").remove();
         hideTooltip('upgrade32tooltip');
         document.getElementById("upgrade33").style.display = 'flex';
@@ -1797,7 +1797,7 @@ function upgrade33() {
         golden_burger += 7.5;
         bimage += 1;
         const chesburger = document.querySelector('.image-button');
-        chesburger.style.backgroundImage = "url('Burger-images/Auroraburger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Auroraburger.webp')";
         document.getElementById("upgrade33").remove();
         hideTooltip('upgrade33tooltip');
         document.getElementById("upgrade34").style.display = 'flex';
@@ -1815,7 +1815,7 @@ function upgrade34() {
         golden_burger += 9;
         bimage += 1;
         const chesburger = document.querySelector('.image-button');
-        chesburger.style.backgroundImage = "url('Burger-images/Phoenixburger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Phoenixburger.webp')";
         document.getElementById("upgrade34").remove();
         hideTooltip('upgrade34tooltip');
         document.getElementById("upgrade35").style.display = 'flex';
@@ -1833,7 +1833,7 @@ function upgrade35() {
         golden_burger += 10;
         bimage += 1;
         const chesburger = document.querySelector('.image-button');
-        chesburger.style.backgroundImage = "url('Burger-images/Galacticburger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Galacticburger.webp')";
         document.getElementById("upgrade35").remove();
         hideTooltip('upgrade35tooltip');
         document.getElementById("upgrade36").style.display = 'flex';
@@ -1851,7 +1851,7 @@ function upgrade36() {
         golden_burger += 12;
         bimage += 1;
         const chesburger = document.querySelector('.image-button');
-        chesburger.style.backgroundImage = "url('Burger-images/Eldritchburger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Eldritchburger.webp')";
         document.getElementById("upgrade36").remove();
         hideTooltip('upgrade36tooltip');
         document.getElementById("upgrade37").style.display = 'flex';
@@ -1869,7 +1869,7 @@ function upgrade37() {
         golden_burger += 14;
         bimage += 1;
         const chesburger = document.querySelector('.image-button');
-        chesburger.style.backgroundImage = "url('Burger-images/Heavenlyburger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Heavenlyburger.webp')";
         document.getElementById("upgrade37").remove();
         hideTooltip('upgrade37tooltip');
         document.getElementById("upgrade38").style.display = 'flex';
@@ -1887,7 +1887,7 @@ function upgrade38() {
         bimage += 1;
         golden_burger += 16.5;
         const chesburger = document.querySelector('.image-button');
-        chesburger.style.backgroundImage = "url('Burger-images/Infinitefeastburger.png')";
+        chesburger.style.backgroundImage = "url('Burger-images/Infinitefeastburger.webp')";
         document.getElementById("upgrade38").remove();
         hideTooltip('upgrade38tooltip');
         playSound('golden', 0.6*sfxVolume);
@@ -3088,7 +3088,7 @@ function resetGame() {
     golden_burger = 1;
     franchises = 1;
 const chesburger = document.querySelector('.image-button');
-chesburger.style.backgroundImage = "url('Burger-images/Burger.png')";
+chesburger.style.backgroundImage = "url('Burger-images/Burger.webp')";
 
     // Resetting upgrade counts
     M = M2 = M3 = M4 = M5 = M6 = M7 = M8 = M9 = M10 = M11 = M12 = M13 = M14 = M15 = M16 = M17 = M18 = M19 = M20 = 0;
@@ -4256,55 +4256,55 @@ function restartFakeClickInterval() {
     // Set burger image and display the next available upgrade button based on `bimage`
     switch (bimage) {
         case 1:
-            burgerImage.style.backgroundImage = "url('Burger-images/GoldenBurger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/GoldenBurger.webp')";
             if (upgrade4Button) upgrade4Button.style.display = 'flex';
             break;
         case 2:
-            burgerImage.style.backgroundImage = "url('Burger-images/Diamondburger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/Diamondburger.webp')";
             if (upgrade5Button) upgrade5Button.style.display = 'flex';
             break;
         case 3:
-            burgerImage.style.backgroundImage = "url('Burger-images/Sapphireburger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/Sapphireburger.webp')";
             if (upgrade6Button) upgrade6Button.style.display = 'flex';
             break;
         case 4:
-            burgerImage.style.backgroundImage = "url('Burger-images/Uraniumburger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/Uraniumburger.webp')";
             if (upgrade7Button) upgrade7Button.style.display = 'flex';
             break;
         case 5:
-            burgerImage.style.backgroundImage = "url('Burger-images/Obsidianburger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/Obsidianburger.webp')";
             if (upgrade31Button) upgrade31Button.style.display = 'flex';
             break;
         case 6:
-            burgerImage.style.backgroundImage = "url('Burger-images/Prismburger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/Prismburger.webp')";
             if (upgrade32Button) upgrade32Button.style.display = 'flex';
             break;
         case 7:
-            burgerImage.style.backgroundImage = "url('Burger-images/Infernoburger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/Infernoburger.webp')";
             if (upgrade33Button) upgrade33Button.style.display = 'flex';
             break;
         case 8:
-            burgerImage.style.backgroundImage = "url('Burger-images/Auroraburger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/Auroraburger.webp')";
             if (upgrade34Button) upgrade34Button.style.display = 'flex';
             break;
         case 9:
-            burgerImage.style.backgroundImage = "url('Burger-images/Phoenixburger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/Phoenixburger.webp')";
             if (upgrade35Button) upgrade35Button.style.display = 'flex';
             break;
         case 10:
-            burgerImage.style.backgroundImage = "url('Burger-images/Galacticburger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/Galacticburger.webp')";
             if (upgrade36Button) upgrade36Button.style.display = 'flex';
             break;
         case 11:
-            burgerImage.style.backgroundImage = "url('Burger-images/Eldritchburger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/Eldritchburger.webp')";
             if (upgrade37Button) upgrade37Button.style.display = 'flex';
             break;
         case 12:
-            burgerImage.style.backgroundImage = "url('Burger-images/Heavenlyburger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/Heavenlyburger.webp')";
             if (upgrade38Button) upgrade38Button.style.display = 'flex';
             break;
         case 13:
-            burgerImage.style.backgroundImage = "url('Burger-images/Infinitefeastburger.png')";
+            burgerImage.style.backgroundImage = "url('Burger-images/Infinitefeastburger.webp')";
             break;
         default:
             if (upgrade2Button) upgrade2Button.style.display = 'flex';
