@@ -2555,12 +2555,11 @@ function updateButtons(buttons) {
 
             let quantity = purchaseAmount === 'max' ? getMaxAffordable(button.id) : purchaseAmount;
             
-            // --- FIX: If Max buy is selected but user can't afford any (0), show cost for 1 ---
+            // If Max buy is selected but user can't afford any (0), show cost for 1
             let quantityForDisplay = quantity;
             if (purchaseAmount === 'max' && quantity === 0) {
                 quantityForDisplay = 1;
             }
-            // ---------------------------------------------------------------------------------
 
             let displayCost = computeEmployeeCost(button.id, quantityForDisplay);
             
@@ -2581,10 +2580,13 @@ function updateButtons(buttons) {
             const countText = countMap.hasOwnProperty(button.id) ? ` (${countMap[button.id]})` : '';
             const qtyText = quantity > 1 ? ` x${quantity}` : '';
 
-            // Use 'quantityForDisplay' if you want to show price of 1 when afford is 0, 
-            // OR strict 'quantity' if you want it to show cost of specific amount.
-            // Standard clicker behavior: Show cost of 1 if you can't afford 1.
-            element.textContent = `${button.label}${qtyText}: $${formatCurrency(displayCost)}${countText}`;
+            // Construct the exact string we want the button to say
+            const newText = `${button.label}${qtyText}: $${formatCurrency(displayCost)}${countText}`;
+
+            // PERFORMANCE FIX: Only push to the DOM if the text has actually changed!
+            if (element.textContent !== newText) {
+                element.textContent = newText;
+            }
         }
     });
 }
@@ -2628,7 +2630,7 @@ function updateUpgradeButtons() {
         
         'upgrade30': { cost: upgp30, condition: upg29 === 1 },
         'upgrade31': { cost: upgp31, condition: (upg18 === 1 && bimage === 5) || bimage === 6 },
-               'upgrade32': { cost: upgp32, condition: bimage === 6 },
+        'upgrade32': { cost: upgp32, condition: bimage === 6 },
         'upgrade33': { cost: upgp33, condition: bimage === 7 },
         'upgrade34': { cost: upgp34, condition: bimage === 8 },
         'upgrade35': { cost: upgp35, condition: bimage === 9 },
@@ -2636,9 +2638,9 @@ function updateUpgradeButtons() {
         'upgrade37': { cost: upgp37, condition: bimage === 11 },
         'upgrade38': { cost: upgp38, condition: bimage === 12 },
         'upgrade39': { cost: upgp39, condition: upg14 === 1 },
-          'upgrade40': { cost: upgp40, condition: upg18 === 1 },
-             'upgrade41': { cost: upgp41, condition: upg22 === 1 },
-               'upgrade42': { cost: upgp42, condition: upg26 === 1 } 
+        'upgrade40': { cost: upgp40, condition: upg18 === 1 },
+        'upgrade41': { cost: upgp41, condition: upg22 === 1 },
+        'upgrade42': { cost: upgp42, condition: upg26 === 1 } 
     };
 
     const employeeNames = {
@@ -2653,19 +2655,27 @@ function updateUpgradeButtons() {
         M15: "Cheese Chancellors",
         M17: "Golden Archmages"
     };
+    
     for (const [id, data] of Object.entries(upgradeMap)) {
         const element = document.getElementById(id);
         if (element && data.condition) {
             const currentText = element.textContent;
             const label = currentText.split(':')[0];
             let reqText = '';
+            
             if (data.requirements) {
                 reqText = Object.entries(data.requirements)
                     .map(([emp, amt]) => `${amt} ${employeeNames[emp] || emp}`)
                     .join(', ');
                 reqText = `, ${reqText}`;
             }
-            element.textContent = `${label}: $${formatCurrency(data.cost)}${reqText}`;
+            
+            const newText = `${label}: $${formatCurrency(data.cost)}${reqText}`;
+            
+            // PERFORMANCE FIX: Only push to the DOM if the text has actually changed!
+            if (element.textContent !== newText) {
+                element.textContent = newText;
+            }
         }
     }
 }
@@ -4155,25 +4165,33 @@ function restartFakeClickInterval() {
          * Checks if any achievements have been unlocked
          * Should be called whenever relevant game state changes
          */
+        const achievementElements = {};
+
         function checkAchievements() {
             let newUnlocks = false;
 
             for (const [id, achievement] of Object.entries(achievements)) {
-                if (!achievement.unlocked && achievement.condition()) {  // Only unlock if condition is met
+                if (!achievement.unlocked && achievement.condition()) {  
                     achievement.unlocked = true;
                     newUnlocks = true;
 
-                    // Find and update the achievement element
-                    const achievementElement = document.querySelector(`[data-achievement="${id}"]`);
+                    // PERFORMANCE FIX: Check the cache first, otherwise find and store it
+                    if (!achievementElements[id]) {
+                        achievementElements[id] = document.querySelector(`[data-achievement="${id}"]`);
+                    }
+                    
+                    const achievementElement = achievementElements[id];
+                    
                     if (achievementElement) {
                         achievementElement.classList.remove('locked');
-                        playSound('achieve', 0.1*sfxVolume);
+                        playSound('achieve', 0.1 * sfxVolume);
                     }
                 }
             }
+            
             if (newUnlocks) {
                 viewedTabs.achievementsTab = false;
-                checkTabHighlights(); // Immediately check highlights to apply the new achievement notification
+                checkTabHighlights(); 
             }
         }
         function updateUpgradeVisibility() {
@@ -5188,42 +5206,54 @@ restartFakeClickInterval();
         // Auto-save every 5 minutes
         setInterval(saveGame, 0.5 * 60 * 1000);
 
+
+// This variable ensures we only load audio once
+let hasAudioInitialized = false;
+
+function lazyLoadAudio() {
+    if (!hasAudioInitialized) {
+        hasAudioInitialized = true;
+        initAudio(); // Now the CPU decodes audio ONLY when the user is ready to play
+        
+        // Remove the listeners so they don't fire again
+        document.removeEventListener('click', lazyLoadAudio);
+        document.removeEventListener('touchstart', lazyLoadAudio);
+    }
+}
+
+// Wait for the first user interaction to load the heavy audio engine
+document.addEventListener('click', lazyLoadAudio);
+document.addEventListener('touchstart', lazyLoadAudio);
 // ================ INITIALIZATION ================
 window.addEventListener('load', function() {
-    // 1. Mobile Check
+    // 1. Core logic that MUST run instantly
     detectMobile();
-
-    // 2. Load the data
-    loadGame();
-    initAudio();
-    // 3. Sync Logic (Run these once immediately after load)
+    loadGame(); // Loads variables but don't do heavy UI updates yet
     recalculateIps();
     applyRebirthUpgrades();
-    updateUpgradeVisibility();
-    checkAchievements();
-    
-    // 4. Setup UI State
-    switchTab('franchiseTab');
-    
-    // 5. Start the game loops
-    setInterval(updateAll, 100);
-    setInterval(moneyps, 1000);
-    setInterval(checkTabHighlights, 1000);
-    
-    // 6. Handle Rebirth Overlay
-    if (sessionStorage.getItem('rebirthAccess') === '1') {
-        showRebirthOverlay();
-        const gameWrapper = document.querySelector('.game-wrapper');
-        if (gameWrapper) gameWrapper.style.display = 'none';
-    }
-    
-    // 7. Auto-save interval
-    setInterval(saveGame, 0.5 * 60 * 1000);
-    
-    // 8. Start fake clicker
-    restartFakeClickInterval();
-});
 
+    // 2. Yield to the browser so it can paint the screen!
+    requestAnimationFrame(() => {
+        // 3. Run the heavy UI updates on the next frame
+        updateUpgradeVisibility();
+        checkAchievements();
+        switchTab('franchiseTab');
+        
+        // 4. Start the loops only after UI is set up
+        setInterval(updateAll, 100);
+        setInterval(moneyps, 1000);
+        setInterval(checkTabHighlights, 1000);
+        
+        if (sessionStorage.getItem('rebirthAccess') === '1') {
+            showRebirthOverlay();
+            const gameWrapper = document.querySelector('.game-wrapper');
+            if (gameWrapper) gameWrapper.style.display = 'none';
+        }
+        
+        setInterval(saveGame, 0.5 * 60 * 1000);
+        restartFakeClickInterval();
+    });
+});
 // Start the game loops ONLY after initialization is complete
 //setInterval(updateAll, 33);
 //setInterval(moneyps, 1000);
